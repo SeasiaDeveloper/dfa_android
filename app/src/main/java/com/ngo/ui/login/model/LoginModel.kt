@@ -1,61 +1,66 @@
 package com.ngo.ui.login.model
 
 import android.text.TextUtils
-import android.widget.Toast
+import android.util.Patterns
 import com.ngo.apis.ApiClient
 import com.ngo.apis.CallRetrofitApi
-import com.ngo.pojo.response.GetComplaintsResponse
+import com.ngo.pojo.request.LoginRequest
+import com.ngo.pojo.response.LoginResponse
 import com.ngo.ui.login.presenter.LoginPresenter
 import com.ngo.utils.Constants
-import kotlinx.android.synthetic.main.activity_login_activity.*
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class LoginModel(private var loginPresenter: LoginPresenter) {
+    private fun toRequestBody(value: String): RequestBody {
+        return RequestBody.create(MediaType.parse("application/json"), value)
+    }
 
-  /*  fun fetchCompalints() {
-        val service = ApiClient.getClient().create(CallRetrofitApi::class.java)
-        val response = service.getcomplains()
-        response.enqueue(object : Callback<GetComplaintsResponse> {
-            override fun onResponse(call: Call<GetComplaintsResponse>, response: Response<GetComplaintsResponse>) {
+    fun fetchCompalints(loginrequest: LoginRequest) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        val map = HashMap<String, RequestBody>()
+        map["username"] = toRequestBody(loginrequest.username)
+        map["password"] =
+            toRequestBody(loginrequest.password) // val profileImg = MultipartBody.Part.createFormData("image", "image", RequestBody.create(MediaType.parse(imgMediaType), complaintsRequest.image))
+        retrofitApi.login(map).enqueue(object :
+            Callback<LoginResponse> {
+            override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
+                loginPresenter.showError(t.message + "")
+            }
+
+            override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 val responseObject = response.body()
                 if (responseObject != null) {
-                    if (responseObject.status == 200) {
-                        loginPresenter.onLoginSuccess(responseObject)
-                    } else {
-                        loginPresenter.onLoginFailure(response.body()?.message ?: Constants.SERVER_ERROR)
-                    }
+                    // if (responseObject.status == 200) {
+                    loginPresenter.onLoginSuccess(responseObject)
+                    //  } else {
+                    //  loginPresenter.onLoginFailure(/*response.body()?.message ?:*/ Constants.SERVER_ERROR)
+                    //  }
                 } else {
                     loginPresenter.showError(Constants.SERVER_ERROR)
                 }
             }
-
-
-            override fun onFailure(call: Call<GetComplaintsResponse>, t: Throwable) {
-                presenter.showError(t.message+"")
-            }
         })
     }
 
-    fun checkValidations(emailId:String,password:String)
-    {
-        if (TextUtils.isEmpty(email_mobile_number.text.toString())) {
-            Toast.makeText(
-                this@LoginActivity,
-                "Enter Email Id or Mobile Number",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-        *//*    else if (!isValidEmail(email_mobile_number.text.toString())) {
-                Toast.makeText(this@LoginActivity, "Enter ", Toast.LENGTH_SHORT).show()
-            } *//*
-        else if (TextUtils.isEmpty(editPassword.text.toString())) {
-            Toast.makeText(this@LoginActivity, "Enter Password First", Toast.LENGTH_SHORT)
-                .show()
+    fun checkValidations(emailId: String, password: String) {
+        if (TextUtils.isEmpty(emailId)) {
+            loginPresenter.onEmptyEmailId()
+        } else if (TextUtils.isEmpty(password)) {
+            loginPresenter.onEmptyPassword()
         } else {
-            Toast.makeText(this@LoginActivity, "Login successfully", Toast.LENGTH_SHORT)
-                .show()
+            val request = LoginRequest(
+                emailId,
+                password
+            )
+            fetchCompalints(request)
         }
-    }*/
+    }
+
+    fun isValidEmail(target: CharSequence?): Boolean {
+        return Patterns.EMAIL_ADDRESS.matcher(target).matches()
+    }
 }

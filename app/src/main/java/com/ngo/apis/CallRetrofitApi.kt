@@ -28,4 +28,8 @@ interface CallRetrofitApi {
 
     @GET("v1/showcomplaintimage")
     fun getPoliceForm(@Query("id") id: Int): Call<GetPoliceFormResponse>
+
+    @Multipart
+    @POST("v1/token")
+    fun login(@PartMap params: HashMap<String,RequestBody>): Call<LoginResponse>
 }
