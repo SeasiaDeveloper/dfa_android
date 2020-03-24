@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+>
+
+    <androidx.cardview.widget.CardView android:id="@+id/cardView"
+                                       android:layout_width="match_parent"
+                                       android:layout_height="wrap_content"
+                                       android:layout_marginStart="@dimen/_8sdp"
+                                       android:layout_marginTop="@dimen/_6sdp"
+                                       android:layout_marginEnd="@dimen/_8sdp"
+                                       android:layout_marginBottom="@dimen/_4sdp"
+                                       app:cardCornerRadius="@dimen/_8sdp"
+                                       app:layout_constraintEnd_toEndOf="parent"
+                                       app:layout_constraintStart_toStartOf="parent"
+                                       app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:id="@+id/layoutListItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_5sdp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_6sdp"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/imgCrime"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:paddingTop="6dp"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:src="@drawable/ic_user"
+                   />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+                    <LinearLayout
+                        android:id="@+id/userNameLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:text="UserName:"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:font="@{`semibold`}"/>
+                        <TextView
+                            android:id="@+id/tvUsername"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:text=""
+                            android:textColor="@color/black"
+                            app:font="@{`regular`}"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:id="@+id/layoutCrime"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:text="Crime Type:"
+                            android:textColor="@color/black"
+                            android:layout_marginTop="@dimen/_2sdp"
+                            android:textStyle="bold"
+                            app:font="@{`semibold`}" />
+                        <TextView
+                            android:id="@+id/tvCrime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:text=""
+                            android:textColor="@color/black"
+                            app:font="@{`regular`}"/>
+
+                    </LinearLayout>
+             <!--       <com.ms.square.android.expandabletextview.ExpandableTextView
+                        android:id="@+id/expand_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+                        expandableTextView:maxCollapsedLines="4"
+                        expandableTextView:animDuration="200">-->
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_6sdp"
+                            android:text="Urgency Level:"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:font="@{`semibold`}"/>
+                        <TextView
+                            android:id="@+id/expandable_Level"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:layout_marginEnd="@dimen/_4sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:textColor="@color/black"
+                            app:font="@{`regular`}"
+                            android:textSize="@dimen/_12ssp"
+                            tools:text=""/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_6sdp"
+                            android:text="Complaint Date:"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:font="@{`semibold`}"/>
+                        <TextView
+                            android:id="@+id/expandable_Date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:layout_marginEnd="@dimen/_4sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:textColor="@color/black"
+                            app:font="@{`regular`}"
+                            android:textSize="@dimen/_12ssp"
+                            tools:text=""/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_6sdp"
+                            android:text="Complaint Time:"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:font="@{`semibold`}"/>
+                        <TextView
+                            android:id="@+id/expandable_Time"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_4sdp"
+                            android:layout_marginEnd="@dimen/_4sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:textColor="@color/black"
+                            app:font="@{`regular`}"
+                            android:textSize="@dimen/_12ssp"
+                            tools:text=""/>
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:gravity="end">
+                            <ImageView
+                                android:layout_gravity="end"
+                                android:id="@+id/imgExpandable"
+                                android:src="@drawable/ic_expand_more_black_24dp"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/childExpandable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:animateLayoutChanges="true"
+                        android:orientation="vertical">
+
+
+                        <LinearLayout
+                            android:id="@+id/layoutContact"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_6sdp"
+                                android:text="Complainer Contact:"
+                                android:textColor="@color/black"
+                                android:textStyle="bold"
+                                app:font="@{`semibold`}"/>
+                            <TextView
+                                android:id="@+id/expandable_contactNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_4sdp"
+                                android:layout_marginEnd="@dimen/_4sdp"
+                                android:layout_marginBottom="@dimen/_5sdp"
+                                android:textColor="@color/black"
+                                app:font="@{`regular`}"
+                                android:textSize="@dimen/_12ssp"
+                                tools:text=""/>
+                        </LinearLayout>
+
+
+
+
+                        <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_6sdp"
+                            android:text="Description:"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:font="@{`semibold`}"/>
+                        <TextView
+                            android:id="@+id/expandable_DescriptionNgo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_7sdp"
+                            android:layout_marginEnd="@dimen/_4sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:textColor="@color/black"
+                            app:font="@{`regular`}"
+                            android:textSize="@dimen/_10ssp"
+                            tools:text=""/>
+                    </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/layoutPoliceComment"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:visibility="gone"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:orientation="vertical">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_6sdp"
+                                android:text="Police Comment:"
+                                android:textColor="@color/black"
+                                android:textStyle="bold"
+                                app:font="@{`semibold`}"/>
+                            <TextView
+                                android:id="@+id/expandable_comment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_6sdp"
+                                android:layout_marginEnd="@dimen/_4sdp"
+                                android:layout_marginBottom="@dimen/_5sdp"
+                                android:textColor="@color/black"
+                                app:font="@{`regular`}"
+                                android:textSize="@dimen/_10ssp"
+                                tools:text=""/>
+                        </LinearLayout>
+
+
+                    </LinearLayout>
+                      <!--  <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@id/expand_collapse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="16dp"
+                            android:layout_gravity="right|bottom"
+                            android:background="@android:color/transparent"/>-->
+<!--
+                </com.ms.square.android.expandabletextview.ExpandableTextView>
+-->
+
+                    <LinearLayout android:layout_width="match_parent"
+                                  android:layout_height="match_parent"
+                                  android:layout_marginTop="@dimen/_10sdp"
+                                  android:gravity="right"
+                                  android:layout_marginRight="@dimen/_5sdp"
+                                  android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/forward"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:textSize="@dimen/_7ssp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:background="@drawable/button_bg"
+                            android:drawableLeft="@drawable/ic_security"
+                            android:drawablePadding="@dimen/_2sdp"
+                            android:backgroundTint="@color/colorPolice"
+                            android:drawableTint="@color/white"
+                            android:padding="@dimen/_4ssp"
+                            android:gravity="center"
+                            android:textAllCaps="true"
+                            android:text="Raise"
+                            android:textColor="@color/white"
+                            app:font="@{`regular`}"/>
+
+                        <TextView
+                            android:id="@+id/location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:textSize="@dimen/_7ssp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginRight="@dimen/_10sdp"
+                            android:background="@drawable/button_bg"
+                            android:drawableLeft="@drawable/ic_location"
+                            android:drawablePadding="@dimen/_2sdp"
+                            android:drawableTint="@color/white"
+                            android:padding="@dimen/_4ssp"
+                            android:gravity="center"
+                            android:textAllCaps="true"
+                            android:text="Location"
+                            android:textColor="@color/white"
+                            app:font="@{`regular`}"/>
+                        <TextView
+                            android:id="@+id/status"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/_9sdp"
+                            android:layout_marginRight="@dimen/_5sdp"
+                            android:background="@drawable/green_bordered_button"
+                            android:padding="@dimen/_8sdp"
+                            android:textSize="@dimen/_7ssp"
+                            android:text="Authenticating"
+                            android:textColor="@color/black"
+                            android:textStyle="bold"
+                            app:font="@{`semibold`}"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

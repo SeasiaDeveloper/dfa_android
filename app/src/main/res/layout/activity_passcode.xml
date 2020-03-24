@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout     xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
+<LinearLayout
+
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/dashboardParentLayout">
+    <include
+        android:id="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        layout="@layout/toolbar_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        tools:ignore="MissingConstraints">
+
+        <TextView
+            android:id="@+id/tv_verifyEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_15sdp"
+            android:text="@string/welcome_back_password"
+            android:textColor="@color/colorPrimary"
+            app:font="@{`regular`}"
+            android:textSize="@dimen/_15ssp"
+
+
+        />
+
+        <com.goodiebag.pinview.Pinview
+            android:id="@+id/pinview"
+            app:pinBackground="@drawable/shape_round_corner_back"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_100sdp"
+            app:pinWidth="@dimen/_35sdp"
+            app:pinHeight="@dimen/_45sdp"
+            app:textSize="@dimen/_10ssp"
+            app:pinLength="4"
+            android:layout_marginLeft="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_10sdp"
+            app:cursorVisible="false"
+            app:forceKeyboard="false"
+            app:hint=""
+            app:inputType="number"
+            app:password="false"/>
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/button_bg"
+                android:text="@string/submit"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_20sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:textColor="@color/white"
+                app:font="@{`semibold`}"
+                android:textSize="@dimen/_14ssp" />
+
+
+
+
+        </LinearLayout>
+</LinearLayout>
+
+
+
+</layout>

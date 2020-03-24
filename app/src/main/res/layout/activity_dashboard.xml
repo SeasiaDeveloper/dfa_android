@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android"
+         xmlns:app="http://schemas.android.com/apk/res-auto">
+<androidx.constraintlayout.widget.ConstraintLayout
+
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/dashboardParentLayout">
+    <include
+        android:id="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        layout="@layout/toolbar_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbarLayout">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvGeneralPublic"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:layout_marginRight="@dimen/_12sdp"
+            android:background="@drawable/green_bordered_button"
+            android:padding="@dimen/_10sdp"
+            android:backgroundTint="@color/colorPrimary"
+            android:gravity="center"
+            android:textSize="@dimen/_14ssp"
+            app:font="@{`semibold`}"
+            android:text="@string/general_public"
+            android:textAllCaps="true"
+            android:textColor="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvNGO"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_120sdp"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:layout_marginRight="@dimen/_12sdp"
+            android:backgroundTint="@color/colorNgo"
+            android:background="@drawable/green_bordered_button"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/drug_free_ngo"
+            app:font="@{`semibold`}"
+            android:textSize="@dimen/_14ssp"
+            android:textAllCaps="true"
+            android:textColor="@color/white" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvPolice"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_120sdp"
+            android:layout_marginLeft="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_12sdp"
+            android:layout_marginRight="@dimen/_12sdp"
+            android:background="@drawable/green_bordered_button"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/police"
+            android:backgroundTint="@color/colorPolice"
+            android:gravity="center"
+            android:textSize="@dimen/_14ssp"
+            android:textAllCaps="true"
+            app:font="@{`semibold`}"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

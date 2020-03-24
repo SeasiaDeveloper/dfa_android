@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#00bde3</color>
+    <color name="colorPrimaryDark">#00bde3</color>
+    <color name="colorAccent">#00bde3</color>
+
+    <color name="white">#ffffff</color>
+    <color name="black">#000000</color>
+    <color name="grey">#8E8E93</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="toolbar_bg_color">#00bde3</color>
+    <color name="blue">#00bde3</color>
+    <color name="bottom_view_bg">#313131</color>
+    <color name="colorProgress">#00bde3</color>
+    <color name="colorPrimaryTransaprent">#8000bde3</color>
+    <color name="colorNgo">#D48383</color>
+    <color name="colorRed">#F51638</color>
+    <color name="colorGreen">#42CB44</color>
+    <color name="colorPolice">#4069D5</color>
+
+</resources>

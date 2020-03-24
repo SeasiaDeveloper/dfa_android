@@ -1,0 +1,57 @@
+<resources>
+    <string name="app_name">DFA APP</string>
+    <string name="ngo_app">DFA APP</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="general_public">General Public</string>
+    <string name="drug_free_ngo">Drug Free NGO</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="toolbar_general_public">Public</string>
+    <string name="types_of_crime">Types Of Crime</string>
+    <string name="user_name">User Name</string>
+    <string name="email">Email</string>
+    <string name="contact_no">Contact No</string>
+    <string name="level">Urgency Level</string>
+    <string name="description">Description</string>
+    <string name="select_photo">Select Photo</string>
+    <string name="submit">Submit</string>
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="no_record_found">No record found</string>
+    <string name="drugs">Drugs</string>
+    <string name="police">Police Dashboard</string>
+    <string name="ngo">NGO Dashboard</string>
+    <string name="please_select_image">Please select image</string>
+    <string name="select_urgency_level">Please select urgency level</string>
+    <string name="please_enter_description">Please enter description</string>
+    <string name="ngo_form">NGO Form</string>
+    <string name="enter_password">Enter Code</string>
+    <string name="welcome_back_password">Please enter code to continue</string>
+    <string name="passcode">Code Verification</string>
+    <string name="invalid_code">Invalid Code</string>
+    <string name="enter_Code">Please enter code</string>
+    <string name="ok">OK</string>
+    <string name="home">Home</string>
+    <string name="name">Name</string>
+    <string name="report_incident">Report Incident</string>
+    <string name="incident_detail">Incident Description</string>
+    <string name="enter_comment">Please enter comment</string>
+    <string name="username">Name:</string>
+    <string name="crime">Crime Type:</string>
+    <string name="general_description">Description:</string>
+    <string name="status">State:</string>
+    <string name="public_dashboard">General Public Dashboard</string>
+    <string name="resolved">Resolved</string>
+    <string name="unresolved">Unresolved</string>
+    <string name="authentic">Authentic</string>
+    <string name="unauthentic">Unauthentic</string>
+    <string name="add_comment">Add Comment</string>
+    <string name="mark_status">Mark Status</string>
+
+
+
+  <!--  login screen-->
+    <string name="forgot_password"><u>Forgot Password?</u></string>
+    <string name="dont_have_an_account_yet">Don\'t have an account yet?</string>
+    <string name="email_mobile_hint">Email / Mobile no</string>
+    <string name="password">Password</string>
+</resources>

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+    >
+
+
+        <TextView
+                android:id="@+id/title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                app:font="@{`bold`}"
+                android:textSize="@dimen/_16ssp"
+                android:textColor="@color/white"
+                android:background="@color/colorPrimary"
+                android:padding="@dimen/_10sdp"
+                android:gravity="center"
+        />
+
+
+        <TextView
+                android:id="@+id/text"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_12ssp"
+                android:layout_below="@+id/title"
+                android:padding="@dimen/_10sdp"
+                app:font="@{`bold`}"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:gravity="center"
+                android:layout_marginStart="@dimen/_10sdp"/>
+
+        <Button
+                android:id="@+id/dialogButtonOK"
+                android:layout_width="@dimen/_70sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:text="@string/ok"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:textColor="@color/white"
+                android:background="@drawable/button_bg"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                app:font="@{`bold`}"
+                android:layout_below="@+id/text"
+                android:layout_marginEnd="5dp"/>
+
+    </RelativeLayout>
+</layout>

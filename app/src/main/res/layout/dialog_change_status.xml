@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:orientation="vertical">
+
+
+        <TextView android:layout_width="wrap_content"
+                  android:text="@string/mark_status"
+                  android:textSize="@dimen/_16ssp"
+                  app:font="@{`bold`}"
+                  android:layout_marginTop="@dimen/_10sdp"
+                  android:layout_marginStart="@dimen/_10sdp"
+                  android:textColor="@color/colorPrimary"
+                  android:layout_height="wrap_content"/>
+        <RadioGroup
+            android:id="@+id/radioStatus"
+            android:layout_width="wrap_content"
+            android:layout_margin="@dimen/_10sdp"
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/radioRes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:textSize="@dimen/_15ssp"
+                app:font="@{`regular`}"
+                android:text="@string/resolved"/>
+
+            <RadioButton
+                android:id="@+id/radioUnRes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_15ssp"
+                android:layout_marginTop="@dimen/_10sdp"
+                app:font="@{`regular`}"
+                android:text="@string/unresolved"/>
+
+            <RadioButton
+                android:id="@+id/radioAuth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_15ssp"
+                app:font="@{`regular`}"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/authentic"/>
+
+            <RadioButton
+                android:id="@+id/radioUnAuth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/_15ssp"
+                app:font="@{`regular`}"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/unauthentic"/>
+
+
+        </RadioGroup>
+
+
+
+
+        <EditText
+            android:id="@+id/etDescription"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_100sdp"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:background="@drawable/squarebg"
+            android:ems="10"
+            android:lines="8"
+            android:minLines="6"
+            android:maxLines="10"
+            android:imeOptions="actionDone"
+            android:maxLength="500"
+            app:font="@{`regular`}"
+            android:textSize="@dimen/_11ssp"
+            android:inputType="textMultiLine"
+            android:gravity="start"
+            android:hint="@string/add_comment"
+            android:padding="@dimen/_7sdp"/>
+
+
+        <TextView
+            android:id="@+id/btnDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:layout_gravity="right"
+            android:textSize="@dimen/_16ssp"
+            app:font="@{`bold`}"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:text="@string/ok"/>
+
+    </LinearLayout>
+</layout>
