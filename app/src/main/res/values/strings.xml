@@ -64,6 +64,25 @@
     <string name="change_password">Change password</string>
     <string name="enter_new_password">Enter New Password</string>
 
+
+    <string name="cancel">Cancel</string>
+    <string name="enter_adhar_no_here">Enter Adhar no here</string>
+    <string name="enter_first_name">Enter first name</string>
+    <string name="enter_middle_name">Enter middle name</string>
+    <string name="enter_last_name">Enter last name</string>
+    <string name="select_district">Select District</string>
+    <string name="enter_email">Enter email</string>
+    <string name="mobile_2">Mobile 2</string>
+    <string name="mobile_1">Mobile 1</string>
+    <string name="pin_code">Pin Code</string>
+    <string name="address_2">Address 2</string>
+    <string name="address_1">Address 1</string>
+    <string name="change_image">Change Image</string>
+    <string name="update">Update</string>
+    <string name="verified">Verified</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="signup">SignUp</string>
+
     <!--Otp Verification-->
     <string name="otp_verification">OTP Verification</string>
     <string name="please_enter_confirmation_code">Please Enter Confirmation Code</string>

@@ -32,8 +32,10 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.ngo.R
+import com.ngo.utils.algo.VerhoeffAlgo
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Pattern
 
 
 object Utilities {
@@ -206,5 +208,14 @@ object Utilities {
 
         }
         return formatedDate
+    }
+
+    fun validateAadharNumber(aadharNumber: String): Boolean {
+        val aadharPattern = Pattern.compile("\\d{12}")
+        var isValidAadhar = aadharPattern.matcher(aadharNumber).matches()
+        if (isValidAadhar) {
+            isValidAadhar = VerhoeffAlgo.validateVerhoeff(aadharNumber)
+        }
+        return isValidAadhar
     }
 }

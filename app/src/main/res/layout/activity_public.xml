@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,16 +35,18 @@
         android:textColor="@color/black"
         app:font="@{`regular`}"
         android:textSize="@dimen/_13ssp"/>
-    <androidx.appcompat.widget.AppCompatSpinner
-        android:id="@+id/spTypesOfCrime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/_12sdp"
-        android:layout_marginTop="@dimen/_6sdp"
-        android:layout_marginEnd="@dimen/_12sdp"
-        android:entries="@array/typeofCrimeArray"
-        android:background="@drawable/bg_spinner" />
-    <androidx.appcompat.widget.AppCompatTextView
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spTypesOfCrime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:background="@drawable/bg_spinner"
+            android:entries="@array/typeofCrimeArray" />
+
+        <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvLevel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
