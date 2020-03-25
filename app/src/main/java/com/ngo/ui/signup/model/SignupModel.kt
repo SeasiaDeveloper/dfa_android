@@ -3,6 +3,7 @@ package com.ngo.ui.signup.model
 import com.ngo.apis.ApiClient
 import com.ngo.apis.CallRetrofitApi
 import com.ngo.pojo.request.SignupRequest
+import com.ngo.pojo.response.DistResponse
 import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.signup.presenter.SignupPresenterImplClass
 import com.ngo.utils.Constants
@@ -71,6 +72,32 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
                     signupPresenterImplClass.showError(Constants.SERVER_ERROR)
                 }
             }
+        })
+    }
+
+    fun getDist() {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        retrofitApi.getDist().enqueue(object : Callback<DistResponse>{
+            override fun onFailure(call: Call<DistResponse>, t: Throwable) {
+                signupPresenterImplClass.showError(t.message + "")
+            }
+
+            override fun onResponse(call: Call<DistResponse>, response: Response<DistResponse>) {
+                val responseObject = response.body()
+                if (responseObject != null) {
+                    if (responseObject.code == 200) {
+                        signupPresenterImplClass.fetchDistList(responseObject)
+                    } else {
+                        signupPresenterImplClass.onSaveDetailsFailed(
+                            Constants.SERVER_ERROR
+                        )
+                    }
+                } else {
+                    signupPresenterImplClass.showError(Constants.SERVER_ERROR)
+                }
+            }
+
+
         })
     }
 

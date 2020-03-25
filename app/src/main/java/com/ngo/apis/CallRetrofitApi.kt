@@ -36,4 +36,8 @@ interface CallRetrofitApi {
     @Multipart
     @POST("wp/v2/user/register")
     fun registerUser(@PartMap params: HashMap<String,RequestBody>, @Part profile_pic: MultipartBody.Part): Call<SignupResponse>
+
+
+    @GET("wp/v2/districts")
+    fun getDist(): Call<DistResponse>
 }

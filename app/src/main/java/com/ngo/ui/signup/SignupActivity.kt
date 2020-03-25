@@ -9,11 +9,15 @@ import android.os.Bundle
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.pojo.request.SignupRequest
+import com.ngo.pojo.response.DataBean
+import com.ngo.pojo.response.DistResponse
 import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.signup.presenter.SignupPresenter
 import com.ngo.ui.signup.presenter.SignupPresenterImplClass
@@ -21,21 +25,40 @@ import com.ngo.ui.signup.view.SignupView
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_signup.*
 import kotlinx.android.synthetic.main.activity_signup.toolbarLayout
+import java.util.*
+import kotlin.collections.ArrayList
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import kotlinx.android.synthetic.main.activity_public.*
+import kotlinx.android.synthetic.main.activity_signup.btnSubmit
 
-class SignupActivity : AppCompatActivity(), SignupView {
+class SignupActivity : BaseActivity(), SignupView {
+    override fun getLayout(): Int {
+        return R.layout.activity_signup
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        setContentView(R.layout.activity_signup)
+    override fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.signup)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-        setListeners()
+
+        if (isInternetAvailable()) {
+            showProgress()
+            signupPresenter.getDist() //load Districts list
+        } else {
+            Utilities.showMessage(this, getString(R.string.no_internet_connection))
+        }
+    }
+
+    override fun handleKeyboard(): View {
+        return signupLayout
     }
 
     private var signupPresenter: SignupPresenter = SignupPresenterImplClass(this)
     private var IMAGE_REQ_CODE = 101
     private var path: String = ""
+    private var distId = -1
+    private lateinit var distList: ArrayList<DataBean>
 
     fun setListeners() {
         btnSubmit.setOnClickListener {
@@ -55,7 +78,13 @@ class SignupActivity : AppCompatActivity(), SignupView {
                 path
             )
 
-            signupPresenter.checkValidations(signupReq)
+            if (isInternetAvailable()) {
+                showProgress()
+                signupPresenter.checkValidations(signupReq)
+            } else {
+                Utilities.showMessage(this, getString(R.string.no_internet_connection))
+            }
+
 
         }
 
@@ -68,6 +97,58 @@ class SignupActivity : AppCompatActivity(), SignupView {
                 galleryIntent()
         }
 
+    }
+
+    override fun fetchDistList(responseObject: DistResponse) {
+        dismissProgress()
+
+        setListeners()
+
+        distList = responseObject.data
+
+        val distValueList = ArrayList<String>()
+        for (dist in distList) {
+            distValueList.add(dist.name)
+        }
+
+        val distArray = distValueList.toArray(arrayOfNulls<String>(distValueList.size))
+
+        // Initializing an ArrayAdapter
+        val adapter = ArrayAdapter(
+            this@SignupActivity, // Context
+            android.R.layout.simple_spinner_item, // Layout
+            distArray // Array
+        )
+
+        // Set the drop down view resource
+        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+
+        // Finally, data bind the spinner object with dapter
+        spDist.adapter = adapter
+
+        // Set an on item selected listener for spinner object
+        spDist.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                // Display the selected item text on text view
+                "Spinner selected : ${parent.getItemAtPosition(position)}"
+
+                for (dist in distList) {
+                    if (parent.getItemAtPosition(position).equals(dist.name)) {
+                        distId = (dist.id).toInt()
+                        break
+                    }
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Another interface callback
+            }
+        }
     }
 
     private fun galleryIntent() {
@@ -123,28 +204,26 @@ class SignupActivity : AppCompatActivity(), SignupView {
 
     }
 
-
     override fun onValidationSuccess(signupRequest: SignupRequest) {
-        // dismissProgress()
-        /*  if (isInternetAvailable()) {
-              showProgress()*/
+        dismissProgress()
 
-
-        signupPresenter.saveSignUpDetails(signupRequest)
-        /* } else {
-             Utilities.showMessage(this, getString(R.string.no_internet_connection))
-         }*/
+        if (isInternetAvailable()) {
+            showProgress()
+            signupPresenter.saveSignUpDetails(signupRequest)
+        } else {
+            Utilities.showMessage(this, getString(R.string.no_internet_connection))
+        }
     }
 
     override fun showResponse(response: SignupResponse) {
-        // dismissProgress()
+        dismissProgress()
         Utilities.showMessage(this, response.message)
         // startActivity(Intent(this,))
         finish()
     }
 
     override fun showServerError(error: String) {
-        //dismissProgress()
+        dismissProgress()
         Utilities.showMessage(this, error)
     }
 }

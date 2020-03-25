@@ -1,11 +1,19 @@
 package com.ngo.ui.signup.presenter
 
 import com.ngo.pojo.request.SignupRequest
+import com.ngo.pojo.response.DistResponse
 import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.signup.model.SignupModel
 import com.ngo.ui.signup.view.SignupView
 
 class SignupPresenterImplClass(private var signupView: SignupView) : SignupPresenter {
+    override fun fetchDistList(responseObject: DistResponse) {
+        signupView.fetchDistList(responseObject)
+    }
+
+    override fun getDist() {
+        signupModel.getDist()
+    }
 
     override fun saveSignUpDetails(signupRequest: SignupRequest) {
         signupModel.userRegisteration(signupRequest) //hit register api in model class
@@ -32,4 +40,7 @@ class SignupPresenterImplClass(private var signupView: SignupView) : SignupPrese
     override fun onSaveDetailsFailed(error: String) {
         signupView.showServerError(error)
     }
+
+
+
 }
