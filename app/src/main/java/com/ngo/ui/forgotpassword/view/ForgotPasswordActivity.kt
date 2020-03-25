@@ -8,10 +8,10 @@ import android.widget.Toast
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
-import com.ngo.ui.changepassword.view.ChangePasswordActivity
+import com.ngo.ui.OtpVerification.view.OtpVerificationActivity
 import kotlinx.android.synthetic.main.activity_forgot_password.*
-import kotlinx.android.synthetic.main.activity_login_activity.*
 import kotlinx.android.synthetic.main.activity_public.toolbarLayout
+
 
 class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
 
@@ -41,9 +41,10 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
                     Toast.makeText(this, "Please enter mobile number", Toast.LENGTH_SHORT).show()
                 } else if (edit_mobile_number.text.toString().length != 10) {
                     Toast.makeText(this, "Please enter valid mobile number", Toast.LENGTH_SHORT).show()
-                }else{
-                    //validate mobile number and send OTP
-                    var intent = Intent(this, ChangePasswordActivity::class.java)
+                } else {
+                    val mobile: String = edit_mobile_number.getText().toString().trim()
+                    var intent = Intent(this, OtpVerificationActivity::class.java)
+                    intent.putExtra("mobile", mobile);
                     startActivity(intent)
                 }
             }

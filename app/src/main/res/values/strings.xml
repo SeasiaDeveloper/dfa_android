@@ -63,4 +63,9 @@
     <!-- new password screen-->
     <string name="change_password">Change password</string>
     <string name="enter_new_password">Enter New Password</string>
+
+    <!--Otp Verification-->
+    <string name="otp_verification">OTP Verification</string>
+    <string name="please_enter_confirmation_code">Please Enter Confirmation Code</string>
+    <string name="enter_verification_code">Enter Verification Code</string>
 </resources>
