@@ -6,7 +6,6 @@ import com.ngo.pojo.response.LoginResponse
 
 interface ChangePasswordView : BaseView {
     fun onEmptyPassword()
-    fun showError(error: String)
     fun onChangePasswordFailure(error: String)
     fun onChangePasswordSuccess(changePasswordResponse: ChangePasswordResponse)
 }

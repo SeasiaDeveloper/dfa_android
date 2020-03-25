@@ -24,6 +24,7 @@ import kotlinx.android.synthetic.main.change_password_layout.toolbarLayout
 
 class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePasswordView {
     private var presenter: ChangePasswordPresenter = ChangePasswordPresenterImpl(this)
+    private lateinit var userId: String
 
     override fun getLayout(): Int {
         return R.layout.change_password_layout
@@ -33,6 +34,8 @@ class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePassw
         (toolbarLayout as CenteredToolbar).title = getString(R.string.change_password)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
         setListeners()
+        val intent = intent
+        userId = intent.getStringExtra("userId")
     }
 
     fun setListeners() {
@@ -59,7 +62,7 @@ class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePassw
                         val request = ChangePasswordRequest(
                             new_password.text.toString(),
                             confirm_password.text.toString(),
-                            "13"
+                            userId
                         )
                         presenter.hitChangePasswordApi(request)
                     } else {
@@ -72,12 +75,6 @@ class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePassw
 
     override fun onEmptyPassword() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun showError(error: String) {
-        dismissProgress()
-        Toast.makeText(this, error, Toast.LENGTH_SHORT)
-            .show()
     }
 
     override fun onChangePasswordFailure(error: String) {
@@ -97,6 +94,8 @@ class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePassw
     }
 
     override fun showServerError(error: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        dismissProgress()
+        Toast.makeText(this, error, Toast.LENGTH_SHORT)
+            .show()
     }
 }

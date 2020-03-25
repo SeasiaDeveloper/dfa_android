@@ -12,5 +12,5 @@ interface PublicComplaintPresenter:BasePresenter {
     fun checkValidations(level:Int,image:String,description:String)
     fun onSaveDetailsSuccess(response: ComplaintResponse)
     fun onSaveDetailsFailed(error: String)
-    fun saveDetailsRequest(request: ComplaintRequest)
+    fun saveDetailsRequest(token:String?,request: ComplaintRequest)
 }

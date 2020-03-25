@@ -10,9 +10,11 @@ import com.ngo.customviews.CenteredToolbar
 import com.ngo.pojo.request.LoginRequest
 import com.ngo.pojo.response.LoginResponse
 import com.ngo.ui.forgotpassword.view.ForgotPasswordActivity
+import com.ngo.ui.generalpublic.GeneralPublicActivity
 import com.ngo.ui.home.HomeActivity
 import com.ngo.ui.login.presenter.LoginActivityPresenterImpl
 import com.ngo.ui.login.presenter.LoginPresenter
+import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_login_activity.*
 import kotlinx.android.synthetic.main.activity_public.toolbarLayout
@@ -51,7 +53,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
                 //open sign up screen
             }
             R.id.forgot_password -> {
-                var intent = Intent(this, ForgotPasswordActivity::class.java)
+                val intent = Intent(this, ForgotPasswordActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -99,12 +101,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
         }
     }
 
-    override fun showError(error: String) {
-        dismissProgress()
-        Toast.makeText(this@LoginActivity, error, Toast.LENGTH_SHORT)
-            .show()
-    }
-
     override fun onLoginFailure(error: String) {
         dismissProgress()
         Toast.makeText(this@LoginActivity, error, Toast.LENGTH_SHORT)
@@ -113,16 +109,16 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
 
     override fun onLoginSuccess(loginResponse: LoginResponse) {
         dismissProgress()
-        if (loginResponse != null) {
-            Toast.makeText(this@LoginActivity, "Login Success", Toast.LENGTH_SHORT)
-                .show()
-        }
+        PreferenceHandler.writeString(this, PreferenceHandler.AUTHORIZATION,"Bearer "+loginResponse.token)
+        Toast.makeText(this@LoginActivity, "Login Success", Toast.LENGTH_SHORT).show()
         finish()
-        var intent = Intent(this, HomeActivity::class.java)
+        val intent = Intent(this,HomeActivity::class.java) //GeneralPublicActivity
         startActivity(intent)
     }
 
     override fun showServerError(error: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        dismissProgress()
+        Toast.makeText(this@LoginActivity, error, Toast.LENGTH_SHORT)
+            .show()
     }
 }

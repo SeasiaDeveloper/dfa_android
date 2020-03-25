@@ -1,6 +1,7 @@
 package com.ngo.apis
 
 import com.ngo.pojo.request.ChangePasswordRequest
+import com.ngo.pojo.request.VerifyUserRequest
 import com.ngo.pojo.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -9,17 +10,22 @@ import retrofit2.http.*
 
 interface CallRetrofitApi {
 
+
     @Multipart
+    @POST("v1/report_crime")
+    fun addComplaint(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>, @Part images: Array<MultipartBody.Part?>): Call<ComplaintResponse>
+
+    /*@Multipart
     @POST("v1/lodgeComplaint")
-    fun addComplaint(@PartMap params: HashMap<String,RequestBody>, @Part licenseImg: MultipartBody.Part): Call<ComplaintResponse>
+    fun addComplaint(@PartMap params: HashMap<String,RequestBody>, @Part licenseImg: MultipartBody.Part): Call<ComplaintResponse>*/
 
     @Multipart
     @POST("v1/forwardComplaint")
-    fun addNGOData(@PartMap params: HashMap<String,RequestBody>): Call<NGOResponse>
+    fun addNGOData(@PartMap params: HashMap<String, RequestBody>): Call<NGOResponse>
 
     @Multipart
     @POST("v1/updateComplaint")
-    fun savePoliceStatus(@PartMap params: HashMap<String,RequestBody>): Call<PoliceStatusResponse>
+    fun savePoliceStatus(@PartMap params: HashMap<String, RequestBody>): Call<PoliceStatusResponse>
 
     @GET("v1/showallforwards")
     fun getNgoDetailsForPolice(): Call<GetPoliceFormData>
@@ -32,8 +38,11 @@ interface CallRetrofitApi {
 
     @Multipart
     @POST("v1/token")
-    fun login(@PartMap params: HashMap<String,RequestBody>): Call<LoginResponse>
+    fun login(@PartMap params: HashMap<String, RequestBody>): Call<LoginResponse>
 
     @POST("v2/user/change-password")
     fun changePassword(@Body changePasswordRequest: ChangePasswordRequest): Call<ChangePasswordResponse>
+
+    @POST("v2/user/validate-byphone")
+    fun verifyUser(@Body verifyUserRequest: VerifyUserRequest): Call<VerifyUserResponse>
 }

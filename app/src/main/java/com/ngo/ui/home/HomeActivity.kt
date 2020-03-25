@@ -9,6 +9,7 @@ import com.ngo.R
 import com.ngo.base.BaseActivity
 import kotlinx.android.synthetic.main.home_activity.*
 
+
 class HomeActivity : BaseActivity() {
     private var mDrawerLayout: DrawerLayout? = null
     private var mToggle: ActionBarDrawerToggle? = null

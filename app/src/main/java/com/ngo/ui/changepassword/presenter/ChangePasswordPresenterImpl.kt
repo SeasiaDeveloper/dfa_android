@@ -29,7 +29,7 @@ class ChangePasswordPresenterImpl(private var changePasswordView: ChangePassword
     }
 
     override fun showError(error: String) {
-        changePasswordView.showError(error)
+        changePasswordView.showServerError(error)
     }
 
 }

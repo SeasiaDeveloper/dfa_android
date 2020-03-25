@@ -20,10 +20,6 @@ class ChangePasswordModel(private var changePasswordPresenter: ChangePasswordPre
 
     fun changePasswordApi(changePasswordRequest: ChangePasswordRequest) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
-       /* val map = HashMap<String, RequestBody>()
-        map["password"] = toRequestBody(changePasswordRequest.password)
-        map["confirm_password"] = toRequestBody(changePasswordRequest.confirm_password)
-        map["user_id"] = toRequestBody(changePasswordRequest.user_id)*/
         retrofitApi.changePassword(changePasswordRequest).enqueue(object :
             Callback<ChangePasswordResponse> {
             override fun onFailure(call: Call<ChangePasswordResponse>, t: Throwable) {
@@ -39,7 +35,7 @@ class ChangePasswordModel(private var changePasswordPresenter: ChangePasswordPre
                     if (responseObject.code == 200) {
                         changePasswordPresenter.onPasswordChangeSuccess(responseObject)
                     } else {
-                        changePasswordPresenter.showError(Constants.SERVER_ERROR)
+                        changePasswordPresenter.showError(response.body()?.message ?: Constants.SERVER_ERROR)
                     }
                 } else {
                     changePasswordPresenter.showError(Constants.SERVER_ERROR)
