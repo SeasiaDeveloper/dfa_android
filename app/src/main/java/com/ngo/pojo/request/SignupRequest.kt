@@ -13,5 +13,6 @@ class SignupRequest(
     val pin_code: String,
     val mobile: String,
     val adhar_number: String,
-    val profile_pic:String
+    val profile_pic:String,
+    val confirmPass:String
 )

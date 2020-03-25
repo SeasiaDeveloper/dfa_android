@@ -10,4 +10,20 @@ interface SignupView :BaseView {
     fun showResponse(response: SignupResponse)
     fun fetchDistList(responseObject: DistResponse)
 
+    //validations:-
+    fun usernameEmptyValidation()
+    fun usernameValidationFailure()
+    fun firstNameValidationFailure()
+    fun lastNameValidationFailure()
+    fun Address1ValidationFailure()
+    fun pinCodeValidationFailure()
+    fun mobileValidationFailure()
+    fun adhaarNoValidationFailure()
+    fun emailValidationFailure()
+    fun passwordEmptyValidation()
+    fun passwordLengthValidation()
+    fun confirmPasswordEmptyValidation()
+    fun confirmPasswordLengthValidation()
+    fun confirmPasswordMismatchValidation()
+
 }

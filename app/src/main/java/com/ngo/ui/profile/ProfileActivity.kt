@@ -110,7 +110,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
                 etPinCode.text.toString(),
                 etMobile2.text.toString(),
                 etAdharNo.text.toString(),
-                path
+                path,""
             )
 
             if (isInternetAvailable()) {

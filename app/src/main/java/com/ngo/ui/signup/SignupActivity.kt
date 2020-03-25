@@ -36,6 +36,7 @@ import kotlinx.android.synthetic.main.activity_public.*
 import kotlinx.android.synthetic.main.activity_signup.btnSubmit
 
 class SignupActivity : BaseActivity(), SignupView {
+
     override fun getLayout(): Int {
         return R.layout.activity_signup
     }
@@ -77,7 +78,7 @@ class SignupActivity : BaseActivity(), SignupView {
                 etPinCode.text.toString(),
                 etMobile2.text.toString(),
                 etAdharNo.text.toString(),
-                path
+                path, etConfirmPassword.text.toString()
             )
 
             if (isInternetAvailable()) {
@@ -227,8 +228,81 @@ class SignupActivity : BaseActivity(), SignupView {
             startActivity(intent)
         }
     }
+
     override fun showServerError(error: String) {
         dismissProgress()
         Utilities.showMessage(this, error)
+    }
+
+
+    //validations:-
+    override fun usernameEmptyValidation() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.fill_mobile))
+    }
+
+    override fun usernameValidationFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.valid_mobile_number))
+    }
+
+    override fun firstNameValidationFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.valid_first_name))
+    }
+
+    override fun lastNameValidationFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.valid_last_name))
+    }
+
+    override fun Address1ValidationFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.valid_address_1))
+    }
+
+    override fun pinCodeValidationFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.valid_pin_code))
+    }
+
+    override fun mobileValidationFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.valid_mobile))
+    }
+
+    override fun adhaarNoValidationFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.valid_adhar))
+    }
+
+    override fun emailValidationFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.valid_email))
+    }
+
+    override fun passwordEmptyValidation() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.password_empty))
+    }
+
+    override fun passwordLengthValidation() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.pass_length))
+    }
+
+    override fun confirmPasswordEmptyValidation() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.confirm_pass_empty))
+    }
+
+    override fun confirmPasswordLengthValidation() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.confirm_pass_length))
+    }
+
+    override fun confirmPasswordMismatchValidation() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.confirm_pass_mismatch_pass))
     }
 }
