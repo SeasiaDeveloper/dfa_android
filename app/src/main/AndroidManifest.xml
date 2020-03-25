@@ -23,7 +23,7 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -37,9 +37,6 @@
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>
         <activity android:name="com.ngo.ui.ngoform.NGOFormDetailActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.ngo.view.NGOActivity"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.ngo.NGOActivity" />
@@ -69,6 +66,9 @@
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.signup.SignupActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
 
         <provider
             android:name="androidx.core.content.FileProvider"

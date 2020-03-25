@@ -30,6 +30,10 @@ interface CallRetrofitApi {
     fun getPoliceForm(@Query("id") id: Int): Call<GetPoliceFormResponse>
 
     @Multipart
-    @POST("v1/token")
+    @POST("jwt-auth/v1/token")
     fun login(@PartMap params: HashMap<String,RequestBody>): Call<LoginResponse>
+
+    @Multipart
+    @POST("wp/v2/user/register")
+    fun registerUser(@PartMap params: HashMap<String,RequestBody>, @Part profile_pic: MultipartBody.Part): Call<SignupResponse>
 }
