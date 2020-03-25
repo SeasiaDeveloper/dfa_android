@@ -30,6 +30,8 @@ import kotlin.collections.ArrayList
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.ngo.ui.OtpVerification.view.OtpVerificationActivity
+import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.activity_public.*
 import kotlinx.android.synthetic.main.activity_signup.btnSubmit
 
@@ -218,10 +220,13 @@ class SignupActivity : BaseActivity(), SignupView {
     override fun showResponse(response: SignupResponse) {
         dismissProgress()
         Utilities.showMessage(this, response.message)
-        // startActivity(Intent(this,))
-        finish()
+        val mobile: String = response.data.mobile
+        if (!mobile.isNullOrEmpty()) {
+            var intent = Intent(this, OtpVerificationActivity::class.java)
+            intent.putExtra("mobile", mobile)
+            startActivity(intent)
+        }
     }
-
     override fun showServerError(error: String) {
         dismissProgress()
         Utilities.showMessage(this, error)

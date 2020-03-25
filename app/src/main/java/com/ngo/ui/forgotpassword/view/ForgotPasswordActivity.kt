@@ -44,7 +44,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
                 } else {
                     val mobile: String = edit_mobile_number.getText().toString().trim()
                     var intent = Intent(this, OtpVerificationActivity::class.java)
-                    intent.putExtra("mobile", mobile);
+                    intent.putExtra("mobile", mobile)
                     startActivity(intent)
                 }
             }

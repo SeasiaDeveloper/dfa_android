@@ -16,6 +16,7 @@ import com.ngo.customviews.CenteredToolbar
 import com.ngo.ui.OtpVerification.presenter.OtpVerificationImpl
 import com.ngo.ui.OtpVerification.presenter.OtpVerificationPresenter
 import com.ngo.ui.changepassword.view.ChangePasswordActivity
+import com.ngo.ui.login.view.LoginActivity
 import kotlinx.android.synthetic.main.activity_forgot_password.toolbarLayout
 import kotlinx.android.synthetic.main.activity_otp_verification.*
 import java.util.concurrent.TimeUnit
@@ -97,7 +98,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
             OnCompleteListener<AuthResult?> { task ->
                 if (task.isSuccessful) {
                     //verification successful we will start the Change Password activity
-                    val intent = Intent(this, ChangePasswordActivity::class.java)
+                    val intent = Intent(this, LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 } else {
