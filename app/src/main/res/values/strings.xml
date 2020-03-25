@@ -82,4 +82,9 @@
     <string name="verified">Verified</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="signup">SignUp</string>
+
+    <!--Otp Verification-->
+    <string name="otp_verification">OTP Verification</string>
+    <string name="please_enter_confirmation_code">Please Enter Confirmation Code</string>
+    <string name="enter_verification_code">Enter Verification Code</string>
 </resources>

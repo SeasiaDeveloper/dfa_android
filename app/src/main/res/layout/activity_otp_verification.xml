@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/OtpVerificationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbarLayout"
+            layout="@layout/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:gravity="center"
+                android:text="@string/please_enter_confirmation_code"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/_16ssp"
+                app:font="@{`bold`}" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/et_otp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:background="@drawable/squarebg"
+                android:ems="10"
+                android:gravity="start"
+                android:hint="@string/enter_verification_code"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:maxLength="500"
+                android:maxLines="1"
+                android:minLines="1"
+                android:padding="@dimen/_7sdp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnOtpSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_30sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:background="@drawable/button_bg"
+                android:gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:text="Submit"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp"
+                app:font="@{`regular`}" />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>
