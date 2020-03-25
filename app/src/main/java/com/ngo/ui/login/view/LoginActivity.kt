@@ -15,6 +15,7 @@ import com.ngo.ui.home.HomeActivity
 import com.ngo.ui.login.presenter.LoginActivityPresenterImpl
 import com.ngo.ui.login.presenter.LoginPresenter
 import com.ngo.utils.PreferenceHandler
+import com.ngo.ui.signup.SignupActivity
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_login_activity.*
 import kotlinx.android.synthetic.main.activity_public.toolbarLayout
@@ -35,6 +36,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
     private fun setListeners() {
         btnLogin.setOnClickListener(this)
         forgot_password.setOnClickListener(this)
+
+        btnSignUp.setOnClickListener(this)
     }
 
     override fun handleKeyboard(): View {
@@ -50,7 +53,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
                 )
             }
             R.id.btnSignUp -> {
-                //open sign up screen
+                startActivity(Intent(this, SignupActivity::class.java))
             }
             R.id.forgot_password -> {
                 val intent = Intent(this, ForgotPasswordActivity::class.java)

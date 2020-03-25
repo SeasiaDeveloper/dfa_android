@@ -21,11 +21,11 @@ interface CallRetrofitApi {
 
     @Multipart
     @POST("v1/forwardComplaint")
-    fun addNGOData(@PartMap params: HashMap<String, RequestBody>): Call<NGOResponse>
+    fun addNGOData(@PartMap params: HashMap<String,RequestBody>): Call<NGOResponse>
 
     @Multipart
     @POST("v1/updateComplaint")
-    fun savePoliceStatus(@PartMap params: HashMap<String, RequestBody>): Call<PoliceStatusResponse>
+    fun savePoliceStatus(@PartMap params: HashMap<String,RequestBody>): Call<PoliceStatusResponse>
 
     @GET("v1/showallforwards")
     fun getNgoDetailsForPolice(): Call<GetPoliceFormData>
@@ -45,4 +45,11 @@ interface CallRetrofitApi {
 
     @POST("v2/user/validate-byphone")
     fun verifyUser(@Body verifyUserRequest: VerifyUserRequest): Call<VerifyUserResponse>
+
+    @Multipart
+    @POST("wp/v2/user/register")
+    fun registerUser(@PartMap params: HashMap<String,RequestBody>, @Part profile_pic: MultipartBody.Part): Call<SignupResponse>
+
+    @GET("wp/v2/districts")
+    fun getDist(): Call<DistResponse>
 }
