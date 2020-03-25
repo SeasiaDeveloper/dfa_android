@@ -43,7 +43,7 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
        * hit api to save the complaints
        * */
     fun complaintsRequest(token: String?, complaintsRequest: ComplaintRequest) {
-        val retrofitApi = ApiClient.getClientLogin().create(CallRetrofitApi::class.java)
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["crime_type_id"] = toRequestBody("1") //complaintsRequest.crime
         map["urgency"] = toRequestBody(complaintsRequest.level.toString())

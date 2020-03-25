@@ -12,7 +12,7 @@ interface CallRetrofitApi {
 
 
     @Multipart
-    @POST("v1/report_crime")
+    @POST("jwt-auth/v1/report_crime")
     fun addComplaint(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>, @Part images: Array<MultipartBody.Part?>): Call<ComplaintResponse>
 
     /*@Multipart
@@ -37,13 +37,13 @@ interface CallRetrofitApi {
     fun getPoliceForm(@Query("id") id: Int): Call<GetPoliceFormResponse>
 
     @Multipart
-    @POST("v1/token")
+    @POST("jwt-auth/v1/token")
     fun login(@PartMap params: HashMap<String, RequestBody>): Call<LoginResponse>
 
-    @POST("v2/user/change-password")
+    @POST("wp/v2/user/change-password")
     fun changePassword(@Body changePasswordRequest: ChangePasswordRequest): Call<ChangePasswordResponse>
 
-    @POST("v2/user/validate-byphone")
+    @POST("wp/v2/user/validate-byphone")
     fun verifyUser(@Body verifyUserRequest: VerifyUserRequest): Call<VerifyUserResponse>
 
     @Multipart

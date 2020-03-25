@@ -20,7 +20,7 @@ class LoginModel(private var loginPresenter: LoginPresenter) {
     }
 
     fun hitLoginWebService(loginrequest: LoginRequest) {
-        val retrofitApi = ApiClient.getClientLogin().create(CallRetrofitApi::class.java)
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["username"] = toRequestBody(loginrequest.username)
         map["password"] = toRequestBody(loginrequest.password) // val profileImg = MultipartBody.Part.createFormData("image", "image", RequestBody.create(MediaType.parse(imgMediaType), complaintsRequest.image))
