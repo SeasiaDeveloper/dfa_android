@@ -10,11 +10,9 @@ import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.ui.changepassword.view.ChangePasswordActivity
 import kotlinx.android.synthetic.main.activity_forgot_password.*
-import kotlinx.android.synthetic.main.activity_login_activity.*
 import kotlinx.android.synthetic.main.activity_public.toolbarLayout
 
 class ForgotPasswordActivity : BaseActivity(), View.OnClickListener {
-
 
     override fun getLayout(): Int {
         return R.layout.activity_forgot_password

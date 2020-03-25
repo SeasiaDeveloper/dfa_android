@@ -1,5 +1,6 @@
 package com.ngo.apis
 
+import com.ngo.pojo.request.ChangePasswordRequest
 import com.ngo.pojo.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -32,4 +33,7 @@ interface CallRetrofitApi {
     @Multipart
     @POST("v1/token")
     fun login(@PartMap params: HashMap<String,RequestBody>): Call<LoginResponse>
+
+    @POST("v2/user/change-password")
+    fun changePassword(@Body changePasswordRequest: ChangePasswordRequest): Call<ChangePasswordResponse>
 }

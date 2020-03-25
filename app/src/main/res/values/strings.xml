@@ -63,4 +63,9 @@
     <!-- new password screen-->
     <string name="change_password">Change password</string>
     <string name="enter_new_password">Enter New Password</string>
+    <string name="confirm_password">Confirm Password</string>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
 </resources>

@@ -10,6 +10,7 @@ import com.ngo.customviews.CenteredToolbar
 import com.ngo.pojo.request.LoginRequest
 import com.ngo.pojo.response.LoginResponse
 import com.ngo.ui.forgotpassword.view.ForgotPasswordActivity
+import com.ngo.ui.home.HomeActivity
 import com.ngo.ui.login.presenter.LoginActivityPresenterImpl
 import com.ngo.ui.login.presenter.LoginPresenter
 import com.ngo.utils.Utilities
@@ -116,6 +117,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
             Toast.makeText(this@LoginActivity, "Login Success", Toast.LENGTH_SHORT)
                 .show()
         }
+        finish()
+        var intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
     }
 
     override fun showServerError(error: String) {

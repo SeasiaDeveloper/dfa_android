@@ -53,7 +53,7 @@
         android:id="@+id/forgot_password"
         android:layout_width="wrap_content"
         android:text="@string/forgot_password"
-        android:textSize="@dimen/_16ssp"
+        android:textSize="@dimen/_15ssp"
         app:font="@{`bold`}"
         android:layout_marginTop="@dimen/_20sdp"
         android:layout_marginStart="@dimen/_10sdp"
@@ -78,7 +78,7 @@
     <TextView
         android:layout_width="match_parent"
         android:text="@string/dont_have_an_account_yet"
-        android:textSize="@dimen/_16ssp"
+        android:textSize="@dimen/_15ssp"
         app:font="@{`bold`}"
         android:gravity="center"
         android:layout_marginTop="@dimen/_20sdp"

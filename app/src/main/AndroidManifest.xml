@@ -69,6 +69,10 @@
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.home.HomeActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
+
 
         <provider
             android:name="androidx.core.content.FileProvider"
