@@ -68,4 +68,8 @@
     <string name="open">Open</string>
     <string name="close">Close</string>
 
+    <!--Otp Verification-->
+    <string name="otp_verification">OTP Verification</string>
+    <string name="please_enter_confirmation_code">Please Enter Confirmation Code</string>
+    <string name="enter_verification_code">Enter Verification Code</string>
 </resources>
