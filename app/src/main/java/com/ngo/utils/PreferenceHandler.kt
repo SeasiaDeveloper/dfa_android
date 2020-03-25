@@ -9,6 +9,7 @@ object PreferenceHandler {
     const val DEVICE_ID = "device_id"
     const val LAT = "lat"
     const val LNG = "lng"
+    const val AUTHORIZATION = "authorization"
     const val DEVICE_TOKEN = "token"
 
     fun writeBoolean(context: Context, key: String, value: Boolean) {

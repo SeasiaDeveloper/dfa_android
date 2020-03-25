@@ -1,7 +1,6 @@
 package com.ngo.ui.generalpublic
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -18,7 +17,6 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import androidx.appcompat.app.AlertDialog
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.ngo.R
@@ -31,8 +29,6 @@ import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenterImpl
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeActivity
 import com.ngo.ui.generalpublic.view.PublicComplaintView
 import com.ngo.utils.Constants.GPS_REQUEST
-import com.ngo.utils.Constants.LOCATION_REFRESH_DISTANCE
-import com.ngo.utils.Constants.LOCATION_REFRESH_TIME
 import com.ngo.utils.GpsUtils
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
@@ -46,13 +42,11 @@ import kotlinx.android.synthetic.main.activity_public.spTypesOfCrime
 import kotlinx.android.synthetic.main.activity_public.toolbarLayout
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.lang.Integer.parseInt
-
+import java.util.*
+import kotlin.collections.ArrayList
 
 class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChangedListener,
     PublicComplaintView {
-
-
     private lateinit var file: File
     private  var longitude: String=""
     private  var lattitude: String=""
@@ -60,6 +54,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private lateinit var locationManager: LocationManager
     private var crimeType: String = ""
     private var path: String=""
+    private var pathOfImages=ArrayList<String>()
     private val REQUEST_CAMERA = 0
     private var IMAGE_MULTIPLE = 1
     private var userChoosenTask: String? = null
@@ -283,6 +278,7 @@ private var  range=1
                 if (cursor!!.moveToFirst())
                 {
                     path = cursor.getString(columnIndex!!)
+                    pathOfImages.add(path)
                 }
                 cursor.close()
                 imgView.visibility = View.VISIBLE
@@ -318,6 +314,7 @@ private var  range=1
                 cursor.moveToFirst()
                 val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
                 path = cursor.getString(idx)
+                pathOfImages.add(path)
                 cursor.close()
             }
         }
@@ -358,24 +355,28 @@ private var  range=1
 
     override fun onValidationSuccess() {
         dismissProgress()
+
+        val array = arrayOfNulls<String>(pathOfImages.size)
+
         if (isInternetAvailable()) {
             showProgress()
             var name ="Nabam Serbang"
             var contact="911234567890"
             var email ="nabam@gmail.com"
             val request = ComplaintRequest(
-               name,
-                contact,
-                email,
+               //name,
+               // contact,
+                //email,
                 crimeType,
                 range,
-                path,
+                pathOfImages.toArray(array),
                 etDescription.text.toString().trim(),
-                "",
+                //"",
                 lattitude,
                 longitude
             )
-            complaintsPresenter.saveDetailsRequest(request)
+            val authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
+            complaintsPresenter.saveDetailsRequest(authorizationToken,request)
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }

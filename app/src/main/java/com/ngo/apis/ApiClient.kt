@@ -1,6 +1,5 @@
 package com.ngo.apis
 
-import android.content.Context
 import com.ngo.utils.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -11,11 +10,12 @@ import java.util.concurrent.TimeUnit
 
 
 object ApiClient {
+
     fun getClient(): Retrofit {
         val builder = OkHttpClient.Builder().readTimeout(45, TimeUnit.SECONDS).connectTimeout(45, TimeUnit.SECONDS).addInterceptor { chain ->
             val builder = chain.request().newBuilder()
             val build = builder.addHeader("Content-Type", "application/json")
-               .build()
+                .build()
             chain.proceed(build)
         }
 

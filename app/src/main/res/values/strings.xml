@@ -64,6 +64,9 @@
     <string name="change_password">Change password</string>
     <string name="enter_new_password">Enter New Password</string>
 
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+
 
     <string name="cancel">Cancel</string>
     <string name="enter_adhar_no_here">Enter Adhar no here</string>
