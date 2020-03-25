@@ -1,10 +1,11 @@
 package com.ngo.ui.login.presenter
 
+import com.ngo.pojo.request.LoginRequest
 import com.ngo.pojo.response.LoginResponse
 import com.ngo.ui.login.model.LoginModel
 import com.ngo.ui.login.view.LoginView
 
-class LoginActivityPresenterImpl(private var loginView: LoginView) :
+class LoginActivityPresenterImpl(private var loginView: LoginView):
     LoginPresenter {
     private var loginModel: LoginModel = LoginModel(this)
     override fun onEmptyPassword() {
@@ -15,13 +16,21 @@ class LoginActivityPresenterImpl(private var loginView: LoginView) :
         loginView.onInvalidEmailId()
     }
 
+    override fun onInvalidNumber() {
+        loginView.onInvalidNumber()
+    }
+
     override fun onEmptyEmailId() {
         loginView.onEmptyEmailId()
     }
 
 
     override fun onValidationSuccess() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+       loginView.validationSuccess()
+    }
+
+    override fun hitLoginWebService(loginRequest: LoginRequest) {
+        loginModel.hitLoginWebService(loginRequest)
     }
 
     override fun checkValidations(emailId: String, password: String) {

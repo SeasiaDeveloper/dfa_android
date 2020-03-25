@@ -61,6 +61,14 @@
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.forgotpassword.view.ForgotPasswordActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.changepassword.view.ChangePasswordActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
+
 
         <provider
             android:name="androidx.core.content.FileProvider"

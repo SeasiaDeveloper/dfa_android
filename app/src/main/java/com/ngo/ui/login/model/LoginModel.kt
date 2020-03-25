@@ -19,7 +19,7 @@ class LoginModel(private var loginPresenter: LoginPresenter) {
         return RequestBody.create(MediaType.parse("application/json"), value)
     }
 
-    fun fetchCompalints(loginrequest: LoginRequest) {
+    fun hitLoginWebService(loginrequest: LoginRequest) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["username"] = toRequestBody(loginrequest.username)
@@ -49,14 +49,14 @@ class LoginModel(private var loginPresenter: LoginPresenter) {
     fun checkValidations(emailId: String, password: String) {
         if (TextUtils.isEmpty(emailId)) {
             loginPresenter.onEmptyEmailId()
+        } else if (TextUtils.isDigitsOnly(emailId) && emailId.length != 10) {
+            loginPresenter.onInvalidNumber()
+        } else if (!TextUtils.isDigitsOnly(emailId) && !isValidEmail(emailId)) {
+            loginPresenter.onInvalidEmail()
         } else if (TextUtils.isEmpty(password)) {
             loginPresenter.onEmptyPassword()
         } else {
-            val request = LoginRequest(
-                emailId,
-                password
-            )
-            fetchCompalints(request)
+            loginPresenter.onValidationSuccess()
         }
     }
 

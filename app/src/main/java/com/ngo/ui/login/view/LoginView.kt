@@ -7,6 +7,8 @@ interface LoginView : BaseView {
     fun onEmptyEmailId()
     fun onInvalidEmailId()
     fun onEmptyPassword()
+    fun onInvalidNumber()
+    fun validationSuccess()
     fun showError(error:String)
     fun onLoginFailure(error:String)
     fun onLoginSuccess(loginResponse: LoginResponse)
