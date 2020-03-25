@@ -87,4 +87,17 @@
     <string name="otp_verification">OTP Verification</string>
     <string name="please_enter_confirmation_code">Please Enter Confirmation Code</string>
     <string name="enter_verification_code">Enter Verification Code</string>
+
+
+    <!--Signup and Profile validations-->
+    <string name="edit_profile">Edit Profile</string>
+    <string name="fill_mobile">Please fill in the mobile no</string>
+    <string name="valid_mobile_number">Please fill in valid mobile</string>
+    <string name="valid_email">Please fill in a valid email id</string>
+    <string name="valid_adhar">Please fill in a valid Adhaar number</string>
+    <string name="valid_mobile">Please fill in valid mobile no</string>
+    <string name="valid_pin_code">Please fill in pin code</string>
+    <string name="valid_address_1">Please fill in Address1</string>
+    <string name="valid_last_name">Please fill in last name</string>
+    <string name="valid_first_name">Please fill in first name</string>
 </resources>

@@ -69,7 +69,7 @@ class SignupActivity : BaseActivity(), SignupView {
                 etFirstName.text.toString(),
                 etLastName.text.toString(),
                 etMiddleName.text.toString(),
-                etDist.text.toString(),
+                distId.toString(),
                 etAddress1.text.toString(),
                 etAddress2.text.toString(),
                 etPinCode.text.toString(),

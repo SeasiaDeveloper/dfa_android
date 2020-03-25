@@ -41,6 +41,4 @@ class SignupPresenterImplClass(private var signupView: SignupView) : SignupPrese
         signupView.showServerError(error)
     }
 
-
-
 }

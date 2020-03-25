@@ -40,4 +40,9 @@ interface CallRetrofitApi {
 
     @GET("wp/v2/districts")
     fun getDist(): Call<DistResponse>
+
+    @Multipart
+    @POST("jwt-auth/v1/edit_profile")
+    fun updateProfile(@PartMap params: HashMap<String,RequestBody>, @Part profile_pic: MultipartBody.Part): Call<SignupResponse>
+
 }
