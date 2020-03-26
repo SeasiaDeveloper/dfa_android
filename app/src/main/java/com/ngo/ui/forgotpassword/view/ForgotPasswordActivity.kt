@@ -43,9 +43,11 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
             R.id.btnSubmit -> {
                 if (TextUtils.isEmpty(edit_mobile_number.text.toString())) {
                     Toast.makeText(this, "Please enter mobile number", Toast.LENGTH_SHORT).show()
-                } else {
+                }
+                else {
                     if (isInternetAvailable()) {
                         showProgress()
+                       // var myNewInt: String = edit_mobile_number.text.toString()
                         val request = VerifyUserRequest(
                             edit_mobile_number.text.toString()
                         )

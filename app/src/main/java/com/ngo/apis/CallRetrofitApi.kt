@@ -43,8 +43,9 @@ interface CallRetrofitApi {
     @POST("wp/v2/user/change-password")
     fun changePassword(@Body changePasswordRequest: ChangePasswordRequest): Call<ChangePasswordResponse>
 
+    @Multipart
     @POST("wp/v2/user/validate-byphone")
-    fun verifyUser(@Body verifyUserRequest: VerifyUserRequest): Call<VerifyUserResponse>
+    fun verifyUser(@PartMap params: HashMap<String,RequestBody>): Call<VerifyUserResponse>
 
     @Multipart
     @POST("wp/v2/user/register")

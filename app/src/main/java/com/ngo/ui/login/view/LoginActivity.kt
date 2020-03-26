@@ -115,7 +115,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
         PreferenceHandler.writeString(this, PreferenceHandler.AUTHORIZATION,"Bearer "+loginResponse.token)
         Toast.makeText(this@LoginActivity, "Login Success", Toast.LENGTH_SHORT).show()
         finish()
-        val intent = Intent(this,GeneralPublicActivity::class.java) //GeneralPublicActivity
+        val intent = Intent(this,HomeActivity::class.java) //GeneralPublicActivity
         startActivity(intent)
     }
 

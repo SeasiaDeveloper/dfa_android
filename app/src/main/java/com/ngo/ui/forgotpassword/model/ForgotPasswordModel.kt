@@ -22,7 +22,9 @@ class ForgotPasswordModel(private var forgotPassworPresenter: ForgotPassworPrese
 
     fun hitVerifyUserApi(verifyUserRequest: VerifyUserRequest) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
-        retrofitApi.verifyUser(verifyUserRequest).enqueue(object :
+        val map = HashMap<String, RequestBody>()
+        map["phone_number"] = toRequestBody(verifyUserRequest.phoneNumber)
+        retrofitApi.verifyUser(map).enqueue(object :
             Callback<VerifyUserResponse> {
             override fun onFailure(call: Call<VerifyUserResponse>, t: Throwable) {
                 forgotPassworPresenter.showError(t.message + "")
