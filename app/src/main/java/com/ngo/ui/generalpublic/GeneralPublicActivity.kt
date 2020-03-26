@@ -30,7 +30,7 @@ import com.ngo.pojo.response.ComplaintResponse
 import com.ngo.pojo.response.GetCrimeTypesResponse
 import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenter
 import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenterImpl
-import com.ngo.ui.generalpublic.view.GeneralPublicHomeActivity
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.generalpublic.view.PublicComplaintView
 import com.ngo.utils.Constants.GPS_REQUEST
 import com.ngo.utils.GpsUtils
@@ -520,7 +520,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
     override fun showEmptyLevelError() {
         dismissProgress()
-        Utilities.showMessage(this, getString(R.string.select_urgency_level))
+        Utilities.showMessage(this,getString(R.string.select_urgency_level))
     }
 
     override fun showEmptyDescError() {

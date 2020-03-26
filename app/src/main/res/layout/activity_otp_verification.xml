@@ -63,6 +63,21 @@
                 android:textSize="@dimen/_10ssp"
                 app:font="@{`regular`}" />
 
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/btnOtpResend"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:background="@drawable/button_bg"
+                android:gravity="center"
+                android:padding="@dimen/_10sdp"
+                android:text="Resend"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_10ssp"
+                app:font="@{`regular`}" />
+
         </LinearLayout>
     </LinearLayout>
 </layout>

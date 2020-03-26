@@ -10,6 +10,8 @@ import android.provider.MediaStore
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
@@ -42,6 +44,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
     private var path: String = ""
     private var profilePresenter: ProfilePresenter = ProfilePresenterImplClass(this)
     private var IMAGE_REQ_CODE = 101
+    private lateinit var token: String
 
     override fun fetchDistList(responseObject: DistResponse) {
         dismissProgress()
@@ -95,6 +98,21 @@ class ProfileActivity : BaseActivity(), ProfileView {
         }
     }
 
+
+    private fun getFirebaseToken() {
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    return@OnCompleteListener
+                }
+                // Get new Instance ID token
+                token = task.result?.token.toString()
+
+                // Log and toast
+
+            })
+    }
+
     fun setListeners() {
         btnUpdate.setOnClickListener {
             val signupReq = SignupRequest(
@@ -110,8 +128,8 @@ class ProfileActivity : BaseActivity(), ProfileView {
                 etPinCode.text.toString(),
                 etMobile2.text.toString(),
                 etAdharNo.text.toString(),
-                path,""
-            )
+                path,"",
+                token)
 
             if (isInternetAvailable()) {
                 showProgress()
@@ -206,7 +224,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
     override fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.edit_profile)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-
+         getFirebaseToken()
         if (isInternetAvailable()) {
             showProgress()
             profilePresenter.getDist() //load Districts list

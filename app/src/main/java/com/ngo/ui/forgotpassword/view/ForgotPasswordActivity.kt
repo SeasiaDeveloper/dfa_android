@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.activity_public.toolbarLayout
 
 class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPasswordView {
+    private lateinit var clicked_from: String
     private var presenter: ForgotPassworPresenter = ForgotPasswordPresenterImpl(this)
 
     override fun getLayout(): Int {
@@ -25,8 +26,19 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
     }
 
     override fun setupUI() {
-        (toolbarLayout as CenteredToolbar).title = getString(R.string.forgot_password)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+        val intent = intent
+        clicked_from = intent.getStringExtra("clicked_from")
+        if (clicked_from.equals("signup",ignoreCase = true)) {
+            (toolbarLayout as CenteredToolbar).title = getString(R.string.verify_mobileno)
+            tvTitleDes.setText(R.string.enter_mobileno)
+        } else if (clicked_from.equals("forgotPassword",ignoreCase = true)) {
+            (toolbarLayout as CenteredToolbar).title = getString(R.string.forgot_password)
+            tvTitleDes.setText(R.string.forgot_password_heading)
+        }
+        else {
+            // do something
+        }
         setListeners()
     }
 
@@ -43,18 +55,34 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
             R.id.btnSubmit -> {
                 if (TextUtils.isEmpty(edit_mobile_number.text.toString())) {
                     Toast.makeText(this, "Please enter mobile number", Toast.LENGTH_SHORT).show()
-                }
-                else {
-                    if (isInternetAvailable()) {
-                        showProgress()
-                       // var myNewInt: String = edit_mobile_number.text.toString()
-                        val request = VerifyUserRequest(
-                            edit_mobile_number.text.toString()
-                        )
-                        presenter.hitVerifyUserApi(request)
-                    } else {
-                        Utilities.showMessage(this, getString(R.string.no_internet_connection))
+                } else {
+                    if (clicked_from.equals("signup",ignoreCase = true)) {
+
+                        val mobile: String = edit_mobile_number.getText().toString().trim()
+                        val intent = Intent(this, OtpVerificationActivity::class.java)
+                        intent.putExtra("mobile", mobile)
+                        intent.putExtra("intent_from", clicked_from)
+                        startActivity(intent)
+
+                    } else if (clicked_from.equals("forgotPassword",ignoreCase = true)) {
+
+                        if (isInternetAvailable()) {
+                            showProgress()
+                            val request = VerifyUserRequest(
+                                edit_mobile_number.text.toString()
+                            )
+                            presenter.hitVerifyUserApi(request)
+                        } else {
+                            Utilities.showMessage(this, getString(R.string.no_internet_connection))
+                        }
+
                     }
+                    else {
+                        // do something
+                    }
+
+
+
                 }
             }
         }
@@ -71,7 +99,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
         val mobile: String = edit_mobile_number.getText().toString().trim()
         val intent = Intent(this, OtpVerificationActivity::class.java)
         intent.putExtra("mobile", mobile)
-        intent.putExtra("intent_from", "forgotPass")
+        intent.putExtra("intent_from", clicked_from)
         intent.putExtra("userId", verifyUserResponse.data.toString())
         startActivity(intent)
 

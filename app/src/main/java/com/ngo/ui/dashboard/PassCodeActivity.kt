@@ -1,24 +1,19 @@
 package com.ngo.ui.dashboard
 
-import android.Manifest
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
-import android.provider.DocumentsContract
-import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
-import com.ngo.ui.generalpublic.view.GeneralPublicHomeActivity
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.ngo.NGOActivity
 import com.ngo.ui.police.PoliceActivity
 import com.ngo.utils.Constants
@@ -26,7 +21,6 @@ import com.ngo.utils.GpsUtils
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_passcode.*
-import java.io.File
 
 
 class PassCodeActivity : BaseActivity(), View.OnClickListener {
@@ -68,7 +62,7 @@ class PassCodeActivity : BaseActivity(), View.OnClickListener {
                 } else {
                     if (pinview.value.equals("1111")) {
                         var intent =
-                            Intent(this@PassCodeActivity, GeneralPublicHomeActivity::class.java)
+                            Intent(this@PassCodeActivity, GeneralPublicHomeFragment::class.java)
                         startActivity(intent)
                         pinview.clearValue()
 
