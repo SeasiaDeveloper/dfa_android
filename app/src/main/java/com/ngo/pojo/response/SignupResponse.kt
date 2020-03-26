@@ -1,6 +1,6 @@
 package com.ngo.pojo.response
 
-data class SignupResponse(
+class SignupResponse(
     val message: String,
     val code: Int,
     val data: Data

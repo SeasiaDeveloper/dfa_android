@@ -1,19 +1,20 @@
 package com.ngo.pojo.response
 
-data class ComplaintResponse(
-    val message: String,
-    val code: Int,
-    val data: Array<Data1>
-)
+import java.io.Serializable
 
-data class Data1(
-    val date_time: String,
-    val urgency: String,
-    val media_list: Array<String>,
-    val latitude: String,
-    val crime_type: String,
-    val id: String,
-    val longitude: String,
-    val info: String,
-    val status: String
-)
+class ComplaintResponse : Serializable {
+    val message: String? = null
+    val code: Int? = null
+
+    inner class Data : Serializable {
+        val date_time: String? = null
+        val urgency: String? = null
+        val media_list: Array<String>? = null
+        val latitude: String? = null
+        val crime_type: String? = null
+        val id: String? = null
+        val longitude: String? = null
+        val info: String? = null
+        val status: String? = null
+    }
+}

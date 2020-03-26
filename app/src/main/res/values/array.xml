@@ -26,9 +26,9 @@
         <item>9.0</item>
         <item>10.0</item>
     </string-array>
-    <string-array name="typeofCrimeArray">
+<!--    <string-array name="typeofCrimeArray">
         <item>Drug</item>
         <item>Suspect</item>
         <item>Other Crime</item>
-    </string-array>
+    </string-array>-->
 </resources>

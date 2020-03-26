@@ -2,6 +2,7 @@ package com.ngo.ui.generalpublic.presenter
 
 import com.ngo.pojo.request.ComplaintRequest
 import com.ngo.pojo.response.ComplaintResponse
+import com.ngo.pojo.response.GetCrimeTypesResponse
 import com.ngo.ui.generalpublic.model.PublicModel
 import com.ngo.ui.generalpublic.view.PublicComplaintView
 
@@ -26,6 +27,18 @@ class PublicComplaintPresenterImpl(private var complaintsView: PublicComplaintVi
         complaintsView.onValidationSuccess()
     }
 
+    override fun onGetCrimeTypes(token: String?) {
+        complaintsModel.getCrimeTypesList(token)
+    }
+
+    override fun onGetCrimeTypesSuccess(getCrimeTypesResponse: GetCrimeTypesResponse) {
+        complaintsView.getCrimeTypesListSuccess(getCrimeTypesResponse)
+    }
+
+    override fun onGetCrimeTypesFailure(error: String) {
+        complaintsView.getCrimeTyepLstFailure(error)
+    }
+
     override fun checkValidations(level: Int, image: String, description: String) {
         complaintsModel.setValidation(level, image, description)
     }
@@ -39,7 +52,7 @@ class PublicComplaintPresenterImpl(private var complaintsView: PublicComplaintVi
     }
 
     override fun saveDetailsRequest(token: String?, request: ComplaintRequest) {
-        complaintsModel.complaintsRequest(token,request)
+        complaintsModel.complaintsRequest(token, request)
     }
 
     override fun showError(error: String) {

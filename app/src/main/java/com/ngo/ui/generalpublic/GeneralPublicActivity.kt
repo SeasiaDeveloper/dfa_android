@@ -11,12 +11,15 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.MediaController
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.ngo.R
@@ -24,6 +27,7 @@ import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.pojo.request.ComplaintRequest
 import com.ngo.pojo.response.ComplaintResponse
+import com.ngo.pojo.response.GetCrimeTypesResponse
 import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenter
 import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenterImpl
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeActivity
@@ -42,27 +46,33 @@ import kotlinx.android.synthetic.main.activity_public.spTypesOfCrime
 import kotlinx.android.synthetic.main.activity_public.toolbarLayout
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.*
 import kotlin.collections.ArrayList
 
 class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChangedListener,
     PublicComplaintView {
     private lateinit var file: File
-    private  var longitude: String=""
-    private  var lattitude: String=""
+    private var longitude: String = ""
+    private var lattitude: String = ""
     private var isGPS: Boolean = false
     private lateinit var locationManager: LocationManager
     private var crimeType: String = ""
-    private var path: String=""
-    private var pathOfImages=ArrayList<String>()
+    private var path: String = ""
+    private var pathOfImages = ArrayList<String>()
     private val REQUEST_CAMERA = 0
     private var IMAGE_MULTIPLE = 1
     private var userChoosenTask: String? = null
     private var imageUri: Uri? = null
     private val REQUEST_TAKE_GALLERY_VIDEO = 1889
-
+    private var authorizationToken: String? = ""
     private var complaintsPresenter: PublicComplaintPresenter = PublicComplaintPresenterImpl(this)
-private var  range=1
+    private var range = 1
+    private var mediaType: String? = null
+    private var SELECT_VIDEOS: Int = 2;
+    private var SELECT_VIDEOS_KITKAT: Int = 2;
+    private var CAMERA_REQUEST_CODE_VEDIO: Int = 3;
+    private lateinit var mediaControls: MediaController;
+
+    private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
     override fun getLayout(): Int {
         return R.layout.activity_public
     }
@@ -82,7 +92,17 @@ private var  range=1
 
     private fun setListeners() {
         tvSelectPhoto.setOnClickListener(this)
-        tvTakePhoto.setOnClickListener (this)
+        tvTakePhoto.setOnClickListener(this)
+        tvRecordVideo.setOnClickListener(this)
+        tvTakeVideo.setOnClickListener(this)
+        authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
+        if (isInternetAvailable()) {
+            showProgress()
+            complaintsPresenter.onGetCrimeTypes(authorizationToken)
+        } else {
+            Utilities.showMessage(this, getString(R.string.no_internet_connection))
+        }
+
         spTypesOfCrime.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {
                 // nothing to do
@@ -94,7 +114,7 @@ private var  range=1
                 position: Int,
                 id: Long
             ) {
-                crimeType =spTypesOfCrime.selectedItem.toString()
+                crimeType = spTypesOfCrime.selectedItem.toString()
             }
         }
         sb_steps_5.setOnRangeChangedListener(this)
@@ -108,6 +128,7 @@ private var  range=1
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.tvSelectPhoto -> {
+                path=""
                 val resultGallery = getMarshmallowPermission(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
@@ -115,17 +136,44 @@ private var  range=1
                 if (resultGallery)
                     galleryIntent()
             }
-            R.id.tvTakePhoto ->{
+            R.id.tvTakePhoto -> {
+                path=""
                 val resultCamera = getMarshmallowPermission(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
-                Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
+                    Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
                 )
                 if (resultCamera)
                     cameraIntent()
             }
-            R.id.btnSubmit -> {
-                complaintsPresenter.checkValidations(1,path,etDescription.text.toString())
+            R.id.tvRecordVideo -> {
+                path=""
+                val resultVideo = getMarshmallowPermission(
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
+                )
+                if (resultVideo)
+                    videoFromGalleryIntent()
             }
+
+            R.id.tvTakeVideo -> {
+                path=""
+                val resultVideo = getMarshmallowPermission(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
+                )
+                if (resultVideo)
+                    recordVideo()
+            }
+            R.id.btnSubmit -> {
+                complaintsPresenter.checkValidations(1, path, etDescription.text.toString())
+            }
+        }
+    }
+
+    fun recordVideo() {
+        val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takeVideoIntent, CAMERA_REQUEST_CODE_VEDIO);
         }
     }
 
@@ -165,10 +213,25 @@ private var  range=1
     }
 */
 
+    private fun videoFromGalleryIntent() {
+        if (Build.VERSION.SDK_INT < 19) {
+            var intent = Intent()
+            intent.setType("video/mp4");
+            //intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select videos"), SELECT_VIDEOS);
+        } else {
+            var intent = Intent(Intent.ACTION_OPEN_DOCUMENT);
+            intent.addCategory(Intent.CATEGORY_OPENABLE);
+            // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            intent.setType("video/mp4");
+            startActivityForResult(intent, SELECT_VIDEOS_KITKAT);
+        }
+    }
 
     private fun galleryIntent() {
         val intent = Intent()
-        intent.type = "image/*"
+        intent.type = "image/*"    //"image/* video/*"
         intent.action = Intent.ACTION_GET_CONTENT
         startActivityForResult(Intent.createChooser(intent, "Select File"), IMAGE_MULTIPLE)
     }
@@ -214,12 +277,12 @@ private var  range=1
 
 
     private fun askForGPS() {
-        GpsUtils(this).turnGPSOn(object:GpsUtils.onGpsListener {
-            override fun gpsStatus(isGPSEnable:Boolean) {
+        GpsUtils(this).turnGPSOn(object : GpsUtils.onGpsListener {
+            override fun gpsStatus(isGPSEnable: Boolean) {
                 // turn on GPS
                 isGPS = isGPSEnable
-               /* if(!isGPS)
-           askForGPS()*/
+                /* if(!isGPS)
+            askForGPS()*/
                 if (isGPS)
                     getLocation()
             }
@@ -227,93 +290,162 @@ private var  range=1
     }
 
     private fun getLocation() {
-        if(!Utilities.checkPermissions(this))
+        if (!Utilities.checkPermissions(this))
             Utilities.requestPermissions(this)
         else
             try {
                 // Request location updates
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, mLocationListener)
-            } catch(ex: SecurityException) {
+                locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER,
+                    0L,
+                    0f,
+                    mLocationListener
+                )
+            } catch (ex: SecurityException) {
                 Log.d("myTag", "Security Exception, no location available")
             }
     }
 
-    private val mLocationListener = object:LocationListener {
-      override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
-      }
+    private val mLocationListener = object : LocationListener {
+        override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
+        }
 
-      override fun onProviderEnabled(p0: String?) {
-      }
+        override fun onProviderEnabled(p0: String?) {
+        }
 
-      override fun onProviderDisabled(p0: String?) {
-      }
+        override fun onProviderDisabled(p0: String?) {
+        }
 
-      override fun onLocationChanged(location: Location) {
+        override fun onLocationChanged(location: Location) {
             //your code here
-            if (location != null)
-            {
+            if (location != null) {
                 val latti = location.latitude
                 val longi = location.longitude
                 lattitude = (latti).toString()
                 longitude = (longi).toString()
-                PreferenceHandler.writeString(this@GeneralPublicActivity,PreferenceHandler.LAT,lattitude)
-                PreferenceHandler.writeString(this@GeneralPublicActivity,PreferenceHandler.LNG,longitude)
+                PreferenceHandler.writeString(
+                    this@GeneralPublicActivity,
+                    PreferenceHandler.LAT,
+                    lattitude
+                )
+                PreferenceHandler.writeString(
+                    this@GeneralPublicActivity,
+                    PreferenceHandler.LNG,
+                    longitude
+                )
             }
         }
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_MULTIPLE && resultCode == Activity.RESULT_OK && null != data) {
             if (data.data != null) {
+                mediaType = "photos"
                 imageUri = data.data
                 val wholeID = DocumentsContract.getDocumentId(imageUri)
-                val id = wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
+                val id =
+                    wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
                 val column = arrayOf<String>(MediaStore.Images.Media.DATA)
                 val sel = MediaStore.Images.Media._ID + "=?"
-                val cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    column, sel, arrayOf<String>(id), null)
+                val cursor = getContentResolver().query(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    column, sel, arrayOf<String>(id), null
+                )
                 val columnIndex = cursor?.getColumnIndex(column[0])
-                if (cursor!!.moveToFirst())
-                {
+                if (cursor!!.moveToFirst()) {
                     path = cursor.getString(columnIndex!!)
+                    pathOfImages = ArrayList<String>()
                     pathOfImages.add(path)
                 }
                 cursor.close()
                 imgView.visibility = View.VISIBLE
+                videoView.visibility = View.GONE
                 imgView.setImageURI(imageUri)
             }
         } else if (requestCode == REQUEST_CAMERA) {
+            mediaType = "photos"
             if (null != data) {
                 val photo = data?.getExtras()?.get("data") as Bitmap
                 imgView.setImageBitmap(photo)
                 imgView.visibility = View.VISIBLE
+                videoView.visibility = View.GONE
                 val tempUri = getImageUri(applicationContext, photo)
                 file = File(getRealPathFromURI(tempUri))
             }
-        }else if (requestCode == GPS_REQUEST) {
+        } else if (requestCode == GPS_REQUEST) {
             isGPS = true
             getLocation()
-        }
+        } else if (requestCode == SELECT_VIDEOS && resultCode == Activity.RESULT_OK || requestCode == SELECT_VIDEOS_KITKAT && resultCode == Activity.RESULT_OK) {
+            mediaType = "videos"
+            imgView.visibility = View.GONE
+            videoView.visibility = View.VISIBLE
+            if (data?.data != null) {
+                val videoUri = data.getData()
+                //path = getPath(videoUri!!)
+            }
+            showVideo(path)
 
+        } else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
+            mediaType = "videos"
+            imgView.visibility = View.GONE
+            videoView.visibility = View.VISIBLE
+            val videoUri = data?.getData();
+            path = getRealPathFromURI(videoUri!!);
+            showVideo(path)
+        }
     }
 
-    private fun getImageUri(inContext: Context, inImage:Bitmap):Uri {
+    /*fun getPath(uri: Uri): String {
+        *//*   val projection = arrayOf(MediaStore.Video.Media.DATA)
+           val cursor = getContentResolver().query(uri, projection, null, null, null)
+           if (cursor != null) {
+               val column_index = cursor
+                   .getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
+               cursor.moveToFirst()
+               return cursor.getString(column_index)
+           } else
+               return null!!*//*
+        if (contentResolver != null) {
+            val uriExternal: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            val projection = arrayOf(MediaStore.Images.Media._ID)
+            val cursor = contentResolver.query(uri, projection, null, null, null)
+            if (cursor != null) {
+                var columnIndexID = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
+                while (cursor.moveToNext()) {
+                    var imageId = cursor.getInt(columnIndexID)
+                    val uriImage = Uri.withAppendedPath(uriExternal, "" + imageId)
+                    path = cursor.getString(imageId)
+                }
+                cursor.close()
+            }
+        }
+        return path
+    }*/
+
+    fun showVideo(videoUri: String) {
+        mediaControls = MediaController(this);
+        mediaControls.setAnchorView(videoView);
+        videoView.setMediaController(mediaControls);
+        videoView.setVideoURI(Uri.parse(videoUri));
+    }
+
+    private fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path = MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        val path =
+            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
         return Uri.parse(path)
     }
-    private fun getRealPathFromURI(uri:Uri):String {
-        if (contentResolver != null)
-        {
+
+    private fun getRealPathFromURI(uri: Uri): String {
+        if (contentResolver != null) {
             val cursor = contentResolver.query(uri, null, null, null, null)
-            if (cursor != null)
-            {
+            if (cursor != null) {
                 cursor.moveToFirst()
                 val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
                 path = cursor.getString(idx)
+                pathOfImages = ArrayList<String>()
                 pathOfImages.add(path)
                 cursor.close()
             }
@@ -331,8 +463,8 @@ private var  range=1
         isFromUser: Boolean
     ) {
 
-       // Utilities.showMessage(this, leftValue.toString())
-        range=Math.ceil(leftValue.toDouble()).toInt()
+        // Utilities.showMessage(this, leftValue.toString())
+        range = Math.ceil(leftValue.toDouble()).toInt()
     }
 
     override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
@@ -342,14 +474,14 @@ private var  range=1
 
     override fun showComplaintsResponse(complaintsResponse: ComplaintResponse) {
         dismissProgress()
-        Utilities.showMessage(this,complaintsResponse.message)
-        GeneralPublicHomeActivity.change=1
+        Utilities.showMessage(this, complaintsResponse.message!!)
+        GeneralPublicHomeActivity.change = 1
         finish()
     }
 
     override fun showEmptyImageError() {
         dismissProgress()
-        Utilities.showMessage(this,getString(R.string.please_select_image))
+        Utilities.showMessage(this, getString(R.string.please_select_image))
 
     }
 
@@ -357,26 +489,29 @@ private var  range=1
         dismissProgress()
 
         val array = arrayOfNulls<String>(pathOfImages.size)
-
+        var id: String? = null
+        if (getCrimeTypesResponse != null) {
+            id = getCrimeTypesResponse.data?.get(spTypesOfCrime.selectedItemPosition)?.id
+        }
         if (isInternetAvailable()) {
             showProgress()
-            var name ="Nabam Serbang"
-            var contact="911234567890"
-            var email ="nabam@gmail.com"
+           /* var name = "Nabam Serbang"
+            var contact = "911234567890"
+            var email = "nabam@gmail.com"*/
             val request = ComplaintRequest(
-               //name,
-               // contact,
+                //name,
+                // contact,
                 //email,
-                crimeType,
+                id!!, //crimeType
                 range,
                 pathOfImages.toArray(array),
                 etDescription.text.toString().trim(),
                 //"",
                 lattitude,
-                longitude
+                longitude,
+                mediaType!!
             )
-            val authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
-            complaintsPresenter.saveDetailsRequest(authorizationToken,request)
+            complaintsPresenter.saveDetailsRequest(authorizationToken, request)
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
@@ -385,12 +520,33 @@ private var  range=1
 
     override fun showEmptyLevelError() {
         dismissProgress()
-        Utilities.showMessage(this,getString(R.string.select_urgency_level))
+        Utilities.showMessage(this, getString(R.string.select_urgency_level))
     }
 
     override fun showEmptyDescError() {
         dismissProgress()
-        Utilities.showMessage(this,getString(R.string.please_enter_description))
+        Utilities.showMessage(this, getString(R.string.please_enter_description))
+    }
+
+    override fun getCrimeTypesListSuccess(getCrimeTypesResponse: GetCrimeTypesResponse) {
+        dismissProgress()
+        this.getCrimeTypesResponse = getCrimeTypesResponse
+        val distValueList = ArrayList<String>()
+        for (dist in getCrimeTypesResponse.data!!) {
+            distValueList.add(dist.name!!)
+        }
+        val distArray = distValueList.toArray(arrayOfNulls<String>(distValueList.size))
+        var adapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item, distArray
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spTypesOfCrime.setAdapter(adapter);
+    }
+
+    override fun getCrimeTyepLstFailure(error: String) {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.crime_types_error))
     }
 
     override fun showServerError(error: String) {

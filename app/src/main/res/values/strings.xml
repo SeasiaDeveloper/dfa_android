@@ -46,6 +46,7 @@
     <string name="unauthentic">Unauthentic</string>
     <string name="add_comment">Add Comment</string>
     <string name="mark_status">Mark Status</string>
+    <string name="crime_types_error">Not getting Crime Types</string>
 
 
     <!--  login screen-->
