@@ -224,6 +224,7 @@ class SignupActivity : BaseActivity(), SignupView {
         if (!mobile.isNullOrEmpty()) {
             var intent = Intent(this, OtpVerificationActivity::class.java)
             intent.putExtra("mobile", mobile)
+            intent.putExtra("intent_from", "SignUp")
             startActivity(intent)
         }
     }

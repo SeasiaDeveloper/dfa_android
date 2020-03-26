@@ -16,6 +16,7 @@ import com.ngo.customviews.CenteredToolbar
 import com.ngo.ui.OtpVerification.presenter.OtpVerificationImpl
 import com.ngo.ui.OtpVerification.presenter.OtpVerificationPresenter
 import com.ngo.ui.changepassword.view.ChangePasswordActivity
+import com.ngo.ui.dashboard.DashboardActivity
 import com.ngo.ui.login.view.LoginActivity
 import kotlinx.android.synthetic.main.activity_forgot_password.toolbarLayout
 import kotlinx.android.synthetic.main.activity_otp_verification.*
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit
 
 class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerificationView {
     private lateinit var mAuth: FirebaseAuth
+    private lateinit var intent_from : String
    private lateinit var mVerificationId: String
     private var presenter: OtpVerificationPresenter = OtpVerificationImpl(this)
 
@@ -37,6 +39,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
         val intent = intent
         val mobile = intent.getStringExtra("mobile")
+        intent_from = intent.getStringExtra("intent_from")
         setListeners()
         presenter.sendVerificationCode(mobile,mCallbacks)
 
@@ -98,9 +101,16 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
             OnCompleteListener<AuthResult?> { task ->
                 if (task.isSuccessful) {
                     //verification successful we will start the Change Password activity
-                    val intent = Intent(this, LoginActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
+                    if (intent_from.equals("SignUp")){
+                        val intent = Intent(this, DashboardActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    } else {
+                        val intent = Intent(this, LoginActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    }
+
                 } else {
 
                     Toast.makeText(this@OtpVerificationActivity, task.exception?.message, Toast.LENGTH_LONG).show()
