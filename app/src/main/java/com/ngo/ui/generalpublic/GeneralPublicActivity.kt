@@ -475,7 +475,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     override fun showComplaintsResponse(complaintsResponse: ComplaintResponse) {
         dismissProgress()
         Utilities.showMessage(this, complaintsResponse.message!!)
-        GeneralPublicHomeActivity.change = 1
+        //GeneralPublicHomeActivity.change = 1
         finish()
     }
 
