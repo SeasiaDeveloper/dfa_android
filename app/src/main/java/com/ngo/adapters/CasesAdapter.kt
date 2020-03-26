@@ -103,7 +103,8 @@ class CasesAdapter(
             //   itemView.tvCrime.text = item.crime
             itemView.status.text = item.status.toString().toUpperCase()
             //itemView.expandable_contactNo.text = item.phone.toString()
-            itemView.expandable_Date.text = item.report_data
+
+            itemView.expandable_Date.text = Utilities.changeDateFormat(item.report_data!!)
             itemView.expandable_Level.text = "Level " + item.urgency
             itemView.expandable_Time.text = item.report_time
             itemView.expandable_DescriptionNgo.text = item.info.toString()

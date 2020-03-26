@@ -1,3 +1,3 @@
 package com.ngo.pojo.request
 
-data class CasesRequest (var all:String, var search: String)
+data class CasesRequest (var all:String, var search: String /*, var type:String*/)

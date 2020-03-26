@@ -44,8 +44,9 @@ interface CallRetrofitApi {
     @POST("wp/v2/user/change-password")
     fun changePassword(@Body changePasswordRequest: ChangePasswordRequest): Call<ChangePasswordResponse>
 
+    @Multipart
     @POST("wp/v2/user/validate-byphone")
-    fun verifyUser(@Body verifyUserRequest: VerifyUserRequest): Call<VerifyUserResponse>
+    fun verifyUser(@PartMap params: HashMap<String,RequestBody>): Call<VerifyUserResponse>
 
     @Multipart
     @POST("wp/v2/user/register")
@@ -54,6 +55,9 @@ interface CallRetrofitApi {
     @GET("wp/v2/districts")
     fun getDist(): Call<DistResponse>
 
+    @GET("jwt-auth/v1/crime_types")
+    fun getCrimeTypesList(@Header("Authorization") authorization: String?): Call<GetCrimeTypesResponse>
+
     @Multipart
     @POST("jwt-auth/v1/edit_profile")
     fun updateProfile(@PartMap params: HashMap<String,RequestBody>, @Part profile_pic: MultipartBody.Part): Call<SignupResponse>
@@ -61,5 +65,9 @@ interface CallRetrofitApi {
     @Multipart
     @POST("jwt-auth/v1/crime_list")
     fun getCases(@PartMap params: HashMap<String,RequestBody>): Call<GetCasesResponse>
+
+    @Multipart
+    @POST("jwt-auth/v1/create_post")
+    fun addPost(@PartMap params:HashMap<String, RequestBody>,@Part post_pics: MultipartBody.Part): Call<GetCasesResponse>
 
 }

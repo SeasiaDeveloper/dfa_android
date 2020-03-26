@@ -5,8 +5,6 @@ import android.os.Handler
 import android.view.View
 import com.ngo.R
 import com.ngo.base.BaseActivity
-import com.ngo.ui.dashboard.DashboardActivity
-import com.ngo.ui.dashboard.PassCodeActivity
 import com.ngo.ui.login.view.LoginActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 

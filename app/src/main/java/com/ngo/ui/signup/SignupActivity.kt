@@ -30,12 +30,17 @@ import kotlin.collections.ArrayList
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.util.Log
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.ngo.ui.OtpVerification.view.OtpVerificationActivity
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.activity_public.*
 import kotlinx.android.synthetic.main.activity_signup.btnSubmit
 
 class SignupActivity : BaseActivity(), SignupView {
+
+    private lateinit var token: String
 
     override fun getLayout(): Int {
         return R.layout.activity_signup
@@ -44,13 +49,27 @@ class SignupActivity : BaseActivity(), SignupView {
     override fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.signup)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-
+         getFirebaseToken()
         if (isInternetAvailable()) {
             showProgress()
             signupPresenter.getDist() //load Districts list
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
+    }
+
+    private fun getFirebaseToken() {
+        FirebaseInstanceId.getInstance().instanceId
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    return@OnCompleteListener
+                }
+                // Get new Instance ID token
+                 token = task.result?.token.toString()
+
+                // Log and toast
+
+    })
     }
 
     override fun handleKeyboard(): View {
@@ -78,8 +97,8 @@ class SignupActivity : BaseActivity(), SignupView {
                 etPinCode.text.toString(),
                 etMobile2.text.toString(),
                 etAdharNo.text.toString(),
-                path, etConfirmPassword.text.toString()
-            )
+                path, etConfirmPassword.text.toString(),
+                token)
 
             if (isInternetAvailable()) {
                 showProgress()
@@ -221,13 +240,6 @@ class SignupActivity : BaseActivity(), SignupView {
     override fun showResponse(response: SignupResponse) {
         dismissProgress()
         Utilities.showMessage(this, response.message)
-        val mobile: String = response.data.mobile
-        if (!mobile.isNullOrEmpty()) {
-            var intent = Intent(this, OtpVerificationActivity::class.java)
-            intent.putExtra("mobile", mobile)
-            intent.putExtra("intent_from", "SignUp")
-            startActivity(intent)
-        }
     }
 
     override fun showServerError(error: String) {

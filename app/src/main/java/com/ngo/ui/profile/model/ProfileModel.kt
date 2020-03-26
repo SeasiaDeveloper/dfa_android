@@ -17,8 +17,11 @@ import retrofit2.Response
 import java.io.File
 
 class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplClass) {
+
+    private val imgMediaType="image/*"
+
     private fun toRequestBody(value: String): RequestBody {
-        return RequestBody.create(MediaType.parse("application/json"), value)
+        return RequestBody.create(MediaType.parse("multipart/form-data"), value)
     }
 
     fun getDist() {
@@ -110,11 +113,19 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
         map["district_id"] = toRequestBody(request.district_id)
         map["pin_code"] = toRequestBody(request.pin_code)
 
-        //profile_img
         val file = File(request.profile_pic)
-        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-        // MultipartBody.Part is used to send also the actual filename
-        val profileImg = MultipartBody.Part.createFormData("image", file.getName(), requestFile)
+
+        val profileImg = MultipartBody.Part.createFormData("profile_pic", file.name,
+            RequestBody.create(MediaType.parse(imgMediaType), file)
+        )
+
+
+
+        /*  //profile_img
+          val file = File(request.profile_pic)
+          val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+          // MultipartBody.Part is used to send also the actual filename
+          val profileImg = MultipartBody.Part.createFormData("image", file.getName(), requestFile)*/
 
         retrofitApi.updateProfile(map, profileImg).enqueue(object : Callback<SignupResponse> {
             override fun onFailure(call: Call<SignupResponse>, t: Throwable) {

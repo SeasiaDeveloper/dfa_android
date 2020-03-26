@@ -25,12 +25,14 @@ import android.Manifest.permission.ACCESS_FINE_LOCATION
 import android.Manifest.permission.ACCESS_COARSE_LOCATION
 import android.app.Dialog
 import android.net.ParseException
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.kaopiz.kprogresshud.KProgressHUD
 import com.ngo.R
 import com.ngo.utils.algo.VerhoeffAlgo
 import java.text.SimpleDateFormat
@@ -39,6 +41,7 @@ import java.util.regex.Pattern
 
 
 object Utilities {
+    private lateinit var customDialog: KProgressHUD
     val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123
     val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 121
     val PERMISSION_ID = 44
@@ -225,6 +228,48 @@ object Utilities {
 
      fun isValidMail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    /*
+    * method to show show progress
+    * */
+    fun showProgress(context: Context) {
+        dismissProgress()
+        customDialog = KProgressHUD(context)
+        customDialog
+            .setStyle(KProgressHUD.Style.SPIN_INDETERMINATE)
+            .setLabel("Please wait")
+            .setCancellable(true)
+            .setAnimationSpeed(2)
+            .setDimAmount(0.20f)
+            .show()
+    }
+
+    /**
+     * Dismiss the progress dialog
+     */
+    fun dismissProgress() {
+        try {
+            if (customDialog.isShowing) {
+                customDialog.dismiss()
+            }
+        } catch (e: Exception) {
+            Log.e("", e.message!!)
+        }
+    }
+
+    fun changeDateFormat(date: String): String {
+        val oldDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val newDateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        val convertedDate: Date?
+        try {
+            convertedDate = oldDateFormat.parse(date)
+            formatedDate = newDateFormat.format(convertedDate!!)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+
+        }
+        return formatedDate
     }
 
 }

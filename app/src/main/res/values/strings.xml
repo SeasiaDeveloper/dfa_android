@@ -46,6 +46,7 @@
     <string name="unauthentic">Unauthentic</string>
     <string name="add_comment">Add Comment</string>
     <string name="mark_status">Mark Status</string>
+    <string name="crime_types_error">Not getting Crime Types</string>
 
 
     <!--  login screen-->
@@ -110,4 +111,9 @@
     <string name="confirm_pass_mismatch_pass">Confirm Password doesnot match Password</string>
     <string name="delete">Delete</string>
     <string name="search">Search</string>
+    <string name="verify_mobileno">Verify Mobile</string>
+    <string name="enter_mobileno">"Please enter your Mobile Number "</string>
+    <string name="add_your_post_here">Add Your Post Here..</string>
+    <string name="post">Post</string>
+    <string name="enter_the_headline">Enter the text here..</string>
 </resources>

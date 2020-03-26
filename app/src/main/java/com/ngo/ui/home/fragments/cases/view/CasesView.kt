@@ -6,4 +6,5 @@ import com.ngo.pojo.response.GetCasesResponse
 interface CasesView :BaseView {
     fun showGetComplaintsResponse(response: GetCasesResponse)
     fun showDescError()
+    fun onPostAdded(responseObject: GetCasesResponse)
 }
