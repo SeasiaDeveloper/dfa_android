@@ -28,6 +28,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
     private lateinit var intent_from : String
    private lateinit var mVerificationId: String
     private var presenter: OtpVerificationPresenter = OtpVerificationImpl(this)
+    private lateinit var userId: String
 
     override fun getLayout(): Int {
         return R.layout.activity_otp_verification
@@ -40,6 +41,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
         val intent = intent
         val mobile = intent.getStringExtra("mobile")
         intent_from = intent.getStringExtra("intent_from")
+        userId = intent.getStringExtra("userId")
         setListeners()
         presenter.sendVerificationCode(mobile,mCallbacks)
 

@@ -46,6 +46,6 @@ class LoginActivityPresenterImpl(private var loginView: LoginView):
     }
 
     override fun showError(error: String) {
-        loginView.showError(error)
+        loginView.showServerError(error)
     }
 }

@@ -7,6 +7,62 @@ import com.ngo.ui.signup.model.SignupModel
 import com.ngo.ui.signup.view.SignupView
 
 class SignupPresenterImplClass(private var signupView: SignupView) : SignupPresenter {
+    override fun passwordEmptyValidation() {
+        signupView.passwordEmptyValidation()
+    }
+
+    override fun passwordLengthValidation() {
+        signupView.passwordLengthValidation()
+    }
+
+    override fun confirmPasswordEmptyValidation() {
+        signupView.confirmPasswordEmptyValidation()
+    }
+
+    override fun confirmPasswordLengthValidation() {
+        signupView.confirmPasswordLengthValidation()
+    }
+
+    override fun confirmPasswordMismatchValidation() {
+        signupView.confirmPasswordMismatchValidation()
+    }
+
+    override fun usernameEmptyValidation() {
+        signupView.usernameEmptyValidation()
+    }
+
+    override fun usernameValidationFailure() {
+        signupView.usernameValidationFailure()
+    }
+
+    override fun firstNameValidationFailure() {
+        signupView.firstNameValidationFailure()
+    }
+
+    override fun lastNameValidationFailure() {
+        signupView.lastNameValidationFailure()
+    }
+
+    override fun Address1ValidationFailure() {
+        signupView.Address1ValidationFailure()
+    }
+
+    override fun pinCodeValidationFailure() {
+        signupView.pinCodeValidationFailure()
+    }
+
+    override fun mobileValidationFailure() {
+        signupView.mobileValidationFailure()
+    }
+
+    override fun adhaarNoValidationFailure() {
+        signupView.adhaarNoValidationFailure()
+    }
+
+    override fun emailValidationFailure() {
+        signupView.emailValidationFailure()
+    }
+
     override fun fetchDistList(responseObject: DistResponse) {
         signupView.fetchDistList(responseObject)
     }
@@ -40,7 +96,5 @@ class SignupPresenterImplClass(private var signupView: SignupView) : SignupPrese
     override fun onSaveDetailsFailed(error: String) {
         signupView.showServerError(error)
     }
-
-
 
 }

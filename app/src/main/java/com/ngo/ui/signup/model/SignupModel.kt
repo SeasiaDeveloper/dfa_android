@@ -7,6 +7,7 @@ import com.ngo.pojo.response.DistResponse
 import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.signup.presenter.SignupPresenterImplClass
 import com.ngo.utils.Constants
+import com.ngo.utils.Utilities
 import retrofit2.Callback
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -21,9 +22,66 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
         return RequestBody.create(MediaType.parse("application/json"), value)
     }
 
-    fun setValidation(signupRequest: SignupRequest) {
-        if (!signupRequest.mobile.isEmpty()) {
-            signupPresenterImplClass.onValidationSuccess(signupRequest)
+    fun setValidation(request: SignupRequest) {
+
+        if (request.username.isEmpty()) {
+            signupPresenterImplClass.usernameEmptyValidation()
+            return
+        } else if (!(Utilities.isValidMobile(request.username))) {
+            signupPresenterImplClass.usernameValidationFailure()
+            return
+        } else if (request.first_name.isEmpty()) {
+            signupPresenterImplClass.firstNameValidationFailure()
+            return
+        } else if (request.last_name.isEmpty()) {
+            signupPresenterImplClass.lastNameValidationFailure()
+            return
+        } else if (request.address_1.isEmpty()) {
+            signupPresenterImplClass.Address1ValidationFailure()
+            return
+        } else if (request.pin_code.isEmpty()) {
+            signupPresenterImplClass.pinCodeValidationFailure()
+            return
+        } else {
+
+            if ((request.mobile).isNotEmpty()) {
+                if (!(Utilities.isValidMobile(request.mobile))) {
+                    signupPresenterImplClass.mobileValidationFailure()
+                    return
+                }
+            }
+
+            if ((request.adhar_number).isNotEmpty()) {
+                if (!(Utilities.validateAadharNumber(request.mobile))) {
+                    signupPresenterImplClass.adhaarNoValidationFailure()
+                    return
+                }
+            }
+
+            if ((request.email).isNotEmpty()) {
+                if (!(Utilities.isValidMail(request.email))) {
+                    signupPresenterImplClass.emailValidationFailure()
+                    return
+                }
+            }
+
+            if (request.password.isEmpty()) {
+                signupPresenterImplClass.passwordEmptyValidation()
+                return
+            } else if ((request.password).length < 8) {
+                signupPresenterImplClass.passwordLengthValidation()
+                return
+            } else if (request.confirmPass.isEmpty()) {
+                signupPresenterImplClass.confirmPasswordEmptyValidation()
+                return
+            } else if ((request.confirmPass).length < 8) {
+                signupPresenterImplClass.confirmPasswordLengthValidation()
+                return
+            } else if (!(request.password.equals(request.confirmPass))) {
+                signupPresenterImplClass.confirmPasswordMismatchValidation()
+                return
+            }
+            signupPresenterImplClass.onValidationSuccess(request)
         }
     }
 
@@ -50,7 +108,7 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
         // MultipartBody.Part is used to send also the actual filename
         val profileImg = MultipartBody.Part.createFormData("image", file.getName(), requestFile)
 
-        retrofitApi.registerUser(map,profileImg).enqueue(object : Callback<SignupResponse> {
+        retrofitApi.registerUser(map, profileImg).enqueue(object : Callback<SignupResponse> {
             override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
                 signupPresenterImplClass.showError(t.message + "")
             }
@@ -77,7 +135,7 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
 
     fun getDist() {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
-        retrofitApi.getDist().enqueue(object : Callback<DistResponse>{
+        retrofitApi.getDist().enqueue(object : Callback<DistResponse> {
             override fun onFailure(call: Call<DistResponse>, t: Throwable) {
                 signupPresenterImplClass.showError(t.message + "")
             }

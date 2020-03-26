@@ -38,8 +38,8 @@ class PublicComplaintPresenterImpl(private var complaintsView: PublicComplaintVi
         complaintsView.showServerError(error)
     }
 
-    override fun saveDetailsRequest(request: ComplaintRequest) {
-        complaintsModel.complaintsRequest(request)
+    override fun saveDetailsRequest(token: String?, request: ComplaintRequest) {
+        complaintsModel.complaintsRequest(token,request)
     }
 
     override fun showError(error: String) {

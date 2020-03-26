@@ -218,4 +218,13 @@ object Utilities {
         }
         return isValidAadhar
     }
+
+     fun isValidMobile(phone: String): Boolean {
+        return android.util.Patterns.PHONE.matcher(phone).matches()
+    }
+
+     fun isValidMail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
 }

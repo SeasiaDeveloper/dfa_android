@@ -1,5 +1,7 @@
 package com.ngo.apis
 
+import com.ngo.pojo.request.ChangePasswordRequest
+import com.ngo.pojo.request.VerifyUserRequest
 import com.ngo.pojo.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -8,9 +10,14 @@ import retrofit2.http.*
 
 interface CallRetrofitApi {
 
+
     @Multipart
+    @POST("jwt-auth/v1/report_crime")
+    fun addComplaint(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>, @Part images: Array<MultipartBody.Part?>): Call<ComplaintResponse>
+
+    /*@Multipart
     @POST("v1/lodgeComplaint")
-    fun addComplaint(@PartMap params: HashMap<String,RequestBody>, @Part licenseImg: MultipartBody.Part): Call<ComplaintResponse>
+    fun addComplaint(@PartMap params: HashMap<String,RequestBody>, @Part licenseImg: MultipartBody.Part): Call<ComplaintResponse>*/
 
     @Multipart
     @POST("v1/forwardComplaint")
@@ -31,13 +38,23 @@ interface CallRetrofitApi {
 
     @Multipart
     @POST("jwt-auth/v1/token")
-    fun login(@PartMap params: HashMap<String,RequestBody>): Call<LoginResponse>
+    fun login(@PartMap params: HashMap<String, RequestBody>): Call<LoginResponse>
+
+    @POST("wp/v2/user/change-password")
+    fun changePassword(@Body changePasswordRequest: ChangePasswordRequest): Call<ChangePasswordResponse>
+
+    @POST("wp/v2/user/validate-byphone")
+    fun verifyUser(@Body verifyUserRequest: VerifyUserRequest): Call<VerifyUserResponse>
 
     @Multipart
     @POST("wp/v2/user/register")
     fun registerUser(@PartMap params: HashMap<String,RequestBody>, @Part profile_pic: MultipartBody.Part): Call<SignupResponse>
 
-
     @GET("wp/v2/districts")
     fun getDist(): Call<DistResponse>
+
+    @Multipart
+    @POST("jwt-auth/v1/edit_profile")
+    fun updateProfile(@PartMap params: HashMap<String,RequestBody>, @Part profile_pic: MultipartBody.Part): Call<SignupResponse>
+
 }
