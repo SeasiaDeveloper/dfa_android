@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 
 object PreferenceHandler {
+    const val FCM_DEVICE_TOKEN = "fcm_token"
     private const val PREF_NAME = "ngo_demo_app"
     private const val MODE = Context.MODE_PRIVATE
     const val DEVICE_ID = "device_id"

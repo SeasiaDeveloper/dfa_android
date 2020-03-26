@@ -9,6 +9,7 @@ import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.pojo.request.LoginRequest
 import com.ngo.pojo.response.LoginResponse
+import com.ngo.ui.OtpVerification.view.OtpVerificationActivity
 import com.ngo.ui.forgotpassword.view.ForgotPasswordActivity
 import com.ngo.ui.generalpublic.GeneralPublicActivity
 import com.ngo.ui.home.HomeActivity
@@ -53,10 +54,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
                 )
             }
             R.id.btnSignUp -> {
-                startActivity(Intent(this, SignupActivity::class.java))
+                val intent = Intent(this, ForgotPasswordActivity::class.java)
+                intent.putExtra("clicked_from", "signup")
+                startActivity(intent)
             }
             R.id.forgot_password -> {
                 val intent = Intent(this, ForgotPasswordActivity::class.java)
+                intent.putExtra("clicked_from", "forgotPassword")
                 startActivity(intent)
             }
         }

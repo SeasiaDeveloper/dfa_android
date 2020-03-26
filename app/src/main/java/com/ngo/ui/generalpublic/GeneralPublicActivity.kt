@@ -26,7 +26,7 @@ import com.ngo.pojo.request.ComplaintRequest
 import com.ngo.pojo.response.ComplaintResponse
 import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenter
 import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenterImpl
-import com.ngo.ui.generalpublic.view.GeneralPublicHomeActivity
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.generalpublic.view.PublicComplaintView
 import com.ngo.utils.Constants.GPS_REQUEST
 import com.ngo.utils.GpsUtils
@@ -42,7 +42,6 @@ import kotlinx.android.synthetic.main.activity_public.spTypesOfCrime
 import kotlinx.android.synthetic.main.activity_public.toolbarLayout
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.util.*
 import kotlin.collections.ArrayList
 
 class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChangedListener,
@@ -343,7 +342,7 @@ private var  range=1
     override fun showComplaintsResponse(complaintsResponse: ComplaintResponse) {
         dismissProgress()
         Utilities.showMessage(this,complaintsResponse.message)
-        GeneralPublicHomeActivity.change=1
+        GeneralPublicHomeFragment.change=1
         finish()
     }
 

@@ -18,8 +18,10 @@ import java.io.File
 
 class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
 
+    private val imgMediaType="image/*"
+
     private fun toRequestBody(value: String): RequestBody {
-        return RequestBody.create(MediaType.parse("application/json"), value)
+        return RequestBody.create(MediaType.parse("multipart/form-data"), value)
     }
 
     fun setValidation(request: SignupRequest) {
@@ -87,7 +89,7 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
 
     //hit api to register the user
     fun userRegisteration(signupRequest: SignupRequest) {
-        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        val retrofitApi = ApiClient.getClientWithToken().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["username"] = toRequestBody(signupRequest.username)
         map["email"] = toRequestBody(signupRequest.email)
@@ -102,11 +104,18 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
         map["district_id"] = toRequestBody(signupRequest.district_id)
         map["pin_code"] = toRequestBody(signupRequest.pin_code)
 
-        //profile_img
         val file = File(signupRequest.profile_pic)
-        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+
+        val profileImg = MultipartBody.Part.createFormData("profile_pic", file.name,
+            RequestBody.create(MediaType.parse(imgMediaType), file)
+        )
+
+
+       /* //profile_img
+        val file = File(signupRequest.profile_pic)
+        val requestFile = RequestBody.create(MediaType.parse(imgMediaType), file)
         // MultipartBody.Part is used to send also the actual filename
-        val profileImg = MultipartBody.Part.createFormData("image", file.getName(), requestFile)
+        val profileImg = MultipartBody.Part.createFormData("image", file.getName(), requestFile)*/
 
         retrofitApi.registerUser(map, profileImg).enqueue(object : Callback<SignupResponse> {
             override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
