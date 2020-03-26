@@ -43,11 +43,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
             R.id.btnSubmit -> {
                 if (TextUtils.isEmpty(edit_mobile_number.text.toString())) {
                     Toast.makeText(this, "Please enter mobile number", Toast.LENGTH_SHORT).show()
-                }
-               /* else if (edit_mobile_number.text.toString().length != 10) {
-                    Toast.makeText(this, "Please enter valid mobile number", Toast.LENGTH_SHORT)
-                        .show()
-                }*/ else {
+                } else {
                     if (isInternetAvailable()) {
                         showProgress()
                         val request = VerifyUserRequest(
@@ -72,24 +68,15 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
         Toast.makeText(this, verifyUserResponse.message, Toast.LENGTH_SHORT).show()
         val mobile: String = edit_mobile_number.getText().toString().trim()
         val intent = Intent(this, OtpVerificationActivity::class.java)
-        intent.putExtra("mobile", mobile);
-        intent.putExtra("userId", verifyUserResponse.data.toString());
+        intent.putExtra("mobile", mobile)
+        intent.putExtra("intent_from", "forgotPass")
+        intent.putExtra("userId", verifyUserResponse.data.toString())
         startActivity(intent)
+
     }
 
     override fun showServerError(error: String) {
         dismissProgress()
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
-                } else if (edit_mobile_number.text.toString().length != 10) {
-                    Toast.makeText(this, "Please enter valid mobile number", Toast.LENGTH_SHORT).show()
-                } else {
-                    val mobile: String = edit_mobile_number.getText().toString().trim()
-                    var intent = Intent(this, OtpVerificationActivity::class.java)
-                    intent.putExtra("mobile", mobile)
-                    intent.putExtra("intent_from", "forgotPass")
-                    startActivity(intent)
-                }
-            }
         }
     }
-}

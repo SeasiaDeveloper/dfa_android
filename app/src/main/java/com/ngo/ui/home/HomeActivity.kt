@@ -5,8 +5,12 @@ import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 import com.ngo.R
+import com.ngo.adapters.TabLayoutAdapter
 import com.ngo.base.BaseActivity
+import com.ngo.ui.home.fragments.HomeFragment
 import kotlinx.android.synthetic.main.home_activity.*
 
 
@@ -28,6 +32,14 @@ class HomeActivity : BaseActivity() {
         mDrawerLayout!!.addDrawerListener(mToggle!!)
         mToggle!!.syncState()
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        val adapter = TabLayoutAdapter(supportFragmentManager)
+        adapter.addFragment(HomeFragment(), "Home")
+        adapter.addFragment(HomeFragment(), "Cases")
+        adapter.addFragment(HomeFragment(), "Photo(s)")
+        adapter.addFragment(HomeFragment(), "Video(s)")
+        viewPager?.adapter = adapter
+        tabs.setupWithViewPager(viewPager)
     }
 
     override fun handleKeyboard(): View {
