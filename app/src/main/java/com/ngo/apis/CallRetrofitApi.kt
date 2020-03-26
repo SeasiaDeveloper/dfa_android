@@ -1,5 +1,6 @@
 package com.ngo.apis
 
+import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.ChangePasswordRequest
 import com.ngo.pojo.request.VerifyUserRequest
 import com.ngo.pojo.response.*
@@ -56,5 +57,9 @@ interface CallRetrofitApi {
     @Multipart
     @POST("jwt-auth/v1/edit_profile")
     fun updateProfile(@PartMap params: HashMap<String,RequestBody>, @Part profile_pic: MultipartBody.Part): Call<SignupResponse>
+
+    @Multipart
+    @POST("jwt-auth/v1/crime_list")
+    fun getCases(@PartMap params: HashMap<String,RequestBody>): Call<GetCasesResponse>
 
 }

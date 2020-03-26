@@ -30,7 +30,7 @@ object ApiClient {
     fun getClientWithToken(): Retrofit {
         val builder = OkHttpClient.Builder().readTimeout(45, TimeUnit.SECONDS).connectTimeout(45, TimeUnit.SECONDS).addInterceptor { chain ->
             val builder = chain.request().newBuilder()
-            val build = builder.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9zdGdzcC5hcHBzbmRldnMuY29tOjkwNDFcL2RydWdmcmVlIiwiaWF0IjoxNTg1MTQ3OTQ0LCJuYmYiOjE1ODUxNDc5NDQsImV4cCI6MTU4NTc1Mjc0NCwiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMzgifX19.yl9xlj3mHJZBmGVerSH6l7UqSIw1_fSKNeQXYkfZIaI").
+            val build = builder.addHeader("Authorization", "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9zdGdzcC5hcHBzbmRldnMuY29tOjkwNDFcL2RydWdmcmVlIiwiaWF0IjoxNTg1MTEwODYyLCJuYmYiOjE1ODUxMTA4NjIsImV4cCI6MTU4NTcxNTY2MiwiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMjkifX19.pLRaonhKDJwOQIq7MJtbkm3exbcdNlKWJ0LDseLEtB0").
                 build()
             chain.proceed(build)
         }
