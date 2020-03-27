@@ -111,4 +111,26 @@
     <string name="confirm_pass_mismatch_pass">Confirm Password doesnot match Password</string>
     <string name="verify_mobileno">Verify Mobile</string>
     <string name="enter_mobileno">"Please enter your Mobile Number "</string>
+
+
+    <!-- Navigation Drawer menu labels -->
+    <string name="nav_my_cases">My Cases</string>
+    <string name="nav_edit_profile">Edit Profile</string>
+    <string name="nav_password">Change Password</string>
+    <string name="nav_my_earning">My Earning</string>
+    <string name="nav_invite_friends">Invite Friends</string>
+    <string name="nav_terms_and_conditions">Terms and Condition</string>
+    <string name="nav_logout">Logout</string>
+
+    <!-- Toolbar titles when navigation menu item is selected -->
+    <string-array name="nav_item_activity_titles">
+        <item>My Cases</item>
+        <item>Edit Profile</item>
+        <item>Change Password</item>
+        <item>My Earning</item>
+        <item>Invite Friends</item>
+        <item>Terms and Condition</item>
+        <item>Logout</item>
+    </string-array>
+
 </resources>

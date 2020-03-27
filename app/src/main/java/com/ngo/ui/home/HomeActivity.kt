@@ -2,21 +2,21 @@ package com.ngo.ui.home
 
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.viewpager.widget.ViewPager
-import com.google.android.material.tabs.TabLayout
+import com.google.android.material.navigation.NavigationView
 import com.ngo.R
 import com.ngo.adapters.TabLayoutAdapter
 import com.ngo.base.BaseActivity
-import com.ngo.ui.dashboard.DashboardFragment
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.HomeFragment
 import kotlinx.android.synthetic.main.home_activity.*
 
 
-class HomeActivity : BaseActivity() {
+class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
     private var mDrawerLayout: DrawerLayout? = null
     private var mToggle: ActionBarDrawerToggle? = null
     private var mToolbar: Toolbar? = null
@@ -38,6 +38,7 @@ class HomeActivity : BaseActivity() {
             getSupportActionBar()?.setDisplayShowTitleEnabled(false)
         }
 
+
         val adapter = TabLayoutAdapter(supportFragmentManager)
         adapter.addFragment(GeneralPublicHomeFragment(), "Home")
         adapter.addFragment(HomeFragment(), "Cases")
@@ -45,9 +46,20 @@ class HomeActivity : BaseActivity() {
         adapter.addFragment(HomeFragment(), "Video(s)")
         viewPager?.adapter = adapter
         tabs.setupWithViewPager(viewPager)
+        nav_view?.setNavigationItemSelectedListener(this)
     }
 
-    override fun handleKeyboard(): View {
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.nav_edit_profile -> {
+                Toast.makeText(this, "Edit Profile clicked", Toast.LENGTH_SHORT).show()
+            }
+        }
+        drawerLayout.closeDrawer(GravityCompat.START)
+        return true
+    }
+
+        override fun handleKeyboard(): View {
         return drawerLayout
     }
 
