@@ -128,6 +128,8 @@ class CasesAdapter(
                         itemView.img_like_red_post.visibility = View.GONE
                         item.is_liked = 0 //the post is disliked
                     }
+
+                    listener.changeLikeStatus(item)
                 }
 
             }
@@ -192,6 +194,8 @@ class CasesAdapter(
                         itemView.img_like_red.visibility = View.GONE
                         item.is_liked = 0 //the post is disliked
                     }
+
+                    listener.changeLikeStatus(item)
                 }
             }
         }

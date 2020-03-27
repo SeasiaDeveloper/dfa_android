@@ -64,7 +64,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     private var complaints: List<GetCasesResponse.DataBean> = mutableListOf()
-    private lateinit var adapter: CasesAdapter
+    private var adapter: CasesAdapter? = null
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -178,14 +178,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         Utilities.dismissProgress()
         complaints = response.data!!
         if (complaints.isNotEmpty()) {
-            tvRecord.visibility = View.GONE
-            adapter = CasesAdapter(activity!!, complaints.toMutableList(), this, 1)
+            tvRecord?.visibility = View.GONE
+            adapter = CasesAdapter(mContext, complaints.toMutableList(), this, 1)
             val horizontalLayoutManager = LinearLayoutManager(
-                activity,
+                mContext,
                 RecyclerView.VERTICAL, false
             )
-            rvPublic.layoutManager = horizontalLayoutManager
-            rvPublic.adapter = adapter
+            rvPublic?.layoutManager = horizontalLayoutManager
+            rvPublic?.adapter = adapter
         } else {
             tvRecord.visibility = View.VISIBLE
         }
@@ -213,19 +213,18 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun onResume() {
         super.onResume()
-        if (change == 1) {
-            /*val casesRequest = CasesRequest("1", "","-1") //type = -1 for fetching all the data
-            Utilities.showProgress(activity!!)
-            presenter.getComplaints(casesRequest,token)*/
-            change = 0
-
-        }
-
-        if (isFirst) {
+        if (isFirst ) {
             isFirst = false
             val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
             Utilities.showProgress(mContext)
             presenter.getComplaints(casesRequest, token)
+        }
+       else if (change == 1) {
+            val casesRequest = CasesRequest("1", "","-1") //type = -1 for fetching all the data
+            Utilities.showProgress(activity!!)
+            presenter.getComplaints(casesRequest,token)
+            change = 0
+
         }
     }
 
@@ -252,7 +251,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
-      //  Utilities.showProgress(activity!!)
+        //  Utilities.showProgress(activity!!)
         presenter.getComplaints(casesRequest, token)
     }
 
@@ -263,5 +262,19 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             Utilities.showProgress(mContext)
             presenter.getComplaints(casesRequest, token)
         }
+    }
+
+    override fun changeLikeStatus(complaintsData: GetCasesResponse.DataBean) {
+        Utilities.showProgress(mContext)
+        val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
+        //delete the item based on id
+        presenter.changeLikeStatus(token!!, complaintsData.id!!)
+    }
+
+    override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
+        Utilities.showMessage(mContext, responseObject.message!!)
+        val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
+        //  Utilities.showProgress(activity!!)
+        presenter.getComplaints(casesRequest, token)
     }
 }

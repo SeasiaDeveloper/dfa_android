@@ -67,12 +67,12 @@ class PhotosFragment :Fragment(), PhotosView {
         photos = response.data!!
         adapter.changeList(photos.toMutableList())
         if (photos.isNotEmpty()) {
-            tvRecord.visibility = View.GONE
-            rvPhotos.visibility = View.VISIBLE
+            tvRecord?.visibility = View.GONE
+            rvPhotos?.visibility = View.VISIBLE
 
         } else {
-            tvRecord.visibility = View.VISIBLE
-            rvPhotos.visibility = View.GONE
+            tvRecord?.visibility = View.VISIBLE
+            rvPhotos?.visibility = View.GONE
         }
 
     }
