@@ -1,8 +1,6 @@
 package com.ngo.apis
 
-import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.ChangePasswordRequest
-import com.ngo.pojo.request.VerifyUserRequest
 import com.ngo.pojo.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -84,4 +82,9 @@ interface CallRetrofitApi {
     @Multipart
     @POST("jwt-auth/v1/delete_complaint")
     fun deleteComplaintOrPost(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<DeleteComplaintResponse>
+    @Multipart
+    @POST("jwt-auth/v1/crime_media")
+    fun getcrime_media(@PartMap params:HashMap<String, RequestBody>): Call<GetPhotosResponse>
+
+
 }
