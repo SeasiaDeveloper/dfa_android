@@ -8,6 +8,7 @@ import com.ngo.ui.home.fragments.cases.model.CasesModel
 import com.ngo.ui.home.fragments.cases.view.CasesView
 
 class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
+
     var model = CasesModel(this)
 
     override fun createPost(request: CreatePostRequest) {
@@ -22,7 +23,6 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
     override fun showError(error: String) {
         view.showServerError(error)
     }
-
 
     override fun onGetCompaintsSuccess(response: GetCasesResponse) {
         view.showGetComplaintsResponse(response)

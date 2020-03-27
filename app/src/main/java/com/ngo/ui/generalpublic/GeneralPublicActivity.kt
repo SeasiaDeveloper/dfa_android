@@ -67,10 +67,10 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private var complaintsPresenter: PublicComplaintPresenter = PublicComplaintPresenterImpl(this)
     private var range = 1
     private var mediaType: String? = null
-    private var SELECT_VIDEOS: Int = 2;
-    private var SELECT_VIDEOS_KITKAT: Int = 2;
-    private var CAMERA_REQUEST_CODE_VEDIO: Int = 3;
-    private lateinit var mediaControls: MediaController;
+    private var SELECT_VIDEOS: Int = 2
+    private var SELECT_VIDEOS_KITKAT: Int = 2
+    private var CAMERA_REQUEST_CODE_VEDIO: Int = 3
+    private lateinit var mediaControls: MediaController
 
     private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
     override fun getLayout(): Int {
@@ -128,7 +128,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.tvSelectPhoto -> {
-                path=""
+                path = ""
                 val resultGallery = getMarshmallowPermission(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
@@ -137,7 +137,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     galleryIntent()
             }
             R.id.tvTakePhoto -> {
-                path=""
+                path = ""
                 val resultCamera = getMarshmallowPermission(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
@@ -146,7 +146,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     cameraIntent()
             }
             R.id.tvRecordVideo -> {
-                path=""
+                path = ""
                 val resultVideo = getMarshmallowPermission(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
@@ -156,7 +156,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
 
             R.id.tvTakeVideo -> {
-                path=""
+                path = ""
                 val resultVideo = getMarshmallowPermission(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
@@ -165,7 +165,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     recordVideo()
             }
             R.id.btnSubmit -> {
-                complaintsPresenter.checkValidations(1, path, etDescription.text.toString())
+                complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
             }
         }
     }
@@ -216,15 +216,14 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private fun videoFromGalleryIntent() {
         if (Build.VERSION.SDK_INT < 19) {
             var intent = Intent()
-            intent.setType("video/mp4");
-            //intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            intent.setType("video/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select videos"), SELECT_VIDEOS);
         } else {
             var intent = Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            intent.setType("video/mp4");
+            // intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("video/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(intent, SELECT_VIDEOS_KITKAT);
         }
     }
@@ -381,34 +380,35 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             imgView.visibility = View.GONE
             videoView.visibility = View.VISIBLE
             if (intent?.data != null) {
-                var path = intent.getData()?.getPath()
-                if (path!!.contains("video")) {
-                   var realpath =  RealPathUtil.getRealPath(this, intent.data!!)
+                var imagePath = intent.getData()?.getPath()
+                if (imagePath!!.contains("video")) {
+                    var realpath = RealPathUtil.getRealPath(this, intent.data!!)
                     val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
-                   // imgView.setImageBitmap(thumbnail)
+                    // imgView.setImageBitmap(thumbnail)
+
                     showVideo(intent.data.toString())
-
                 }
-
+                pathOfImages = ArrayList<String>()
+                pathOfImages.add(RealPathUtil.getRealPath(this, intent.data!!).toString())
             }
-
-
         } else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
             mediaType = "videos"
             imgView.visibility = View.GONE
             videoView.visibility = View.VISIBLE
-            val videoUri = intent?.getData();
-            path = getRealPathFromURI(videoUri!!);
+            val videoUri = intent?.getData()
+            path = getRealPathFromURI(videoUri!!)
+            pathOfImages = ArrayList<String>()
+            pathOfImages.add(path)
             showVideo(path)
         }
     }
-
 
     fun showVideo(videoUri: String) {
         mediaControls = MediaController(this)
         mediaControls.setAnchorView(videoView)
         videoView.setMediaController(mediaControls)
         videoView.setVideoURI(Uri.parse(videoUri))
+        videoView.seekTo(100);
     }
 
     private fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
@@ -443,7 +443,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         rightValue: Float,
         isFromUser: Boolean
     ) {
-
         // Utilities.showMessage(this, leftValue.toString())
         range = Math.ceil(leftValue.toDouble()).toInt()
     }
@@ -476,9 +475,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
         if (isInternetAvailable()) {
             showProgress()
-           /* var name = "Nabam Serbang"
-            var contact = "911234567890"
-            var email = "nabam@gmail.com"*/
+            /* var name = "Nabam Serbang"
+             var contact = "911234567890"
+             var email = "nabam@gmail.com"*/
             val request = ComplaintRequest(
                 //name,
                 // contact,
@@ -501,7 +500,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
     override fun showEmptyLevelError() {
         dismissProgress()
-        Utilities.showMessage(this,getString(R.string.select_urgency_level))
+        Utilities.showMessage(this, getString(R.string.select_urgency_level))
     }
 
     override fun showEmptyDescError() {

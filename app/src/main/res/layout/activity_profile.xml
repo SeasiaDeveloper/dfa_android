@@ -221,12 +221,15 @@
                 android:padding="@dimen/_7sdp" />
 
             <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/isVerified"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:text="@string/verified"
+                android:focusable="false"
+                android:enabled="false"
                 android:textSize="@dimen/_16sdp" />
 
             <LinearLayout

@@ -39,7 +39,7 @@ class PublicComplaintPresenterImpl(private var complaintsView: PublicComplaintVi
         complaintsView.getCrimeTyepLstFailure(error)
     }
 
-    override fun checkValidations(level: Int, image: String, description: String) {
+    override fun checkValidations(level: Int, image: ArrayList<String>, description: String) {
         complaintsModel.setValidation(level, image, description)
     }
 

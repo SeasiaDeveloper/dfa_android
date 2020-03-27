@@ -45,10 +45,6 @@ class ProfilePresenterImplClass(private var profileView: ProfileView):ProfilePre
 
     private var profileModel: ProfileModel = ProfileModel(this)
 
-    override fun updateProfile(request: SignupRequest) {
-        profileModel.updateProfile(request) //hit update profile api in model class
-    }
-
     override fun checkValidations(signupRequest: SignupRequest) {
         profileModel.setValidation(signupRequest)
     }
@@ -67,6 +63,10 @@ class ProfilePresenterImplClass(private var profileView: ProfileView):ProfilePre
 
    override fun onValidationSuccess(request: SignupRequest) {
         profileView.onValidationSuccess(request)
+    }
+
+    override fun updateProfile(request: SignupRequest, token: String?) {
+        profileModel.updateProfile(request,token) //hit update profile api in model class
     }
 
     override fun onSuccessfulUpdation(responseObject: SignupResponse) {

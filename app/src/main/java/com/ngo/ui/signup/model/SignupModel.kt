@@ -123,7 +123,7 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
                     if (responseObject.code == 200) {
                         signupPresenterImplClass.onSaveDetailsSuccess(responseObject)
                     } else {
-                        signupPresenterImplClass.onSaveDetailsFailed(
+                        signupPresenterImplClass.showError(
                             response.body()?.message ?: Constants.SERVER_ERROR
                         )
                     }

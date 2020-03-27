@@ -28,9 +28,9 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
     fun fetchComplaints(casesRequest: CasesRequest) {
         val retrofitApi = ApiClient.getClientWithToken().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
-        map["all"] = toRequestBody(casesRequest.all)
+        map["all"] = toRequestBody(casesRequest.all) //zero for my case 1 for all case
         map["search"] = toRequestBody(casesRequest.search)
-
+        map["type"] = toRequestBody(casesRequest.type) //type = 0 for cases
         retrofitApi.getCases(map).enqueue(object : Callback<GetCasesResponse> {
             override fun onResponse(
                 call: Call<GetCasesResponse>,
@@ -92,4 +92,5 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
             }
         })
     }
+
 }

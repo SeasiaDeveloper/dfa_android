@@ -24,12 +24,12 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
     }
 
 
-    fun setValidation(level: Int, image: String, description: String) {
+    fun setValidation(level: Int, image: ArrayList<String>, description: String) {
         if (level == 0) {
             complaintsPresenter.onEmptyLevel()
             return
         }
-        if (image.isEmpty()) {
+        if (image.size == 0) {
             complaintsPresenter.onEmptyImage()
             return
         }

@@ -13,7 +13,7 @@ interface PublicComplaintPresenter:BasePresenter {
     fun onGetCrimeTypes(token: String?)
     fun onGetCrimeTypesSuccess(getCrimeTypesResponse: GetCrimeTypesResponse)
     fun onGetCrimeTypesFailure(error:String)
-    fun checkValidations(level:Int,image:String,description:String)
+    fun checkValidations(level:Int,image:ArrayList<String>,description:String)
     fun onSaveDetailsSuccess(response: ComplaintResponse)
     fun onSaveDetailsFailed(error: String)
     fun saveDetailsRequest(token:String?,request: ComplaintRequest)
