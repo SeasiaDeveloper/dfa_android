@@ -95,13 +95,14 @@ class CasesAdapter(
 
                 //btnDelete visibility
                 if (item.showDelete == 1) {
-                    itemView.btnDeletePost.visibility == View.VISIBLE
+                    itemView.btnDeletePost.visibility = View.VISIBLE
                 } else {
-                    itemView.btnDeletePost.visibility == View.GONE
+                    itemView.btnDeletePost.visibility = View.GONE
                 }
 
                 itemView.btnDeletePost.setOnClickListener {
                     //api to delete post
+                    listener.onDeleteItem(item)
                 }
 
 
@@ -158,14 +159,14 @@ class CasesAdapter(
                     }
                 }
                 if (item.showDelete == 1) {
-                    itemView.btnDelete.visibility == View.VISIBLE
+                    itemView.btnDelete.visibility = View.VISIBLE
                 } else {
-                    itemView.btnDelete.visibility == View.GONE
+                    itemView.btnDelete.visibility = View.GONE
                 }
 
                 itemView.btnDelete.setOnClickListener {
                     //hit api to delete complaint
-
+                    listener.onDeleteItem(item)
                 }
 
                 //like:

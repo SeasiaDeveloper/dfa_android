@@ -63,18 +63,25 @@ interface CallRetrofitApi {
 
     @Multipart
     @POST("jwt-auth/v1/edit_profile")
-    fun updateProfile(@PartMap params: HashMap<String, RequestBody>, @Part profile_pic: MultipartBody.Part,@Header("Authorization") authorization: String?): Call<SignupResponse>
+    fun updateProfile(
+        @PartMap params: HashMap<String, RequestBody>, @Part profile_pic: MultipartBody.Part, @Header(
+            "Authorization"
+        ) authorization: String?
+    ): Call<SignupResponse>
 
     @Multipart
     @POST("jwt-auth/v1/edit_profile")
-    fun updateProfileWithoutImage(@PartMap params: HashMap<String, RequestBody>,@Header("Authorization") authorization: String?): Call<SignupResponse>
+    fun updateProfileWithoutImage(@PartMap params: HashMap<String, RequestBody>, @Header("Authorization") authorization: String?): Call<SignupResponse>
 
     @Multipart
     @POST("jwt-auth/v1/crime_list")
-    fun getCases(@PartMap params: HashMap<String, RequestBody>): Call<GetCasesResponse>
+    fun getCases(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<GetCasesResponse>
 
     @Multipart
     @POST("jwt-auth/v1/create_post")
-    fun addPost(@PartMap params: HashMap<String, RequestBody>, @Part post_pics: MultipartBody.Part): Call<GetCasesResponse>
+    fun addPost(@Header("Authorization") authorization: String, @PartMap params: HashMap<String, RequestBody>, @Part post_pics: MultipartBody.Part): Call<GetCasesResponse>
 
+    @Multipart
+    @POST("jwt-auth/v1/delete_complaint")
+    fun deleteComplaintOrPost(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<DeleteComplaintResponse>
 }

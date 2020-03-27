@@ -14,18 +14,22 @@ import com.ngo.R
 import com.ngo.adapters.CasesAdapter
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
+import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
+import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_cases.*
 
 class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
+
     private lateinit var mContext: Context
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
     private var complaints: List<GetCasesResponse.DataBean> = mutableListOf()
     lateinit var casesRequest: CasesRequest
+    var token: String = ""
 
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
         Utilities.dismissProgress()
@@ -45,11 +49,12 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
                 casesRequest = CasesRequest(
                     "1",
                     etSearch.text.toString(),
-               "0" ) //all = "1" for fetching all the cases whose type = 0
+                    "0"
+                ) //all = "1" for fetching all the cases whose type = 0
 
                 Utilities.showProgress(mContext)
                 //hit api with search variable
-                presenter.getComplaints(casesRequest)
+                presenter.getComplaints(casesRequest,token)
             }
 
             override fun beforeTextChanged(
@@ -80,6 +85,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
+        token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
     }
 
     override fun onItemClick(complaintsData: GetCasesResponse.DataBean, type: String) {
@@ -104,17 +110,37 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
         )
         rvPublic.layoutManager = horizontalLayoutManager
 
-        casesRequest = CasesRequest(
-            "1",
-            etSearch.text.toString(),
-            "0"
-        ) //all = "1" and for fetching all the cases which are of type = 0
-
-        Utilities.showProgress(mContext)
-        presenter.getComplaints(casesRequest)
     }
 
     override fun onPostAdded(responseObject: GetCasesResponse) {
         //nothing to do
     }
+
+    override fun onDeleteItem(complaintsData: GetCasesResponse.DataBean) {
+        val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
+        //delete the item based on id
+        presenter.deleteComplaint(token!!, complaintsData.id!!)
+    }
+
+    override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
+        Utilities.showMessage(mContext, responseObject.message!!)
+        val casesRequest = CasesRequest("1", "", "0") //type = -1 for fetching all the data
+        Utilities.showProgress(activity!!)
+        presenter.getComplaints(casesRequest,token)
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (isVisibleToUser) {
+            casesRequest = CasesRequest(
+                "1",
+                etSearch.text.toString(),
+                "0"
+            ) //all = "1" and for fetching all the cases which are of type = 0
+
+            Utilities.showProgress(mContext)
+            presenter.getComplaints(casesRequest,token)
+        }
+    }
+
 }
