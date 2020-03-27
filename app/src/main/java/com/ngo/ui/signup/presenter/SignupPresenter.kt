@@ -8,7 +8,7 @@ import com.ngo.pojo.response.SignupResponse
 interface SignupPresenter : BasePresenter {
     fun onValidationSuccess(signupRequest: SignupRequest)
     fun checkValidations( signupRequest: SignupRequest)
-    fun saveSignUpDetails(signupRequest: SignupRequest)
+    fun saveSignUpDetails(signupRequest: SignupRequest,token:String?)
     fun onSaveDetailsSuccess(response: SignupResponse)
     fun onSaveDetailsFailed(error: String)
     fun getDist()

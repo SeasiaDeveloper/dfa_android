@@ -72,15 +72,18 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         nav_view?.setNavigationItemSelectedListener(this)
     }
 
-    private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, website
+    private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
         textName.setText(getProfileResponse.data?.first_name + " " + getProfileResponse.data?.middle_name + " " + getProfileResponse.data?.last_name)
         textAddress.setText(getProfileResponse.data?.address_1)
-        Glide.with(this).load(getProfileResponse.data?.profile_pic)
-            /*  .crossFade()
-              .thumbnail(0.5f)
-              .bitmapTransform(CircleTransform(this))
-              .diskCacheStrategy(DiskCacheStrategy.ALL)*/
-            .into(imageNavigator)
+        if (getProfileResponse.data?.profile_pic != null) {
+            Glide.with(this).load(getProfileResponse.data?.profile_pic)
+                /*  .crossFade()
+                  .thumbnail(0.5f)
+                  .bitmapTransform(CircleTransform(this))
+                  .diskCacheStrategy(DiskCacheStrategy.ALL)*/
+                .into(imageNavigator)
+        }
+
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {

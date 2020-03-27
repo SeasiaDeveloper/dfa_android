@@ -23,7 +23,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         return RequestBody.create(MediaType.parse("application/json"), value)
     }
 
-    private val imgMediaType="image/*"
+    private val imgMediaType = "image/*"
 
     fun fetchComplaints(casesRequest: CasesRequest) {
         val retrofitApi = ApiClient.getClientWithToken().create(CallRetrofitApi::class.java)
@@ -56,19 +56,34 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         })
     }
 
-    fun createPost(request: CreatePostRequest) {
-        val retrofitApi = ApiClient.getClientWithToken().create(CallRetrofitApi::class.java)
+    fun createPost(request: CreatePostRequest, token: String?) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["info"] = toRequestBody(request.info)
         map["media_type"] = toRequestBody(request.media_type)
 
 
-        val file = File(request.post_pics[0])
-        val post_pics = MultipartBody.Part.createFormData("post_pics", file.name,
-            RequestBody.create(MediaType.parse(imgMediaType), file)
-        )
+        /*    val file = File(request.post_pics[0])
+            val post_pics = MultipartBody.Part.createFormData("post_pics", file.name,
+                RequestBody.create(MediaType.parse(imgMediaType), file)
+            )*/
 
-        retrofitApi.addPost(map, post_pics).enqueue(object : Callback<GetCasesResponse> {
+        val parts = arrayOfNulls<MultipartBody.Part>(request.post_pics.size)
+        if (request.media_type.equals("photos")) {
+            for (i in 0 until request.post_pics.size) {
+                val file = File(request.post_pics.get(i))
+                val surveyBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
+                parts[i] = MultipartBody.Part.createFormData("post_pics[]", file.name, surveyBody)
+            }
+        } else {
+            for (i in 0 until request.post_pics.size) {
+                val file = File(request.post_pics.get(i))
+                val surveyBody: RequestBody = RequestBody.create(MediaType.parse("video/*"), file)
+                parts[i] = MultipartBody.Part.createFormData("post_pics[]", file.name, surveyBody)
+            }
+        }
+
+        retrofitApi.addPost(map, parts, token).enqueue(object : Callback<GetCasesResponse> {
             override fun onFailure(call: Call<GetCasesResponse>, t: Throwable) {
                 presenter.showError(t.message + "")
             }

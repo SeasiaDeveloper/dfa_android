@@ -96,8 +96,10 @@ class ProfileActivity : BaseActivity(), ProfileView {
         val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
         var jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
         if (jsondata != null) {
-            Glide.with(this).load(jsondata.data?.profile_pic)
-                .into(imgProfile)
+            if (jsondata.data?.profile_pic != null) {
+                Glide.with(this).load(jsondata.data?.profile_pic)
+                    .into(imgProfile)
+            }
             //path=jsondata.data?.profile_pic!!
             etAddress1.setText(jsondata.data?.address_1)
             etAddress2.setText(jsondata.data?.address_2)
@@ -109,7 +111,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
             for (dist in distList) {
                 if (dist.name.equals(jsondata.data?.district)) {
                     distId = (dist.id).toInt()
-                    spDist.setSelection(distId-1)
+                    spDist.setSelection(distId - 1)
                     break
                 }
             }

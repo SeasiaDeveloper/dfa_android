@@ -10,9 +10,9 @@ import com.ngo.ui.home.fragments.cases.view.CasesView
 class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
     var model = CasesModel(this)
 
-    override fun createPost(request: CreatePostRequest) {
+    override fun createPost(request: CreatePostRequest,token:String?) {
         //hit post api
-        model.createPost(request)
+        model.createPost(request,token)
     }
 
     override fun getComplaints(casesRequest: CasesRequest) {

@@ -461,7 +461,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
     override fun showEmptyImageError() {
         dismissProgress()
-        Utilities.showMessage(this, getString(R.string.please_select_image))
+        Utilities.showMessage(this, getString(R.string.please_select_media))
 
     }
 

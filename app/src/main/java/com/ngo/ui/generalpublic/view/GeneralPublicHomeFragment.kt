@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +16,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ngo.R
 import com.ngo.adapters.CasesAdapter
 import com.ngo.customviews.CenteredToolbar
@@ -28,19 +29,22 @@ import com.ngo.ui.generalpublic.GeneralPublicActivity
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
-import com.ngo.utils.Constants
+import com.ngo.utils.PreferenceHandler
+import com.ngo.utils.RealPathUtil
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_public_home.*
-import kotlinx.android.synthetic.main.fragment_public_home.btnCancel
-import kotlinx.android.synthetic.main.fragment_public_home.toolbarLayout
+
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     OnCaseItemClickListener {
-
+    private var pathOfImages = ArrayList<String>()
     lateinit var binding: FragmentPublicHomeBinding
     lateinit var mContext: Context
     private var IMAGE_REQ_CODE = 101
     private var path: String = ""
+    private var imageUri: Uri? = null
+    private var authorizationToken: String? = ""
+    private var media_type: String? = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,8 +96,10 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             Utilities.showProgress(mContext)
             val pathArray = arrayOf(path)
             //hit api to add post and display post layout
-            val request = CreatePostRequest(edtPostInfo.text.toString(), pathArray, "testt")
-            presenter.createPost(request)
+            val request = CreatePostRequest(edtPostInfo.text.toString(), pathArray, media_type!!)
+            authorizationToken =
+                PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+            presenter.createPost(request, authorizationToken)
             layoutAddPost.visibility = View.VISIBLE
             layoutPost.visibility = View.GONE
         }
@@ -116,11 +122,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     }
 
+
     private fun galleryIntent() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(Intent.createChooser(intent, "Select File"), IMAGE_REQ_CODE)
+        val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        pickIntent.type = "image/* video/*"
+        startActivityForResult(pickIntent, IMAGE_REQ_CODE)
     }
 
     private fun getMarshmallowPermission(permissionRequest: String, requestCode: Int): Boolean {
@@ -134,26 +140,35 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_REQ_CODE && resultCode == Activity.RESULT_OK && null != data) {
-            if (data.data != null) {
-                val imageUri = data.data
-                val wholeID = DocumentsContract.getDocumentId(imageUri)
-                val id =
-                    wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
-                val column = arrayOf(MediaStore.Images.Media.DATA)
-                val sel = MediaStore.Images.Media._ID + "=?"
-                val cursor = mContext.getContentResolver().query(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    column, sel, arrayOf(id), null
-                )
-                val columnIndex = cursor?.getColumnIndex(column[0])
-                if (cursor!!.moveToFirst()) {
-                    path = cursor.getString(columnIndex!!)
+            media_type = "photos"
+            val selectedMedia: Uri = data.getData()!!
+            val cr = mContext.contentResolver
+            val mime = cr.getType(selectedMedia)
+            if (mime?.toLowerCase()?.contains("image")!!) {
+                val selectedImage = data.data
+                val filePathColumn =
+                    arrayOf(MediaStore.Images.Media.DATA)
+                val cursor = activity!!.getContentResolver()
+                    .query(selectedImage!!, filePathColumn, null, null, null)
+                cursor?.moveToFirst()
+                val columnIndex = cursor?.getColumnIndex(filePathColumn[0])
+                val picturePath = cursor?.getString(columnIndex!!)
+                cursor?.close()
+                Glide.with(this).load(picturePath).into(imgPost)
+                path = picturePath!!
+            } else if (mime.toLowerCase().contains("video")) {
+                media_type = "videos"
+                if (data?.data != null) {
+                    var realpath = RealPathUtil.getRealPath(activity!!, data.data!!)
+                    val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
+                    Glide.with(activity!!)
+                        .load(thumbnail)
+                        //.apply(options)
+                        .into(imgPost)
+                    path = RealPathUtil.getRealPath(activity!!, data.data!!).toString()
                 }
-                cursor.close()
-                imgPost.setImageURI(imageUri)
             }
         }
-
     }
 
     override fun onRequestPermissionsResult(
@@ -224,8 +239,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun onPostAdded(responseObject: GetCasesResponse) {
         Utilities.dismissProgress()
-        layoutAddPost.visibility = View.GONE
-        layoutPost.visibility = View.VISIBLE
+        layoutAddPost.visibility = View.VISIBLE
+        layoutPost.visibility = View.GONE
+        edtPostInfo.setText("")
+        imgPost.setImageResource(0)
+        path = ""
         Utilities.showMessage(mContext, responseObject.message!!)
     }
 }

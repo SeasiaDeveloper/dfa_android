@@ -9,5 +9,5 @@ interface CasesPresenter:BasePresenter {
     fun getComplaints(casesRequest: CasesRequest)
     fun onGetCompaintsSuccess(response: GetCasesResponse)
     fun onGetCompaintsFailed(error: String)
-    fun createPost(request: CreatePostRequest)
+    fun createPost(request: CreatePostRequest,token:String?)
 }

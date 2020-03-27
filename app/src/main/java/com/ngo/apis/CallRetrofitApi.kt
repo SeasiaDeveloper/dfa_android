@@ -50,7 +50,15 @@ interface CallRetrofitApi {
 
     @Multipart
     @POST("wp/v2/user/register")
-    fun registerUser(@PartMap params: HashMap<String, RequestBody>, @Part profile_pic: MultipartBody.Part): Call<SignupResponse>
+    fun registerUser(
+        @PartMap params: HashMap<String, RequestBody>, @Part profile_pic: MultipartBody.Part, @Header(
+            "Authorization"
+        ) authorization: String?
+    ): Call<SignupResponse>
+
+    @Multipart
+    @POST("wp/v2/user/register")
+    fun registerUserWithoutProfile(@PartMap params: HashMap<String, RequestBody>, @Header("Authorization") authorization: String?): Call<SignupResponse>
 
     @GET("wp/v2/districts")
     fun getDist(): Call<DistResponse>
@@ -63,11 +71,15 @@ interface CallRetrofitApi {
 
     @Multipart
     @POST("jwt-auth/v1/edit_profile")
-    fun updateProfile(@PartMap params: HashMap<String, RequestBody>, @Part profile_pic: MultipartBody.Part,@Header("Authorization") authorization: String?): Call<SignupResponse>
+    fun updateProfile(
+        @PartMap params: HashMap<String, RequestBody>, @Part profile_pic: MultipartBody.Part, @Header(
+            "Authorization"
+        ) authorization: String?
+    ): Call<SignupResponse>
 
     @Multipart
     @POST("jwt-auth/v1/edit_profile")
-    fun updateProfileWithoutImage(@PartMap params: HashMap<String, RequestBody>,@Header("Authorization") authorization: String?): Call<SignupResponse>
+    fun updateProfileWithoutImage(@PartMap params: HashMap<String, RequestBody>, @Header("Authorization") authorization: String?): Call<SignupResponse>
 
     @Multipart
     @POST("jwt-auth/v1/crime_list")
@@ -75,6 +87,6 @@ interface CallRetrofitApi {
 
     @Multipart
     @POST("jwt-auth/v1/create_post")
-    fun addPost(@PartMap params: HashMap<String, RequestBody>, @Part post_pics: MultipartBody.Part): Call<GetCasesResponse>
+    fun addPost(@PartMap params: HashMap<String, RequestBody>,@Part images: Array<MultipartBody.Part?>,@Header("Authorization") authorization: String?): Call<GetCasesResponse>
 
 }

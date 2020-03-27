@@ -34,12 +34,16 @@ import android.util.Log
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.ngo.ui.OtpVerification.view.OtpVerificationActivity
+import com.ngo.ui.dashboard.DashboardFragment
+import com.ngo.ui.home.HomeActivity
+import com.ngo.ui.login.view.LoginActivity
+import com.ngo.utils.PreferenceHandler
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.activity_public.*
 import kotlinx.android.synthetic.main.activity_signup.btnSubmit
 
 class SignupActivity : BaseActivity(), SignupView {
-
+    private var authorizationToken: String? = ""
     private lateinit var token: String
 
     override fun getLayout(): Int {
@@ -49,7 +53,7 @@ class SignupActivity : BaseActivity(), SignupView {
     override fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.signup)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-         getFirebaseToken()
+        getFirebaseToken()
         if (isInternetAvailable()) {
             showProgress()
             signupPresenter.getDist() //load Districts list
@@ -65,11 +69,11 @@ class SignupActivity : BaseActivity(), SignupView {
                     return@OnCompleteListener
                 }
                 // Get new Instance ID token
-                 token = task.result?.token.toString()
+                token = task.result?.token.toString()
 
                 // Log and toast
 
-    })
+            })
     }
 
     override fun handleKeyboard(): View {
@@ -83,6 +87,12 @@ class SignupActivity : BaseActivity(), SignupView {
     private lateinit var distList: ArrayList<DataBean>
 
     fun setListeners() {
+        btnCancel.setOnClickListener {
+            finish()
+            var intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+        }
         btnSubmit.setOnClickListener {
             val signupReq = SignupRequest(
                 etMobile1.text.toString(),
@@ -98,7 +108,8 @@ class SignupActivity : BaseActivity(), SignupView {
                 etMobile2.text.toString(),
                 etAdharNo.text.toString(),
                 path, etConfirmPassword.text.toString(),
-                token)
+                token
+            )
 
             if (isInternetAvailable()) {
                 showProgress()
@@ -231,7 +242,9 @@ class SignupActivity : BaseActivity(), SignupView {
 
         if (isInternetAvailable()) {
             showProgress()
-            signupPresenter.saveSignUpDetails(signupRequest)
+            authorizationToken =
+                PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
+            signupPresenter.saveSignUpDetails(signupRequest, authorizationToken)
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
@@ -240,6 +253,9 @@ class SignupActivity : BaseActivity(), SignupView {
     override fun showResponse(response: SignupResponse) {
         dismissProgress()
         Utilities.showMessage(this, response.message)
+        finish()
+        var intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
     }
 
     override fun showServerError(error: String) {
