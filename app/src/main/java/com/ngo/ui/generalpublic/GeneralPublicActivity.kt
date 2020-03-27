@@ -165,7 +165,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     recordVideo()
             }
             R.id.btnSubmit -> {
-                complaintsPresenter.checkValidations(1, path, etDescription.text.toString())
+                complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
             }
         }
     }
@@ -380,34 +380,35 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             imgView.visibility = View.GONE
             videoView.visibility = View.VISIBLE
             if (intent?.data != null) {
-                var path = intent.getData()?.getPath()
-                if (path!!.contains("video")) {
-                   var realpath =  RealPathUtil.getRealPath(this, intent.data!!)
+                var imagePath = intent.getData()?.getPath()
+                if (imagePath!!.contains("video")) {
+                    var realpath = RealPathUtil.getRealPath(this, intent.data!!)
                     val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
-                   // imgView.setImageBitmap(thumbnail)
+                    // imgView.setImageBitmap(thumbnail)
+
                     showVideo(intent.data.toString())
-
                 }
-
+                pathOfImages = ArrayList<String>()
+                pathOfImages.add(RealPathUtil.getRealPath(this, intent.data!!).toString())
             }
-
-
         } else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
             mediaType = "videos"
             imgView.visibility = View.GONE
             videoView.visibility = View.VISIBLE
-            val videoUri = intent?.getData();
-            path = getRealPathFromURI(videoUri!!);
+            val videoUri = intent?.getData()
+            path = getRealPathFromURI(videoUri!!)
+            pathOfImages = ArrayList<String>()
+            pathOfImages.add(path)
             showVideo(path)
         }
     }
-
 
     fun showVideo(videoUri: String) {
         mediaControls = MediaController(this)
         mediaControls.setAnchorView(videoView)
         videoView.setMediaController(mediaControls)
         videoView.setVideoURI(Uri.parse(videoUri))
+        videoView.seekTo(100);
     }
 
     private fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
@@ -442,7 +443,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         rightValue: Float,
         isFromUser: Boolean
     ) {
-
         // Utilities.showMessage(this, leftValue.toString())
         range = Math.ceil(leftValue.toDouble()).toInt()
     }
@@ -475,9 +475,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
         if (isInternetAvailable()) {
             showProgress()
-           /* var name = "Nabam Serbang"
-            var contact = "911234567890"
-            var email = "nabam@gmail.com"*/
+            /* var name = "Nabam Serbang"
+             var contact = "911234567890"
+             var email = "nabam@gmail.com"*/
             val request = ComplaintRequest(
                 //name,
                 // contact,

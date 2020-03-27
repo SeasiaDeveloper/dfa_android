@@ -47,9 +47,9 @@ class ProfileActivity : BaseActivity(), ProfileView {
         distList = responseObject.data
         val distValueList = ArrayList<String>()
         for (dist in distList) {
+
             distValueList.add(dist.name)
         }
-        setData()
 
         val distArray = distValueList.toArray(arrayOfNulls<String>(distValueList.size))
 
@@ -59,12 +59,12 @@ class ProfileActivity : BaseActivity(), ProfileView {
             android.R.layout.simple_spinner_item, // Layout
             distArray // Array
         )
-
         // Set the drop down view resource
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
 
         // Finally, data bind the spinner object with dapter
         spDist.adapter = adapter
+        setData()
 
         // Set an on item selected listener for spinner object
         spDist.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
@@ -109,6 +109,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
             for (dist in distList) {
                 if (dist.name.equals(jsondata.data?.district)) {
                     distId = (dist.id).toInt()
+                    spDist.setSelection(distId-1)
                     break
                 }
             }
