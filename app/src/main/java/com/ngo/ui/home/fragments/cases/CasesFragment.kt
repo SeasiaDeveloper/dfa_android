@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_cases.*
 class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
     private lateinit var mContext: Context
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
-    private var complaints: List<GetCasesResponse.Data> = mutableListOf()
+    private var complaints: List<GetCasesResponse.DataBean> = mutableListOf()
     lateinit var casesRequest: CasesRequest
 
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
@@ -44,8 +44,8 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
             override fun afterTextChanged(s: Editable) {
                 casesRequest = CasesRequest(
                     "1",
-                    etSearch.text.toString()
-                ) //all = "1" for fetchng all the cases
+                    etSearch.text.toString(),
+               "0" ) //all = "1" for fetching all the cases whose type = 0
 
                 Utilities.showProgress(mContext)
                 //hit api with search variable
@@ -68,12 +68,12 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
     }
 
     override fun showDescError() {
-        Utilities. dismissProgress()
+        Utilities.dismissProgress()
         Utilities.showMessage(mContext, getString(R.string.please_select_image))
     }
 
     override fun showServerError(error: String) {
-        Utilities. dismissProgress()
+        Utilities.dismissProgress()
         Utilities.showMessage(mContext, error)
     }
 
@@ -82,7 +82,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
         mContext = context
     }
 
-    override fun onItemClick(complaintsData: GetCasesResponse.Data, type: String) {
+    override fun onItemClick(complaintsData: GetCasesResponse.DataBean, type: String) {
         /*  val intent = Intent(mContext, IncidentDetailActivity::class.java)
           intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData)
           startActivity(intent)*/
@@ -104,7 +104,11 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
         )
         rvPublic.layoutManager = horizontalLayoutManager
 
-        casesRequest = CasesRequest("1", etSearch.text.toString()) //all = "1" for fetchng all the cases
+        casesRequest = CasesRequest(
+            "1",
+            etSearch.text.toString(),
+            "0"
+        ) //all = "1" and for fetching all the cases which are of type = 0
 
         Utilities.showProgress(mContext)
         presenter.getComplaints(casesRequest)

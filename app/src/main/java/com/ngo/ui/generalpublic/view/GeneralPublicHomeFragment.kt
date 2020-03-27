@@ -60,7 +60,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         var change = 0
     }
 
-    private var complaints: List<GetCasesResponse.Data> = mutableListOf()
+    private var complaints: List<GetCasesResponse.DataBean> = mutableListOf()
     private lateinit var adapter: CasesAdapter
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
 
@@ -79,7 +79,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         imgAdd.setOnClickListener(this)
         Utilities.showProgress(activity!!)
 
-        val casesRequest = CasesRequest("1", "") //to verify
+        val casesRequest = CasesRequest("1", "","-1")  //type = -1 for fetching both cases and posts
+
         presenter.getComplaints(casesRequest)
 
         txtAddPost.setOnClickListener {
@@ -186,7 +187,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
     }
 
-    override fun onItemClick(complaintsData: GetCasesResponse.Data, type: String) {
+    override fun onItemClick(complaintsData: GetCasesResponse.DataBean, type: String) {
         /* val intent = Intent(activity, IncidentDetailActivity::class.java)
          intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData)
          startActivity(intent)*/
@@ -209,7 +210,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onResume() {
         super.onResume()
         if (change == 1) {
-            val casesRequest = CasesRequest("1", "") //to verify
+            val casesRequest = CasesRequest("1", "","-1") //type = -1 for fetching all the data
             Utilities.showProgress(activity!!)
             presenter.getComplaints(casesRequest)
             change = 0

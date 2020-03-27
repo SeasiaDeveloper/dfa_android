@@ -103,7 +103,7 @@
                             android:layout_marginEnd="@dimen/_14sdp"
                             android:background="@drawable/squarebg_non_curve"
                             android:scaleType="fitXY"
-                            android:src="@drawable/ic_person_blue" />
+                            android:src="@drawable/camera_placeholder" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -113,19 +113,18 @@
                             <ImageView
                                 android:id="@+id/img_attach"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="26dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/attachment_icon" />
 
                             <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/btnPost"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="40dp"
                                 android:layout_marginStart="@dimen/_12sdp"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_marginEnd="@dimen/_8sdp"
                                 android:layout_marginBottom="@dimen/_10sdp"
-                                android:layout_weight="0.3"
                                 android:background="@drawable/button_bg"
                                 android:text="@string/post"
                                 android:textAllCaps="false"
@@ -135,11 +134,10 @@
                             <androidx.appcompat.widget.AppCompatButton
                                 android:id="@+id/btnCancel"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
+                                android:layout_height="40dp"
                                 android:layout_marginTop="@dimen/_10sdp"
                                 android:layout_marginEnd="@dimen/_12sdp"
                                 android:layout_marginBottom="@dimen/_10sdp"
-                                android:layout_weight="0.3"
                                 android:background="@drawable/button_bg"
                                 android:text="@string/cancel"
                                 android:textAllCaps="false"
