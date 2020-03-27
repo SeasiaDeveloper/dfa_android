@@ -10,7 +10,7 @@ interface CasesPresenter:BasePresenter {
     fun getComplaints(casesRequest: CasesRequest,token: String)
     fun onGetCompaintsSuccess(response: GetCasesResponse)
     fun onGetCompaintsFailed(error: String)
-    fun createPost(request: CreatePostRequest,token: String)
+    fun createPost(request: CreatePostRequest,token: String?)
     fun deleteComplaint(token: String, id: String)
     fun onComplaintDeleted(responseObject: DeleteComplaintResponse)
     fun changeLikeStatus(token: String, id: String)

@@ -71,8 +71,8 @@ class SignupPresenterImplClass(private var signupView: SignupView) : SignupPrese
         signupModel.getDist()
     }
 
-    override fun saveSignUpDetails(signupRequest: SignupRequest) {
-        signupModel.userRegisteration(signupRequest) //hit register api in model class
+    override fun saveSignUpDetails(signupRequest: SignupRequest,token:String?) {
+        signupModel.userRegisteration(signupRequest,token) //hit register api in model class
     }
 
     private var signupModel: SignupModel = SignupModel(this)

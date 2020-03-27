@@ -21,6 +21,7 @@
     <string name="police">Police Dashboard</string>
     <string name="ngo">NGO Dashboard</string>
     <string name="please_select_image">Please select image</string>
+    <string name="please_select_media">Please select media</string>
     <string name="select_urgency_level">Please select urgency level</string>
     <string name="please_enter_description">Please enter description</string>
     <string name="ngo_form">NGO Form</string>

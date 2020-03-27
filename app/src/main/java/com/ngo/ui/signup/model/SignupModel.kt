@@ -18,7 +18,7 @@ import java.io.File
 
 class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
 
-    private val imgMediaType="image/*"
+    private val imgMediaType = "image/*"
 
     private fun toRequestBody(value: String): RequestBody {
         return RequestBody.create(MediaType.parse("multipart/form-data"), value)
@@ -54,7 +54,7 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
             }
 
             if ((request.adhar_number).isNotEmpty()) {
-                if (!(Utilities.validateAadharNumber(request.mobile))) {
+                if (!(Utilities.validateAadharNumber(request.adhar_number))) {
                     signupPresenterImplClass.adhaarNoValidationFailure()
                     return
                 }
@@ -88,8 +88,8 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
     }
 
     //hit api to register the user
-    fun userRegisteration(signupRequest: SignupRequest) {
-        val retrofitApi = ApiClient.getClientWithToken().create(CallRetrofitApi::class.java)
+    fun userRegisteration(signupRequest: SignupRequest, token: String?) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["username"] = toRequestBody(signupRequest.username)
         map["email"] = toRequestBody(signupRequest.email)
@@ -104,34 +104,66 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
         map["district_id"] = toRequestBody(signupRequest.district_id)
         map["pin_code"] = toRequestBody(signupRequest.pin_code)
 
-        val file = File(signupRequest.profile_pic)
-        val profileImg = MultipartBody.Part.createFormData("profile_pic", file.name,
-            RequestBody.create(MediaType.parse(imgMediaType), file)
-        )
 
-        retrofitApi.registerUser(map, profileImg).enqueue(object : Callback<SignupResponse> {
-            override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
-                signupPresenterImplClass.showError(t.message + "")
-            }
+        if (!signupRequest.profile_pic.equals("")) {
+            val file = File(signupRequest.profile_pic)
+            val profileImg = MultipartBody.Part.createFormData(
+                "profile_pic", file.name,
+                RequestBody.create(MediaType.parse(imgMediaType), file)
+            )
 
-            override fun onResponse(
-                call: Call<SignupResponse>,
-                response: Response<SignupResponse>
-            ) {
-                val responseObject = response.body()
-                if (responseObject != null) {
-                    if (responseObject.code == 200) {
-                        signupPresenterImplClass.onSaveDetailsSuccess(responseObject)
-                    } else {
-                        signupPresenterImplClass.showError(
-                            response.body()?.message ?: Constants.SERVER_ERROR
-                        )
+            retrofitApi.registerUser(map, profileImg, token)
+                .enqueue(object : Callback<SignupResponse> {
+                    override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
+                        signupPresenterImplClass.showError(t.message + "")
                     }
-                } else {
-                    signupPresenterImplClass.showError(Constants.SERVER_ERROR)
-                }
-            }
-        })
+
+                    override fun onResponse(
+                        call: Call<SignupResponse>,
+                        response: Response<SignupResponse>
+                    ) {
+                        val responseObject = response.body()
+                        if (responseObject != null) {
+                            if (responseObject.code == 200) {
+                                signupPresenterImplClass.onSaveDetailsSuccess(responseObject)
+                            } else {
+                                signupPresenterImplClass.onSaveDetailsFailed(
+                                    response.body()?.message ?: Constants.SERVER_ERROR
+                                )
+                            }
+                        } else {
+                            signupPresenterImplClass.showError(Constants.SERVER_ERROR)
+                        }
+                    }
+                })
+        } else {
+            map["profile_pic"] = toRequestBody("")
+            retrofitApi.registerUserWithoutProfile(map, token)
+                .enqueue(object : Callback<SignupResponse> {
+                    override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
+                        signupPresenterImplClass.showError(t.message + "")
+                    }
+
+                    override fun onResponse(
+                        call: Call<SignupResponse>,
+                        response: Response<SignupResponse>
+                    ) {
+                        val responseObject = response.body()
+                        if (responseObject != null) {
+                            if (responseObject.code == 200) {
+                                signupPresenterImplClass.onSaveDetailsSuccess(responseObject)
+                            } else {
+                                signupPresenterImplClass.onSaveDetailsFailed(
+                                    response.body()?.message ?: Constants.SERVER_ERROR
+                                )
+                            }
+                        } else {
+                            signupPresenterImplClass.showError(Constants.SERVER_ERROR)
+                        }
+                    }
+                })
+        }
+
     }
 
     fun getDist() {
