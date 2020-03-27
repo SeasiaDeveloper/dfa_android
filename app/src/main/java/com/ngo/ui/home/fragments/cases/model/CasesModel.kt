@@ -4,9 +4,8 @@ import com.ngo.apis.ApiClient
 import com.ngo.apis.CallRetrofitApi
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CreatePostRequest
+import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
-import com.ngo.pojo.response.GetComplaintsResponse
-import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.utils.Constants
 import okhttp3.MediaType
@@ -25,13 +24,13 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
 
     private val imgMediaType = "image/*"
 
-    fun fetchComplaints(casesRequest: CasesRequest) {
-        val retrofitApi = ApiClient.getClientWithToken().create(CallRetrofitApi::class.java)
+    fun fetchComplaints(casesRequest: CasesRequest,token: String) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
-        map["all"] = toRequestBody(casesRequest.all)
+        map["all"] = toRequestBody(casesRequest.all) //zero for my case 1 for all case
         map["search"] = toRequestBody(casesRequest.search)
-
-        retrofitApi.getCases(map).enqueue(object : Callback<GetCasesResponse> {
+        map["type"] = toRequestBody(casesRequest.type) //type = 0 for cases
+        retrofitApi.getCases(token, map).enqueue(object : Callback<GetCasesResponse> {
             override fun onResponse(
                 call: Call<GetCasesResponse>,
                 response: Response<GetCasesResponse>
@@ -56,7 +55,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         })
     }
 
-    fun createPost(request: CreatePostRequest, token: String?) {
+    fun createPost(request: CreatePostRequest,token: String) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["info"] = toRequestBody(request.info)
@@ -83,7 +82,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
             }
         }
 
-        retrofitApi.addPost(map, parts, token).enqueue(object : Callback<GetCasesResponse> {
+        retrofitApi.addPost(token,map,parts).enqueue(object : Callback<GetCasesResponse> {
             override fun onFailure(call: Call<GetCasesResponse>, t: Throwable) {
                 presenter.showError(t.message + "")
             }
@@ -96,6 +95,35 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                 if (responseObject != null) {
                     if (responseObject.code == 200) {
                         presenter.onPostAdded(responseObject)
+                    } else {
+                        presenter.showError(
+                            response.body()?.message ?: Constants.SERVER_ERROR
+                        )
+                    }
+                } else {
+                    presenter.showError(Constants.SERVER_ERROR)
+                }
+            }
+        })
+    }
+
+    fun deleteComplaint(token: String, id: String) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        val map = HashMap<String, RequestBody>()
+        map["complaint_id"] = toRequestBody(id)
+        retrofitApi.deleteComplaintOrPost(token ,map).enqueue(object : Callback<DeleteComplaintResponse> {
+            override fun onFailure(call: Call<DeleteComplaintResponse>, t: Throwable) {
+                presenter.showError(t.message + "")
+            }
+
+            override fun onResponse(
+                call: Call<DeleteComplaintResponse>,
+                response: Response<DeleteComplaintResponse>
+            ) {
+                val responseObject = response.body()
+                if (responseObject != null) {
+                    if (responseObject.code == 200) {
+                        presenter.onComplaintDeleted(responseObject)
                     } else {
                         presenter.showError(
                             response.body()?.message ?: Constants.SERVER_ERROR

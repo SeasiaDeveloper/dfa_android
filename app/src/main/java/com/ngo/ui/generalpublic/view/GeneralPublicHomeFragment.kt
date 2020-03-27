@@ -24,11 +24,13 @@ import com.ngo.databinding.FragmentPublicHomeBinding
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CreatePostRequest
+import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.ui.generalpublic.GeneralPublicActivity
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
+import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.RealPathUtil
 import com.ngo.utils.Utilities
@@ -45,6 +47,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     private var imageUri: Uri? = null
     private var authorizationToken: String? = ""
     private var media_type: String? = ""
+    private var token: String = ""
+    var isFirst = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,7 +68,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         var change = 0
     }
 
-    private var complaints: List<GetCasesResponse.Data> = mutableListOf()
+    private var complaints: List<GetCasesResponse.DataBean> = mutableListOf()
     private lateinit var adapter: CasesAdapter
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
 
@@ -83,8 +87,10 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         imgAdd.setOnClickListener(this)
         Utilities.showProgress(activity!!)
 
-        val casesRequest = CasesRequest("1", "") //to verify
-        presenter.getComplaints(casesRequest)
+        val casesRequest =
+            CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
+
+        presenter.getComplaints(casesRequest, token)
 
         txtAddPost.setOnClickListener {
             //show the addPost layout
@@ -201,7 +207,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
     }
 
-    override fun onItemClick(complaintsData: GetCasesResponse.Data, type: String) {
+    override fun onItemClick(complaintsData: GetCasesResponse.DataBean, type: String) {
         /* val intent = Intent(activity, IncidentDetailActivity::class.java)
          intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData)
          startActivity(intent)*/
@@ -224,17 +230,25 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onResume() {
         super.onResume()
         if (change == 1) {
-            val casesRequest = CasesRequest("1", "") //to verify
+            /*val casesRequest = CasesRequest("1", "","-1") //type = -1 for fetching all the data
             Utilities.showProgress(activity!!)
-            presenter.getComplaints(casesRequest)
+            presenter.getComplaints(casesRequest,token)*/
             change = 0
 
+        }
+
+        if (isFirst) {
+            isFirst = false
+            val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
+            Utilities.showProgress(mContext)
+            presenter.getComplaints(casesRequest, token)
         }
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
+        token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
     }
 
     override fun onPostAdded(responseObject: GetCasesResponse) {
@@ -245,5 +259,28 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         imgPost.setImageResource(0)
         path = ""
         Utilities.showMessage(mContext, responseObject.message!!)
+    }
+
+    override fun onDeleteItem(complaintsData: GetCasesResponse.DataBean) {
+        Utilities.showProgress(mContext)
+        val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
+        //delete the item based on id
+        presenter.deleteComplaint(token!!, complaintsData.id!!)
+    }
+
+    override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
+        Utilities.showMessage(mContext, responseObject.message!!)
+        val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
+      //  Utilities.showProgress(activity!!)
+        presenter.getComplaints(casesRequest, token)
+    }
+
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        if (!isFirst) {
+            val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
+            Utilities.showProgress(mContext)
+            presenter.getComplaints(casesRequest, token)
+        }
     }
 }
