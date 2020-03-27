@@ -14,6 +14,8 @@ import com.ngo.base.BaseActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.HomeFragment
 import com.ngo.ui.home.fragments.cases.CasesFragment
+import com.ngo.ui.home.fragments.photos.view.PhotosFragment
+import com.ngo.ui.home.fragments.videos.view.VideosFragment
 import kotlinx.android.synthetic.main.home_activity.*
 
 
@@ -43,8 +45,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val adapter = TabLayoutAdapter(supportFragmentManager)
         adapter.addFragment(GeneralPublicHomeFragment(), "Home")
         adapter.addFragment(CasesFragment(), "Cases")
-        adapter.addFragment(HomeFragment(), "Photo(s)")
-        adapter.addFragment(HomeFragment(), "Video(s)")
+        adapter.addFragment(PhotosFragment(), "Photo(s)")
+        adapter.addFragment(VideosFragment(), "Video(s)")
         viewPager?.adapter = adapter
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)
