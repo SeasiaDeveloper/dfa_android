@@ -243,6 +243,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     override fun onDeleteItem(complaintsData: GetCasesResponse.DataBean) {
+        Utilities.showProgress(mContext)
         val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
         //delete the item based on id
         presenter.deleteComplaint(token!!, complaintsData.id!!)
@@ -251,7 +252,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
-        Utilities.showProgress(activity!!)
+      //  Utilities.showProgress(activity!!)
         presenter.getComplaints(casesRequest, token)
     }
 
