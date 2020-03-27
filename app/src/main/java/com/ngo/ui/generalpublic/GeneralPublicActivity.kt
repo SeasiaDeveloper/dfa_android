@@ -67,10 +67,10 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private var complaintsPresenter: PublicComplaintPresenter = PublicComplaintPresenterImpl(this)
     private var range = 1
     private var mediaType: String? = null
-    private var SELECT_VIDEOS: Int = 2;
-    private var SELECT_VIDEOS_KITKAT: Int = 2;
-    private var CAMERA_REQUEST_CODE_VEDIO: Int = 3;
-    private lateinit var mediaControls: MediaController;
+    private var SELECT_VIDEOS: Int = 2
+    private var SELECT_VIDEOS_KITKAT: Int = 2
+    private var CAMERA_REQUEST_CODE_VEDIO: Int = 3
+    private lateinit var mediaControls: MediaController
 
     private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
     override fun getLayout(): Int {
@@ -128,7 +128,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.tvSelectPhoto -> {
-                path=""
+                path = ""
                 val resultGallery = getMarshmallowPermission(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
@@ -137,7 +137,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     galleryIntent()
             }
             R.id.tvTakePhoto -> {
-                path=""
+                path = ""
                 val resultCamera = getMarshmallowPermission(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
@@ -146,7 +146,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     cameraIntent()
             }
             R.id.tvRecordVideo -> {
-                path=""
+                path = ""
                 val resultVideo = getMarshmallowPermission(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
@@ -156,7 +156,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
 
             R.id.tvTakeVideo -> {
-                path=""
+                path = ""
                 val resultVideo = getMarshmallowPermission(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
@@ -216,15 +216,14 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private fun videoFromGalleryIntent() {
         if (Build.VERSION.SDK_INT < 19) {
             var intent = Intent()
-            intent.setType("video/mp4");
-            //intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+            intent.setType("video/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(Intent.createChooser(intent, "Select videos"), SELECT_VIDEOS);
         } else {
             var intent = Intent(Intent.ACTION_OPEN_DOCUMENT);
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            // intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-            intent.setType("video/mp4");
+            // intent.addCategory(Intent.CATEGORY_OPENABLE);
+            intent.setType("video/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
             startActivityForResult(intent, SELECT_VIDEOS_KITKAT);
         }
     }
@@ -382,7 +381,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             videoView.visibility = View.VISIBLE
             if (data?.data != null) {
                 val videoUri = data.getData()
-                //path = getPath(videoUri!!)
+                path = getPath(videoUri!!)
             }
             showVideo(path)
 
@@ -396,38 +395,25 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
     }
 
-    /*fun getPath(uri: Uri): String {
-        *//*   val projection = arrayOf(MediaStore.Video.Media.DATA)
-           val cursor = getContentResolver().query(uri, projection, null, null, null)
-           if (cursor != null) {
-               val column_index = cursor
-                   .getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
-               cursor.moveToFirst()
-               return cursor.getString(column_index)
-           } else
-               return null!!*//*
-        if (contentResolver != null) {
-            val uriExternal: Uri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            val projection = arrayOf(MediaStore.Images.Media._ID)
-            val cursor = contentResolver.query(uri, projection, null, null, null)
-            if (cursor != null) {
-                var columnIndexID = cursor.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
-                while (cursor.moveToNext()) {
-                    var imageId = cursor.getInt(columnIndexID)
-                    val uriImage = Uri.withAppendedPath(uriExternal, "" + imageId)
-                    path = cursor.getString(imageId)
-                }
-                cursor.close()
+    fun getPath(uri: Uri): String {
+        var projection = arrayOf(MediaStore.Video.Media._ID)
+        var cursor = getContentResolver().query(uri, projection, null, null, null)
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                var column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
+                path = cursor.getString(column_index)
             }
-        }
-        return path
-    }*/
+            cursor.close()
+            return path
+        } else
+            return null!!
+    }
 
     fun showVideo(videoUri: String) {
-        mediaControls = MediaController(this);
-        mediaControls.setAnchorView(videoView);
-        videoView.setMediaController(mediaControls);
-        videoView.setVideoURI(Uri.parse(videoUri));
+        mediaControls = MediaController(this)
+        mediaControls.setAnchorView(videoView)
+        videoView.setMediaController(mediaControls)
+        videoView.setVideoURI(Uri.parse(videoUri))
     }
 
     private fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
@@ -495,9 +481,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
         if (isInternetAvailable()) {
             showProgress()
-           /* var name = "Nabam Serbang"
-            var contact = "911234567890"
-            var email = "nabam@gmail.com"*/
+            /* var name = "Nabam Serbang"
+             var contact = "911234567890"
+             var email = "nabam@gmail.com"*/
             val request = ComplaintRequest(
                 //name,
                 // contact,
@@ -520,7 +506,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
     override fun showEmptyLevelError() {
         dismissProgress()
-        Utilities.showMessage(this,getString(R.string.select_urgency_level))
+        Utilities.showMessage(this, getString(R.string.select_urgency_level))
     }
 
     override fun showEmptyDescError() {

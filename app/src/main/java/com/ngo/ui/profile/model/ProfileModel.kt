@@ -18,7 +18,7 @@ import java.io.File
 
 class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplClass) {
 
-    private val imgMediaType="image/*"
+    private val imgMediaType = "image/*"
 
     private fun toRequestBody(value: String): RequestBody {
         return RequestBody.create(MediaType.parse("multipart/form-data"), value)
@@ -97,8 +97,8 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
     }
 
     //hit update profile api
-    fun updateProfile(request: SignupRequest) {
-        val retrofitApi = ApiClient.getClientWithToken().create(CallRetrofitApi::class.java)
+    fun updateProfile(request: SignupRequest,token:String?) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         // map["username"] = toRequestBody(request.username)
         map["email"] = toRequestBody(request.email)
@@ -113,12 +113,64 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
         map["district_id"] = toRequestBody(request.district_id)
         map["pin_code"] = toRequestBody(request.pin_code)
 
-        val file = File(request.profile_pic)
 
-        val profileImg = MultipartBody.Part.createFormData("profile_pic", file.name,
-            RequestBody.create(MediaType.parse(imgMediaType), file)
-        )
 
+        if (!request.profile_pic.equals("")) {
+            val file = File(request.profile_pic)
+
+            val profileImg = MultipartBody.Part.createFormData(
+                "profile_pic", file.name,
+                RequestBody.create(MediaType.parse(imgMediaType), file)
+            )
+            retrofitApi.updateProfile(map, profileImg,token).enqueue(object : Callback<SignupResponse> {
+                override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
+                    profilePresenterImplClass.showError(t.message + "")
+                }
+
+                override fun onResponse(
+                    call: Call<SignupResponse>,
+                    response: Response<SignupResponse>
+                ) {
+                    val responseObject = response.body()
+                    if (responseObject != null) {
+                        if (responseObject.code == 200) {
+                            profilePresenterImplClass.onSuccessfulUpdation(responseObject)
+                        } else {
+                            profilePresenterImplClass.showError(
+                                response.body()?.message ?: Constants.SERVER_ERROR
+                            )
+                        }
+                    } else {
+                        profilePresenterImplClass.showError(Constants.SERVER_ERROR)
+                    }
+                }
+            })
+        } else {
+            map["profile_pic"] = toRequestBody("")
+            retrofitApi.updateProfileWithoutImage(map,token).enqueue(object : Callback<SignupResponse> {
+                override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
+                    profilePresenterImplClass.showError(t.message + "")
+                }
+
+                override fun onResponse(
+                    call: Call<SignupResponse>,
+                    response: Response<SignupResponse>
+                ) {
+                    val responseObject = response.body()
+                    if (responseObject != null) {
+                        if (responseObject.code == 200) {
+                            profilePresenterImplClass.onSuccessfulUpdation(responseObject)
+                        } else {
+                            profilePresenterImplClass.showError(
+                                response.body()?.message ?: Constants.SERVER_ERROR
+                            )
+                        }
+                    } else {
+                        profilePresenterImplClass.showError(Constants.SERVER_ERROR)
+                    }
+                }
+            })
+        }
 
 
         /*  //profile_img
@@ -127,29 +179,6 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
           // MultipartBody.Part is used to send also the actual filename
           val profileImg = MultipartBody.Part.createFormData("image", file.getName(), requestFile)*/
 
-        retrofitApi.updateProfile(map, profileImg).enqueue(object : Callback<SignupResponse> {
-            override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
-                profilePresenterImplClass.showError(t.message + "")
-            }
-
-            override fun onResponse(
-                call: Call<SignupResponse>,
-                response: Response<SignupResponse>
-            ) {
-                val responseObject = response.body()
-                if (responseObject != null) {
-                    if (responseObject.code == 200) {
-                        profilePresenterImplClass.onSuccessfulUpdation(responseObject)
-                    } else {
-                        profilePresenterImplClass.showError(
-                            response.body()?.message ?: Constants.SERVER_ERROR
-                        )
-                    }
-                } else {
-                    profilePresenterImplClass.showError(Constants.SERVER_ERROR)
-                }
-            }
-        })
 
     }
 }

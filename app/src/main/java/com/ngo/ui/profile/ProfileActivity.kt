@@ -10,32 +10,24 @@ import android.provider.MediaStore
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.gson.GsonBuilder
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.pojo.request.SignupRequest
 import com.ngo.pojo.response.DataBean
 import com.ngo.pojo.response.DistResponse
+import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.profile.presenter.ProfilePresenter
 import com.ngo.ui.profile.presenter.ProfilePresenterImplClass
 import com.ngo.ui.profile.view.ProfileView
+import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_profile.*
-import kotlinx.android.synthetic.main.activity_profile.etAddress1
-import kotlinx.android.synthetic.main.activity_profile.etAddress2
-import kotlinx.android.synthetic.main.activity_profile.etAdharNo
-import kotlinx.android.synthetic.main.activity_profile.etEmail
-import kotlinx.android.synthetic.main.activity_profile.etFirstName
-import kotlinx.android.synthetic.main.activity_profile.etLastName
-import kotlinx.android.synthetic.main.activity_profile.etMiddleName
-import kotlinx.android.synthetic.main.activity_profile.etMobile1
-import kotlinx.android.synthetic.main.activity_profile.etMobile2
-import kotlinx.android.synthetic.main.activity_profile.etPinCode
-import kotlinx.android.synthetic.main.activity_profile.spDist
-import kotlinx.android.synthetic.main.activity_profile.toolbarLayout
 
 class ProfileActivity : BaseActivity(), ProfileView {
 
@@ -45,6 +37,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
     private var profilePresenter: ProfilePresenter = ProfilePresenterImplClass(this)
     private var IMAGE_REQ_CODE = 101
     private lateinit var token: String
+    private var authorizationToken: String? = ""
 
     override fun fetchDistList(responseObject: DistResponse) {
         dismissProgress()
@@ -52,11 +45,11 @@ class ProfileActivity : BaseActivity(), ProfileView {
         setListeners()
 
         distList = responseObject.data
-
         val distValueList = ArrayList<String>()
         for (dist in distList) {
             distValueList.add(dist.name)
         }
+        setData()
 
         val distArray = distValueList.toArray(arrayOfNulls<String>(distValueList.size))
 
@@ -98,6 +91,44 @@ class ProfileActivity : BaseActivity(), ProfileView {
         }
     }
 
+    fun setData() {
+        //  var data = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
+        val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
+        var jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
+        if (jsondata != null) {
+            Glide.with(this).load(jsondata.data?.profile_pic)
+                .into(imgProfile)
+            //path=jsondata.data?.profile_pic!!
+            etAddress1.setText(jsondata.data?.address_1)
+            etAddress2.setText(jsondata.data?.address_2)
+            etMobile1.setText(jsondata.data?.username)
+            etFirstName.setText(jsondata.data?.first_name)
+            etMiddleName.setText(jsondata.data?.middle_name)
+            etLastName.setText(jsondata.data?.last_name)
+
+            for (dist in distList) {
+                if (dist.name.equals(jsondata.data?.district)) {
+                    distId = (dist.id).toInt()
+                    break
+                }
+            }
+            etPinCode.setText(jsondata.data?.pin_code)
+            etMobile2.setText(jsondata.data?.mobile)
+            etEmail.setText(jsondata.data?.email)
+            if (jsondata.data?.isVerified.equals("1")) {
+                isVerified.isSelected = true
+            } else {
+                isVerified.isSelected = false
+            }
+            etAdharNo.isFocusable = false
+            etAdharNo.isEnabled = false
+            etAdharNo.isClickable = false
+            etMobile1.isFocusable = false
+            etMobile1.isEnabled = false
+            etMobile1.isClickable = false
+        }
+    }
+
 
     private fun getFirebaseToken() {
         FirebaseInstanceId.getInstance().instanceId
@@ -114,6 +145,9 @@ class ProfileActivity : BaseActivity(), ProfileView {
     }
 
     fun setListeners() {
+        btnCancel.setOnClickListener {
+            onBackPressed()
+        }
         btnUpdate.setOnClickListener {
             val signupReq = SignupRequest(
                 etMobile1.text.toString(),
@@ -128,8 +162,9 @@ class ProfileActivity : BaseActivity(), ProfileView {
                 etPinCode.text.toString(),
                 etMobile2.text.toString(),
                 etAdharNo.text.toString(),
-                path,"",
-                token)
+                path, "",
+                token
+            )
 
             if (isInternetAvailable()) {
                 showProgress()
@@ -139,12 +174,14 @@ class ProfileActivity : BaseActivity(), ProfileView {
             }
         }
 
-        layout_profile_image.setOnClickListener {   val resultGallery = getMarshmallowPermission(
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
-        )
+        layout_profile_image.setOnClickListener {
+            val resultGallery = getMarshmallowPermission(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
+            )
             if (resultGallery)
-                galleryIntent() }
+                galleryIntent()
+        }
     }
 
     private fun getMarshmallowPermission(permissionRequest: String, requestCode: Int): Boolean {
@@ -211,7 +248,9 @@ class ProfileActivity : BaseActivity(), ProfileView {
 
         if (isInternetAvailable()) {
             showProgress()
-            profilePresenter.updateProfile(request)
+            authorizationToken =
+                PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
+            profilePresenter.updateProfile(request, authorizationToken)
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
@@ -224,7 +263,11 @@ class ProfileActivity : BaseActivity(), ProfileView {
     override fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.edit_profile)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-         getFirebaseToken()
+        (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_arrow)
+        (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
+            onBackPressed()
+        }
+        getFirebaseToken()
         if (isInternetAvailable()) {
             showProgress()
             profilePresenter.getDist() //load Districts list

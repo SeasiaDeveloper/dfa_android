@@ -1,0 +1,10 @@
+package com.ngo.ui.home.view
+
+
+import com.ngo.pojo.response.GetProfileResponse
+
+interface HomeView {
+    fun onGetProfileSucess(getProfileResponse: GetProfileResponse)
+    fun ongetProfileFailure(error: String)
+    fun onShowError(error: String)
+}
