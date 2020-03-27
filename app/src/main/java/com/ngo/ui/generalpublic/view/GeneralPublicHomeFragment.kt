@@ -31,7 +31,6 @@ import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
 import com.ngo.utils.PreferenceHandler
-import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.RealPathUtil
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_public_home.*

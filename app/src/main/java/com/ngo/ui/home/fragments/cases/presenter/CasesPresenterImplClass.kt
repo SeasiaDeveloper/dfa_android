@@ -11,7 +11,7 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
 
     var model = CasesModel(this)
 
-    override fun createPost(request: CreatePostRequest,token: String) {
+    override fun createPost(request: CreatePostRequest,token: String?) {
         //hit post api
         model.createPost(request,token)
     }

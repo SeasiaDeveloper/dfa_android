@@ -55,7 +55,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         })
     }
 
-    fun createPost(request: CreatePostRequest,token: String) {
+    fun createPost(request: CreatePostRequest,token: String?) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["info"] = toRequestBody(request.info)
