@@ -10,6 +10,7 @@ object PreferenceHandler {
     const val DEVICE_ID = "device_id"
     const val LAT = "lat"
     const val LNG = "lng"
+    const val PROFILE_JSON = "profileData"
     const val AUTHORIZATION = "authorization"
     const val DEVICE_TOKEN = "token"
 

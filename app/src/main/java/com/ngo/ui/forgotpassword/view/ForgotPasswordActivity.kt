@@ -29,14 +29,13 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
         val intent = intent
         clicked_from = intent.getStringExtra("clicked_from")
-        if (clicked_from.equals("signup",ignoreCase = true)) {
+        if (clicked_from.equals("signup", ignoreCase = true)) {
             (toolbarLayout as CenteredToolbar).title = getString(R.string.verify_mobileno)
             tvTitleDes.setText(R.string.enter_mobileno)
-        } else if (clicked_from.equals("forgotPassword",ignoreCase = true)) {
+        } else if (clicked_from.equals("forgotPassword", ignoreCase = true)) {
             (toolbarLayout as CenteredToolbar).title = getString(R.string.forgot_password)
             tvTitleDes.setText(R.string.forgot_password_heading)
-        }
-        else {
+        } else {
             // do something
         }
         setListeners()
@@ -55,8 +54,11 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
             R.id.btnSubmit -> {
                 if (TextUtils.isEmpty(edit_mobile_number.text.toString())) {
                     Toast.makeText(this, "Please enter mobile number", Toast.LENGTH_SHORT).show()
+                } else if (edit_mobile_number.text.toString().trim().length != 10) {
+                    Toast.makeText(this, "Please enter valid mobile number", Toast.LENGTH_SHORT)
+                        .show()
                 } else {
-                    if (clicked_from.equals("signup",ignoreCase = true)) {
+                    if (clicked_from.equals("signup", ignoreCase = true)) {
 
                         val mobile: String = edit_mobile_number.getText().toString().trim()
                         val intent = Intent(this, OtpVerificationActivity::class.java)
@@ -64,7 +66,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
                         intent.putExtra("intent_from", clicked_from)
                         startActivity(intent)
 
-                    } else if (clicked_from.equals("forgotPassword",ignoreCase = true)) {
+                    } else if (clicked_from.equals("forgotPassword", ignoreCase = true)) {
 
                         if (isInternetAvailable()) {
                             showProgress()
@@ -76,11 +78,9 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
                             Utilities.showMessage(this, getString(R.string.no_internet_connection))
                         }
 
-                    }
-                    else {
+                    } else {
                         // do something
                     }
-
 
 
                 }
@@ -108,5 +108,5 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
     override fun showServerError(error: String) {
         dismissProgress()
         Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
-        }
     }
+}

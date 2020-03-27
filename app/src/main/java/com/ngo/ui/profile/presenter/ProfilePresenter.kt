@@ -10,7 +10,7 @@ interface ProfilePresenter : BasePresenter {
     fun fetchDistList(responseObject: DistResponse)
     fun checkValidations(signupRequest: SignupRequest)
     fun onValidationSuccess(request: SignupRequest)
-    fun updateProfile(request: SignupRequest)
+    fun updateProfile(request: SignupRequest,token:String?)
     fun onSuccessfulUpdation(responseObject: SignupResponse)
     fun usernameEmptyValidation()
     fun usernameValidationFailure()

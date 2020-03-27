@@ -22,11 +22,11 @@ interface CallRetrofitApi {
 
     @Multipart
     @POST("v1/forwardComplaint")
-    fun addNGOData(@PartMap params: HashMap<String,RequestBody>): Call<NGOResponse>
+    fun addNGOData(@PartMap params: HashMap<String, RequestBody>): Call<NGOResponse>
 
     @Multipart
     @POST("v1/updateComplaint")
-    fun savePoliceStatus(@PartMap params: HashMap<String,RequestBody>): Call<PoliceStatusResponse>
+    fun savePoliceStatus(@PartMap params: HashMap<String, RequestBody>): Call<PoliceStatusResponse>
 
     @GET("v1/showallforwards")
     fun getNgoDetailsForPolice(): Call<GetPoliceFormData>
@@ -46,11 +46,11 @@ interface CallRetrofitApi {
 
     @Multipart
     @POST("wp/v2/user/validate-byphone")
-    fun verifyUser(@PartMap params: HashMap<String,RequestBody>): Call<VerifyUserResponse>
+    fun verifyUser(@PartMap params: HashMap<String, RequestBody>): Call<VerifyUserResponse>
 
     @Multipart
     @POST("wp/v2/user/register")
-    fun registerUser(@PartMap params: HashMap<String,RequestBody>, @Part profile_pic: MultipartBody.Part): Call<SignupResponse>
+    fun registerUser(@PartMap params: HashMap<String, RequestBody>, @Part profile_pic: MultipartBody.Part): Call<SignupResponse>
 
     @GET("wp/v2/districts")
     fun getDist(): Call<DistResponse>
@@ -58,16 +58,23 @@ interface CallRetrofitApi {
     @GET("jwt-auth/v1/crime_types")
     fun getCrimeTypesList(@Header("Authorization") authorization: String?): Call<GetCrimeTypesResponse>
 
+    @POST("jwt-auth/v1/profile")
+    fun getProfileData(@Header("Authorization") authorization: String?): Call<GetProfileResponse>
+
     @Multipart
     @POST("jwt-auth/v1/edit_profile")
-    fun updateProfile(@PartMap params: HashMap<String,RequestBody>, @Part profile_pic: MultipartBody.Part): Call<SignupResponse>
+    fun updateProfile(@PartMap params: HashMap<String, RequestBody>, @Part profile_pic: MultipartBody.Part,@Header("Authorization") authorization: String?): Call<SignupResponse>
+
+    @Multipart
+    @POST("jwt-auth/v1/edit_profile")
+    fun updateProfileWithoutImage(@PartMap params: HashMap<String, RequestBody>,@Header("Authorization") authorization: String?): Call<SignupResponse>
 
     @Multipart
     @POST("jwt-auth/v1/crime_list")
-    fun getCases(@PartMap params: HashMap<String,RequestBody>): Call<GetCasesResponse>
+    fun getCases(@PartMap params: HashMap<String, RequestBody>): Call<GetCasesResponse>
 
     @Multipart
     @POST("jwt-auth/v1/create_post")
-    fun addPost(@PartMap params:HashMap<String, RequestBody>,@Part post_pics: MultipartBody.Part): Call<GetCasesResponse>
+    fun addPost(@PartMap params: HashMap<String, RequestBody>, @Part post_pics: MultipartBody.Part): Call<GetCasesResponse>
 
 }

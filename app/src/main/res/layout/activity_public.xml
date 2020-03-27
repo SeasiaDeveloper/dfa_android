@@ -99,6 +99,7 @@
                         android:layout_marginBottom="@dimen/_4sdp"
                         android:layout_weight="0.5"
                         android:background="@drawable/squarebg"
+                        android:gravity="center"
                         android:padding="@dimen/_5sdp"
                         android:text="@string/select_photo"
                         android:textColor="@color/black"
@@ -115,6 +116,7 @@
                         android:layout_marginBottom="@dimen/_4sdp"
                         android:layout_weight="0.5"
                         android:background="@drawable/squarebg"
+                        android:gravity="center"
                         android:padding="@dimen/_5sdp"
                         android:text="Take Photo"
                         android:textColor="@color/black"
@@ -131,6 +133,7 @@
                         android:layout_marginBottom="@dimen/_4sdp"
                         android:layout_weight="0.5"
                         android:background="@drawable/squarebg"
+                        android:gravity="center"
                         android:padding="@dimen/_5sdp"
                         android:text="Select Video"
                         android:textColor="@color/black"
@@ -147,6 +150,7 @@
                         android:layout_marginBottom="@dimen/_4sdp"
                         android:layout_weight="0.5"
                         android:background="@drawable/squarebg"
+                        android:gravity="center"
                         android:padding="@dimen/_5sdp"
                         android:text="Record Video"
                         android:textColor="@color/black"
@@ -159,7 +163,7 @@
                     android:layout_width="@dimen/_250sdp"
                     android:layout_height="@dimen/_150sdp"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:visibility="gone" />
 
@@ -175,11 +179,11 @@
                         <VideoView
                             android:id="@+id/videoView"
                             android:layout_width="match_parent"
-                            android:layout_height="@dimen/_100sdp"
+                            android:layout_height="@dimen/_150sdp"
                             android:layout_marginStart="@dimen/_12sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_20sdp"
                             android:layout_marginEnd="@dimen/_12sdp"
-                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_40sdp"
                             android:visibility="gone" />
                     </LinearLayout>
 
