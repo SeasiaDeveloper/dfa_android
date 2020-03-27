@@ -109,9 +109,13 @@
     <string name="confirm_pass_empty">Please fill in Confirm Password field</string>
     <string name="confirm_pass_length">Confirm Password\'s length should be greater than 8</string>
     <string name="confirm_pass_mismatch_pass">Confirm Password doesnot match Password</string>
+    <string name="delete">Delete</string>
+    <string name="search">Search</string>
     <string name="verify_mobileno">Verify Mobile</string>
     <string name="enter_mobileno">"Please enter your Mobile Number "</string>
-
+    <string name="add_your_post_here">Add Your Post Here..</string>
+    <string name="post">Post</string>
+    <string name="enter_the_headline">Enter the text here..</string>
 
     <!-- Navigation Drawer menu labels -->
     <string name="nav_my_cases">My Cases</string>
@@ -132,5 +136,4 @@
         <item>Terms and Condition</item>
         <item>Logout</item>
     </string-array>
-
 </resources>

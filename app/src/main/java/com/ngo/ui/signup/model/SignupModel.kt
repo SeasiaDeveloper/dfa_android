@@ -105,17 +105,9 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
         map["pin_code"] = toRequestBody(signupRequest.pin_code)
 
         val file = File(signupRequest.profile_pic)
-
         val profileImg = MultipartBody.Part.createFormData("profile_pic", file.name,
             RequestBody.create(MediaType.parse(imgMediaType), file)
         )
-
-
-       /* //profile_img
-        val file = File(signupRequest.profile_pic)
-        val requestFile = RequestBody.create(MediaType.parse(imgMediaType), file)
-        // MultipartBody.Part is used to send also the actual filename
-        val profileImg = MultipartBody.Part.createFormData("image", file.getName(), requestFile)*/
 
         retrofitApi.registerUser(map, profileImg).enqueue(object : Callback<SignupResponse> {
             override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
@@ -163,9 +155,6 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
                     signupPresenterImplClass.showError(Constants.SERVER_ERROR)
                 }
             }
-
-
         })
     }
-
 }

@@ -258,4 +258,18 @@ object Utilities {
         }
     }
 
+    fun changeDateFormat(date: String): String {
+        val oldDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+        val newDateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
+        val convertedDate: Date?
+        try {
+            convertedDate = oldDateFormat.parse(date)
+            formatedDate = newDateFormat.format(convertedDate!!)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+
+        }
+        return formatedDate
+    }
+
 }

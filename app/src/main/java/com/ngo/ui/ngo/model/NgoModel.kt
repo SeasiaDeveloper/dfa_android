@@ -16,17 +16,17 @@ class NgoModel(private var presenter: NgoPresenter){
         val response = service.getcomplains()
         response.enqueue(object : Callback<GetComplaintsResponse> {
             override fun onResponse(call: Call<GetComplaintsResponse>, response: Response<GetComplaintsResponse>) {
-                    val responseObject = response.body()
-                    if (responseObject != null) {
-                        if (responseObject.status == 200) {
-                            presenter.onGetCompaintsSuccess(responseObject)
-                        } else {
-                            presenter.onGetCompaintsFailed(response.body()?.message ?: Constants.SERVER_ERROR)
-                        }
+                val responseObject = response.body()
+                if (responseObject != null) {
+                    if (responseObject.status == 200) {
+                        presenter.onGetCompaintsSuccess(responseObject)
                     } else {
-                        presenter.showError(Constants.SERVER_ERROR)
+                        presenter.onGetCompaintsFailed(response.body()?.message ?: Constants.SERVER_ERROR)
                     }
+                } else {
+                    presenter.showError(Constants.SERVER_ERROR)
                 }
+            }
 
 
             override fun onFailure(call: Call<GetComplaintsResponse>, t: Throwable) {

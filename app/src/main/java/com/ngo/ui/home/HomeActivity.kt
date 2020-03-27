@@ -13,6 +13,7 @@ import com.ngo.adapters.TabLayoutAdapter
 import com.ngo.base.BaseActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.HomeFragment
+import com.ngo.ui.home.fragments.cases.CasesFragment
 import kotlinx.android.synthetic.main.home_activity.*
 
 
@@ -41,7 +42,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         val adapter = TabLayoutAdapter(supportFragmentManager)
         adapter.addFragment(GeneralPublicHomeFragment(), "Home")
-        adapter.addFragment(HomeFragment(), "Cases")
+        adapter.addFragment(CasesFragment(), "Cases")
         adapter.addFragment(HomeFragment(), "Photo(s)")
         adapter.addFragment(HomeFragment(), "Video(s)")
         viewPager?.adapter = adapter
