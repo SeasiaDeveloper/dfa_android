@@ -30,11 +30,11 @@ import com.ngo.pojo.response.ComplaintResponse
 import com.ngo.pojo.response.GetCrimeTypesResponse
 import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenter
 import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenterImpl
-import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.generalpublic.view.PublicComplaintView
 import com.ngo.utils.Constants.GPS_REQUEST
 import com.ngo.utils.GpsUtils
 import com.ngo.utils.PreferenceHandler
+import com.ngo.utils.RealPathUtil
 import com.ngo.utils.Utilities
 import com.ngo.utils.Utilities.PERMISSION_ID
 import kotlinx.android.synthetic.main.activity_public.*
@@ -336,12 +336,12 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == IMAGE_MULTIPLE && resultCode == Activity.RESULT_OK && null != data) {
-            if (data.data != null) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        super.onActivityResult(requestCode, resultCode, intent)
+        if (requestCode == IMAGE_MULTIPLE && resultCode == Activity.RESULT_OK && null != intent) {
+            if (intent.data != null) {
                 mediaType = "photos"
-                imageUri = data.data
+                imageUri = intent.data
                 val wholeID = DocumentsContract.getDocumentId(imageUri)
                 val id =
                     wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
@@ -364,8 +364,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
         } else if (requestCode == REQUEST_CAMERA) {
             mediaType = "photos"
-            if (null != data) {
-                val photo = data?.getExtras()?.get("data") as Bitmap
+            if (null != intent) {
+                val photo = intent?.getExtras()?.get("data") as Bitmap
                 imgView.setImageBitmap(photo)
                 imgView.visibility = View.VISIBLE
                 videoView.visibility = View.GONE
@@ -379,35 +379,29 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             mediaType = "videos"
             imgView.visibility = View.GONE
             videoView.visibility = View.VISIBLE
-            if (data?.data != null) {
-                val videoUri = data.getData()
-                path = getPath(videoUri!!)
+            if (intent?.data != null) {
+                var path = intent.getData()?.getPath()
+                if (path!!.contains("video")) {
+                   var realpath =  RealPathUtil.getRealPath(this, intent.data!!)
+                    val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
+                   // imgView.setImageBitmap(thumbnail)
+                    showVideo(intent.data.toString())
+
+                }
+
             }
-            showVideo(path)
+
 
         } else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
             mediaType = "videos"
             imgView.visibility = View.GONE
             videoView.visibility = View.VISIBLE
-            val videoUri = data?.getData();
+            val videoUri = intent?.getData();
             path = getRealPathFromURI(videoUri!!);
             showVideo(path)
         }
     }
 
-    fun getPath(uri: Uri): String {
-        var projection = arrayOf(MediaStore.Video.Media._ID)
-        var cursor = getContentResolver().query(uri, projection, null, null, null)
-        if (cursor != null) {
-            if (cursor.moveToFirst()) {
-                var column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA)
-                path = cursor.getString(column_index)
-            }
-            cursor.close()
-            return path
-        } else
-            return null!!
-    }
 
     fun showVideo(videoUri: String) {
         mediaControls = MediaController(this)
@@ -481,9 +475,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
         if (isInternetAvailable()) {
             showProgress()
-            /* var name = "Nabam Serbang"
-             var contact = "911234567890"
-             var email = "nabam@gmail.com"*/
+           /* var name = "Nabam Serbang"
+            var contact = "911234567890"
+            var email = "nabam@gmail.com"*/
             val request = ComplaintRequest(
                 //name,
                 // contact,
