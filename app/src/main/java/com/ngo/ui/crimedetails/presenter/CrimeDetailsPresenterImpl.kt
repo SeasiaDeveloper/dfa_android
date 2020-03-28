@@ -1,13 +1,16 @@
 package com.ngo.ui.crimedetails.presenter
 
+import com.ngo.pojo.response.GetComplaintsResponse
+import com.ngo.pojo.response.GetCrimeDetailsResponse
 import com.ngo.ui.crimedetails.model.CrimeDetailsModel
 import com.ngo.ui.crimedetails.view.CrimeDetailsView
 
 class CrimeDetailsPresenterImpl(private var crimeDetailsView: CrimeDetailsView) :
     CrimeDetailsPresenter {
     private var crimeDetailsModel: CrimeDetailsModel = CrimeDetailsModel(this)
-    override fun crimeDetailsSuccess() {
-        crimeDetailsView.getCrimeDetailsSuccess()
+
+    override fun crimeDetailsSuccess(getComplaintsResponse: GetCrimeDetailsResponse) {
+        crimeDetailsView.getCrimeDetailsSuccess(getComplaintsResponse)
     }
 
     override fun crimeDetailsFailure() {

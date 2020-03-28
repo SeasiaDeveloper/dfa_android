@@ -8,6 +8,8 @@ import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.pojo.response.GetComplaintsResponse
+import com.ngo.pojo.response.GetCrimeDetailsResponse
+import com.ngo.pojo.response.GetCrimeTypesResponse
 import com.ngo.pojo.response.NGOResponse
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenter
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenterImpl
@@ -34,7 +36,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
     private var ngoPresenter: NGOFormPresenter = NGOFormPresenterImpl(this)
     private var crimePresenter: CrimeDetailsPresenter = CrimeDetailsPresenterImpl(this)
     private lateinit var complaintId: String
-    private var authorizationToken:String?=null
+    private var authorizationToken: String? = null
 
     override fun getLayout(): Int {
         return R.layout.activity_incident_detail
@@ -50,16 +52,14 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
         // complaintsData = intent.getSerializableExtra(Constants.PUBLIC_COMPLAINT_DATA) as GetComplaintsResponse.Data
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         complaintId = intent.getStringExtra(Constants.PUBLIC_COMPLAINT_DATA)
-        crimePresenter.hiCrimeDetailsApi(complaintId,authorizationToken)
-        //setComplaintData()
+        crimePresenter.hiCrimeDetailsApi(complaintId, authorizationToken)
         sb_steps_5.setOnRangeChangedListener(null)
 
     }
 
-   /* private fun setComplaintData() {
-
-        var name = "Anonymous"
-        if (!(complaintsData.name.isNullOrEmpty() || complaintsData.name.equals(""))) name =
+    private fun setComplaintData(getCrimeTypesResponse: GetCrimeDetailsResponse) {
+/*        var name = "Anonymous"
+        if (!(getCrimeTypesResponse.name.isNullOrEmpty() || getCrimeTypesResponse.name.equals(""))) name =
             complaintsData.name.toString()
         etUserName.setText(name)
         if (complaintsData.email!!.isNotEmpty()) {
@@ -90,8 +90,8 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
             level = 100.0
         sb_steps_5.setProgress(level.toFloat())
 
-        sb_steps_5.isEnabled = false
-    }*/
+        sb_steps_5.isEnabled = false*/
+    }
 
     override fun handleKeyboard(): View {
         return ngoDetailLayout
@@ -102,12 +102,13 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
         Utilities.showMessage(this, response.message)
     }
 
-    override fun getCrimeDetailsSuccess() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun getCrimeDetailsSuccess(getCrimeTypesResponse: GetCrimeDetailsResponse) {
+        dismissProgress()
+        setComplaintData(getCrimeTypesResponse)
     }
 
     override fun getCrimeDetailsFailure() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Utilities.showMessage(this,"")
     }
 
     override fun showServerError(error: String) {

@@ -101,6 +101,6 @@ interface CallRetrofitApi {
 
     @Multipart
     @POST("jwt-auth/v1/crime_detail")
-    fun getCrimeDetails(@Header("Authorization") authorization: String?,@PartMap params:HashMap<String, RequestBody>): Call<GetPhotosResponse>
+    fun getCrimeDetails(@Header("Authorization") authorization: String?,@PartMap params:HashMap<String, RequestBody>): Call<GetCrimeDetailsResponse>
 
 }
