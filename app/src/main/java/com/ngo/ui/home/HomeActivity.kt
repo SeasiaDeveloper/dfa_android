@@ -25,6 +25,7 @@ import com.ngo.ui.home.fragments.videos.view.VideosFragment
 import com.ngo.ui.home.presenter.HomePresenter
 import com.ngo.ui.home.presenter.HomePresenterImpl
 import com.ngo.ui.home.view.HomeView
+import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.ui.profile.ProfileActivity
 import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
@@ -94,6 +95,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 var intent = Intent(this, ProfileActivity::class.java)
                 startActivity(intent)
             }
+
+            R.id.nav_cases-> startActivity(Intent(this@HomeActivity, MyCasesActivity :: class.java))
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
