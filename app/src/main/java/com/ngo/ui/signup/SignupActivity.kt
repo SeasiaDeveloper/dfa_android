@@ -5,13 +5,11 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
-import android.os.Bundle
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.appcompat.app.AppCompatActivity
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
@@ -25,21 +23,12 @@ import com.ngo.ui.signup.view.SignupView
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_signup.*
 import kotlinx.android.synthetic.main.activity_signup.toolbarLayout
-import java.util.*
 import kotlin.collections.ArrayList
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.util.Log
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
-import com.ngo.ui.OtpVerification.view.OtpVerificationActivity
-import com.ngo.ui.dashboard.DashboardFragment
-import com.ngo.ui.home.HomeActivity
+import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.ui.login.view.LoginActivity
 import com.ngo.utils.PreferenceHandler
-import kotlinx.android.synthetic.main.activity_forgot_password.*
-import kotlinx.android.synthetic.main.activity_public.*
 import kotlinx.android.synthetic.main.activity_signup.btnSubmit
 
 class SignupActivity : BaseActivity(), SignupView {
