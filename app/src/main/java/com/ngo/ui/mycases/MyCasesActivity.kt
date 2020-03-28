@@ -26,7 +26,7 @@ import kotlinx.android.synthetic.main.activity_profile.*
 
 class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener {
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
-    private var complaints: List<GetCasesResponse.DataBean> = mutableListOf()
+    private var complaints: List<GetCasesResponse.Data> = mutableListOf()
     lateinit var casesRequest: CasesRequest
     var token: String = ""
 
@@ -96,7 +96,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener {
     }
 
     //changing the like status
-    override fun changeLikeStatus(complaintsData: GetCasesResponse.DataBean) {
+    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
         Utilities.showProgress(this)
         val token = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         //delete the item based on id
@@ -116,7 +116,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener {
     }
 
     //to delete my case
-    override fun onDeleteItem(complaintsData: GetCasesResponse.DataBean) {
+    override fun onDeleteItem(complaintsData: GetCasesResponse.Data) {
         Utilities.showProgress(this@MyCasesActivity)
         val token =
             PreferenceHandler.readString(this@MyCasesActivity, PreferenceHandler.AUTHORIZATION, "")
@@ -133,7 +133,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener {
     }
 
     //displays the detail of my case
-    override fun onItemClick(complaintsData: GetCasesResponse.DataBean, type: String) {
+    override fun onItemClick(complaintsData: GetCasesResponse.Data, type: String) {
         //pending
     }
 

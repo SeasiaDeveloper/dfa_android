@@ -289,7 +289,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     //changes the like status
-    override fun changeLikeStatus(complaintsData: GetCasesResponse.DataBean) {
+    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
         Utilities.showProgress(mContext)
         val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
         //change the staus of the item based on id

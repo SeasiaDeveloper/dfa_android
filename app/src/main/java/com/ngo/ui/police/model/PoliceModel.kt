@@ -2,7 +2,6 @@ package com.ngo.ui.police.model
 
 import com.ngo.apis.ApiClient
 import com.ngo.apis.CallRetrofitApi
-import com.ngo.pojo.request.PoliceDataRequest
 import com.ngo.pojo.request.PoliceStatusRequest
 import com.ngo.pojo.response.GetPoliceFormData
 import com.ngo.pojo.response.PoliceStatusResponse

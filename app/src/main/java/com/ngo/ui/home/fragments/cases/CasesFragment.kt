@@ -144,7 +144,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
         }
     }
 
-    override fun changeLikeStatus(complaintsData: GetCasesResponse.DataBean) {
+    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
         Utilities.showProgress(mContext)
         val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
         //delete the item based on id
