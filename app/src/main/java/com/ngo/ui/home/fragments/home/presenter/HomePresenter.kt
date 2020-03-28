@@ -1,4 +1,4 @@
-package com.ngo.ui.home.presenter
+package com.ngo.ui.home.fragments.home.presenter
 
 import com.ngo.base.presenter.BasePresenter
 import com.ngo.pojo.response.GetProfileResponse

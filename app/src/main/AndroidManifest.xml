@@ -55,7 +55,7 @@
                   android:windowSoftInputMode="stateHidden"
                   android:screenOrientation="portrait"/>
 
-        <activity android:name=".ui.home.HomeActivity"
+        <activity android:name="com.ngo.ui.home.fragments.home.view.HomeActivity"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>
 

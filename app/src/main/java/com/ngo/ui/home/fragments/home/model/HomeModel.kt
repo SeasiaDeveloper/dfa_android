@@ -1,10 +1,9 @@
-package com.ngo.ui.home.model
+package com.ngo.ui.home.fragments.home.model
 
 import com.ngo.apis.ApiClient
 import com.ngo.apis.CallRetrofitApi
-import com.ngo.pojo.response.GetCrimeTypesResponse
 import com.ngo.pojo.response.GetProfileResponse
-import com.ngo.ui.home.presenter.HomePresenter
+import com.ngo.ui.home.fragments.home.presenter.HomePresenter
 import com.ngo.utils.Constants
 import okhttp3.MediaType
 import okhttp3.RequestBody

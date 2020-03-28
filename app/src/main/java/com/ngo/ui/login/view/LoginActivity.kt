@@ -9,14 +9,11 @@ import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.pojo.request.LoginRequest
 import com.ngo.pojo.response.LoginResponse
-import com.ngo.ui.OtpVerification.view.OtpVerificationActivity
 import com.ngo.ui.forgotpassword.view.ForgotPasswordActivity
-import com.ngo.ui.generalpublic.GeneralPublicActivity
-import com.ngo.ui.home.HomeActivity
+import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.ui.login.presenter.LoginActivityPresenterImpl
 import com.ngo.ui.login.presenter.LoginPresenter
 import com.ngo.utils.PreferenceHandler
-import com.ngo.ui.signup.SignupActivity
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_login_activity.*
 import kotlinx.android.synthetic.main.activity_public.toolbarLayout
@@ -119,7 +116,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
         PreferenceHandler.writeString(this, PreferenceHandler.AUTHORIZATION,"Bearer "+loginResponse.token)
         Toast.makeText(this@LoginActivity, "Login Success", Toast.LENGTH_SHORT).show()
         finish()
-        val intent = Intent(this,HomeActivity::class.java) //GeneralPublicActivity
+        val intent = Intent(this, HomeActivity::class.java) //GeneralPublicActivity
         startActivity(intent)
     }
 

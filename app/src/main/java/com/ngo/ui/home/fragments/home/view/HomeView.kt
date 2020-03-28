@@ -1,4 +1,4 @@
-package com.ngo.ui.home.view
+package com.ngo.ui.home.fragments.home.view
 
 
 import com.ngo.pojo.response.GetProfileResponse

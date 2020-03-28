@@ -1,8 +1,8 @@
-package com.ngo.ui.home.presenter
+package com.ngo.ui.home.fragments.home.presenter
 
 import com.ngo.pojo.response.GetProfileResponse
-import com.ngo.ui.home.model.HomeModel
-import com.ngo.ui.home.view.HomeView
+import com.ngo.ui.home.fragments.home.model.HomeModel
+import com.ngo.ui.home.fragments.home.view.HomeView
 
 class HomePresenterImpl(private var homeView: HomeView) :
     HomePresenter {
