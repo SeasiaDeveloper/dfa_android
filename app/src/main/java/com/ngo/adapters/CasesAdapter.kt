@@ -20,7 +20,7 @@ import kotlinx.android.synthetic.main.item_case.view.*
 
 class CasesAdapter(
     var context: Context,
-    var mList: MutableList<GetCasesResponse.DataBean>,
+    var mList: MutableList<GetCasesResponse.Data>,
     private var listener: OnCaseItemClickListener,
     private var type: Int
 ) :
@@ -54,7 +54,7 @@ class CasesAdapter(
 
         fun bind(
             context: Context,
-            item: GetCasesResponse.DataBean,
+            item: GetCasesResponse.Data,
             index: Int,
             listener: OnCaseItemClickListener,
             type: Int
@@ -77,7 +77,7 @@ class CasesAdapter(
                 itemView.layout_post.visibility = View.VISIBLE
                 itemView.layoutListItem.visibility = View.GONE
 
-                val userDetail: Data = item.userDetail!!
+                val userDetail: GetCasesResponse.Data.UserDetail = item.userDetail!!
                 itemView.txtUserNameForPost.text =
                     userDetail.first_name + " " + userDetail.last_name
                 itemView.txtDateForPost.text =
@@ -90,8 +90,8 @@ class CasesAdapter(
                 }
 
                 //profile img:
-                val profileImgUrl: String = userDetail.profile_pic
-                Glide.with(context).load(profileImgUrl).into(itemView.imgPostProfile)
+                //val profileImgUrl: String = userDetail.profile_pic //commented
+                //Glide.with(context).load(profileImgUrl).into(itemView.imgPostProfile)
 
                 //btnDelete visibility
                 if (item.showDelete == 1) {
@@ -142,7 +142,7 @@ class CasesAdapter(
                 itemView.expandable_Time.text = item.report_time
                 itemView.expandable_DescriptionNgo.text = item.info.toString()
 
-                val userDetail: Data = item.userDetail!!
+                val userDetail: GetCasesResponse.Data.UserDetail = item.userDetail!!
                 itemView.expandable_contactNo.text = userDetail.username
                 itemView.expandable_username.text = userDetail.first_name + " "+ userDetail.last_name
 

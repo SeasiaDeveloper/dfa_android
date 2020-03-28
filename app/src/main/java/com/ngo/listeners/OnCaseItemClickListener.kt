@@ -3,6 +3,6 @@ package com.ngo.listeners
 import com.ngo.pojo.response.GetCasesResponse
 
 interface OnCaseItemClickListener {
-    fun onItemClick(complaintsData: GetCasesResponse.DataBean, type:String)
-    fun onDeleteItem(complaintsData: GetCasesResponse.DataBean)
+    fun onItemClick(complaintsData: GetCasesResponse.Data, type:String)
+    fun onDeleteItem(complaintsData: GetCasesResponse.Data)
 }

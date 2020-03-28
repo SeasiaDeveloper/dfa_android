@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.gson.GsonBuilder
 import com.ngo.R
 import com.ngo.adapters.CasesAdapter
 import com.ngo.customviews.CenteredToolbar
@@ -26,10 +27,12 @@ import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CreatePostRequest
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
+import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.generalpublic.GeneralPublicActivity
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
+import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.RealPathUtil
 import com.ngo.utils.Utilities
@@ -67,7 +70,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         var change = 0
     }
 
-    private var complaints: List<GetCasesResponse.DataBean> = mutableListOf()
+    private var complaints: List<GetCasesResponse.Data> = mutableListOf()
     private lateinit var adapter: CasesAdapter
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
 
@@ -191,6 +194,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
         Utilities.dismissProgress()
+        val gson = GsonBuilder().create()
+        val json = gson.toJson(response)
         complaints = response.data!!
         if (complaints.isNotEmpty()) {
             tvRecord.visibility = View.GONE
@@ -206,10 +211,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
     }
 
-    override fun onItemClick(complaintsData: GetCasesResponse.DataBean, type: String) {
-        /* val intent = Intent(activity, IncidentDetailActivity::class.java)
-         intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData)
-         startActivity(intent)*/
+    override fun onItemClick(complaintsData: GetCasesResponse.Data, type: String) {
+      //  val intent = Intent(activity, IncidentDetailActivity::class.java)
+        //intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData)
+        //intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA,complaintsData.id)
+       // startActivity(intent)
     }
 
     override fun showServerError(error: String) {
@@ -252,15 +258,15 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun onPostAdded(responseObject: GetCasesResponse) {
         Utilities.dismissProgress()
-        layoutAddPost.visibility = View.VISIBLE
-        layoutPost.visibility = View.GONE
+        layoutAddPost.visibility = View.GONE
+        layoutPost.visibility = View.VISIBLE
         edtPostInfo.setText("")
         imgPost.setImageResource(0)
         path = ""
         Utilities.showMessage(mContext, responseObject.message!!)
     }
 
-    override fun onDeleteItem(complaintsData: GetCasesResponse.DataBean) {
+    override fun onDeleteItem(complaintsData: GetCasesResponse.Data) {
         Utilities.showProgress(mContext)
         val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
         //delete the item based on id
@@ -270,7 +276,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
-      //  Utilities.showProgress(activity!!)
+        //  Utilities.showProgress(activity!!)
         presenter.getComplaints(casesRequest, token)
     }
 

@@ -90,9 +90,14 @@ interface CallRetrofitApi {
     @Multipart
     @POST("jwt-auth/v1/delete_complaint")
     fun deleteComplaintOrPost(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<DeleteComplaintResponse>
+
     @Multipart
     @POST("jwt-auth/v1/crime_media")
     fun getcrime_media(@PartMap params:HashMap<String, RequestBody>): Call<GetPhotosResponse>
+
+    @Multipart
+    @POST("jwt-auth/v1/crime_detail")
+    fun getCrimeDetails(@Header("Authorization") authorization: String?,@PartMap params:HashMap<String, RequestBody>): Call<GetPhotosResponse>
 
 
 }

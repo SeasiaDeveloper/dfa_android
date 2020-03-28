@@ -60,7 +60,7 @@
             android:screenOrientation="portrait"/>
 
 
-        <activity android:name=".ui.generalpublic.view.IncidentDetailActivity"
+        <activity android:name=".ui.crimedetails.view.IncidentDetailActivity"
                   android:windowSoftInputMode="stateHidden"
                   android:screenOrientation="portrait"/>
 

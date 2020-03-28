@@ -4,15 +4,14 @@ import java.io.Serializable
 
 class GetCasesResponse : Serializable {
 
-    val data: List<DataBean>? = null
+    val data: ArrayList<Data>? = null
     val message: String? = null
     val code: Int? = null
 
-    inner class DataBean : Serializable {
+    inner class Data : Serializable {
         val id: String? = null
         val user_id: String? = null
         val showDelete: Int? = null
-        val userDetail: Data? = null
         val longitude: String? = null
         val latitude: String? = null
         val info: String? = null
@@ -24,12 +23,18 @@ class GetCasesResponse : Serializable {
         val status: String? = null
         val media_list: List<String>? = null
         val crime_type: String? = null
-        val like_count :String?=null
-        val comment_count :String?=null
-        var is_liked :Int?=null
+        val like_count: String? = null
+        val comment_count: String? = null
+        var is_liked: Int? = null
+        val userDetail: UserDetail? = null
 
+        inner class UserDetail : Serializable {
+            val last_name: String? = null
+            val id: String? = null
+            val first_name: String? = null
+            val email: String? = null
+            val username: String? = null
 
+        }
     }
-
-
 }
