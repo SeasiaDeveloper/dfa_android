@@ -44,4 +44,12 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
         view.onComplaintDeleted(responseObject)
     }
 
+    override fun changeLikeStatus(token: String, id: String) {
+       model.changeLikeStatus(token , id)
+    }
+
+    override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
+        view.onLikeStatusChanged(responseObject)
+    }
+
 }

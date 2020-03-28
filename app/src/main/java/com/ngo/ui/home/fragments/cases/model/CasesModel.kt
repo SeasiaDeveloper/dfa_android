@@ -135,4 +135,33 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
             }
         })
     }
+
+    fun changeLikeStatus(token: String, id: String) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        val map = HashMap<String, RequestBody>()
+        map["complaint_id"] = toRequestBody(id)
+        retrofitApi.changeLikeStatus(token ,map).enqueue(object : Callback<DeleteComplaintResponse> {
+            override fun onFailure(call: Call<DeleteComplaintResponse>, t: Throwable) {
+                presenter.showError(t.message + "")
+            }
+
+            override fun onResponse(
+                call: Call<DeleteComplaintResponse>,
+                response: Response<DeleteComplaintResponse>
+            ) {
+                val responseObject = response.body()
+                if (responseObject != null) {
+                    if (responseObject.code == 200) {
+                        presenter.onLikeStatusChanged(responseObject)
+                    } else {
+                        presenter.showError(
+                            response.body()?.message ?: Constants.SERVER_ERROR
+                        )
+                    }
+                } else {
+                    presenter.showError(Constants.SERVER_ERROR)
+                }
+            }
+        })
+    }
 }

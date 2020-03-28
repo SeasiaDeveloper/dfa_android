@@ -30,6 +30,7 @@ import com.ngo.pojo.response.ComplaintResponse
 import com.ngo.pojo.response.GetCrimeTypesResponse
 import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenter
 import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenterImpl
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.generalpublic.view.PublicComplaintView
 import com.ngo.utils.Constants.GPS_REQUEST
 import com.ngo.utils.GpsUtils
@@ -455,7 +456,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     override fun showComplaintsResponse(complaintsResponse: ComplaintResponse) {
         dismissProgress()
         Utilities.showMessage(this, complaintsResponse.message!!)
-        //GeneralPublicHomeActivity.change = 1
+        GeneralPublicHomeFragment.change = 1
         finish()
     }
 

@@ -9,4 +9,5 @@ interface CasesView :BaseView {
     fun showDescError()
     fun onPostAdded(responseObject: GetCasesResponse)
     fun onComplaintDeleted(responseObject: DeleteComplaintResponse)
+    fun onLikeStatusChanged(responseObject: DeleteComplaintResponse)
 }
