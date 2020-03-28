@@ -263,6 +263,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         Utilities.showMessage(mContext, responseObject.message!!)
     }
 
+    //delete your respective complaint/post
     override fun onDeleteItem(complaintsData: GetCasesResponse.Data) {
         Utilities.showProgress(mContext)
         val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
@@ -270,6 +271,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         presenter.deleteComplaint(token!!, complaintsData.id!!)
     }
 
+    //refresh the list after deletion
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
@@ -286,13 +288,15 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
     }
 
-    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
+    //changes the like status
+    override fun changeLikeStatus(complaintsData: GetCasesResponse.DataBean) {
         Utilities.showProgress(mContext)
         val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
-        //delete the item based on id
+        //change the staus of the item based on id
         presenter.changeLikeStatus(token!!, complaintsData.id!!)
     }
 
+    //refresh the list after like status is changed
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data

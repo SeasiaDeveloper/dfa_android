@@ -126,6 +126,7 @@
     <string name="nav_invite_friends">Invite Friends</string>
     <string name="nav_terms_and_conditions">Terms and Condition</string>
     <string name="nav_logout">Logout</string>
+    <string name="my_cases">My Cases</string>
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">
