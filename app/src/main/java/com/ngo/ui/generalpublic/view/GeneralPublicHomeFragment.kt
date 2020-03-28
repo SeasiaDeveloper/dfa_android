@@ -17,7 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.gson.GsonBuilder
+
 import com.ngo.R
 import com.ngo.adapters.CasesAdapter
 import com.ngo.customviews.CenteredToolbar
@@ -189,7 +189,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 galleryIntent()
             }
         }
-
     }
 
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
@@ -210,10 +209,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     override fun onItemClick(complaintsData: GetCasesResponse.Data, type: String) {
-      //  val intent = Intent(activity, IncidentDetailActivity::class.java)
-        //intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData)
-        //intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA,complaintsData.id)
-       // startActivity(intent)
+        if (complaintsData.type.equals("0")) {
+            val intent = Intent(activity, IncidentDetailActivity::class.java)
+            //  intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData)
+            intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
+            startActivity(intent)
+        }
+
     }
 
     override fun showServerError(error: String) {
@@ -232,16 +234,15 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun onResume() {
         super.onResume()
-        if (isFirst ) {
+        if (isFirst) {
             isFirst = false
             val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
             Utilities.showProgress(mContext)
             presenter.getComplaints(casesRequest, token)
-        }
-       else if (change == 1) {
-            val casesRequest = CasesRequest("1", "","-1") //type = -1 for fetching all the data
+        } else if (change == 1) {
+            val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
             Utilities.showProgress(activity!!)
-            presenter.getComplaints(casesRequest,token)
+            presenter.getComplaints(casesRequest, token)
             change = 0
 
         }

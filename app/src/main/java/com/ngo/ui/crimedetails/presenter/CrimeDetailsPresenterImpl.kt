@@ -1,6 +1,7 @@
 package com.ngo.ui.crimedetails.presenter
 
-import com.ngo.pojo.response.GetComplaintsResponse
+
+import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.response.GetCrimeDetailsResponse
 import com.ngo.ui.crimedetails.model.CrimeDetailsModel
 import com.ngo.ui.crimedetails.view.CrimeDetailsView
@@ -17,8 +18,8 @@ class CrimeDetailsPresenterImpl(private var crimeDetailsView: CrimeDetailsView) 
         crimeDetailsView.getCrimeDetailsFailure()
     }
 
-    override fun hiCrimeDetailsApi(complaintId: String, token: String?) {
-        crimeDetailsModel.getCrimeComplaints(token, complaintId)
+    override fun hiCrimeDetailsApi(crimeDetailsRequest: CrimeDetailsRequest, token: String?) {
+        crimeDetailsModel.getCrimeComplaints(token,crimeDetailsRequest)
     }
 
     override fun showError(error: String) {

@@ -1,5 +1,6 @@
 package com.ngo.ui.mycases
 
+import android.content.Intent
 import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,15 +15,16 @@ import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
+import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
+import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_my_cases.*
 import kotlinx.android.synthetic.main.activity_my_cases.toolbarLayout
-import kotlinx.android.synthetic.main.activity_profile.*
 
 class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener {
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
@@ -112,7 +114,8 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener {
             "0"
         ) //all = 0 for only my cases;type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token)
-        GeneralPublicHomeFragment.change = 1 // so that list on Home gets refreshed after change in status
+        GeneralPublicHomeFragment.change =
+            1 // so that list on Home gets refreshed after change in status
     }
 
     //to delete my case
@@ -129,12 +132,15 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener {
         Utilities.showMessage(this@MyCasesActivity, responseObject.message!!)
         val casesRequest = CasesRequest("0", "", "0") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token)
-        GeneralPublicHomeFragment.change = 1 // so that list on Home gets refreshed after change in status
+        GeneralPublicHomeFragment.change =
+            1 // so that list on Home gets refreshed after change in status
     }
 
     //displays the detail of my case
     override fun onItemClick(complaintsData: GetCasesResponse.Data, type: String) {
-        //pending
+        val intent = Intent(this, IncidentDetailActivity::class.java)
+        intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
+        startActivity(intent)
     }
 
     override fun showDescError() {

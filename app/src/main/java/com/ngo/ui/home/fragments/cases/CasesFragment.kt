@@ -1,6 +1,7 @@
 package com.ngo.ui.home.fragments.cases
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -16,9 +17,11 @@ import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
+import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
+import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_cases.*
@@ -54,7 +57,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
 
                 Utilities.showProgress(mContext)
                 //hit api with search variable
-                presenter.getComplaints(casesRequest,token)
+                presenter.getComplaints(casesRequest, token)
             }
 
             override fun beforeTextChanged(
@@ -89,9 +92,9 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
     }
 
     override fun onItemClick(complaintsData: GetCasesResponse.Data, type: String) {
-        /*  val intent = Intent(mContext, IncidentDetailActivity::class.java)
-          intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData)
-          startActivity(intent)*/
+        val intent = Intent(mContext, IncidentDetailActivity::class.java)
+        intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
+        startActivity(intent)
     }
 
     override fun onCreateView(
@@ -126,8 +129,8 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "0") //type = -1 for fetching all the data
-      //  Utilities.showProgress(activity!!)
-        presenter.getComplaints(casesRequest,token)
+        //  Utilities.showProgress(activity!!)
+        presenter.getComplaints(casesRequest, token)
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -140,7 +143,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
             ) //all = "1" and for fetching all the cases which are of type = 0
 
             Utilities.showProgress(mContext)
-            presenter.getComplaints(casesRequest,token)
+            presenter.getComplaints(casesRequest, token)
         }
     }
 
@@ -155,7 +158,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "0") //type = -1 for fetching all the data
         //  Utilities.showProgress(activity!!)
-        presenter.getComplaints(casesRequest,token)
+        presenter.getComplaints(casesRequest, token)
     }
 
 }

@@ -7,9 +7,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
-import com.ngo.pojo.response.GetComplaintsResponse
+import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.response.GetCrimeDetailsResponse
-import com.ngo.pojo.response.GetCrimeTypesResponse
 import com.ngo.pojo.response.NGOResponse
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenter
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenterImpl
@@ -20,16 +19,11 @@ import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_incident_detail.*
-import kotlinx.android.synthetic.main.activity_incident_detail.etContactNo
 import kotlinx.android.synthetic.main.activity_incident_detail.etDescription
-import kotlinx.android.synthetic.main.activity_incident_detail.etEmail
-import kotlinx.android.synthetic.main.activity_incident_detail.etUserName
 import kotlinx.android.synthetic.main.activity_incident_detail.imgView
 import kotlinx.android.synthetic.main.activity_incident_detail.sb_steps_5
 import kotlinx.android.synthetic.main.activity_incident_detail.spTypesOfCrime
 import kotlinx.android.synthetic.main.activity_incident_detail.toolbarLayout
-import kotlinx.android.synthetic.main.activity_incident_detail.tvContact
-import kotlinx.android.synthetic.main.activity_incident_detail.tvEmail
 
 class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
     // private lateinit var complaintsData: GetComplaintsResponse.Data
@@ -52,45 +46,46 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
         // complaintsData = intent.getSerializableExtra(Constants.PUBLIC_COMPLAINT_DATA) as GetComplaintsResponse.Data
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         complaintId = intent.getStringExtra(Constants.PUBLIC_COMPLAINT_DATA)
-        crimePresenter.hiCrimeDetailsApi(complaintId, authorizationToken)
+        var crimeDetailsRequest= CrimeDetailsRequest(complaintId)
+        crimePresenter.hiCrimeDetailsApi(crimeDetailsRequest, authorizationToken)
         sb_steps_5.setOnRangeChangedListener(null)
 
     }
 
-    private fun setComplaintData(getCrimeTypesResponse: GetCrimeDetailsResponse) {
-/*        var name = "Anonymous"
-        if (!(getCrimeTypesResponse.name.isNullOrEmpty() || getCrimeTypesResponse.name.equals(""))) name =
-            complaintsData.name.toString()
-        etUserName.setText(name)
-        if (complaintsData.email!!.isNotEmpty()) {
-            etEmail.setText((complaintsData.email))
-        } else {
-            etEmail.visibility = View.GONE
-            tvEmail.visibility = View.GONE
-        }
-        if (complaintsData.phone!!.isNotEmpty()) {
-            etContactNo.setText(complaintsData.phone)
+    private fun setComplaintData(getCrimeDetailsResponse: GetCrimeDetailsResponse) {
+        var name = "Anonymous" //name , email,phone
+        /* if (!(getCrimeDetailsResponse.name.isNullOrEmpty() || getCrimeDetailsResponse.name.equals(""))) name =
+             getCrimeDetailsResponse.name.toString()
+         etUserName.setText(name)
+         if (getCrimeDetailsResponse.email!!.isNotEmpty()) {
+             etEmail.setText((getCrimeDetailsResponse.email))
+         } else {
+             etEmail.visibility = View.GONE
+             tvEmail.visibility = View.GONE
+         }*/
+        /*if (getCrimeDetailsResponse.phone!!.isNotEmpty()) {
+            etContactNo.setText(getCrimeDetailsResponse.phone)
         } else {
             etContactNo.visibility = View.GONE
             tvContact.visibility = View.GONE
-        }
-        spTypesOfCrime.text = complaintsData.crime
+        }*/
+        spTypesOfCrime.text = getCrimeDetailsResponse.crime_type
 
-        sb_steps_5.setIndicatorTextDecimalFormat(complaintsData.level)
-        etDescription.setText(complaintsData.description)
+        sb_steps_5.setIndicatorTextDecimalFormat(getCrimeDetailsResponse.urgency)
+        etDescription.setText(getCrimeDetailsResponse.info)
         val options = RequestOptions()
             .centerCrop()
             .placeholder(R.drawable.noimage)
             .error(R.drawable.noimage)
-        Glide.with(this).load(complaintsData.image).apply(options).into(imgView)
+        Glide.with(this).load(getCrimeDetailsResponse.media_list[0]).apply(options).into(imgView)
         var level: Double = 0.0
-        if (!complaintsData.level.equals("10"))
-            level = complaintsData.level!!.toFloat() * 11.0
+        if (!getCrimeDetailsResponse.urgency.equals("10"))
+            level = getCrimeDetailsResponse.urgency!!.toFloat() * 11.0
         else
             level = 100.0
         sb_steps_5.setProgress(level.toFloat())
 
-        sb_steps_5.isEnabled = false*/
+        sb_steps_5.isEnabled = false
     }
 
     override fun handleKeyboard(): View {
@@ -102,13 +97,13 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
         Utilities.showMessage(this, response.message)
     }
 
-    override fun getCrimeDetailsSuccess(getCrimeTypesResponse: GetCrimeDetailsResponse) {
+    override fun getCrimeDetailsSuccess(getCrimeDetailsResponse: GetCrimeDetailsResponse) {
         dismissProgress()
-        setComplaintData(getCrimeTypesResponse)
+        setComplaintData(getCrimeDetailsResponse)
     }
 
     override fun getCrimeDetailsFailure() {
-        Utilities.showMessage(this,"")
+        Utilities.showMessage(this, "")
     }
 
     override fun showServerError(error: String) {

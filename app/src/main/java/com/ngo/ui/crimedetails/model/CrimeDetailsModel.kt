@@ -2,6 +2,7 @@ package com.ngo.ui.crimedetails.model
 
 import com.ngo.apis.ApiClient
 import com.ngo.apis.CallRetrofitApi
+import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.response.GetComplaintsResponse
 import com.ngo.pojo.response.GetCrimeDetailsResponse
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenter
@@ -17,10 +18,10 @@ class CrimeDetailsModel(private var crimeDetailsPresenter: CrimeDetailsPresenter
         return RequestBody.create(MediaType.parse("application/json"), value)
     }
 
-    fun getCrimeComplaints(token: String?, complaintId: String) {
+    fun getCrimeComplaints(token: String?,crimeDetailsRequest: CrimeDetailsRequest) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
-        map["complaint_id"] = toRequestBody(complaintId)
+        map["complaint_id"] = toRequestBody(crimeDetailsRequest.complaintId)
         retrofitApi.getCrimeDetails(token, map).enqueue(object :
             Callback<GetCrimeDetailsResponse> {
             override fun onFailure(call: Call<GetCrimeDetailsResponse>, t: Throwable) {
