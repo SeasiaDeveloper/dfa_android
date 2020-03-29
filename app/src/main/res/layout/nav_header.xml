@@ -33,9 +33,7 @@
                     android:id="@+id/textName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
                     android:gravity="center"
-                    android:paddingTop="@dimen/_10sdp"
                     android:textColor="#ffffff"
                     android:textSize="15dp"
                     android:textStyle="bold" />
@@ -44,7 +42,6 @@
                     android:id="@+id/textAddress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
                     android:gravity="center"
                     android:padding="10dp"
                     android:textColor="#ffffff"

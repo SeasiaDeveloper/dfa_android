@@ -1,6 +1,6 @@
 package com.ngo.ui.home.fragments.home.view
 
-import android.app.AlertDialog
+
 import android.content.Intent
 import android.view.MenuItem
 import android.view.View
@@ -21,18 +21,20 @@ import com.ngo.ui.home.fragments.photos.view.PhotosFragment
 import com.ngo.ui.home.fragments.videos.view.VideosFragment
 import com.ngo.ui.home.fragments.home.presenter.HomePresenter
 import com.ngo.ui.home.fragments.home.presenter.HomePresenterImpl
+import com.ngo.ui.login.view.LoginActivity
 import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.ui.profile.ProfileActivity
-import com.ngo.ui.termsConditions.view.TermsConditionsFragment
+import com.ngo.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.ngo.ui.updatepassword.view.UpdatePasswordActivity
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
-import com.ngo.utils.alert.AlertDialogPolice
+import com.ngo.utils.alert.AlertDialog
 import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.nav_header.*
 
 
-class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView {
+class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
+    GetLogoutDialogCallbacks {
     private var mDrawerLayout: DrawerLayout? = null
     private var mToggle: ActionBarDrawerToggle? = null
     private var mToolbar: Toolbar? = null
@@ -97,7 +99,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 startActivity(intent)
             }
             R.id.nav_logout -> {
-
+                AlertDialog.onShowLogoutDialog(this, this)
             }
             R.id.nav_cases -> startActivity(Intent(this@HomeActivity, MyCasesActivity::class.java))
         }
@@ -141,4 +143,13 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         dismissProgress()
         Utilities.showMessage(this, error)
     }
+
+    override fun onClick() {
+        finish()
+        PreferenceHandler.clearPreferences(this)
+        var intent = Intent(this, LoginActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+    }
+
 }

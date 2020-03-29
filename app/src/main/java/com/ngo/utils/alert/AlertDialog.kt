@@ -11,18 +11,17 @@ class AlertDialog {
             getLogoutDialogCallbacks: GetLogoutDialogCallbacks
         ) {
             val dialogBuilder = AlertDialog.Builder(context)
-            dialogBuilder.setMessage("Do you want to close this application ?")
+            dialogBuilder.setTitle("LOGOUT")
+            dialogBuilder.setMessage("Do you want to Logout?")
                 .setCancelable(false)
-                .setPositiveButton("Proceed", { dialog, id ->
+                .setPositiveButton("Ok", { dialog, id ->
                     getLogoutDialogCallbacks.onClick()
                 })
                 .setNegativeButton("Cancel", { dialog, id ->
-                    getLogoutDialogCallbacks.onCancelClick()
+                    dialog.dismiss()
                 })
             val alert = dialogBuilder.create()
-            alert.setTitle("AlertDialogExample")
             alert.show()
         }
     }
-
 }
