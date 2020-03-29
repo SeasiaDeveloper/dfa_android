@@ -126,6 +126,8 @@
     <string name="nav_terms_and_conditions">Terms and Condition</string>
     <string name="nav_logout">Logout</string>
     <string name="my_cases">My Cases</string>
+    <string name="add_comments">Add Comments</string>
+    <string name="add_your_comment_here">Add a comment..</string>
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">

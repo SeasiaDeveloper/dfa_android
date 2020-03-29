@@ -42,9 +42,7 @@
         <activity android:name="com.ngo.ui.ngoform.NGOFormDetailActivity"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>
-        <activity android:name=".ui.ngo.view.NGOActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:screenOrientation="portrait"/>
+
         <activity android:name=".ui.ngo.NGOActivity" />
 
         <activity android:name=".ui.dashboard.PassCodeActivity"
@@ -88,6 +86,8 @@
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.mycases.MyCasesActivity" />
+
+        <activity android:name=".ui.comments.CommentsActivity"/>
 
         <service
             android:name=".firebase.MyInstanceIDListenerService"

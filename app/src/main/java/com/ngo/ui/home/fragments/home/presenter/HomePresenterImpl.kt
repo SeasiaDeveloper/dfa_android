@@ -21,6 +21,6 @@ class HomePresenterImpl(private var homeView: HomeView) :
     }
 
     override fun showError(error: String) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//
     }
 }
