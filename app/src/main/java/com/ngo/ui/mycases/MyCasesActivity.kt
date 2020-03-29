@@ -5,12 +5,14 @@ import android.graphics.Color
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ngo.R
 import com.ngo.adapters.CasesAdapter
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
+import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.response.DeleteComplaintResponse
@@ -26,7 +28,14 @@ import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_my_cases.*
 import kotlinx.android.synthetic.main.activity_my_cases.toolbarLayout
 
-class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener {
+class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener {
+    override fun onClick(item: Any) {
+        Utilities.showProgress(this@MyCasesActivity)
+        val complaintsData = item as GetCasesResponse.Data
+        //delete the item based on id
+        presenter.deleteComplaint(token, complaintsData.id!!)
+    }
+
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
     private var complaints: List<GetCasesResponse.Data> = mutableListOf()
     lateinit var casesRequest: CasesRequest
@@ -63,7 +72,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener {
         if (complaints.isNotEmpty()) {
             tvRecord.visibility = View.GONE
             rvPublic.visibility = View.VISIBLE
-            rvPublic.adapter = CasesAdapter(this, complaints.toMutableList(), this, 1)
+            rvPublic.adapter = CasesAdapter(this, complaints.toMutableList(), this, 1, this)
         } else {
             tvRecord.visibility = View.VISIBLE
             rvPublic.visibility = View.GONE
@@ -120,11 +129,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener {
 
     //to delete my case
     override fun onDeleteItem(complaintsData: GetCasesResponse.Data) {
-        Utilities.showProgress(this@MyCasesActivity)
-        val token =
-            PreferenceHandler.readString(this@MyCasesActivity, PreferenceHandler.AUTHORIZATION, "")
-        //delete the item based on id
-        presenter.deleteComplaint(token!!, complaintsData.id!!)
+
     }
 
     //refreshing the list after deletion

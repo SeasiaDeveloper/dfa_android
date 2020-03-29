@@ -44,6 +44,7 @@
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_7sdp"
+                        android:padding="@dimen/_3sdp"
                         android:background="@drawable/squarebg"
                         android:src="@drawable/ic_person_blue" />
 

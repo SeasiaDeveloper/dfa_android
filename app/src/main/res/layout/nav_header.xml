@@ -19,7 +19,8 @@
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginEnd="@dimen/_7sdp"
                 android:background="@drawable/squarebg_non_curve"
-                android:scaleType="fitCenter"
+                android:scaleType="centerCrop"
+                android:padding="@dimen/_1sdp"
                 android:src="@drawable/ic_person_blue" />
 
             <LinearLayout

@@ -65,9 +65,13 @@ class CommentsActivity :AppCompatActivity(), CommentsView {
         Utilities.showProgress(mContext)
         presenter.fetchComments(id, token)
 
-        tvPost.setOnClickListener{
-            Utilities.showProgress(mContext)
-            presenter.onAddComment(token,id,etComments.text.toString()) //to add the comment
+        tvPost.setOnClickListener {
+            if (etComments.text.toString().isEmpty()) {
+                Utilities.showMessage(mContext, getString(R.string.enter_comments_validation_message))
+            } else {
+                Utilities.showProgress(mContext)
+                presenter.onAddComment(token, id, etComments.text.toString()) //to add the comment
+            }
         }
     }
 
@@ -86,10 +90,8 @@ class CommentsActivity :AppCompatActivity(), CommentsView {
     }
 
     override fun onCommentsAddedSuccess(response: DeleteComplaintResponse) {
-
         Utilities.showMessage(mContext, response.message!!)
         //refresh the list
-     // Utilities.showProgress(mContext)
         presenter.fetchComments(id, token)
     }
 

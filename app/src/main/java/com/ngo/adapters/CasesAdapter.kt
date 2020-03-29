@@ -5,7 +5,6 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -13,10 +12,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.ngo.R
 import com.ngo.databinding.ItemCaseBinding
+import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
-import com.ngo.pojo.response.Data
 import com.ngo.pojo.response.GetCasesResponse
-import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.comments.CommentsActivity
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.item_case.view.*
@@ -25,7 +23,7 @@ class CasesAdapter(
     var context: Context,
     var mList: MutableList<GetCasesResponse.Data>,
     private var listener: OnCaseItemClickListener,
-    private var type: Int
+    private var type: Int, private var alertDialogListener: AlertDialogListener
 ) :
     RecyclerView.Adapter<CasesAdapter.ViewHolder>() {
 
@@ -42,7 +40,7 @@ class CasesAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(context, mList.get(position), position, listener, type)
+        holder.bind(context, mList.get(position), position, listener, type, alertDialogListener)
 
     }
 
@@ -60,14 +58,17 @@ class CasesAdapter(
             item: GetCasesResponse.Data,
             index: Int,
             listener: OnCaseItemClickListener,
-            type: Int
+            type: Int, alertDialogListener: AlertDialogListener
         ) {
             this.index = index
+
+            val userDetail: GetCasesResponse.Data.UserDetail = item.userDetail!!
+
             val options = RequestOptions()
                 .centerCrop()
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.noimage)
-            //  Glide.with(context).load(item.image).apply(options).into(itemView.imgCrime)
+
             itemView.layoutListItem.setOnClickListener {
                 listener.onItemClick(item, "full")
             }
@@ -76,11 +77,13 @@ class CasesAdapter(
             }
 
             //in case of post:
+            if(userDetail.profile_pic!=null)
+            {   Glide.with(context).load(userDetail.profile_pic).apply(options).into(itemView.imgPostProfile)}
             if (item.type == "1") {
                 itemView.layout_post.visibility = View.VISIBLE
                 itemView.layoutListItem.visibility = View.GONE
 
-                val userDetail: GetCasesResponse.Data.UserDetail = item.userDetail!!
+
                 itemView.txtUserNameForPost.text =
                     userDetail.first_name + " " + userDetail.last_name
                 itemView.txtDateForPost.text =
@@ -104,8 +107,12 @@ class CasesAdapter(
                 }
 
                 itemView.btnDeletePost.setOnClickListener {
-                    //api to delete post
-                    listener.onDeleteItem(item)
+                    Utilities.displayDialog(
+                        context,
+                        context.getString(R.string.delete_post_title),
+                        context.getString(R.string.delete_post_heading),
+                        item, alertDialogListener
+                    )
                 }
 
 
@@ -136,8 +143,11 @@ class CasesAdapter(
                 }
 
             }
+
             else {
                 //in case of complaint:
+                if(userDetail.profile_pic!=null)
+                {   Glide.with(context).load(userDetail.profile_pic).apply(options).into(itemView.imgCrime)}
                 itemView.layout_post.visibility = View.GONE
                 itemView.layoutListItem.visibility = View.VISIBLE
 
@@ -147,9 +157,9 @@ class CasesAdapter(
                 itemView.expandable_Time.text = item.report_time
                 itemView.expandable_DescriptionNgo.text = item.info.toString()
 
-                val userDetail: GetCasesResponse.Data.UserDetail = item.userDetail!!
                 itemView.expandable_contactNo.text = userDetail.username
-                itemView.expandable_username.text = userDetail.first_name + " "+ userDetail.last_name
+                itemView.expandable_username.text =
+                    userDetail.first_name + " " + userDetail.last_name
 
                 if (item.media_list!!.isNotEmpty()) {
                     val mediaUrl: String = item.media_list[0]
@@ -170,8 +180,12 @@ class CasesAdapter(
                 }
 
                 itemView.btnDelete.setOnClickListener {
-                    //hit api to delete complaint
-                    listener.onDeleteItem(item)
+                    Utilities.displayDialog(
+                        context,
+                        context.getString(R.string.delete_case_heading),
+                        context.getString(R.string.delete_case_message),
+                        item, alertDialogListener
+                    )
                 }
 
                 //like:
@@ -202,9 +216,9 @@ class CasesAdapter(
                 }
 
 
-                itemView.layoutComment.setOnClickListener{
-                    val intent = Intent(context,CommentsActivity::class.java)
-                    intent.putExtra("id",item.id)
+                itemView.layoutComment.setOnClickListener {
+                    val intent = Intent(context, CommentsActivity::class.java)
+                    intent.putExtra("id", item.id)
                     context.startActivity(intent)
                 }
 

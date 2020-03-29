@@ -34,7 +34,7 @@ class GetCasesResponse : Serializable {
             val first_name: String? = null
             val email: String? = null
             val username: String? = null
-
+            val profile_pic:String?=null
         }
     }
 }

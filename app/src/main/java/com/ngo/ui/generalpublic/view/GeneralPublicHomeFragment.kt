@@ -17,16 +17,19 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.gson.GsonBuilder
 
 import com.ngo.R
 import com.ngo.adapters.CasesAdapter
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.databinding.FragmentPublicHomeBinding
+import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CreatePostRequest
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
+import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.generalpublic.GeneralPublicActivity
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
@@ -38,9 +41,15 @@ import com.ngo.utils.RealPathUtil
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_public_home.*
 
-
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
-    OnCaseItemClickListener {
+    OnCaseItemClickListener, AlertDialogListener {
+    override fun onClick(item : Any) {
+        Utilities.showProgress(mContext)
+        val complaintsData = item as GetCasesResponse.Data
+        //delete the item based on id
+        presenter.deleteComplaint(token, complaintsData.id!!)
+    }
+
     private var pathOfImages = ArrayList<String>()
     lateinit var binding: FragmentPublicHomeBinding
     lateinit var mContext: Context
@@ -83,9 +92,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
 
-        /*  if (((toolbarLayout as CenteredToolbar).title).equals("My Cases")) {
-              val casesRequest = CasesRequest("0", "") //all = "0" for my case
-          }*/
+        val value = PreferenceHandler.readString(mContext, PreferenceHandler.PROFILE_JSON, "")
+        val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
+        if (jsondata != null) {
+            if (jsondata.data?.profile_pic != null) {
+                Glide.with(this).load(jsondata.data.profile_pic).into(imgProfile)
+            }
+        }
+
         imgAdd.setOnClickListener(this)
         Utilities.showProgress(activity!!)
 
@@ -127,9 +141,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             if (resultGallery)
                 galleryIntent()
         }
-
     }
-
 
     private fun galleryIntent() {
         val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
@@ -167,7 +179,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             } else if (mime.toLowerCase().contains("video")) {
                 media_type = "videos"
                 if (data?.data != null) {
-                    var realpath = RealPathUtil.getRealPath(activity!!, data.data!!)
+                    val realpath = RealPathUtil.getRealPath(activity!!, data.data!!)
                     val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
                     Glide.with(activity!!)
                         .load(thumbnail)
@@ -196,7 +208,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         complaints = response.data!!
         if (complaints.isNotEmpty()) {
             tvRecord?.visibility = View.GONE
-            adapter = CasesAdapter(mContext, complaints.toMutableList(), this, 1)
+            adapter = CasesAdapter(mContext, complaints.toMutableList(), this, 1,this)
             val horizontalLayoutManager = LinearLayoutManager(
                 mContext,
                 RecyclerView.VERTICAL, false
@@ -266,17 +278,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     //delete your respective complaint/post
     override fun onDeleteItem(complaintsData: GetCasesResponse.Data) {
-        Utilities.showProgress(mContext)
-        val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
-        //delete the item based on id
-        presenter.deleteComplaint(token!!, complaintsData.id!!)
+        //nothing to do
     }
 
     //refresh the list after deletion
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
-        //  Utilities.showProgress(activity!!)
         presenter.getComplaints(casesRequest, token)
     }
 
@@ -301,7 +309,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
-        //  Utilities.showProgress(activity!!)
         presenter.getComplaints(casesRequest, token)
     }
 }

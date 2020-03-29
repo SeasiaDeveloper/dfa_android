@@ -35,7 +35,9 @@
                     android:layout_height="@dimen/_40sdp"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:paddingTop="6dp"
-                    android:src="@drawable/ic_user" />
+                    android:src="@drawable/ic_user"
+                    app:civ_border_width="0.8dp"
+                    app:civ_border_color="@color/black"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"

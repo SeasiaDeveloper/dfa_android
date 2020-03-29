@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.ngo.R
-import com.ngo.databinding.ItemCaseBinding
 import com.ngo.databinding.ItemCommentBinding
 import com.ngo.pojo.response.GetCommentsResponse
 import kotlinx.android.synthetic.main.item_comment.view.*
@@ -18,7 +17,6 @@ import kotlinx.android.synthetic.main.item_comment.view.*
 class CommentsAdapter(
     var context: Context,
     var mList: MutableList<GetCommentsResponse.CommentData>
-
 ) :
     RecyclerView.Adapter<CommentsAdapter.ViewHolder>() {
 

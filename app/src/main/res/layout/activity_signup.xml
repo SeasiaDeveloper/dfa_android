@@ -38,6 +38,7 @@
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:layout_weight="0.3"
                     android:src="@drawable/ic_person_blue"
+                    android:padding="@dimen/_3sdp"
                     android:background="@drawable/squarebg"/>
 
                 <LinearLayout

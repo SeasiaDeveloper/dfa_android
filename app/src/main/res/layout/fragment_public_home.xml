@@ -42,8 +42,9 @@
                         android:layout_marginStart="@dimen/_8sdp"
                         android:layout_marginTop="@dimen/_4sdp"
                         android:layout_weight="0.15"
+                        android:padding="@dimen/_2sdp"
                         android:background="@drawable/squarebg_non_curve"
-                        android:scaleType="fitCenter"
+                        android:scaleType="centerCrop"
                         android:src="@drawable/ic_person_blue" />
 
                     <androidx.appcompat.widget.AppCompatTextView

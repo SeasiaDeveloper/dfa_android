@@ -34,7 +34,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.ngo.R
+import com.ngo.listeners.AlertDialogListener
 import com.ngo.utils.algo.VerhoeffAlgo
+import de.hdodenhof.circleimageview.CircleImageView
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -270,6 +272,25 @@ object Utilities {
 
         }
         return formatedDate
+    }
+
+    fun displayDialog(context: Context, title:String? ,message: String? ,item:Any, alertDialogListener: AlertDialogListener ) {
+
+        val dialogBuilder = android.app.AlertDialog.Builder(context)
+        dialogBuilder.setTitle(title)
+        dialogBuilder.setMessage(message)
+            .setCancelable(false)
+            .setPositiveButton("Ok", { dialog, id ->
+                alertDialogListener.onClick(item)
+
+            })
+            .setNegativeButton("Cancel", { dialog, id ->
+                dialog.dismiss()
+
+            })
+        val alert = dialogBuilder.create()
+        alert.show()
+
     }
 
 }

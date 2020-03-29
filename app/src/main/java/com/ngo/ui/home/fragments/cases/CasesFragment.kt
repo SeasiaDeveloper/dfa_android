@@ -8,11 +8,13 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ngo.R
 import com.ngo.adapters.CasesAdapter
+import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.response.DeleteComplaintResponse
@@ -26,7 +28,13 @@ import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_cases.*
 
-class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
+class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialogListener {
+    override fun onClick(item :Any) {
+        Utilities.showProgress(mContext)
+        val complaintsData = item as GetCasesResponse.Data
+        //delete the item based on id
+        presenter.deleteComplaint(token, complaintsData.id!!)
+    }
 
     private lateinit var mContext: Context
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
@@ -38,12 +46,12 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
         Utilities.dismissProgress()
         complaints = response.data!!
         if (complaints.isNotEmpty()) {
-            tvRecord.visibility = View.GONE
-            rvPublic.visibility = View.VISIBLE
-            rvPublic.adapter = CasesAdapter(mContext, complaints.toMutableList(), this, 1)
+            tvRecord?.visibility = View.GONE
+            rvPublic?.visibility = View.VISIBLE
+            rvPublic?.adapter = CasesAdapter(mContext, complaints.toMutableList(), this, 1, this)
         } else {
-            tvRecord.visibility = View.VISIBLE
-            rvPublic.visibility = View.GONE
+            tvRecord?.visibility = View.VISIBLE
+            rvPublic?.visibility = View.GONE
         }
 
         etSearch.addTextChangedListener(object : TextWatcher {
@@ -112,7 +120,6 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
             RecyclerView.VERTICAL, false
         )
         rvPublic.layoutManager = horizontalLayoutManager
-
     }
 
     override fun onPostAdded(responseObject: GetCasesResponse) {
@@ -120,10 +127,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
     }
 
     override fun onDeleteItem(complaintsData: GetCasesResponse.Data) {
-        Utilities.showProgress(mContext)
-        val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
-        //delete the item based on id
-        presenter.deleteComplaint(token!!, complaintsData.id!!)
+       //nothing to do
     }
 
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
@@ -157,7 +161,6 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener {
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "0") //type = -1 for fetching all the data
-        //  Utilities.showProgress(activity!!)
         presenter.getComplaints(casesRequest, token)
     }
 
