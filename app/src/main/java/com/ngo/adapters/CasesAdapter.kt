@@ -1,9 +1,11 @@
 package com.ngo.adapters
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +17,7 @@ import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.response.Data
 import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.pojo.response.SignupResponse
+import com.ngo.ui.comments.CommentsActivity
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.item_case.view.*
 
@@ -197,6 +200,14 @@ class CasesAdapter(
 
                     listener.changeLikeStatus(item)
                 }
+
+
+                itemView.layoutComment.setOnClickListener{
+                    val intent = Intent(context,CommentsActivity::class.java)
+                    intent.putExtra("id",item.id)
+                    context.startActivity(intent)
+                }
+
             }
         }
 

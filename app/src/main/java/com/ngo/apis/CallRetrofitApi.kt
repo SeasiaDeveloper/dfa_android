@@ -106,4 +106,12 @@ interface CallRetrofitApi {
     @GET("wp/v2/user/get_terms_condition")
     fun get_terms_condition(): Call<GetTermsConditionsResponse>
 
+    @GET("jwt-auth/v1/comment_list")
+    fun getComments(@Header("Authorization") authorization: String?,@Query("complaint_id") id: Int): Call<GetCommentsResponse>
+
+    @Multipart
+    @POST("jwt-auth/v1/comment_complaint")
+    fun addComment(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<DeleteComplaintResponse>
+
+
 }
