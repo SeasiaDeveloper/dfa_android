@@ -1,11 +1,6 @@
 package com.ngo.utils
 
-import android.os.Build
-import android.text.Html
-import android.text.Spanned
 import android.text.TextUtils
-
-import com.google.gson.Gson
 import java.text.SimpleDateFormat
 import java.util.*
 

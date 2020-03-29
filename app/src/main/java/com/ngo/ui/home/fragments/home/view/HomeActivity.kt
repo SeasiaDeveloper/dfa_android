@@ -1,5 +1,6 @@
 package com.ngo.ui.home.fragments.home.view
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.view.MenuItem
 import android.view.View
@@ -23,8 +24,10 @@ import com.ngo.ui.home.fragments.home.presenter.HomePresenterImpl
 import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.ui.profile.ProfileActivity
 import com.ngo.ui.termsConditions.view.TermsConditionsFragment
+import com.ngo.ui.updatepassword.view.UpdatePasswordActivity
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
+import com.ngo.utils.alert.AlertDialogPolice
 import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.nav_header.*
 
@@ -81,7 +84,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                   .diskCacheStrategy(DiskCacheStrategy.ALL)*/
                 .into(imageNavigator)
         }
-
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
@@ -90,8 +92,14 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 var intent = Intent(this, ProfileActivity::class.java)
                 startActivity(intent)
             }
+            R.id.nav_password -> {
+                var intent = Intent(this, UpdatePasswordActivity::class.java)
+                startActivity(intent)
+            }
+            R.id.nav_logout -> {
 
-            R.id.nav_cases-> startActivity(Intent(this@HomeActivity, MyCasesActivity :: class.java))
+            }
+            R.id.nav_cases -> startActivity(Intent(this@HomeActivity, MyCasesActivity::class.java))
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
@@ -116,6 +124,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val jsonString = GsonBuilder().create().toJson(getProfileResponse)
         //Save that String in SharedPreferences
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, jsonString)
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.USER_ID,
+            getProfileResponse.data?.id.toString()
+        )
     }
 
 

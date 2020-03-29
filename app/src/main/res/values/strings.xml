@@ -93,7 +93,6 @@
     <string name="please_enter_confirmation_code">Please Enter Confirmation Code</string>
     <string name="enter_verification_code">Enter Verification Code</string>
 
-
     <!--Signup and Profile validations-->
     <string name="edit_profile">Edit Profile</string>
     <string name="fill_mobile">Please fill in the mobile no</string>
@@ -138,4 +137,7 @@
         <item>Terms and Condition</item>
         <item>Logout</item>
     </string-array>
+
+    <!--update password-->
+    <string name="enter_old_password">Enter Old Password</string>
 </resources>

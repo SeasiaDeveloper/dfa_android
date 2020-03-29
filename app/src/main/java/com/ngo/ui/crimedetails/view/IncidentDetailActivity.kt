@@ -7,6 +7,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
+import com.ngo.pojo.request.ChangePasswordRequest
 import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.response.GetCrimeDetailsResponse
 import com.ngo.pojo.response.NGOResponse
@@ -24,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_incident_detail.imgView
 import kotlinx.android.synthetic.main.activity_incident_detail.sb_steps_5
 import kotlinx.android.synthetic.main.activity_incident_detail.spTypesOfCrime
 import kotlinx.android.synthetic.main.activity_incident_detail.toolbarLayout
+import kotlinx.android.synthetic.main.change_password_layout.*
 
 class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
     // private lateinit var complaintsData: GetComplaintsResponse.Data
@@ -46,10 +48,16 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
         // complaintsData = intent.getSerializableExtra(Constants.PUBLIC_COMPLAINT_DATA) as GetComplaintsResponse.Data
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         complaintId = intent.getStringExtra(Constants.PUBLIC_COMPLAINT_DATA)
-        var crimeDetailsRequest= CrimeDetailsRequest(complaintId)
-        crimePresenter.hiCrimeDetailsApi(crimeDetailsRequest, authorizationToken)
-        sb_steps_5.setOnRangeChangedListener(null)
 
+        if (isInternetAvailable()) {
+            showProgress()
+            var crimeDetailsRequest = CrimeDetailsRequest(complaintId)
+            crimePresenter.hiCrimeDetailsApi(crimeDetailsRequest, authorizationToken)
+        } else {
+            Utilities.showMessage(this, getString(R.string.no_internet_connection))
+        }
+
+        sb_steps_5.setOnRangeChangedListener(null)
     }
 
     private fun setComplaintData(getCrimeDetailsResponse: GetCrimeDetailsResponse) {

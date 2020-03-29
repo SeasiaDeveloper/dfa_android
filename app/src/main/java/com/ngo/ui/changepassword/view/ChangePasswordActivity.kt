@@ -9,16 +9,11 @@ import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.pojo.request.ChangePasswordRequest
-import com.ngo.pojo.request.LoginRequest
 import com.ngo.pojo.response.ChangePasswordResponse
-import com.ngo.pojo.response.LoginResponse
 import com.ngo.ui.changepassword.presenter.ChangePasswordPresenter
 import com.ngo.ui.changepassword.presenter.ChangePasswordPresenterImpl
-import com.ngo.ui.login.presenter.LoginActivityPresenterImpl
-import com.ngo.ui.login.presenter.LoginPresenter
 import com.ngo.ui.login.view.LoginActivity
 import com.ngo.utils.Utilities
-import kotlinx.android.synthetic.main.activity_login_activity.*
 import kotlinx.android.synthetic.main.change_password_layout.*
 import kotlinx.android.synthetic.main.change_password_layout.toolbarLayout
 
@@ -54,7 +49,7 @@ class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePassw
                 } else if (TextUtils.isEmpty(confirm_password.text.toString())) {
                     Toast.makeText(this, "Please enter confirm password", Toast.LENGTH_SHORT).show()
                 } else if (!confirm_password.text.toString().equals(new_password.text.toString())) {
-                    Toast.makeText(this, "Entered passwords are not same", Toast.LENGTH_SHORT)
+                    Toast.makeText(this, "Mismatch Passwords", Toast.LENGTH_SHORT)
                         .show()
                 } else {
                     if (isInternetAvailable()) {

@@ -14,7 +14,7 @@ import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.ui.OtpVerification.presenter.OtpVerificationImpl
 import com.ngo.ui.OtpVerification.presenter.OtpVerificationPresenter
-import com.ngo.ui.login.view.LoginActivity
+import com.ngo.ui.changepassword.view.ChangePasswordActivity
 import com.ngo.ui.signup.SignupActivity
 import kotlinx.android.synthetic.main.activity_forgot_password.toolbarLayout
 import kotlinx.android.synthetic.main.activity_otp_verification.*
@@ -123,7 +123,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
                         startActivity(intent)
                         finish()
                     } else if (intent_from.equals("forgotPassword",ignoreCase = true)) {
-                        val intent = Intent(this, LoginActivity::class.java)
+                        val intent = Intent(this, ChangePasswordActivity::class.java)
                         startActivity(intent)
                         finish()
                     }

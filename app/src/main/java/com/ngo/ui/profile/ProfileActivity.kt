@@ -119,9 +119,9 @@ class ProfileActivity : BaseActivity(), ProfileView {
             etMobile2.setText(jsondata.data?.mobile)
             etEmail.setText(jsondata.data?.email)
             if (jsondata.data?.isVerified.equals("1")) {
-                isVerified.isSelected = true
+                isVerified.isChecked = true
             } else {
-                isVerified.isSelected = false
+                isVerified.isChecked = false
             }
             etAdharNo.isFocusable = false
             etAdharNo.isEnabled = false

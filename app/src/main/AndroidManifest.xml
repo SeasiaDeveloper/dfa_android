@@ -76,6 +76,9 @@
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.updatepassword.view.UpdatePasswordActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".ui.signup.SignupActivity"
             android:windowSoftInputMode="stateHidden"
