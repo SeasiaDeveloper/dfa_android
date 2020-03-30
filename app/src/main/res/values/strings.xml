@@ -147,7 +147,8 @@
     <string name="delete_case_heading">DELETE CASE</string>
     <string name="delete_case_message">Are you sure that you want to delete this case?</string>
     <string name="enter_comments_validation_message">Please enter your Comment first.</string>
-
+    <string name="enter_your_valid_adhaar_no_here">Enter your Adhaar no here..</string>
+    <string name="adhar_not_valid">Adhaar No is not valid. Please enter a valid adhar no</string>
     <string name="terms_and_condition">Terms and Condition</string>
     <string name="my_earnings">My Earnings</string>
 </resources>

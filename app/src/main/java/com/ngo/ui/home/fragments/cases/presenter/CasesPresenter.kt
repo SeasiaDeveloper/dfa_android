@@ -5,6 +5,7 @@ import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CreatePostRequest
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
+import com.ngo.pojo.response.SignupResponse
 
 interface CasesPresenter:BasePresenter {
     fun getComplaints(casesRequest: CasesRequest,token: String)
@@ -15,4 +16,6 @@ interface CasesPresenter:BasePresenter {
     fun onComplaintDeleted(responseObject: DeleteComplaintResponse)
     fun changeLikeStatus(token: String, id: String)
     fun onLikeStatusChanged(responseObject: DeleteComplaintResponse)
+    fun saveAdhaarNo(token: String,adhaarNo:String)
+    fun adhaarSavedSuccess(responseObject: SignupResponse)
 }

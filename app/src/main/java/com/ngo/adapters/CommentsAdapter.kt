@@ -56,7 +56,7 @@ class CommentsAdapter(
                 itemView.txtName.text = item.first_name + " " + item.last_name
                 itemView.expandable_comment.text = item.comment
 
-                if (item.profile_pic!!.isNotEmpty()) {
+                if (item.profile_pic != null  && item.profile_pic!!.isNotEmpty()) {
                     Glide.with(context).load(item.profile_pic).into(itemView.imgProfile)
                 }
 

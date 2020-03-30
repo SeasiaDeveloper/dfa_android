@@ -3,7 +3,8 @@ package com.ngo.pojo.response
 class SignupResponse(
     val message: String,
     val code: Int,
-    val data: Data
+    val data: Data,
+    val token:String
 )
 
 data class Data(

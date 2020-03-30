@@ -29,11 +29,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.Window
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.ngo.R
+import com.ngo.listeners.AdharNoListener
 import com.ngo.listeners.AlertDialogListener
 import com.ngo.utils.algo.VerhoeffAlgo
 import de.hdodenhof.circleimageview.CircleImageView
@@ -51,10 +53,14 @@ object Utilities {
     private lateinit var formattedTime: String
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    fun checkPermission(context: Context, permission : String, requestCode : Int): Boolean {
+    fun checkPermission(context: Context, permission: String, requestCode: Int): Boolean {
         val currentAPIVersion = Build.VERSION.SDK_INT
         if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ContextCompat.checkSelfPermission(
+                    context,
+                    permission
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale(
                         context as Activity,
                         permission
@@ -64,7 +70,8 @@ object Utilities {
                     alertBuilder.setCancelable(true)
                     alertBuilder.setTitle("Permission necessary")
                     alertBuilder.setMessage("External storage permission is necessary")
-                    alertBuilder.setPositiveButton(android.R.string.yes
+                    alertBuilder.setPositiveButton(
+                        android.R.string.yes
                     ) { dialog, which ->
                         ActivityCompat.requestPermissions(
                             context,
@@ -90,6 +97,7 @@ object Utilities {
             return true
         }
     }
+
     /**
      * Show toast message
      */
@@ -98,8 +106,7 @@ object Utilities {
     }
 
 
-
-    fun showAlert(activity : Activity, message1 : String) {
+    fun showAlert(activity: Activity, message1: String) {
         val binding =
             DataBindingUtil.inflate<ViewDataBinding>(
                 LayoutInflater.from(activity),
@@ -137,6 +144,7 @@ object Utilities {
             //Log.e("Keyboard Exception", e.message)
         }
     }
+
     @SuppressLint("HardwareIds")
     fun getDeviceId(context: Context) {
         val androidID = Settings.Secure.getString(
@@ -145,7 +153,8 @@ object Utilities {
         )
         PreferenceHandler.writeString(context, PreferenceHandler.DEVICE_ID, androidID.toString())
     }
-    fun getBitmapFromUri(context: Context,uri: Uri) : Bitmap? {
+
+    fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
         var bm: Bitmap? = null
 
         if (uri != null) {
@@ -158,6 +167,7 @@ object Utilities {
         }
         return bm
     }
+
     fun rotateMyImage(source: Bitmap, angle: Float): Bitmap {
         val matrix = Matrix()
         matrix.postRotate(angle)
@@ -167,9 +177,11 @@ object Utilities {
         )
     }
 
-     fun checkPermissions(context: Activity): Boolean {
-        return if (ActivityCompat.checkSelfPermission(context,
-                Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+    fun checkPermissions(context: Activity): Boolean {
+        return if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
@@ -178,7 +190,7 @@ object Utilities {
         } else false
     }
 
-     fun requestPermissions(context: Activity) {
+    fun requestPermissions(context: Activity) {
         ActivityCompat.requestPermissions(
             context,
             arrayOf(
@@ -195,12 +207,13 @@ object Utilities {
         val dt: Date?
         try {
             dt = sdf.parse(time)
-            formattedTime=sdfs.format(dt!!)
+            formattedTime = sdfs.format(dt!!)
         } catch (e: ParseException) {
             e.printStackTrace()
         }
         return formattedTime
     }
+
     fun dateFormat(date: String): String {
         val oldDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault())
         val newDateFormat = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
@@ -224,11 +237,11 @@ object Utilities {
         return isValidAadhar
     }
 
-     fun isValidMobile(phone: String): Boolean {
+    fun isValidMobile(phone: String): Boolean {
         return android.util.Patterns.PHONE.matcher(phone).matches()
     }
 
-     fun isValidMail(email: String): Boolean {
+    fun isValidMail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
@@ -274,7 +287,13 @@ object Utilities {
         return formatedDate
     }
 
-    fun displayDialog(context: Context, title:String? ,message: String? ,item:Any, alertDialogListener: AlertDialogListener ) {
+    fun displayDialog(
+        context: Context,
+        title: String?,
+        message: String?,
+        item: Any,
+        alertDialogListener: AlertDialogListener
+    ) {
 
         val dialogBuilder = android.app.AlertDialog.Builder(context)
         dialogBuilder.setTitle(title)
@@ -290,6 +309,38 @@ object Utilities {
             })
         val alert = dialogBuilder.create()
         alert.show()
+
+    }
+
+    fun displayInputDialog(activity: Context, listener: AdharNoListener) {
+        val binding =
+            DataBindingUtil.inflate<ViewDataBinding>(
+                LayoutInflater.from(activity),
+                R.layout.layout_input_alert,
+                null,
+                false
+            )
+
+        val dialog = Dialog(activity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(binding.root)
+        dialog.setTitle(activity.getString(R.string.app_name))
+
+        // set the custom dialog components - text, image and button
+        val edt = dialog.findViewById(R.id.edt) as EditText
+
+        val dialogButton = dialog.findViewById(R.id.dialogButtonOK) as Button
+        // if button is clicked, close the custom dialog
+        dialogButton.setOnClickListener {
+            if (edt.text.toString().equals("")) {
+                Toast.makeText(activity, "Adhaar no cannot be empty", Toast.LENGTH_SHORT).show()
+            } else {
+                listener.adharNoListener(edt.text.toString())
+                dialog.dismiss()
+            }
+        }
+        dialog.show()
+
 
     }
 

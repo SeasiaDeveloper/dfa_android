@@ -2,6 +2,7 @@ package com.ngo.ui.generalpublic.view
 
 import android.Manifest
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -12,6 +13,8 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +26,7 @@ import com.ngo.R
 import com.ngo.adapters.CasesAdapter
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.databinding.FragmentPublicHomeBinding
+import com.ngo.listeners.AdharNoListener
 import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
@@ -30,6 +34,7 @@ import com.ngo.pojo.request.CreatePostRequest
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.pojo.response.GetProfileResponse
+import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.generalpublic.GeneralPublicActivity
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
@@ -42,8 +47,9 @@ import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
-    OnCaseItemClickListener, AlertDialogListener {
-    override fun onClick(item: Any) {
+    OnCaseItemClickListener, AlertDialogListener ,AdharNoListener{
+
+    override fun onClick(item : Any) {
         Utilities.showProgress(mContext)
         val complaintsData = item as GetCasesResponse.Data
         //delete the item based on id
@@ -239,8 +245,20 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.imgAdd -> {
-                val intent = Intent(activity, GeneralPublicActivity::class.java)
-                startActivity(intent)
+                val value =
+                    PreferenceHandler.readString(mContext, PreferenceHandler.PROFILE_JSON, "")
+                val jsondata =
+                    GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
+                if (jsondata != null) {
+                    //check if user is partial/fully verified
+                    if (jsondata.data?.adhar_number != null && !(jsondata.data.adhar_number.equals(""))) {
+                        val intent = Intent(activity, GeneralPublicActivity::class.java)
+                        startActivity(intent)
+                    } else {
+                        //make the user partially verified:
+                        Utilities.displayInputDialog(mContext,this)
+                    }
+                }
             }
         }
     }
@@ -312,4 +330,27 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token)
     }
+
+    override fun adharNoListener(adhaarNo: String) {
+        // check is Adhar no valid
+        if(!(Utilities.validateAadharNumber(adhaarNo))){
+            Toast.makeText(mContext,getString(R.string.adhar_not_valid),Toast.LENGTH_SHORT).show()
+        }
+        else{
+            Utilities.showProgress(mContext)
+            //hit Api to save the adhar no in backend
+            presenter.saveAdhaarNo(token,adhaarNo)
+        }
+    }
+
+    override fun adhaarSavedSuccess(responseObject: SignupResponse) {
+        Utilities.showMessage(mContext, responseObject.message)
+        val value = PreferenceHandler.readString(mContext, PreferenceHandler.PROFILE_JSON, "")
+        val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
+        jsondata.data?.adhar_number = responseObject.data.adhar_number //add adhar no
+        Utilities.dismissProgress()
+        val intent = Intent(activity, GeneralPublicActivity::class.java)
+        startActivity(intent)
+    }
+
 }

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:text="Adhaar No"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_16ssp"
+            app:font="@{`bold`}" />
+
+        <TextView
+            android:layout_below="@+id/title"
+            android:hint="To report an incident you need to fill in your Adhaar no first"
+            android:id="@+id/txt"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:textSize="@dimen/_12ssp"
+            android:textColor="@color/black"
+            app:font="@{`bold`}" />
+
+        <EditText
+            android:layout_below="@+id/txt"
+            android:hint="@string/enter_your_valid_adhaar_no_here"
+            android:id="@+id/edt"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:gravity="center"
+            android:padding="@dimen/_10sdp"
+            android:textSize="@dimen/_12ssp"
+            android:inputType="text"
+            android:maxLength="12"
+            android:background="@drawable/squarebg_non_curve"
+            app:font="@{`bold`}" />
+
+        <Button
+            android:id="@+id/dialogButtonOK"
+            android:layout_width="@dimen/_70sdp"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_below="@+id/edt"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:background="@drawable/button_bg"
+            android:text="@string/ok"
+            android:textColor="@color/white"
+            app:font="@{`bold`}" />
+
+    </RelativeLayout>
+</layout>

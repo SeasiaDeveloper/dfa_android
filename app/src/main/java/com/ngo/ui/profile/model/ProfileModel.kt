@@ -79,8 +79,8 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
             }
 
             if ((request.adhar_number).isNotEmpty()) {
-                if (!(Utilities.validateAadharNumber(request.mobile))) {
-                    profilePresenterImplClass.adhaarNoValidationFailure()
+                if (!(Utilities.validateAadharNumber(request.adhar_number))) {
+                   profilePresenterImplClass.adhaarNoValidationFailure()
                     return
                 }
             }
@@ -97,7 +97,7 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
     }
 
     //hit update profile api
-    fun updateProfile(request: SignupRequest,token:String?) {
+    fun updateProfile(request: SignupRequest, token: String?, isAdhaarNoAdded: Boolean) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         // map["username"] = toRequestBody(request.username)
@@ -109,11 +109,13 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
         map["address_1"] = toRequestBody(request.address_1)
         map["address_2"] = toRequestBody(request.address_2)
         map["mobile"] = toRequestBody(request.mobile) //mobile is mobile_2
-        //map["adhar_number"] = toRequestBody(request.adhar_number)
+
         map["district_id"] = toRequestBody(request.district_id)
         map["pin_code"] = toRequestBody(request.pin_code)
 
-
+        if (isAdhaarNoAdded) {
+            map["adhar_number"] = toRequestBody(request.adhar_number)
+        }
 
         if (!request.profile_pic.equals("")) {
             val file = File(request.profile_pic)
@@ -122,63 +124,56 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
                 "profile_pic", file.name,
                 RequestBody.create(MediaType.parse(imgMediaType), file)
             )
-            retrofitApi.updateProfile(map, profileImg,token).enqueue(object : Callback<SignupResponse> {
-                override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
-                    profilePresenterImplClass.showError(t.message + "")
-                }
-
-                override fun onResponse(
-                    call: Call<SignupResponse>,
-                    response: Response<SignupResponse>
-                ) {
-                    val responseObject = response.body()
-                    if (responseObject != null) {
-                        if (responseObject.code == 200) {
-                            profilePresenterImplClass.onSuccessfulUpdation(responseObject)
-                        } else {
-                            profilePresenterImplClass.showError(
-                                response.body()?.message ?: Constants.SERVER_ERROR
-                            )
-                        }
-                    } else {
-                        profilePresenterImplClass.showError(Constants.SERVER_ERROR)
+            retrofitApi.updateProfile(map, profileImg, token)
+                .enqueue(object : Callback<SignupResponse> {
+                    override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
+                        profilePresenterImplClass.showError(t.message + "")
                     }
-                }
-            })
+
+                    override fun onResponse(
+                        call: Call<SignupResponse>,
+                        response: Response<SignupResponse>
+                    ) {
+                        val responseObject = response.body()
+                        if (responseObject != null) {
+                            if (responseObject.code == 200) {
+                                profilePresenterImplClass.onSuccessfulUpdation(responseObject)
+                            } else {
+                                profilePresenterImplClass.showError(
+                                    response.body()?.message ?: Constants.SERVER_ERROR
+                                )
+                            }
+                        } else {
+                            profilePresenterImplClass.showError(Constants.SERVER_ERROR)
+                        }
+                    }
+                })
         } else {
             map["profile_pic"] = toRequestBody("")
-            retrofitApi.updateProfileWithoutImage(map,token).enqueue(object : Callback<SignupResponse> {
-                override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
-                    profilePresenterImplClass.showError(t.message + "")
-                }
-
-                override fun onResponse(
-                    call: Call<SignupResponse>,
-                    response: Response<SignupResponse>
-                ) {
-                    val responseObject = response.body()
-                    if (responseObject != null) {
-                        if (responseObject.code == 200) {
-                            profilePresenterImplClass.onSuccessfulUpdation(responseObject)
-                        } else {
-                            profilePresenterImplClass.showError(
-                                response.body()?.message ?: Constants.SERVER_ERROR
-                            )
-                        }
-                    } else {
-                        profilePresenterImplClass.showError(Constants.SERVER_ERROR)
+            retrofitApi.updateProfileWithoutImage(map, token)
+                .enqueue(object : Callback<SignupResponse> {
+                    override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
+                        profilePresenterImplClass.showError(t.message + "")
                     }
-                }
-            })
+
+                    override fun onResponse(
+                        call: Call<SignupResponse>,
+                        response: Response<SignupResponse>
+                    ) {
+                        val responseObject = response.body()
+                        if (responseObject != null) {
+                            if (responseObject.code == 200) {
+                                profilePresenterImplClass.onSuccessfulUpdation(responseObject)
+                            } else {
+                                profilePresenterImplClass.showError(
+                                    response.body()?.message ?: Constants.SERVER_ERROR
+                                )
+                            }
+                        } else {
+                            profilePresenterImplClass.showError(Constants.SERVER_ERROR)
+                        }
+                    }
+                })
         }
-
-
-        /*  //profile_img
-          val file = File(request.profile_pic)
-          val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
-          // MultipartBody.Part is used to send also the actual filename
-          val profileImg = MultipartBody.Part.createFormData("image", file.getName(), requestFile)*/
-
-
     }
 }

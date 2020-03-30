@@ -99,13 +99,24 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.nav_logout -> {
                 AlertDialog.onShowLogoutDialog(this, this)
             }
+            R.id.nav_cases -> {
+                startActivity(Intent(this@HomeActivity, MyCasesActivity::class.java))
+            }
             R.id.nav_my_earning -> startActivity(
                 Intent(
                     this@HomeActivity,
                     MyEarningsActivity::class.java
                 )
             )
-            R.id.nav_cases -> startActivity(Intent(this@HomeActivity, MyCasesActivity::class.java))
+
+            R.id.nav_invite_friends -> {
+                val shareIntent = Intent()
+                shareIntent.action = Intent.ACTION_SEND
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "https://www.google.co.in/")
+                shareIntent.type = "text/plain"
+                startActivity(Intent.createChooser(shareIntent, "send to"))
+
+            }
             R.id.nav_terms_and_conditions -> startActivity(
                 Intent(
                     this@HomeActivity,
@@ -113,6 +124,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 )
             )
         }
+
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
