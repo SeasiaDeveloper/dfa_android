@@ -78,7 +78,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun showDescError() {
         Utilities.dismissProgress()
-        Utilities.showMessage(activity!!, getString(R.string.please_select_image))
+        Utilities.showMessage(mContext, getString(R.string.please_select_image))
     }
 
     companion object {
@@ -107,7 +107,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
 
         imgAdd.setOnClickListener(this)
-        Utilities.showProgress(activity!!)
+        Utilities.showProgress(mContext)
 
         val casesRequest =
             CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
@@ -126,7 +126,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             //hit api to add post and display post layout
             val request = CreatePostRequest(edtPostInfo.text.toString(), pathArray, media_type!!)
             authorizationToken =
-                PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+                PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
             presenter.createPost(request, authorizationToken)
             layoutAddPost.visibility = View.VISIBLE
             layoutPost.visibility = View.GONE
@@ -187,7 +187,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 if (data?.data != null) {
                     val realpath = RealPathUtil.getRealPath(activity!!, data.data!!)
                     val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
-                    Glide.with(activity!!)
+                    Glide.with(mContext)
                         .load(thumbnail)
                         //.apply(options)
                         .into(imgPost)
@@ -239,7 +239,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun showServerError(error: String) {
         Utilities.dismissProgress()
-        Utilities.showMessage(activity!!, error)
+        Utilities.showMessage(mContext, error)
     }
 
     override fun onClick(p0: View?) {
@@ -252,7 +252,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 if (jsondata != null) {
                     //check if user is partial/fully verified
                     if (jsondata.data?.adhar_number != null && !(jsondata.data.adhar_number.equals(""))) {
-                        val intent = Intent(activity, GeneralPublicActivity::class.java)
+                        val intent = Intent(mContext, GeneralPublicActivity::class.java)
                         startActivity(intent)
                     } else {
                         //make the user partially verified:

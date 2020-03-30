@@ -5,6 +5,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -147,6 +148,17 @@ class CasesAdapter(
                 itemView.layout_post.setOnClickListener {
                     listener.onItemClick(item, "full")
                 }
+
+                itemView.layout_share.setOnClickListener{
+                    Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
+                }
+
+                itemView.layoutCommentPost.setOnClickListener {
+                    val intent = Intent(context, CommentsActivity::class.java)
+                    intent.putExtra("id", item.id)
+                    context.startActivity(intent)
+                }
+
             } else {
                 //in case of complaint:
                 if (userDetail.profile_pic != null) {
@@ -225,6 +237,10 @@ class CasesAdapter(
                     val intent = Intent(context, CommentsActivity::class.java)
                     intent.putExtra("id", item.id)
                     context.startActivity(intent)
+                }
+
+                itemView.layout_share.setOnClickListener{
+                    Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
                 }
 
             }

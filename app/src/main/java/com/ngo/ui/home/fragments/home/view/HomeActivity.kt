@@ -151,7 +151,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.CONTACT_NUMBER,
-            getProfileResponse.data?.mobile.toString()
+            getProfileResponse.data?.username.toString()
         )
         PreferenceHandler.writeString(
             this,

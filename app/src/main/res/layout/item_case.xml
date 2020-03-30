@@ -511,6 +511,7 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/layout_share"
                     android:gravity="center"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -668,6 +669,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutCommentPost"
                 android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -689,6 +691,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layout_share_post"
                 android:gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
