@@ -90,6 +90,7 @@ class CommentsActivity :AppCompatActivity(), CommentsView {
     }
 
     override fun onCommentsAddedSuccess(response: DeleteComplaintResponse) {
+        etComments.text?.clear()
         Utilities.showMessage(mContext, response.message!!)
         //refresh the list
         presenter.fetchComments(id, token)

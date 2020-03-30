@@ -242,9 +242,10 @@ class SignupActivity : BaseActivity(), SignupView {
     override fun showResponse(response: SignupResponse) {
         dismissProgress()
         Utilities.showMessage(this, response.message)
+        PreferenceHandler.writeString(this, PreferenceHandler.AUTHORIZATION,"Bearer "+response.token)
+
+        startActivity(Intent(this@SignupActivity, HomeActivity::class.java))
         finish()
-        var intent = Intent(this, HomeActivity::class.java)
-        startActivity(intent)
     }
 
     override fun showServerError(error: String) {

@@ -65,8 +65,8 @@ class ProfilePresenterImplClass(private var profileView: ProfileView):ProfilePre
         profileView.onValidationSuccess(request)
     }
 
-    override fun updateProfile(request: SignupRequest, token: String?) {
-        profileModel.updateProfile(request,token) //hit update profile api in model class
+    override fun updateProfile(request: SignupRequest, token: String?,isAdhaarNoAdded: Boolean) {
+        profileModel.updateProfile(request,token,isAdhaarNoAdded) //hit update profile api in model class
     }
 
     override fun onSuccessfulUpdation(responseObject: SignupResponse) {

@@ -33,5 +33,7 @@ class GetProfileResponse {
         val email: String? = null
 
         val username: String? = null
+
+        var adhar_number:String? =null
     }
 }

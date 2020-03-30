@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.ngo.R
 import com.ngo.base.BaseActivity
@@ -28,6 +29,21 @@ import com.ngo.ui.profile.view.ProfileView
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.activity_profile.btnCancel
+import kotlinx.android.synthetic.main.activity_profile.etAddress1
+import kotlinx.android.synthetic.main.activity_profile.etAddress2
+import kotlinx.android.synthetic.main.activity_profile.etAdharNo
+import kotlinx.android.synthetic.main.activity_profile.etEmail
+import kotlinx.android.synthetic.main.activity_profile.etFirstName
+import kotlinx.android.synthetic.main.activity_profile.etLastName
+import kotlinx.android.synthetic.main.activity_profile.etMiddleName
+import kotlinx.android.synthetic.main.activity_profile.etMobile1
+import kotlinx.android.synthetic.main.activity_profile.etMobile2
+import kotlinx.android.synthetic.main.activity_profile.etPinCode
+import kotlinx.android.synthetic.main.activity_profile.imgProfile
+import kotlinx.android.synthetic.main.activity_profile.spDist
+import kotlinx.android.synthetic.main.activity_profile.toolbarLayout
+import kotlinx.android.synthetic.main.activity_signup.*
 
 class ProfileActivity : BaseActivity(), ProfileView {
 
@@ -38,6 +54,9 @@ class ProfileActivity : BaseActivity(), ProfileView {
     private var IMAGE_REQ_CODE = 101
     private lateinit var token: String
     private var authorizationToken: String? = ""
+    private var adhaarNo = ""
+    private var isAdhaarNoAdded = false
+    private lateinit var prevAdhaarValue: String
 
     override fun fetchDistList(responseObject: DistResponse) {
         dismissProgress()
@@ -94,7 +113,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
     fun setData() {
         //  var data = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
         val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
-        var jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
+        val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
         if (jsondata != null) {
             if (jsondata.data?.profile_pic != null) {
                 Glide.with(this).load(jsondata.data?.profile_pic)
@@ -123,15 +142,28 @@ class ProfileActivity : BaseActivity(), ProfileView {
             } else {
                 isVerified.isChecked = false
             }
-            etAdharNo.isFocusable = false
-            etAdharNo.isEnabled = false
-            etAdharNo.isClickable = false
+
+            prevAdhaarValue = jsondata.data?.adhar_number!!
+
+            //  if(jsondata.data?.adhar_number!! != null)
+            adhaarNo = jsondata.data?.adhar_number!!
+            if (!adhaarNo.equals("")) {
+                etAdharNo.setText(jsondata.data.adhar_number)
+                etAdharNo.isFocusable = false
+                etAdharNo.isEnabled = false
+                etAdharNo.isClickable = false
+                isAdhaarNoAdded = false
+            } else {
+                etAdharNo.isFocusable = true
+                etAdharNo.isEnabled = true
+                etAdharNo.isClickable = true
+            }
+
             etMobile1.isFocusable = false
             etMobile1.isEnabled = false
             etMobile1.isClickable = false
         }
     }
-
 
     private fun getFirebaseToken() {
         FirebaseInstanceId.getInstance().instanceId
@@ -152,6 +184,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
             onBackPressed()
         }
         btnUpdate.setOnClickListener {
+            adhaarNo =   etAdharNo.text.toString()
             val signupReq = SignupRequest(
                 etMobile1.text.toString(),
                 etEmail.text.toString(),
@@ -164,10 +197,16 @@ class ProfileActivity : BaseActivity(), ProfileView {
                 etAddress2.text.toString(),
                 etPinCode.text.toString(),
                 etMobile2.text.toString(),
-                etAdharNo.text.toString(),
+                adhaarNo,
                 path, "",
                 token
             )
+
+            if (!(adhaarNo.equals("")) && prevAdhaarValue.equals("")) {
+                isAdhaarNoAdded = true
+            } else {
+                isAdhaarNoAdded = false
+            }
 
             if (isInternetAvailable()) {
                 showProgress()
@@ -243,6 +282,11 @@ class ProfileActivity : BaseActivity(), ProfileView {
     override fun onSuccessfulUpdation(responseObject: SignupResponse) {
         dismissProgress()
         Utilities.showMessage(this, responseObject.message)
+        if (isAdhaarNoAdded) {
+            val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
+           val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
+            jsondata.data?.adhar_number = responseObject.data.adhar_number //add adhar no
+        }
         finish()
     }
 
@@ -253,7 +297,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
             showProgress()
             authorizationToken =
                 PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
-            profilePresenter.updateProfile(request, authorizationToken)
+            profilePresenter.updateProfile(request, authorizationToken, isAdhaarNoAdded)
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
