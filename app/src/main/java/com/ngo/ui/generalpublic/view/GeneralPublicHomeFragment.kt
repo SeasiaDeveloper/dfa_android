@@ -43,7 +43,7 @@ import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     OnCaseItemClickListener, AlertDialogListener {
-    override fun onClick(item : Any) {
+    override fun onClick(item: Any) {
         Utilities.showProgress(mContext)
         val complaintsData = item as GetCasesResponse.Data
         //delete the item based on id
@@ -208,7 +208,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         complaints = response.data!!
         if (complaints.isNotEmpty()) {
             tvRecord?.visibility = View.GONE
-            adapter = CasesAdapter(mContext, complaints.toMutableList(), this, 1,this)
+            adapter = CasesAdapter(mContext, complaints.toMutableList(), this, 1, this)
             val horizontalLayoutManager = LinearLayoutManager(
                 mContext,
                 RecyclerView.VERTICAL, false
@@ -221,12 +221,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     override fun onItemClick(complaintsData: GetCasesResponse.Data, type: String) {
-        if (complaintsData.type.equals("0")) {
-            val intent = Intent(activity, IncidentDetailActivity::class.java)
-            //  intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData)
-            intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
-            startActivity(intent)
-        }
+        // if (complaintsData.type.equals("0")) {
+        val intent = Intent(activity, IncidentDetailActivity::class.java)
+        //  intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData)
+        intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
+        intent.putExtra(Constants.POST_OR_COMPLAINT, complaintsData.type)
+        startActivity(intent)
+        //  }
 
     }
 

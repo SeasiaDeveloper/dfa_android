@@ -2,7 +2,9 @@ package com.ngo.ui.home.fragments.videos.model
 
 import com.ngo.apis.ApiClient
 import com.ngo.apis.CallRetrofitApi
+import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.request.GetPhotosRequest
+import com.ngo.pojo.response.GetCrimeDetailsResponse
 import com.ngo.pojo.response.GetPhotosResponse
 import com.ngo.ui.home.fragments.photos.presenter.PhotosPresenter
 import com.ngo.ui.home.fragments.videos.presenter.VideoPresenter
@@ -45,6 +47,30 @@ class VideosModel (private var presenter: VideoPresenter) {
 
             override fun onFailure(call: Call<GetPhotosResponse>, t: Throwable) {
                 presenter.showError(t.message + "")
+            }
+        })
+    }
+
+    fun getCrimeComplaints(token: String?, crimeDetailsRequest: CrimeDetailsRequest) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        val map = HashMap<String, RequestBody>()
+        map["complaint_id"] = toRequestBody(crimeDetailsRequest.complaintId)
+        retrofitApi.getCrimeDetails(token, map).enqueue(object :
+            Callback<GetCrimeDetailsResponse> {
+            override fun onFailure(call: Call<GetCrimeDetailsResponse>, t: Throwable) {
+                presenter.showError(t.message + "")
+            }
+
+            override fun onResponse(
+                call: Call<GetCrimeDetailsResponse>,
+                response: Response<GetCrimeDetailsResponse>
+            ) {
+                val responseObject = response.body()
+                if (responseObject != null) {
+                    presenter.getCrimeDetailsSuccess(responseObject)
+                } else {
+                    presenter.showError(Constants.SERVER_ERROR)
+                }
             }
         })
     }

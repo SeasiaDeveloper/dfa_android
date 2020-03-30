@@ -43,6 +43,10 @@
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.imagevideo.ImageVideoScreen"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".ui.ngo.NGOActivity" />
 
         <activity android:name=".ui.dashboard.PassCodeActivity"
@@ -54,9 +58,16 @@
                   android:screenOrientation="portrait"/>
 
         <activity android:name="com.ngo.ui.home.fragments.home.view.HomeActivity"
+        android:windowSoftInputMode="stateHidden"
+        android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.earnings.view.MyEarningsActivity"
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.termsConditions.view.TermsAndConditionActivity"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
 
         <activity android:name=".ui.crimedetails.view.IncidentDetailActivity"
                   android:windowSoftInputMode="stateHidden"

@@ -102,6 +102,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
     override fun onItemClick(complaintsData: GetCasesResponse.Data, type: String) {
         val intent = Intent(mContext, IncidentDetailActivity::class.java)
         intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
+        intent.putExtra(Constants.POST_OR_COMPLAINT, "0")
         startActivity(intent)
     }
 

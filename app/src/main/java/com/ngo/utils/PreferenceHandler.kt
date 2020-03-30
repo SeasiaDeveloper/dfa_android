@@ -11,6 +11,7 @@ object PreferenceHandler {
     const val LAT = "lat"
     const val LNG = "lng"
     const val PROFILE_JSON = "profileData"
+    const val CONTACT_NUMBER = "contact_number"
     const val USER_ID = "userId"
     const val AUTHORIZATION = "authorization"
     const val DEVICE_TOKEN = "token"

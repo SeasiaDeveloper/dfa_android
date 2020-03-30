@@ -1,6 +1,7 @@
 package com.ngo.ui.updatepassword.presenter
 
 import com.ngo.pojo.request.ChangePasswordRequest
+import com.ngo.pojo.request.UpdatePasswordRequest
 import com.ngo.pojo.response.ChangePasswordResponse
 import com.ngo.ui.changepassword.view.ChangePasswordView
 import com.ngo.ui.updatepassword.model.UpdatePasswordModel
@@ -17,7 +18,7 @@ class UpdatePasswordPresenterImpl(private var updatePassordView: ChangePasswordV
         updatePassordView.onChangePasswordFailure(error)
     }
 
-    override fun hitUpdatePasswordApi(updateChangePasswordRequest: ChangePasswordRequest) {
+    override fun hitUpdatePasswordApi(updateChangePasswordRequest: UpdatePasswordRequest) {
         updatePasswordModel.changePasswordApi(updateChangePasswordRequest)
     }
 

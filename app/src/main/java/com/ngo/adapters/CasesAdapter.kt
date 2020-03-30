@@ -77,8 +77,10 @@ class CasesAdapter(
             }
 
             //in case of post:
-            if(userDetail.profile_pic!=null)
-            {   Glide.with(context).load(userDetail.profile_pic).apply(options).into(itemView.imgPostProfile)}
+            if (userDetail.profile_pic != null) {
+                Glide.with(context).load(userDetail.profile_pic).apply(options)
+                    .into(itemView.imgPostProfile)
+            }
             if (item.type == "1") {
                 itemView.layout_post.visibility = View.VISIBLE
                 itemView.layoutListItem.visibility = View.GONE
@@ -142,12 +144,15 @@ class CasesAdapter(
                     listener.changeLikeStatus(item)
                 }
 
-            }
-
-            else {
+                itemView.layout_post.setOnClickListener {
+                    listener.onItemClick(item, "full")
+                }
+            } else {
                 //in case of complaint:
-                if(userDetail.profile_pic!=null)
-                {   Glide.with(context).load(userDetail.profile_pic).apply(options).into(itemView.imgCrime)}
+                if (userDetail.profile_pic != null) {
+                    Glide.with(context).load(userDetail.profile_pic).apply(options)
+                        .into(itemView.imgCrime)
+                }
                 itemView.layout_post.visibility = View.GONE
                 itemView.layoutListItem.visibility = View.VISIBLE
 

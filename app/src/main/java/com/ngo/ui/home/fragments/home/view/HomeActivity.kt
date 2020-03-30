@@ -15,6 +15,7 @@ import com.ngo.R
 import com.ngo.adapters.TabLayoutAdapter
 import com.ngo.base.BaseActivity
 import com.ngo.pojo.response.GetProfileResponse
+import com.ngo.ui.earnings.view.MyEarningsActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.home.fragments.photos.view.PhotosFragment
@@ -24,6 +25,7 @@ import com.ngo.ui.home.fragments.home.presenter.HomePresenterImpl
 import com.ngo.ui.login.view.LoginActivity
 import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.ui.profile.ProfileActivity
+import com.ngo.ui.termsConditions.view.TermsAndConditionActivity
 import com.ngo.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.ngo.ui.updatepassword.view.UpdatePasswordActivity
 import com.ngo.utils.PreferenceHandler
@@ -80,10 +82,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         textAddress.setText(getProfileResponse.data?.address_1)
         if (getProfileResponse.data?.profile_pic != null) {
             Glide.with(this).load(getProfileResponse.data?.profile_pic)
-                /*  .crossFade()
-                  .thumbnail(0.5f)
-                  .bitmapTransform(CircleTransform(this))
-                  .diskCacheStrategy(DiskCacheStrategy.ALL)*/
                 .into(imageNavigator)
         }
     }
@@ -101,7 +99,19 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.nav_logout -> {
                 AlertDialog.onShowLogoutDialog(this, this)
             }
+            R.id.nav_my_earning -> startActivity(
+                Intent(
+                    this@HomeActivity,
+                    MyEarningsActivity::class.java
+                )
+            )
             R.id.nav_cases -> startActivity(Intent(this@HomeActivity, MyCasesActivity::class.java))
+            R.id.nav_terms_and_conditions -> startActivity(
+                Intent(
+                    this@HomeActivity,
+                    TermsAndConditionActivity::class.java
+                )
+            )
         }
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
@@ -126,6 +136,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val jsonString = GsonBuilder().create().toJson(getProfileResponse)
         //Save that String in SharedPreferences
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, jsonString)
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.CONTACT_NUMBER,
+            getProfileResponse.data?.mobile.toString()
+        )
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.USER_ID,

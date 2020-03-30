@@ -5,6 +5,7 @@ import android.content.ContentUris
 import android.content.Context
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.media.MediaMetadataRetriever
 import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Build
@@ -12,6 +13,7 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import androidx.loader.content.CursorLoader
+
 
 object RealPathUtil {
     fun getRealPath(context: Context, fileUri: Uri): String? {
@@ -33,6 +35,26 @@ object RealPathUtil {
             videoPath = videoPath.replace("file://", "")
         }
         return ThumbnailUtils.createVideoThumbnail(videoPath, MediaStore.Video.Thumbnails.MINI_KIND)
+    }
+
+    fun retriveVideoFrameFromVideo(videoPath: String?): Bitmap? {
+        var bitmap: Bitmap? = null
+        var mediaMetadataRetriever: MediaMetadataRetriever? = null
+        try {
+            mediaMetadataRetriever = MediaMetadataRetriever()
+            if (Build.VERSION.SDK_INT >= 14) mediaMetadataRetriever.setDataSource(
+                videoPath,
+                HashMap()
+            ) else mediaMetadataRetriever.setDataSource(videoPath)
+            //   mediaMetadataRetriever.setDataSource(videoPath);
+            bitmap = mediaMetadataRetriever.getFrameAtTime(1, MediaMetadataRetriever.OPTION_CLOSEST)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            throw Throwable("Exception in retriveVideoFrameFromVideo(String videoPath)" + e.message)
+        } finally {
+            mediaMetadataRetriever?.release()
+        }
+        return bitmap
     }
 
     @SuppressLint("NewApi")

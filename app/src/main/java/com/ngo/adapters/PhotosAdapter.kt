@@ -9,10 +9,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.ngo.R
+import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.response.GetPhotosResponse
+import com.ngo.ui.home.fragments.photos.view.OnClickOfVideoAndPhoto
 import kotlinx.android.synthetic.main.adapter_photos.view.*
 
-class PhotosAdapter(var context: Context, var mList: MutableList<GetPhotosResponse.Data>) :
+class PhotosAdapter(
+    var context: Context,
+    var mList: MutableList<GetPhotosResponse.Data>,
+    var listener: OnClickOfVideoAndPhoto
+) :
     RecyclerView.Adapter<PhotosAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
@@ -21,13 +27,13 @@ class PhotosAdapter(var context: Context, var mList: MutableList<GetPhotosRespon
         return ViewHolder(v)
     }
 
-    fun changeList(newList:MutableList<GetPhotosResponse.Data>) {
+    fun changeList(newList: MutableList<GetPhotosResponse.Data>) {
         mList = newList
         notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(context, mList.get(position), position)
+        holder.bind(context, mList.get(position), position, listener)
     }
 
     override fun getItemCount(): Int {
@@ -41,20 +47,26 @@ class PhotosAdapter(var context: Context, var mList: MutableList<GetPhotosRespon
 
         init {
             ivPhoto = itemView.findViewById<View>(R.id.ivPhoto) as ImageView
+
         }
 
-            fun bind(
-                context: Context,
-                item: GetPhotosResponse.Data,
-                index: Int
-            ) {
-                this.index = index
+        fun bind(
+            context: Context,
+            item: GetPhotosResponse.Data,
+            index: Int,
+            listener: OnClickOfVideoAndPhoto
+        ) {
+            this.index = index
 
-                val options = RequestOptions()
-                    .centerCrop()
-                    .placeholder(R.drawable.noimage)
-                    .error(R.drawable.noimage)
-                Glide.with(context).load(item.url).apply(options).into(itemView.ivPhoto)
+            val options = RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.noimage)
+                .error(R.drawable.noimage)
+            Glide.with(context).load(item.url).apply(options).into(itemView.ivPhoto)
+
+            ivPhoto.setOnClickListener {
+                listener.getComplaintId(item.complaint_id)
             }
+        }
     }
 }

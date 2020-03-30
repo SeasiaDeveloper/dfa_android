@@ -1,21 +1,26 @@
 package com.ngo.adapters
 
 import android.content.Context
-import android.net.Uri
-import android.os.FileUtils
+import android.graphics.BitmapFactory
+import android.media.MediaMetadataRetriever
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.ngo.R
 import com.ngo.pojo.response.GetPhotosResponse
-import com.ngo.utils.RealPathUtil
+import com.ngo.ui.home.fragments.photos.view.OnClickOfVideoAndPhoto
 import kotlinx.android.synthetic.main.adapter_photos.view.*
-import java.io.File
 
-class VideosAdapter(var context: Context, var mList: MutableList<GetPhotosResponse.Data>) :
+
+class VideosAdapter(
+    var context: Context,
+    var mList: MutableList<GetPhotosResponse.Data>,
+    var listener: OnClickOfVideoAndPhoto
+) :
     RecyclerView.Adapter<VideosAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ViewHolder {
@@ -24,13 +29,13 @@ class VideosAdapter(var context: Context, var mList: MutableList<GetPhotosRespon
         return ViewHolder(v)
     }
 
-    fun changeList(newList:MutableList<GetPhotosResponse.Data>) {
+    fun changeList(newList: MutableList<GetPhotosResponse.Data>) {
         mList = newList
         notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(context, mList.get(position), position)
+        holder.bind(context, mList.get(position), position, listener)
     }
 
     override fun getItemCount(): Int {
@@ -51,12 +56,20 @@ class VideosAdapter(var context: Context, var mList: MutableList<GetPhotosRespon
         fun bind(
             context: Context,
             item: GetPhotosResponse.Data,
-            index: Int
+            index: Int,
+            listener: OnClickOfVideoAndPhoto
         ) {
             ivVideo.visibility = View.VISIBLE
             this.index = index
-            Glide.with(context).load(Uri.fromFile(File(item.url))).into(itemView.ivPhoto)
 
+            val requestOptions = RequestOptions()
+            requestOptions.isMemoryCacheable
+            Glide.with(context).setDefaultRequestOptions(requestOptions).load(item.url.toString())
+                .into(itemView.ivPhoto)
+
+            ivPhoto.setOnClickListener {
+                listener.getComplaintId(item.complaint_id)
+            }
         }
     }
 }

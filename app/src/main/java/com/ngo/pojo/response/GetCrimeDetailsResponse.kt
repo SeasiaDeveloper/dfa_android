@@ -1,31 +1,74 @@
 package com.ngo.pojo.response
 
-data class GetCrimeDetailsResponse(
-    var media_list: Array<String>,
+import java.io.Serializable
 
-    var latitude: String,
+class GetCrimeDetailsResponse : Serializable {
+    val code: String? = null
 
-    var crime_type: String,
+    val data: Array<Data>? = null
 
-    var type: String,
+    val message: String? = null
 
-    var report_data: String,
+    inner class Data : Serializable {
 
-    var user_id: String,
+        val media_list: Array<String>? = null
 
-    var report_time: String,
+        val userDetail: UserDetail? = null
 
-    var urgency: String,
+        val latitude: String? = null
 
-    var showDelete: String,
+        val crime_type: String? = null
 
-    var id: String,
+        val media_type:String?=null
 
-    var crime_type_id: String,
+        val type: String? = null
 
-    var longitude: String,
+        val report_data: String? = null
 
-    var info: String,
+        val user_id: String? = null
 
-    var status: String
-)
+        val report_time: String? = null
+
+        val urgency: String? = null
+
+        val showDelete: String? = null
+
+        val id: String? = null
+
+        val crime_type_id: String? = null
+
+        val longitude: String? = null
+
+        val info: String? = null
+
+        val status: String? = null
+
+        inner class UserDetail : Serializable {
+            val isVerified: String? = null
+
+            val address_1: String? = null
+
+            val address_2: String? = null
+
+            val pin_code: String? = null
+
+            val mobile: String? = null
+
+            val profile_pic: String? = null
+
+            val last_name: String? = null
+
+            val middle_name: String? = null
+
+            val district: String? = null
+
+            val id: String? = null
+
+            val first_name: String? = null
+
+            val email: String? = null
+
+            val username: String? = null
+        }
+    }
+}

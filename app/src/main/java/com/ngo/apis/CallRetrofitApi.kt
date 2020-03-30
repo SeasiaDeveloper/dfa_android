@@ -1,6 +1,7 @@
 package com.ngo.apis
 
 import com.ngo.pojo.request.ChangePasswordRequest
+import com.ngo.pojo.request.UpdatePasswordRequest
 import com.ngo.pojo.response.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -35,12 +36,18 @@ interface CallRetrofitApi {
     @GET("v1/showcomplaintimage")
     fun getPoliceForm(@Query("id") id: Int): Call<GetPoliceFormResponse>
 
+    @GET("jwt-auth/v1/my_earning")
+    fun getMyEarningsData(@Header("Authorization") authorization: String?,@Query("contact_number") id: Long): Call<MyEarningsResponse>
+
     @Multipart
     @POST("jwt-auth/v1/token")
     fun login(@PartMap params: HashMap<String, RequestBody>): Call<LoginResponse>
 
     @POST("wp/v2/user/change-password")
     fun changePassword(@Body changePasswordRequest: ChangePasswordRequest): Call<ChangePasswordResponse>
+
+    @POST("wp/v2/user/change-password")
+    fun updatePassword(@Body changePasswordRequest: UpdatePasswordRequest): Call<ChangePasswordResponse>
 
     @Multipart
     @POST("wp/v2/user/validate-byphone")
@@ -107,7 +114,7 @@ interface CallRetrofitApi {
     fun get_terms_condition(): Call<GetTermsConditionsResponse>
 
     @GET("jwt-auth/v1/comment_list")
-    fun getComments(@Header("Authorization") authorization: String?,@Query("complaint_id") id: Int): Call<GetCommentsResponse>
+    fun getComments(@Header("Authorization") authorization: String?, @Query("complaint_id") id: Int): Call<GetCommentsResponse>
 
     @Multipart
     @POST("jwt-auth/v1/comment_complaint")
