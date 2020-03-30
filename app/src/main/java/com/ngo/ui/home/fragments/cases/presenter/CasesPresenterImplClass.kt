@@ -4,6 +4,7 @@ import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CreatePostRequest
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
+import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.home.fragments.cases.model.CasesModel
 import com.ngo.ui.home.fragments.cases.view.CasesView
 
@@ -52,4 +53,11 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
         view.onLikeStatusChanged(responseObject)
     }
 
+    override fun saveAdhaarNo(token: String, adhaarNo: String) {
+        model.saveAdhaarNo(token,adhaarNo)
+    }
+
+    override fun adhaarSavedSuccess(responseObject: SignupResponse) {
+        view.adhaarSavedSuccess(responseObject)
+    }
 }

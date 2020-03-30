@@ -6,6 +6,7 @@ import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CreatePostRequest
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
+import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.utils.Constants
 import okhttp3.MediaType
@@ -163,5 +164,36 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                 }
             }
         })
+    }
+
+    fun saveAdhaarNo(token: String, adhaarNo: String) {
+        //hit api
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        val map = HashMap<String, RequestBody>()
+        map["adhar_number"] = toRequestBody(adhaarNo)
+        retrofitApi.updateProfileWithoutImage(map, token)
+            .enqueue(object : Callback<SignupResponse> {
+                override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
+                    presenter.showError(t.message + "")
+                }
+
+                override fun onResponse(
+                    call: Call<SignupResponse>,
+                    response: Response<SignupResponse>
+                ) {
+                    val responseObject = response.body()
+                    if (responseObject != null) {
+                        if (responseObject.code == 200) {
+                            presenter.adhaarSavedSuccess(responseObject)
+                        } else {
+                            presenter.showError(
+                                response.body()?.message ?: Constants.SERVER_ERROR
+                            )
+                        }
+                    } else {
+                        presenter.showError(Constants.SERVER_ERROR)
+                    }
+                }
+            })
     }
 }

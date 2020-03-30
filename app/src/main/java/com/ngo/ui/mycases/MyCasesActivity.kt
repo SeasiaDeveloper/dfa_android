@@ -17,6 +17,7 @@ import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
+import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
@@ -29,6 +30,7 @@ import kotlinx.android.synthetic.main.activity_my_cases.*
 import kotlinx.android.synthetic.main.activity_my_cases.toolbarLayout
 
 class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener {
+
     override fun onClick(item: Any) {
         Utilities.showProgress(this@MyCasesActivity)
         val complaintsData = item as GetCasesResponse.Data
@@ -169,4 +171,9 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     override fun handleKeyboard(): View {
         return myCasesLayout
     }
+
+    override fun adhaarSavedSuccess(responseObject: SignupResponse) {
+        //do nothing
+    }
+
 }

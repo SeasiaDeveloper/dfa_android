@@ -19,6 +19,7 @@ import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
+import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
@@ -29,6 +30,7 @@ import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_cases.*
 
 class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialogListener {
+
     override fun onClick(item :Any) {
         Utilities.showProgress(mContext)
         val complaintsData = item as GetCasesResponse.Data
@@ -54,7 +56,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
             rvPublic?.visibility = View.GONE
         }
 
-        etSearch.addTextChangedListener(object : TextWatcher {
+        etSearch?.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
                 casesRequest = CasesRequest(
@@ -142,7 +144,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         if (isVisibleToUser) {
             casesRequest = CasesRequest(
                 "1",
-                etSearch.text.toString(),
+             /*   etSearch?.text.toString()*/"",
                 "0"
             ) //all = "1" and for fetching all the cases which are of type = 0
 
@@ -162,6 +164,10 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "0") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token)
+    }
+
+    override fun adhaarSavedSuccess(responseObject: SignupResponse) {
+        //do nothing
     }
 
 }

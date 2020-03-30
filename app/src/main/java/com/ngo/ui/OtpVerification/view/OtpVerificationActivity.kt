@@ -27,6 +27,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
    private lateinit var mVerificationId: String
     private var presenter: OtpVerificationPresenter = OtpVerificationImpl(this)
     private lateinit var userId: String
+    private lateinit var phoneNo:String
 
     override fun getLayout(): Int {
         return R.layout.activity_otp_verification
@@ -45,6 +46,8 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
         } else {
             //
         }
+
+        phoneNo = intent.getStringExtra("phoneNo")
         setListeners()
         showProgress()
         presenter.sendVerificationCode(mobile,mCallbacks)
@@ -117,9 +120,11 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
             OnCompleteListener<AuthResult?> { task ->
                 if (task.isSuccessful) {
                     dismissProgress()
+
                     //verification successful we will start the Change Password activity
                     if (intent_from.equals("signup",ignoreCase = true)){
                         val intent = Intent(this, SignupActivity::class.java)
+                        intent.putExtra("phoneNo", phoneNo)
                         startActivity(intent)
                         finish()
                     } else if (intent_from.equals("forgotPassword",ignoreCase = true)) {
