@@ -28,8 +28,8 @@ class ImageVideoScreen : BaseActivity() {
         }
         mediaType = intent.getStringExtra("fromWhere")
         imageUrl = intent.getStringExtra(Constants.IMAGE_URL)
-        Utilities.showMessage(this, "Please wait...")
         if (mediaType.equals("VIDEOS")) {
+            Utilities.showMessage(this, "Please wait...")
             videoView.visibility = View.VISIBLE
             showVideo(imageUrl!!)
         } else {
@@ -47,13 +47,6 @@ class ImageVideoScreen : BaseActivity() {
             mp.isLooping = true
             videoView.start()
         }
-
-        /*   mediaControls = MediaController(this)
-           mediaControls.setAnchorView(videoView)
-           videoView.setMediaController(mediaControls)
-           videoView.setVideoURI(Uri.parse(videoUri))
-           videoView.seekTo(100);
-           videoView.start()*/
     }
 
     override fun handleKeyboard(): View {

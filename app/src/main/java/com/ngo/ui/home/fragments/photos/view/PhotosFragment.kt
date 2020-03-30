@@ -49,7 +49,8 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
         setAdapter()
         request = GetPhotosRequest("photos")
         Utilities.showProgress(activity!!)
-        presenter.getPhotos(request)
+        var authorizationToken = PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+        presenter.getPhotos(authorizationToken,request)
     }
 
     private fun setAdapter() {

@@ -11,8 +11,8 @@ class PhotosPresenterImpl(private var view: PhotosView) : PhotosPresenter {
 
     private var model: PhotosModel = PhotosModel(this)
 
-    override fun getPhotos(request: GetPhotosRequest) {
-        model.fetchPhotos(request)
+    override fun getPhotos(token:String?,request: GetPhotosRequest) {
+        model.fetchPhotos(token,request)
     }
 
     override fun onGetPhotosSuccess(response: GetPhotosResponse) {

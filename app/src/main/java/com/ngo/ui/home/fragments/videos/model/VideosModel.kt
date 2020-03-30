@@ -21,12 +21,12 @@ class VideosModel (private var presenter: VideoPresenter) {
         return RequestBody.create(MediaType.parse("application/json"), value)
     }
 
-    fun fetchVideos(request: GetPhotosRequest) {
-        val retrofitApi = ApiClient.getClientWithToken().create(CallRetrofitApi::class.java)
+    fun fetchVideos(token:String?,request: GetPhotosRequest) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["type"] = toRequestBody(request.type)
 
-        retrofitApi.getcrime_media(map).enqueue(object : Callback<GetPhotosResponse> {
+        retrofitApi.getcrime_media(token,map).enqueue(object : Callback<GetPhotosResponse> {
             override fun onResponse(
                 call: Call<GetPhotosResponse>,
                 response: Response<GetPhotosResponse>

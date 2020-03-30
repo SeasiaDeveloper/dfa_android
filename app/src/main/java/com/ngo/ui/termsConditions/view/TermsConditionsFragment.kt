@@ -29,7 +29,7 @@ class TermsConditionsFragment :Fragment() ,TermsConditionsView {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         Utilities.showProgress(activity!!)
-        presenter.getTermsConditions()
+       // presenter.getTermsConditions()
     }
 
 

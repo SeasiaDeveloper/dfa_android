@@ -8,6 +8,7 @@ import com.ngo.customviews.CenteredToolbar
 import com.ngo.pojo.response.GetTermsConditionsResponse
 import com.ngo.ui.termsConditions.presenter.TermsConditionsPresenter
 import com.ngo.ui.termsConditions.presenter.TermsConditionsPresenterImpl
+import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_profile.toolbarLayout
 import kotlinx.android.synthetic.main.fragment_terms_conditions.wv_terms
@@ -28,7 +29,8 @@ class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
             onBackPressed()
         }
         Utilities.showProgress(this)
-        presenter.getTermsConditions()
+        var authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
+        presenter.getTermsConditions(authorizationToken)
     }
 
     override fun handleKeyboard(): View {

@@ -43,11 +43,12 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
 
         if (intent_from.equals("forgotPassword",ignoreCase = true)) {
             userId = intent.getStringExtra("userId")
+
         } else {
-            //
+            phoneNo = intent.getStringExtra("phoneNo")
         }
 
-        phoneNo = intent.getStringExtra("phoneNo")
+
         setListeners()
         showProgress()
         presenter.sendVerificationCode(mobile,mCallbacks)
@@ -129,6 +130,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
                         finish()
                     } else if (intent_from.equals("forgotPassword",ignoreCase = true)) {
                         val intent = Intent(this, ChangePasswordActivity::class.java)
+                        intent.putExtra(userId,"userId")
                         startActivity(intent)
                         finish()
                     }

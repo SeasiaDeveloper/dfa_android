@@ -50,7 +50,8 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
         setAdapter()
         request = GetPhotosRequest("videos")
         Utilities.showProgress(activity!!)
-        presenter.getVideos(request)
+        var authorizationToken = PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+        presenter.getVideos(authorizationToken,request)
     }
 
     private fun setAdapter() {
