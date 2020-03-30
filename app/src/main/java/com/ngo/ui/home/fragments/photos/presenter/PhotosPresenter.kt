@@ -8,7 +8,7 @@ import com.ngo.pojo.response.GetCrimeDetailsResponse
 import com.ngo.pojo.response.GetPhotosResponse
 
 interface PhotosPresenter : BasePresenter {
-    fun getPhotos(request: GetPhotosRequest)
+    fun getPhotos(token: String?,request: GetPhotosRequest)
     fun onGetPhotosSuccess(response: GetPhotosResponse)
     fun onGetPhotosFailed(error: String)
     fun getComplaintDetails(request: CrimeDetailsRequest, token: String?)

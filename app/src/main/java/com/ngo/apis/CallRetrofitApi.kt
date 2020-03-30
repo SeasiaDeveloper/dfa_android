@@ -100,7 +100,7 @@ interface CallRetrofitApi {
 
     @Multipart
     @POST("jwt-auth/v1/crime_media")
-    fun getcrime_media(@PartMap params: HashMap<String, RequestBody>): Call<GetPhotosResponse>
+    fun getcrime_media(@Header("Authorization") authorization: String?,@PartMap params: HashMap<String, RequestBody>): Call<GetPhotosResponse>
 
     @Multipart
     @POST("jwt-auth/v1/like_complaint")
@@ -111,7 +111,7 @@ interface CallRetrofitApi {
     fun getCrimeDetails(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<GetCrimeDetailsResponse>
 
     @GET("wp/v2/user/get_terms_condition")
-    fun get_terms_condition(): Call<GetTermsConditionsResponse>
+    fun get_terms_condition(@Header("Authorization") authorization: String?): Call<GetTermsConditionsResponse>
 
     @GET("jwt-auth/v1/comment_list")
     fun getComments(@Header("Authorization") authorization: String?, @Query("complaint_id") id: Int): Call<GetCommentsResponse>

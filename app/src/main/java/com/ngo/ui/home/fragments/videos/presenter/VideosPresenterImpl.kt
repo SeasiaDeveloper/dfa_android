@@ -13,9 +13,8 @@ class VideosPresenterImpl (private var view: VideosView): VideoPresenter {
 
     private var model: VideosModel = VideosModel(this)
 
-    override fun getVideos(request: GetPhotosRequest) {
-        model.fetchVideos(request)
-
+    override fun getVideos(token: String?, request: GetPhotosRequest) {
+        model.fetchVideos(token,request)
     }
 
     override fun onGetVideosSuccess(response: GetPhotosResponse) {

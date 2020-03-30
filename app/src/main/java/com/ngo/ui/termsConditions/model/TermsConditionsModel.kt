@@ -9,17 +9,17 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class TermsConditionsModel(private var presenter: TermsConditionsPresenter)  {
+class TermsConditionsModel(private var presenter: TermsConditionsPresenter) {
 
-    fun getTermsConditions() {
-        val retrofitApi = ApiClient.getClientWithToken().create(CallRetrofitApi::class.java)
-        retrofitApi.get_terms_condition().enqueue(object :
+    fun getTermsConditions(token: String?) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        retrofitApi.get_terms_condition(token).enqueue(object :
             Callback<GetTermsConditionsResponse> {
             override fun onResponse(
                 call: Call<GetTermsConditionsResponse>,
                 response: Response<GetTermsConditionsResponse>
             ) {
-                if (response.isSuccessful)  {
+                if (response.isSuccessful) {
                     presenter.onTermsConditionsSuccess(response.body()!!)
                 } else {
                     presenter.onTermsConditionsFailed(Constants.SERVER_ERROR)
@@ -27,8 +27,9 @@ class TermsConditionsModel(private var presenter: TermsConditionsPresenter)  {
 
 
             }
+
             override fun onFailure(call: Call<GetTermsConditionsResponse>, t: Throwable) {
-                presenter.showError(t.message+"")
+                presenter.showError(t.message + "")
             }
         })
     }
