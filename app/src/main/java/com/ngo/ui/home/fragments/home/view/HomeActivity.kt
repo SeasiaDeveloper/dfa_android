@@ -150,6 +150,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, jsonString)
         PreferenceHandler.writeString(
             this,
+            PreferenceHandler.USER_ROLE,
+            getProfileResponse.data?.userRole.toString()
+        )
+        PreferenceHandler.writeString(
+            this,
             PreferenceHandler.CONTACT_NUMBER,
             getProfileResponse.data?.username.toString()
         )

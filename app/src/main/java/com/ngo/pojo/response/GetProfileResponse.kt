@@ -10,6 +10,8 @@ class GetProfileResponse {
     inner class Data : Serializable {
         val isVerified: String? = null
 
+        val userRole: String? = null
+
         val address_1: String? = null
 
         val address_2: String? = null
@@ -36,4 +38,5 @@ class GetProfileResponse {
 
         var adhar_number:String? =null
     }
+
 }

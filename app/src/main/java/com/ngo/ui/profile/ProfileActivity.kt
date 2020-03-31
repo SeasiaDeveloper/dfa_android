@@ -143,12 +143,14 @@ class ProfileActivity : BaseActivity(), ProfileView {
                 isVerified.isChecked = false
             }
 
-            prevAdhaarValue = jsondata.data?.adhar_number!!
+            if (jsondata.data?.adhar_number != null) {
+                prevAdhaarValue = jsondata.data?.adhar_number!!
+                adhaarNo = jsondata.data?.adhar_number!!
+            }
 
             //  if(jsondata.data?.adhar_number!! != null)
-            adhaarNo = jsondata.data?.adhar_number!!
             if (!adhaarNo.equals("")) {
-                etAdharNo.setText(jsondata.data.adhar_number)
+                etAdharNo.setText(jsondata.data?.adhar_number)
                 etAdharNo.isFocusable = false
                 etAdharNo.isEnabled = false
                 etAdharNo.isClickable = false
@@ -184,7 +186,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
             onBackPressed()
         }
         btnUpdate.setOnClickListener {
-            adhaarNo =   etAdharNo.text.toString()
+            adhaarNo = etAdharNo.text.toString()
             val signupReq = SignupRequest(
                 etMobile1.text.toString(),
                 etEmail.text.toString(),
@@ -284,7 +286,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
         Utilities.showMessage(this, responseObject.message)
         if (isAdhaarNoAdded) {
             val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
-           val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
+            val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
             jsondata.data?.adhar_number = responseObject.data.adhar_number //add adhar no
         }
         finish()
