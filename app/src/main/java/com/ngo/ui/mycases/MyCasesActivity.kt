@@ -173,7 +173,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                 if(complaintsData.status!=null) currentStatus = complaintsData.status
                 Utilities.showProgress(this@MyCasesActivity)
                 //hit api based on role
-                presenter.fetchStatusList(token, actionType)
+                presenter.fetchStatusList(token, type)
             }
 
             else -> {

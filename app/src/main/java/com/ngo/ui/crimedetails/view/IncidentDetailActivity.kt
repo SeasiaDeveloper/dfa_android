@@ -125,6 +125,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
             tvContact.visibility = View.GONE
         }
         spTypesOfCrime.text = getCrimeDetailsResponse.data?.get(0)?.crime_type
+        spStatusOfCrime.text = getCrimeDetailsResponse.data?.get(0)?.status
 
         if (!getCrimeDetailsResponse.data?.get(0)?.urgency.isNullOrEmpty()) {
             sb_steps_5.setIndicatorTextDecimalFormat(getCrimeDetailsResponse.data?.get(0)?.urgency)
