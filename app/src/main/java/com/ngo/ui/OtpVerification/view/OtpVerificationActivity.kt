@@ -24,7 +24,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
     private lateinit var mobile: String
     private lateinit var mAuth: FirebaseAuth
     private lateinit var intent_from : String
-   private lateinit var mVerificationId: String
+    private lateinit var mVerificationId: String
     private var presenter: OtpVerificationPresenter = OtpVerificationImpl(this)
     private lateinit var userId: String
     private lateinit var phoneNo:String
