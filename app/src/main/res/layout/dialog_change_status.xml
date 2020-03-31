@@ -1,23 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:layout_width="fill_parent"
-                  android:layout_height="fill_parent"
-                  android:orientation="vertical">
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
 
 
-        <TextView android:layout_width="wrap_content"
-                  android:text="@string/mark_status"
-                  android:textSize="@dimen/_16ssp"
-                  app:font="@{`bold`}"
-                  android:layout_marginTop="@dimen/_10sdp"
-                  android:layout_marginStart="@dimen/_10sdp"
-                  android:textColor="@color/colorPrimary"
-                  android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/mark_status"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_16ssp"
+            app:font="@{`bold`}" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvStatus"
+            android:padding="@dimen/_4sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <RadioGroup
             android:id="@+id/radioStatus"
             android:layout_width="wrap_content"
-            android:layout_margin="@dimen/_10sdp"
             android:layout_height="wrap_content">
 
             <RadioButton
@@ -25,41 +33,42 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
+                android:text="@string/resolved"
                 android:textSize="@dimen/_15ssp"
-                app:font="@{`regular`}"
-                android:text="@string/resolved"/>
+                android:visibility="gone"
+                app:font="@{`regular`}" />
 
             <RadioButton
                 android:id="@+id/radioUnRes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_15ssp"
                 android:layout_marginTop="@dimen/_10sdp"
-                app:font="@{`regular`}"
-                android:text="@string/unresolved"/>
+                android:text="@string/unresolved"
+                android:textSize="@dimen/_15ssp"
+                android:visibility="gone"
+                app:font="@{`regular`}" />
 
             <RadioButton
                 android:id="@+id/radioAuth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_15ssp"
-                app:font="@{`regular`}"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/authentic"/>
+                android:text="@string/authentic"
+                android:textSize="@dimen/_15ssp"
+                android:visibility="gone"
+                app:font="@{`regular`}" />
 
             <RadioButton
                 android:id="@+id/radioUnAuth"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/_15ssp"
-                app:font="@{`regular`}"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/unauthentic"/>
-
+                android:text="@string/unauthentic"
+                android:textSize="@dimen/_15ssp"
+                android:visibility="gone"
+                app:font="@{`regular`}" />
 
         </RadioGroup>
-
-
 
 
         <EditText
@@ -71,31 +80,31 @@
             android:layout_marginEnd="@dimen/_12sdp"
             android:background="@drawable/squarebg"
             android:ems="10"
-            android:lines="8"
-            android:minLines="6"
-            android:maxLines="10"
-            android:imeOptions="actionDone"
-            android:maxLength="500"
-            app:font="@{`regular`}"
-            android:textSize="@dimen/_11ssp"
-            android:inputType="textMultiLine"
             android:gravity="start"
             android:hint="@string/add_comment"
-            android:padding="@dimen/_7sdp"/>
+            android:imeOptions="actionDone"
+            android:inputType="textMultiLine"
+            android:lines="8"
+            android:maxLength="500"
+            android:maxLines="10"
+            android:minLines="6"
+            android:padding="@dimen/_7sdp"
+            android:textSize="@dimen/_11ssp"
+            app:font="@{`regular`}" />
 
 
         <TextView
             android:id="@+id/btnDone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
             android:layout_gravity="right"
-            android:textSize="@dimen/_16ssp"
-            app:font="@{`bold`}"
-            android:layout_marginBottom="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginRight="@dimen/_20sdp"
-            android:text="@string/ok"/>
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="@string/ok"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/_16ssp"
+            app:font="@{`bold`}" />
 
     </LinearLayout>
 </layout>

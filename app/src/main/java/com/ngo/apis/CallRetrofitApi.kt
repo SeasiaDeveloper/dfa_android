@@ -120,5 +120,11 @@ interface CallRetrofitApi {
     @POST("jwt-auth/v1/comment_complaint")
     fun addComment(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<DeleteComplaintResponse>
 
+    @GET("jwt-auth/v1/status_list")
+    fun getStatus(@Header("Authorization") authorization: String?, @Query("type") id: Int): Call<GetStatusResponse>
+
+    @Multipart
+    @POST("jwt-auth/v1/status_update")
+    fun updateStatus(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<DeleteComplaintResponse>
 
 }

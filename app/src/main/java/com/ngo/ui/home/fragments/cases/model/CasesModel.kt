@@ -6,6 +6,7 @@ import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CreatePostRequest
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
+import com.ngo.pojo.response.GetStatusResponse
 import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.utils.Constants
@@ -185,6 +186,67 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                     if (responseObject != null) {
                         if (responseObject.code == 200) {
                             presenter.adhaarSavedSuccess(responseObject)
+                        } else {
+                            presenter.showError(
+                                response.body()?.message ?: Constants.SERVER_ERROR
+                            )
+                        }
+                    } else {
+                        presenter.showError(Constants.SERVER_ERROR)
+                    }
+                }
+            })
+    }
+
+    fun fetchStatusList(token: String, userRole: String) {
+        //hit api to fetch the status
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        retrofitApi.getStatus(token, userRole.toInt())
+            .enqueue(object : Callback<GetStatusResponse> {
+                override fun onFailure(call: Call<GetStatusResponse>, t: Throwable) {
+                    presenter.showError(t.message + "")
+                }
+
+                override fun onResponse(
+                    call: Call<GetStatusResponse>,
+                    response: Response<GetStatusResponse>
+                ) {
+                    val responseObject = response.body()
+                    if (responseObject != null) {
+                        if (responseObject.code == 200) {
+                            presenter.onListFetchedSuccess(responseObject)
+                        } else {
+                            presenter.showError(
+                                response.body()?.message ?: Constants.SERVER_ERROR
+                            )
+                        }
+                    } else {
+                        presenter.showError(Constants.SERVER_ERROR)
+                    }
+                }
+            })
+    }
+
+    fun updateStatus(token: String, complaintId: String, statusId: String, comment:String){
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        val map = HashMap<String, RequestBody>()
+        map["complaint_id"] = toRequestBody(complaintId)
+        map["status"] = toRequestBody(statusId)
+        map["comment"] = toRequestBody(comment)
+        retrofitApi.updateStatus(token,map)
+            .enqueue(object : Callback<DeleteComplaintResponse> {
+                override fun onFailure(call: Call<DeleteComplaintResponse>, t: Throwable) {
+                    presenter.showError(t.message + "")
+                }
+
+                override fun onResponse(
+                    call: Call<DeleteComplaintResponse>,
+                    response: Response<DeleteComplaintResponse>
+                ) {
+                    val responseObject = response.body()
+                    if (responseObject != null) {
+                        if (responseObject.code == 200) {
+                            presenter.statusUpdationSuccess(responseObject)
                         } else {
                             presenter.showError(
                                 response.body()?.message ?: Constants.SERVER_ERROR

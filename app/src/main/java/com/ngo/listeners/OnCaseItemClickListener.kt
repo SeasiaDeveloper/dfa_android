@@ -10,4 +10,6 @@ interface OnCaseItemClickListener {
 
     //to change the like status
     fun changeLikeStatus(complaintsData: GetCasesResponse.Data)
+
+    fun onStatusClick(statusId: String)
 }
