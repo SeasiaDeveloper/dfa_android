@@ -20,14 +20,14 @@ import kotlinx.android.synthetic.main.activity_forgot_password.toolbarLayout
 import kotlinx.android.synthetic.main.activity_otp_verification.*
 
 
-class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerificationView {
+class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerificationView {
     private lateinit var mobile: String
     private lateinit var mAuth: FirebaseAuth
-    private lateinit var intent_from : String
+    private lateinit var intent_from: String
     private lateinit var mVerificationId: String
     private var presenter: OtpVerificationPresenter = OtpVerificationImpl(this)
     private lateinit var userId: String
-    private lateinit var phoneNo:String
+    private lateinit var phoneNo: String
 
     override fun getLayout(): Int {
         return R.layout.activity_otp_verification
@@ -41,7 +41,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
         mobile = intent.getStringExtra("mobile")
         intent_from = intent.getStringExtra("intent_from")
 
-        if (intent_from.equals("forgotPassword",ignoreCase = true)) {
+        if (intent_from.equals("forgotPassword", ignoreCase = true)) {
             userId = intent.getStringExtra("userId")
 
         } else {
@@ -51,12 +51,13 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
 
         setListeners()
         showProgress()
-        presenter.sendVerificationCode(mobile,mCallbacks)
+        presenter.sendVerificationCode(mobile, mCallbacks)
 
     }
 
     //the callback to detect the verification status
-    private val mCallbacks: OnVerificationStateChangedCallbacks = object : OnVerificationStateChangedCallbacks() {
+    private val mCallbacks: OnVerificationStateChangedCallbacks =
+        object : OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
                 dismissProgress()
                 val code = phoneAuthCredential.smsCode
@@ -82,6 +83,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
 
     private fun setListeners() {
         btnOtpSubmit.setOnClickListener(this)
+        btnOtpResend.setOnClickListener(this)
     }
 
     override fun handleKeyboard(): View {
@@ -91,20 +93,28 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.btnOtpSubmit -> {
-                showProgress()
                 val code: String = et_otp.getText().toString().trim()
                 if (code.isEmpty() || code.length < 6) {
                     et_otp.setError("Enter valid code")
                     et_otp.requestFocus()
                     return
+                } else {
+                    showProgress()
+                    verifyVerificationCode(code)
                 }
                 //verifying the code entered manually
-                verifyVerificationCode(code)
             }
 
             R.id.btnOtpResend -> {
-                showProgress()
-                presenter.sendVerificationCode(mobile,mCallbacks)
+                val code: String = et_otp.getText().toString().trim()
+                if (code.isEmpty() || code.length < 6) {
+                    et_otp.setError("Enter valid code")
+                    et_otp.requestFocus()
+                    return
+                } else {
+                    showProgress()
+                    presenter.sendVerificationCode(mobile, mCallbacks)
+                }
             }
 
         }
@@ -123,21 +133,25 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener,OtpVerifica
                     dismissProgress()
 
                     //verification successful we will start the Change Password activity
-                    if (intent_from.equals("signup",ignoreCase = true)){
+                    if (intent_from.equals("signup", ignoreCase = true)) {
                         val intent = Intent(this, SignupActivity::class.java)
                         intent.putExtra("phoneNo", phoneNo)
                         startActivity(intent)
                         finish()
-                    } else if (intent_from.equals("forgotPassword",ignoreCase = true)) {
+                    } else if (intent_from.equals("forgotPassword", ignoreCase = true)) {
                         val intent = Intent(this, ChangePasswordActivity::class.java)
-                        intent.putExtra(userId,"userId")
+                        intent.putExtra("userId", userId)
                         startActivity(intent)
                         finish()
                     }
 
                 } else {
                     dismissProgress()
-                    Toast.makeText(this@OtpVerificationActivity, task.exception?.message, Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        this@OtpVerificationActivity,
+                        task.exception?.message,
+                        Toast.LENGTH_LONG
+                    ).show()
                     finish()
 
                 }
