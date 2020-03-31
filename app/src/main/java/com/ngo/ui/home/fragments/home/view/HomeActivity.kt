@@ -2,6 +2,9 @@ package com.ngo.ui.home.fragments.home.view
 
 
 import android.content.Intent
+import android.location.Location
+import android.location.LocationManager
+
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -18,16 +21,18 @@ import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.ui.earnings.view.MyEarningsActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.CasesFragment
-import com.ngo.ui.home.fragments.photos.view.PhotosFragment
-import com.ngo.ui.home.fragments.videos.view.VideosFragment
+import com.ngo.ui.home.fragments.cases.view.LocationListenerCallback
 import com.ngo.ui.home.fragments.home.presenter.HomePresenter
 import com.ngo.ui.home.fragments.home.presenter.HomePresenterImpl
+import com.ngo.ui.home.fragments.photos.view.PhotosFragment
+import com.ngo.ui.home.fragments.videos.view.VideosFragment
 import com.ngo.ui.login.view.LoginActivity
 import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.ui.profile.ProfileActivity
 import com.ngo.ui.termsConditions.view.TermsAndConditionActivity
 import com.ngo.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.ngo.ui.updatepassword.view.UpdatePasswordActivity
+import com.ngo.utils.LocationUtils
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import com.ngo.utils.alert.AlertDialog
@@ -36,13 +41,17 @@ import kotlinx.android.synthetic.main.nav_header.*
 
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
-    GetLogoutDialogCallbacks {
+    GetLogoutDialogCallbacks, LocationListenerCallback {
     private var mDrawerLayout: DrawerLayout? = null
     private var mToggle: ActionBarDrawerToggle? = null
     private var mToolbar: Toolbar? = null
     private var homePresenter: HomePresenter = HomePresenterImpl(this)
     private var authorizationToken: String? = null
     private var preferencesHelper: PreferenceHandler? = null
+    private lateinit var locationManager: LocationManager
+    //private lateinit var locationUtils: LocationSecondUtility
+    //private lateinit var locationUtils: LocationSecondUtility
+    private lateinit var locationUtils: LocationUtils
 
     override fun getLayout(): Int {
         return R.layout.home_activity
@@ -75,6 +84,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         viewPager?.adapter = adapter
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)
+        //location
+      /*  locationUtils = LocationSecondUtility()
+        locationUtils.LocationUtils(this, this, this)*/
+        locationUtils=LocationUtils(this)
+        locationUtils.initLocation()
     }
 
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
@@ -148,7 +162,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val jsonString = GsonBuilder().create().toJson(getProfileResponse)
         //Save that String in SharedPreferences
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, jsonString)
-      PreferenceHandler.writeString(
+        PreferenceHandler.writeString(
             this,
             PreferenceHandler.USER_ROLE,
             getProfileResponse.data?.user_role.toString()
@@ -184,4 +198,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         startActivity(intent)
     }
 
+    override fun updateUi(location: Location) {
+        Utilities.showMessage(this, "" + location.latitude + " " + location.longitude)
+    }
+
+    override fun onLocationNotFound() {
+        Utilities.showMessage(this, "location not found")
+    }
 }

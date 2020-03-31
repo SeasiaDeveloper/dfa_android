@@ -34,7 +34,9 @@ class HomeModel(private var homePresenter: HomePresenter) {
                     if (responseObject.code == 200) {
                         homePresenter.getProfileSuccess(responseObject)
                     } else {
-                        homePresenter.getProfileFailure(Constants.SERVER_ERROR)
+                        homePresenter.getProfileFailure(
+                            response.body()?.message ?: Constants.SERVER_ERROR
+                        )
                     }
                 } else {
                     homePresenter.showError(Constants.SERVER_ERROR)

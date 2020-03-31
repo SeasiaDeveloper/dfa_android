@@ -15,18 +15,18 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class VideosModel (private var presenter: VideoPresenter) {
+class VideosModel(private var presenter: VideoPresenter) {
 
     private fun toRequestBody(value: String): RequestBody {
         return RequestBody.create(MediaType.parse("application/json"), value)
     }
 
-    fun fetchVideos(token:String?,request: GetPhotosRequest) {
+    fun fetchVideos(token: String?, request: GetPhotosRequest) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["type"] = toRequestBody(request.type)
 
-        retrofitApi.getcrime_media(token,map).enqueue(object : Callback<GetPhotosResponse> {
+        retrofitApi.getcrime_media(token, map).enqueue(object : Callback<GetPhotosResponse> {
             override fun onResponse(
                 call: Call<GetPhotosResponse>,
                 response: Response<GetPhotosResponse>
@@ -67,7 +67,13 @@ class VideosModel (private var presenter: VideoPresenter) {
             ) {
                 val responseObject = response.body()
                 if (responseObject != null) {
-                    presenter.getCrimeDetailsSuccess(responseObject)
+                    if (responseObject.code == 200) {
+                        presenter.getCrimeDetailsSuccess(responseObject)
+                    } else {
+                        presenter.showError(
+                            response.body()?.message ?: Constants.SERVER_ERROR
+                        )
+                    }
                 } else {
                     presenter.showError(Constants.SERVER_ERROR)
                 }

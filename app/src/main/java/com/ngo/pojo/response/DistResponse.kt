@@ -2,7 +2,8 @@ package com.ngo.pojo.response
 
 data class DistResponse(
     val code: Int,
-    val data: ArrayList<DataBean>
+    val data: ArrayList<DataBean>,
+    val message: String
 )
 
 data class DataBean(

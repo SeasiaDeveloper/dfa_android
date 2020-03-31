@@ -18,7 +18,7 @@ class CrimeDetailsModel(private var crimeDetailsPresenter: CrimeDetailsPresenter
         return RequestBody.create(MediaType.parse("application/json"), value)
     }
 
-    fun getCrimeComplaints(token: String?,crimeDetailsRequest: CrimeDetailsRequest) {
+    fun getCrimeComplaints(token: String?, crimeDetailsRequest: CrimeDetailsRequest) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["complaint_id"] = toRequestBody(crimeDetailsRequest.complaintId)
@@ -34,7 +34,13 @@ class CrimeDetailsModel(private var crimeDetailsPresenter: CrimeDetailsPresenter
             ) {
                 val responseObject = response.body()
                 if (responseObject != null) {
-                    crimeDetailsPresenter.crimeDetailsSuccess(responseObject)
+                    if (responseObject.code == 200) {
+                        crimeDetailsPresenter.crimeDetailsSuccess(responseObject)
+                    } else {
+                        crimeDetailsPresenter.showError(
+                            response.body()?.message ?: Constants.SERVER_ERROR
+                        )
+                    }
                 } else {
                     crimeDetailsPresenter.showError(Constants.SERVER_ERROR)
                 }

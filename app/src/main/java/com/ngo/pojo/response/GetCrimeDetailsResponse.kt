@@ -3,7 +3,7 @@ package com.ngo.pojo.response
 import java.io.Serializable
 
 class GetCrimeDetailsResponse : Serializable {
-    val code: String? = null
+    val code: Int? = null
 
     val data: Array<Data>? = null
 

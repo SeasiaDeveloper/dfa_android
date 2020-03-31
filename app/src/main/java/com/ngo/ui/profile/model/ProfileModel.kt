@@ -38,7 +38,7 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
                         profilePresenterImplClass.fetchDistList(responseObject)
                     } else {
                         profilePresenterImplClass.showError(
-                            Constants.SERVER_ERROR
+                            response.body()?.message ?: Constants.SERVER_ERROR
                         )
                     }
                 } else {

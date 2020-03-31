@@ -180,7 +180,7 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
                         signupPresenterImplClass.fetchDistList(responseObject)
                     } else {
                         signupPresenterImplClass.onSaveDetailsFailed(
-                            Constants.SERVER_ERROR
+                            response.body()?.message?: Constants.SERVER_ERROR
                         )
                     }
                 } else {

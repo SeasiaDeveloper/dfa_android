@@ -20,12 +20,12 @@ class PhotosModel(private var presenter: PhotosPresenter) {
         return RequestBody.create(MediaType.parse("application/json"), value)
     }
 
-    fun fetchPhotos(token:String?,request: GetPhotosRequest) {
+    fun fetchPhotos(token: String?, request: GetPhotosRequest) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["type"] = toRequestBody(request.type)
 
-        retrofitApi.getcrime_media(token,map).enqueue(object : Callback<GetPhotosResponse> {
+        retrofitApi.getcrime_media(token, map).enqueue(object : Callback<GetPhotosResponse> {
             override fun onResponse(
                 call: Call<GetPhotosResponse>,
                 response: Response<GetPhotosResponse>
@@ -66,7 +66,13 @@ class PhotosModel(private var presenter: PhotosPresenter) {
             ) {
                 val responseObject = response.body()
                 if (responseObject != null) {
-                    presenter.getCrimeDetailsSuccess(responseObject)
+                    if (responseObject.code == 200) {
+                        presenter.getCrimeDetailsSuccess(responseObject)
+                    } else {
+                        presenter.showError(
+                            response.body()?.message ?: Constants.SERVER_ERROR
+                        )
+                    }
                 } else {
                     presenter.showError(Constants.SERVER_ERROR)
                 }

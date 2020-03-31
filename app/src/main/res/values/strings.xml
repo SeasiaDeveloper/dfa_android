@@ -151,4 +151,9 @@
     <string name="adhar_not_valid">Adhaar No is not valid. Please enter a valid adhar no</string>
     <string name="terms_and_condition">Terms and Condition</string>
     <string name="my_earnings">My Earnings</string>
+
+   <!-- locations string -->
+    <string name="location_string">Location String</string>
+    <string name="location_message">Location message</string>
+    <string name="location_title">Location Title</string>
 </resources>
