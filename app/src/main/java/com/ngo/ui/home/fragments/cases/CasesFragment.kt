@@ -1,7 +1,9 @@
 package com.ngo.ui.home.fragments.cases
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,16 +11,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ngo.R
 import com.ngo.adapters.CasesAdapter
+import com.ngo.adapters.StatusAdapter
 import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCasesResponse
+import com.ngo.pojo.response.GetStatusResponse
 import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
@@ -31,7 +36,7 @@ import kotlinx.android.synthetic.main.fragment_cases.*
 
 class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialogListener {
 
-    override fun onClick(item :Any) {
+    override fun onClick(item: Any) {
         Utilities.showProgress(mContext)
         val complaintsData = item as GetCasesResponse.Data
         //delete the item based on id
@@ -43,6 +48,10 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
     private var complaints: List<GetCasesResponse.Data> = mutableListOf()
     lateinit var casesRequest: CasesRequest
     var token: String = ""
+    private var statusId = "-1"
+    private var complaintId = "-1"
+    private var currentStatus = ""
+    var type = ""
 
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
         Utilities.dismissProgress()
@@ -50,8 +59,9 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         if (complaints.isNotEmpty()) {
             tvRecord?.visibility = View.GONE
             rvPublic?.visibility = View.VISIBLE
-            val type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
-            rvPublic?.adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
+             type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
+            rvPublic?.adapter =
+                CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
         } else {
             tvRecord?.visibility = View.VISIBLE
             rvPublic?.visibility = View.GONE
@@ -102,11 +112,32 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
     }
 
-    override fun onItemClick(complaintsData: GetCasesResponse.Data, type: String) {
-        val intent = Intent(mContext, IncidentDetailActivity::class.java)
-        intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
-        intent.putExtra(Constants.POST_OR_COMPLAINT, "0")
-        startActivity(intent)
+    override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String) {
+        when (actionType) {
+            "location" -> {
+                val gmmIntentUri =
+                    Uri.parse("google.navigation:q=" + complaintsData.latitude + "," + complaintsData.longitude + "")
+                //  val gmmIntentUri = Uri.parse("google.navigation:q="+30.7106607+","+76.7091493+"")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
+
+            "action" -> {
+                complaintId = complaintsData.id!!
+                if(complaintsData.status!=null) currentStatus = complaintsData.status
+                Utilities.showProgress(mContext)
+                //hit api based on role
+                presenter.fetchStatusList(token, type)
+            }
+
+            else -> {
+                val intent = Intent(mContext, IncidentDetailActivity::class.java)
+                intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
+                intent.putExtra(Constants.POST_OR_COMPLAINT, "0")
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onCreateView(
@@ -131,7 +162,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
     }
 
     override fun onDeleteItem(complaintsData: GetCasesResponse.Data) {
-       //nothing to do
+        //nothing to do
     }
 
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
@@ -146,7 +177,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         if (isVisibleToUser) {
             casesRequest = CasesRequest(
                 "1",
-             /*   etSearch?.text.toString()*/"",
+                /*   etSearch?.text.toString()*/"",
                 "0"
             ) //all = "1" and for fetching all the cases which are of type = 0
 
@@ -170,6 +201,54 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
 
     override fun adhaarSavedSuccess(responseObject: SignupResponse) {
         //do nothing
+    }
+
+    override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
+        Utilities.dismissProgress()
+        Utilities.showMessage(mContext, responseObject.message.toString())
+        //refresh the list
+        Utilities.showProgress(mContext)
+        val casesRequest = CasesRequest("1", "", "0")  //type = -1 for fetching both cases and posts
+        presenter.getComplaints(casesRequest, token)
+    }
+
+    override fun onListFetchedSuccess(responseObject: GetStatusResponse) {
+        Utilities.dismissProgress()
+        for (element in responseObject.data) {
+            if (element.name.equals(currentStatus)) {
+                element.isChecked = true
+                break
+            }
+        }
+        showStatusDialog("",responseObject)
+    }
+
+    override fun onStatusClick(statusId: String) {
+        this.statusId = statusId
+    }
+
+    private fun showStatusDialog(description: String, responseObject: GetStatusResponse) {
+        lateinit var dialog: AlertDialog
+        val builder = AlertDialog.Builder(mContext)
+        val binding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.dialog_change_status, null, false) as com.ngo.databinding.DialogChangeStatusBinding
+        // Inflate and set the layout for the dialog
+        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(description)
+
+        //display the list on the screen
+        val statusAdapter = StatusAdapter(mContext, responseObject.data.toMutableList(), this)
+        val horizontalLayoutManager = LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
+        binding.rvStatus?.layoutManager = horizontalLayoutManager
+        binding.rvStatus?.adapter = statusAdapter
+        binding.btnDone.setOnClickListener{
+            Utilities.showProgress(mContext)
+            //hit status update api
+            presenter.updateStatus(token,complaintId,statusId,binding.etDescription.text.toString())
+            dialog.dismiss()
+        }
+
+        builder.setView(binding.root)
+        dialog = builder.create()
+        dialog.show()
     }
 
 }

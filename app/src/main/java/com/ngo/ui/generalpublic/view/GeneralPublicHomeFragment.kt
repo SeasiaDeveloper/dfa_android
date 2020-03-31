@@ -2,7 +2,7 @@ package com.ngo.ui.generalpublic.view
 
 import android.Manifest
 import android.app.Activity
-import android.app.Dialog
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,7 +13,6 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -24,6 +23,7 @@ import com.google.gson.GsonBuilder
 
 import com.ngo.R
 import com.ngo.adapters.CasesAdapter
+import com.ngo.adapters.StatusAdapter
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.databinding.FragmentPublicHomeBinding
 import com.ngo.listeners.AdharNoListener
@@ -31,10 +31,7 @@ import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CreatePostRequest
-import com.ngo.pojo.response.DeleteComplaintResponse
-import com.ngo.pojo.response.GetCasesResponse
-import com.ngo.pojo.response.GetProfileResponse
-import com.ngo.pojo.response.SignupResponse
+import com.ngo.pojo.response.*
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.generalpublic.GeneralPublicActivity
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
@@ -44,6 +41,7 @@ import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.RealPathUtil
 import com.ngo.utils.Utilities
+import kotlinx.android.synthetic.main.dialog_change_status.*
 import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
@@ -66,6 +64,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     private var media_type: String? = ""
     private var token: String = ""
     var isFirst = true
+    var type = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -88,6 +87,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     private var complaints: List<GetCasesResponse.Data> = mutableListOf()
     private var adapter: CasesAdapter? = null
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
+    private var statusId = "-1"
+    private var complaintId = "-1"
+    private var currentStatus = ""
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -215,7 +217,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         if (complaints.isNotEmpty()) {
             tvRecord?.visibility = View.GONE
 
-           val type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
+            type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
             adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
             val horizontalLayoutManager = LinearLayoutManager(
                 mContext,
@@ -228,8 +230,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
     }
 
-    override fun onItemClick(complaintsData: GetCasesResponse.Data, type: String) {
-        when (type) {
+    override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String) {
+        when (actionType) {
             "location" -> {
                 val gmmIntentUri =
                     Uri.parse("google.navigation:q=" + complaintsData.latitude + "," + complaintsData.longitude + "")
@@ -238,15 +240,82 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 mapIntent.setPackage("com.google.android.apps.maps")
                 startActivity(mapIntent)
             }
+
+            "action" -> {
+                complaintId = complaintsData.id!!
+               if(complaintsData.status!=null) currentStatus = complaintsData.status
+                //hit api based on role
+                Utilities.showProgress(mContext)
+                presenter.fetchStatusList(token, type)
+            }
+
             else -> {
-                // if (complaintsData.type.equals("0")) {
                 val intent = Intent(activity, IncidentDetailActivity::class.java)
-                //  intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData)
                 intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
                 intent.putExtra(Constants.POST_OR_COMPLAINT, complaintsData.type)
                 startActivity(intent)
             }
         }
+    }
+
+    override fun onListFetchedSuccess(responseObject: GetStatusResponse) {
+        Utilities.dismissProgress()
+        for (element in responseObject.data) {
+            if (element.name.equals(currentStatus)) {
+                element.isChecked = true
+                break
+            }
+        }
+        showStatusDialog("", responseObject)
+    }
+
+    override fun onStatusClick(statusId: String) {
+        this.statusId = statusId
+    }
+
+    private fun showStatusDialog(description: String, responseObject: GetStatusResponse) {
+        lateinit var dialog: AlertDialog
+        val builder = AlertDialog.Builder(mContext)
+        val binding = DataBindingUtil.inflate(
+            LayoutInflater.from(mContext),
+            R.layout.dialog_change_status,
+            null,
+            false
+        ) as com.ngo.databinding.DialogChangeStatusBinding
+        // Inflate and set the layout for the dialog
+        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(
+            description
+        )
+
+        //display the list on the screen
+        val statusAdapter = StatusAdapter(mContext, responseObject.data.toMutableList(), this)
+        val horizontalLayoutManager = LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
+        binding.rvStatus?.layoutManager = horizontalLayoutManager
+        binding.rvStatus?.adapter = statusAdapter
+        binding.btnDone.setOnClickListener {
+            //hit status update api
+            Utilities.showProgress(mContext)
+            presenter.updateStatus(
+                token,
+                complaintId,
+                statusId,
+                binding.etDescription.text.toString()
+            )
+            dialog.dismiss()
+        }
+
+        builder.setView(binding.root)
+        dialog = builder.create()
+        dialog.show()
+    }
+
+    override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
+        Utilities.dismissProgress()
+        Utilities.showMessage(mContext, responseObject.message.toString())
+        //refresh the list
+        Utilities.showProgress(mContext)
+        val casesRequest = CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
+        presenter.getComplaints(casesRequest, token)
     }
 
     override fun showServerError(error: String) {

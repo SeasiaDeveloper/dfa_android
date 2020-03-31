@@ -1,10 +1,7 @@
 package com.ngo.ui.home.fragments.cases.view
 
 import com.ngo.base.view.BaseView
-import com.ngo.pojo.response.DeleteComplaintResponse
-import com.ngo.pojo.response.GetCasesResponse
-import com.ngo.pojo.response.GetComplaintsResponse
-import com.ngo.pojo.response.SignupResponse
+import com.ngo.pojo.response.*
 
 interface CasesView : BaseView {
     fun showGetComplaintsResponse(response: GetCasesResponse)
@@ -13,4 +10,6 @@ interface CasesView : BaseView {
     fun onComplaintDeleted(responseObject: DeleteComplaintResponse)
     fun onLikeStatusChanged(responseObject: DeleteComplaintResponse)
     fun adhaarSavedSuccess(responseObject: SignupResponse)
+    fun onListFetchedSuccess(responseObject: GetStatusResponse)
+    fun statusUpdationSuccess(responseObject: DeleteComplaintResponse)
 }

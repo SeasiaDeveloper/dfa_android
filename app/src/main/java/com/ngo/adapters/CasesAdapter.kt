@@ -145,7 +145,7 @@ class CasesAdapter(
                     listener.onItemClick(item, "full")
                 }
 
-                itemView.layout_share.setOnClickListener{
+                itemView.layout_share.setOnClickListener {
                     Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
                 }
 
@@ -164,7 +164,7 @@ class CasesAdapter(
                 itemView.layout_post.visibility = View.GONE
                 itemView.layoutListItem.visibility = View.VISIBLE
 
-                itemView.status.text = item.status.toString().toUpperCase()
+             //   itemView.status.text = item.status.toString().toUpperCase()
                 itemView.expandable_Date.text = Utilities.changeDateFormat(item.report_data!!)
                 itemView.expandable_Level.text = "Level " + item.urgency
                 itemView.expandable_Time.text = item.report_time
@@ -235,69 +235,32 @@ class CasesAdapter(
                     context.startActivity(intent)
                 }
 
-                itemView.layout_share.setOnClickListener{
+                itemView.layout_share.setOnClickListener {
                     Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
                 }
 
             }
 
 
+            //in case of NGO and police
+            if ((type == 1) || (type == 2)) {
+                itemView.location.visibility = View.VISIBLE
+                itemView.layoutContact.visibility = View.VISIBLE
+                itemView.action_complaint.visibility = View.VISIBLE
+                itemView.location.setOnClickListener {
+                    listener.onItemClick(item, "location")
+                }
+                itemView.action_complaint.setOnClickListener {
+                    listener.onItemClick(item, "action")
+                }
 
-        //in case of NGO and police
-        if ((type == 1 )|| (type == 2)) {
-            itemView.location.visibility = View.VISIBLE
-            itemView.layoutContact.visibility = View.VISIBLE
-
-            /*if (item.forwarded == 0) {
-                itemView.forward.visibility = View.VISIBLE
-                itemView.status.visibility = View.GONE
             } else {
-                itemView.forward.visibility = View.GONE
-                itemView.status.visibility = View.VISIBLE
-            }*/
-            itemView.location.setOnClickListener {
-                listener.onItemClick(item, "location")
+                //in case of general public/general user
+                itemView.location.visibility = View.GONE
+                itemView.layoutContact.visibility = View.GONE
+                itemView.action_complaint.visibility = View.GONE
             }
-        } else {
-            //in case of general public/general user
-            itemView.location.visibility = View.GONE
-            itemView.layoutContact.visibility = View.GONE
         }
-        }
-
-        /*    if (item.status.isNullOrEmpty())
-                itemView.status.visibility = View.GONE
-            else itemView.status.visibility = View.VISIBLE*/
-
-        /*  if (item.police_comment!=null && !item.police_comment.equals("")) itemView.layoutPoliceComment.visibility = View.VISIBLE
-          itemView.expandable_comment.text = item.police_comment*/
-
-        /* if (type == 2) {
-             itemView.location.visibility = View.VISIBLE
-             itemView.layoutContact.visibility = View.VISIBLE*/
-
-        /* if (item.forwarded == 0) {
-             itemView.forward.visibility = View.VISIBLE
-             itemView.status.visibility = View.GONE
-         } else {
-             itemView.forward.visibility = View.GONE
-             itemView.status.visibility = View.VISIBLE
-         }*/
-        /*  } else {
-              itemView.location.visibility = View.GONE
-              itemView.layoutContact.visibility = View.GONE
-
-          }*/
-        // itemView.imgCrime.visibility=View.GONE
-        /* itemView.userNameLayout.visibility = View.GONE
-         itemView.layoutCrime.visibility = View.GONE
-         var name = "Anonymous"
-        // if (!(item.name.isNullOrEmpty() || item.name.equals(""))) name = item.name
-         itemView.tvUsername.text = name*/
-
-
-        //   itemView.tvCrime.text = item.crime
-        //itemView.expandable_contactNo.text = item.phone.toString()
 
     }
 }
