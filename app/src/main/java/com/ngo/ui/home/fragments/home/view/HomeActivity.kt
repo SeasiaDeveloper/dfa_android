@@ -151,7 +151,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.USER_ROLE,
-            getProfileResponse.data?.userRole.toString()
+            getProfileResponse.data?.user_role.toString()
         )
         PreferenceHandler.writeString(
             this,

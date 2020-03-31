@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.text.TextUtils
 import android.view.View
-import android.widget.Toast
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
@@ -53,10 +52,9 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
         when (v?.id) {
             R.id.btnSubmit -> {
                 if (TextUtils.isEmpty(edit_mobile_number.text.toString())) {
-                    Toast.makeText(this, "Please enter mobile number", Toast.LENGTH_SHORT).show()
+                    Utilities.showMessage(this, "Please enter mobile number")
                 } else if (edit_mobile_number.text.toString().trim().length != 10) {
-                    Toast.makeText(this, "Please enter valid mobile number", Toast.LENGTH_SHORT)
-                        .show()
+                    Utilities.showMessage(this, "Please enter valid mobile number")
                 } else {
                     if (clicked_from.equals("signup", ignoreCase = true)) {
 
@@ -64,7 +62,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
                         val intent = Intent(this, OtpVerificationActivity::class.java)
                         intent.putExtra("mobile", mobile)
                         intent.putExtra("intent_from", clicked_from)
-                        intent.putExtra("phoneNo",edit_mobile_number.text.toString())
+                        intent.putExtra("phoneNo", edit_mobile_number.text.toString())
                         startActivity(intent)
 
                     } else if (clicked_from.equals("forgotPassword", ignoreCase = true)) {
@@ -91,12 +89,12 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
 
     override fun onVerifyUserFailure(error: String) {
         dismissProgress()
-        Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+        Utilities.showMessage(this, error)
     }
 
     override fun onVerifyUserSuccess(verifyUserResponse: VerifyUserResponse) {
         dismissProgress()
-        Toast.makeText(this, verifyUserResponse.message, Toast.LENGTH_SHORT).show()
+        Utilities.showMessage(this, verifyUserResponse.message)
         val mobile: String = edit_mobile_number.getText().toString().trim()
         val intent = Intent(this, OtpVerificationActivity::class.java)
         intent.putExtra("mobile", mobile)
@@ -108,6 +106,6 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
 
     override fun showServerError(error: String) {
         dismissProgress()
-        Toast.makeText(this, error, Toast.LENGTH_SHORT).show()
+        Utilities.showMessage(this, error)
     }
 }

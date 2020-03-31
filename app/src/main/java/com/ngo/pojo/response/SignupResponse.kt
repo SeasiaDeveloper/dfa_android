@@ -8,6 +8,7 @@ class SignupResponse(
 )
 
 data class Data(
+    val status:String,
     val id: String,
     val email: String,
     val username: String,

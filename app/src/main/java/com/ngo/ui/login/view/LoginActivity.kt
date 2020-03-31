@@ -3,7 +3,6 @@ package com.ngo.ui.login.view
 import android.content.Intent
 import android.graphics.Color
 import android.view.View
-import android.widget.Toast
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
@@ -13,6 +12,7 @@ import com.ngo.ui.forgotpassword.view.ForgotPasswordActivity
 import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.ui.login.presenter.LoginActivityPresenterImpl
 import com.ngo.ui.login.presenter.LoginPresenter
+import com.ngo.ui.signup.SignupActivity
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_login_activity.*
@@ -51,7 +51,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
                 )
             }
             R.id.btnSignUp -> {
-                val intent = Intent(this, ForgotPasswordActivity::class.java)
+                val intent = Intent(this, SignupActivity::class.java) //ForgotPasswordActivity
                 intent.putExtra("clicked_from", "signup")
                 startActivity(intent)
             }
@@ -64,32 +64,19 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
     }
 
     override fun onEmptyEmailId() {
-        Toast.makeText(
-            this@LoginActivity,
-            "Enter Email Id or Mobile Number",
-            Toast.LENGTH_SHORT
-        ).show()
+        Utilities.showMessage(this, "Enter Email Id or Mobile Number")
     }
 
     override fun onInvalidEmailId() {
-        Toast.makeText(
-            this@LoginActivity,
-            "Enter valid email id",
-            Toast.LENGTH_SHORT
-        ).show()
+        Utilities.showMessage(this, "Enter valid email id")
     }
 
     override fun onEmptyPassword() {
-        Toast.makeText(this@LoginActivity, "Enter Password First", Toast.LENGTH_SHORT)
-            .show()
+        Utilities.showMessage(this, "Enter Password First")
     }
 
     override fun onInvalidNumber() {
-        Toast.makeText(
-            this@LoginActivity,
-            "Enter valid mobile number",
-            Toast.LENGTH_SHORT
-        ).show()
+        Utilities.showMessage(this, "Enter valid mobile number")
     }
 
     override fun validationSuccess() {
@@ -107,14 +94,17 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
 
     override fun onLoginFailure(error: String) {
         dismissProgress()
-        Toast.makeText(this@LoginActivity, error, Toast.LENGTH_SHORT)
-            .show()
+        Utilities.showMessage(this, error)
     }
 
     override fun onLoginSuccess(loginResponse: LoginResponse) {
         dismissProgress()
-        PreferenceHandler.writeString(this, PreferenceHandler.AUTHORIZATION,"Bearer "+loginResponse.token)
-        Toast.makeText(this@LoginActivity, "Login Success", Toast.LENGTH_SHORT).show()
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.AUTHORIZATION,
+            "Bearer " + loginResponse.token
+        )
+        Utilities.showMessage(this, "Login Success")
         finish()
         val intent = Intent(this, HomeActivity::class.java) //GeneralPublicActivity
         startActivity(intent)
@@ -122,7 +112,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
 
     override fun showServerError(error: String) {
         dismissProgress()
-        Toast.makeText(this@LoginActivity, error, Toast.LENGTH_SHORT)
-            .show()
+        Utilities.showMessage(this, error)
     }
 }

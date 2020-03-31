@@ -51,9 +51,9 @@ class SignupActivity : BaseActivity(), SignupView {
         }
 
         etMobile1.setText(  intent.getStringExtra("phoneNo"))
-        etMobile1.isFocusable = false
-        etMobile1.isEnabled = false
-        etMobile1.isClickable = false
+       // etMobile1.isFocusable = false
+       // etMobile1.isEnabled = false
+      //  etMobile1.isClickable = false
     }
 
     private fun getFirebaseToken() {
