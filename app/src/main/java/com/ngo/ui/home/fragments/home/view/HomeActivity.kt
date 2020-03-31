@@ -148,7 +148,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val jsonString = GsonBuilder().create().toJson(getProfileResponse)
         //Save that String in SharedPreferences
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, jsonString)
-        PreferenceHandler.writeString(
+      PreferenceHandler.writeString(
             this,
             PreferenceHandler.USER_ROLE,
             getProfileResponse.data?.user_role.toString()

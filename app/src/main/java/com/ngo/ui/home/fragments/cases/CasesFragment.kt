@@ -50,7 +50,8 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         if (complaints.isNotEmpty()) {
             tvRecord?.visibility = View.GONE
             rvPublic?.visibility = View.VISIBLE
-            rvPublic?.adapter = CasesAdapter(mContext, complaints.toMutableList(), this, 1, this)
+            val type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
+            rvPublic?.adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
         } else {
             tvRecord?.visibility = View.VISIBLE
             rvPublic?.visibility = View.GONE

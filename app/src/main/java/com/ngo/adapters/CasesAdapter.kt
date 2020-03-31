@@ -98,10 +98,6 @@ class CasesAdapter(
                     Glide.with(context).load(mediaUrl).into(itemView.imgMediaPost)
                 }
 
-                //profile img:
-                //val profileImgUrl: String = userDetail.profile_pic //commented
-                //Glide.with(context).load(profileImgUrl).into(itemView.imgPostProfile)
-
                 //btnDelete visibility
                 if (item.showDelete == 1) {
                     itemView.btnDeletePost.visibility = View.VISIBLE
@@ -244,6 +240,29 @@ class CasesAdapter(
                 }
 
             }
+
+
+
+        //in case of NGO and police
+        if ((type == 1 )|| (type == 2)) {
+            itemView.location.visibility = View.VISIBLE
+            itemView.layoutContact.visibility = View.VISIBLE
+
+            /*if (item.forwarded == 0) {
+                itemView.forward.visibility = View.VISIBLE
+                itemView.status.visibility = View.GONE
+            } else {
+                itemView.forward.visibility = View.GONE
+                itemView.status.visibility = View.VISIBLE
+            }*/
+            itemView.location.setOnClickListener {
+                listener.onItemClick(item, "location")
+            }
+        } else {
+            //in case of general public/general user
+            itemView.location.visibility = View.GONE
+            itemView.layoutContact.visibility = View.GONE
+        }
         }
 
         /*    if (item.status.isNullOrEmpty())
