@@ -74,7 +74,8 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         if (complaints.isNotEmpty()) {
             tvRecord.visibility = View.GONE
             rvPublic.visibility = View.VISIBLE
-            rvPublic.adapter = CasesAdapter(this, complaints.toMutableList(), this, 1, this)
+            val type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")!!
+            rvPublic.adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this)
         } else {
             tvRecord.visibility = View.VISIBLE
             rvPublic.visibility = View.GONE

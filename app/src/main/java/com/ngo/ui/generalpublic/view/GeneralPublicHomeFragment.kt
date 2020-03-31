@@ -47,9 +47,9 @@ import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
-    OnCaseItemClickListener, AlertDialogListener ,AdharNoListener{
+    OnCaseItemClickListener, AlertDialogListener, AdharNoListener {
 
-    override fun onClick(item : Any) {
+    override fun onClick(item: Any) {
         Utilities.showProgress(mContext)
         val complaintsData = item as GetCasesResponse.Data
         //delete the item based on id
@@ -214,7 +214,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         complaints = response.data!!
         if (complaints.isNotEmpty()) {
             tvRecord?.visibility = View.GONE
-            adapter = CasesAdapter(mContext, complaints.toMutableList(), this, 1, this)
+
+           val type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
+            adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
             val horizontalLayoutManager = LinearLayoutManager(
                 mContext,
                 RecyclerView.VERTICAL, false
@@ -227,14 +229,24 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     override fun onItemClick(complaintsData: GetCasesResponse.Data, type: String) {
-        // if (complaintsData.type.equals("0")) {
-        val intent = Intent(activity, IncidentDetailActivity::class.java)
-        //  intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData)
-        intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
-        intent.putExtra(Constants.POST_OR_COMPLAINT, complaintsData.type)
-        startActivity(intent)
-        //  }
-
+        when (type) {
+            "location" -> {
+                val gmmIntentUri =
+                    Uri.parse("google.navigation:q=" + complaintsData.latitude + "," + complaintsData.longitude + "")
+                //  val gmmIntentUri = Uri.parse("google.navigation:q="+30.7106607+","+76.7091493+"")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
+            else -> {
+                // if (complaintsData.type.equals("0")) {
+                val intent = Intent(activity, IncidentDetailActivity::class.java)
+                //  intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData)
+                intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
+                intent.putExtra(Constants.POST_OR_COMPLAINT, complaintsData.type)
+                startActivity(intent)
+            }
+        }
     }
 
     override fun showServerError(error: String) {
@@ -256,7 +268,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                         startActivity(intent)
                     } else {
                         //make the user partially verified:
-                        Utilities.displayInputDialog(mContext,this)
+                        Utilities.displayInputDialog(mContext, this)
                     }
                 }
             }
@@ -333,13 +345,12 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun adharNoListener(adhaarNo: String) {
         // check is Adhar no valid
-        if(!(Utilities.validateAadharNumber(adhaarNo))){
-            Toast.makeText(mContext,getString(R.string.adhar_not_valid),Toast.LENGTH_SHORT).show()
-        }
-        else{
+        if (!(Utilities.validateAadharNumber(adhaarNo))) {
+            Toast.makeText(mContext, getString(R.string.adhar_not_valid), Toast.LENGTH_SHORT).show()
+        } else {
             Utilities.showProgress(mContext)
             //hit Api to save the adhar no in backend
-            presenter.saveAdhaarNo(token,adhaarNo)
+            presenter.saveAdhaarNo(token, adhaarNo)
         }
     }
 
