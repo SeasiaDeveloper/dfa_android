@@ -1,33 +1,17 @@
 package com.ngo.ui.home.fragments.home.view
 
 
-import android.Manifest
 import android.content.*
-import android.content.SharedPreferences.OnSharedPreferenceChangeListener
-import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
-import android.net.Uri
-import android.os.Build
-import android.os.IBinder
-import android.preference.PreferenceManager
-import android.provider.Settings
-import android.util.Log
-
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.startForegroundService
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.ngo.R
 import com.ngo.adapters.TabLayoutAdapter
