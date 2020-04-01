@@ -1,6 +1,4 @@
 package com.ngo.ui.home.fragments.home.view
-
-
 import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
@@ -32,6 +30,7 @@ import com.ngo.ui.profile.ProfileActivity
 import com.ngo.ui.termsConditions.view.TermsAndConditionActivity
 import com.ngo.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.ngo.ui.updatepassword.view.UpdatePasswordActivity
+import com.ngo.utils.ForegroundService
 import com.ngo.utils.LocationUtils
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
@@ -88,11 +87,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         nav_view?.setNavigationItemSelectedListener(this)
         //location
         locationCallBack=this;
-        locationUtils = LocationUtils(this)
-        locationUtils.initLocation(locationCallBack)
+        //locationUtils = LocationUtils(this)
+        //locationUtils.initLocation(locationCallBack)
 
 
-        //  ForegroundService.startService(applicationContext,"Foreground Service is running...")
+        ForegroundService.startService(applicationContext,"Foreground Service is running...",locationCallBack)
     }
 
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
@@ -216,6 +215,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onLocationNotFound() {
+    }
+
+    override fun onPause() {
+        super.onPause()
+      //  ForegroundService.stopService(applicationContext)
+
     }
 
 }

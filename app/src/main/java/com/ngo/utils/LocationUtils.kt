@@ -18,7 +18,7 @@ import com.ngo.ui.home.fragments.cases.view.LocationListenerCallback
 import com.ngo.ui.home.fragments.home.view.HomeActivity
 import javax.security.auth.callback.Callback
 
-class LocationUtils(var activity: Activity) : GoogleApiClient.ConnectionCallbacks,
+class LocationUtils(var activity: Context) : GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener,
     LocationListener {
     lateinit var mGoogleApiClient: GoogleApiClient
@@ -64,8 +64,8 @@ class LocationUtils(var activity: Activity) : GoogleApiClient.ConnectionCallback
         }
     }
 
-    fun initLocation( locationListener:LocationListenerCallback) {
-        mlocationListener=locationListener;
+    fun initLocation(locationListener:LocationListenerCallback) {
+       mlocationListener=locationListener;
         mGoogleApiClient = GoogleApiClient.Builder(activity).apply {
             addConnectionCallbacks(this@LocationUtils)
             addConnectionCallbacks(this@LocationUtils)
