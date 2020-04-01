@@ -8,6 +8,7 @@ import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.os.Looper
 import android.provider.Settings
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
@@ -29,7 +30,7 @@ class LocationUtils(var activity: Activity) : GoogleApiClient.ConnectionCallback
     //private lateinit var locationManager: LocationManager
 
     // Code for make call back using interface from utility to activity
-    private var listener: LocationListenerCallback?=null
+    private var listener: LocationListenerCallback=HomeActivity()
 
     override fun onLocationChanged(location: Location) {
 //Call the function of interface define in Activity i.e MainActivity
@@ -105,6 +106,10 @@ class LocationUtils(var activity: Activity) : GoogleApiClient.ConnectionCallback
         //  val fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
         val fusedLocationProviderClient: FusedLocationProviderClient =
             LocationServices.getFusedLocationProviderClient(activity)
+       /* fusedLocationProviderClient?.requestLocationUpdates(
+            mLocationRequest,
+            listener, Looper.myLooper()
+        )*/
         fusedLocationProviderClient.lastLocation.addOnSuccessListener {
             OnSuccessListener<Location> { location ->
                 if (location != null) {

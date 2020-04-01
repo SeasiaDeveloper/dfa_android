@@ -54,7 +54,7 @@ import kotlinx.android.synthetic.main.nav_header.*
 
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
-    GetLogoutDialogCallbacks{
+    GetLogoutDialogCallbacks, LocationListenerCallback {
     private var mDrawerLayout: DrawerLayout? = null
     private var mToggle: ActionBarDrawerToggle? = null
     private var mToolbar: Toolbar? = null
@@ -62,7 +62,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private var authorizationToken: String? = null
     private var preferencesHelper: PreferenceHandler? = null
     private lateinit var locationManager: LocationManager
-    //private lateinit var locationUtils: LocationUtils
+    private lateinit var locationUtils: LocationUtils
 
 
     override fun getLayout(): Int {
@@ -97,8 +97,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)
         //location
-        //locationUtils= LocationUtils(this)
-        //locationUtils.initLocation()
+        locationUtils= LocationUtils(this)
+        locationUtils.initLocation()
     }
 
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
@@ -208,11 +208,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         startActivity(intent)
     }
 
-  /*  override fun updateUi(location: Location) {
-        Utilities.showMessage(this, "" + location.latitude + " " + location.longitude)
-    }
+      override fun updateUi(location: Location) {
+          Utilities.showMessage(this, "" + location.latitude + " " + location.longitude)
+      }
 
-    override fun onLocationNotFound() {
-        Utilities.showMessage(this, "location not found")
-    }*/
+      override fun onLocationNotFound() {
+          Utilities.showMessage(this, "location not found")
+      }
 }
