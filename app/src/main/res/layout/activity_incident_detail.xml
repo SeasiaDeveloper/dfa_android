@@ -176,6 +176,32 @@
                     app:font="@{`regular`}" />
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvStatusOfCrime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:layout_marginEnd="@dimen/_7sdp"
+                    android:text="Crime State:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    android:textStyle="bold"
+                    app:font="@{`semibold`}" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/spStatusOfCrime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_9sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:background="@null"
+                    android:padding="@dimen/_3sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    app:font="@{`regular`}" />
+
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvLevel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
