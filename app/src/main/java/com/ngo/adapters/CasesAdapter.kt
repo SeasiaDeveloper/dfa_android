@@ -2,6 +2,7 @@ package com.ngo.adapters
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -254,13 +255,33 @@ class CasesAdapter(
                     listener.onItemClick(item, "action")
                 }
 
+                itemView.layoutCrimeType.visibility = View.VISIBLE
+                itemView.layoutStatus.visibility = View.VISIBLE
+                itemView.txtCrimeType.text = item.crime_type
+                itemView.txtStatus.text = item.status
+                itemView.txtUrgencyTitle.text = context.getString(R.string.urgency)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                itemView.txtUrgencyTitle.setTextColor(context.resources.getColor((R.color.colorDarkGreen),context.getTheme()))
+                itemView.expandable_Level.setTextColor(context.resources.getColor((R.color.colorDarkGreen),context.getTheme()))}
+                else{
+                    itemView.txtUrgencyTitle.setTextColor(context.resources.getColor(R.color.colorDarkGreen))
+                    itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.colorDarkGreen))}
+
             } else {
                 //in case of general public/general user
                 itemView.location.visibility = View.GONE
                 itemView.layoutContact.visibility = View.GONE
                 itemView.action_complaint.visibility = View.GONE
+                itemView.layoutCrimeType.visibility = View.GONE
+                itemView.layoutStatus.visibility = View.GONE
+                itemView.txtUrgencyTitle.text = context.getString(R.string.urgency_level_title)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                itemView.txtUrgencyTitle.setTextColor(context.resources.getColor((R.color.black),context.getTheme()))
+                itemView.expandable_Level.setTextColor(context.resources.getColor((R.color.black),context.getTheme()))}
+            else{
+                itemView.txtUrgencyTitle.setTextColor(context.resources.getColor(R.color.black))
+                itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.black))}
             }
         }
-
     }
 }
