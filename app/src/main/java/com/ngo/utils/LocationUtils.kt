@@ -8,8 +8,8 @@ import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.os.Looper
 import android.provider.Settings
+import android.widget.Toast
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.*
@@ -30,11 +30,13 @@ class LocationUtils(var activity: Activity) : GoogleApiClient.ConnectionCallback
     //private lateinit var locationManager: LocationManager
 
     // Code for make call back using interface from utility to activity
-    private var listener: LocationListenerCallback=HomeActivity()
+    private var listener: LocationListenerCallback?=null
+    private var mlocationListener:LocationListenerCallback?=null
 
     override fun onLocationChanged(location: Location) {
 //Call the function of interface define in Activity i.e MainActivity
-        listener?.updateUi(location)
+        mlocationListener?.updateUi(location)
+        //Toast.makeText(activity,"sd "+location.latitude,Toast.LENGTH_SHORT).show()
     }
 
     override fun onConnectionSuspended(p0: Int) {
@@ -46,13 +48,24 @@ class LocationUtils(var activity: Activity) : GoogleApiClient.ConnectionCallback
         // pActivity.location.text = connectionResult.errorMessage.toString()
     }
 
+    @SuppressLint("MissingPermission")
     override fun onConnected(pLocationChanged: Bundle?) {
         startLocationUpdates()
-        Utilities.showMessage(activity, "OnConected Call")
-
+       // var pActivity=null
+        //pActivity= ;
+        val fusedLocationProviderClient: FusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity)
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener {
+            OnSuccessListener<Location> { location ->
+                if (location != null) {
+                    mLocation = location
+                   // pCallback.updateUi(mLocation)
+                }
+            }
+        }
     }
 
-    fun initLocation() {
+    fun initLocation( locationListener:LocationListenerCallback) {
+        mlocationListener=locationListener;
         mGoogleApiClient = GoogleApiClient.Builder(activity).apply {
             addConnectionCallbacks(this@LocationUtils)
             addConnectionCallbacks(this@LocationUtils)
@@ -66,8 +79,8 @@ class LocationUtils(var activity: Activity) : GoogleApiClient.ConnectionCallback
     private fun checkLocation(): Boolean {
         if (!isLocationEnabled()) {
             showAlert(
-                activity.getString(com.ngo.R.string.location_title),
-                activity.getString(com.ngo.R.string.location_string)
+                activity.getString(com.ngo.R.string.default_web_client_id),
+                activity.getString(com.ngo.R.string.default_web_client_id)
             )
         }
         return isLocationEnabled()
@@ -88,41 +101,19 @@ class LocationUtils(var activity: Activity) : GoogleApiClient.ConnectionCallback
         dialog.apply {
             setTitle(pTitle)
             setMessage(pMessage)
-            setPositiveButton(activity.getString(com.ngo.R.string.location_string),
+            setPositiveButton(activity.getString(com.ngo.R.string.default_web_client_id),
                 { _, _ ->
                     val myIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                     activity.startActivity(myIntent)
                 })
         }.show()
     }
-
     @SuppressLint("MissingPermission")
     private fun startLocationUpdates() {
         mLocationRequest = LocationRequest.create().apply {
-            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
-            interval = sUINTERVAL
-            fastestInterval = sFINTERVAL
+                priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+                interval = sUINTERVAL
+                fastestInterval = sFINTERVAL
         }
-        //  val fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity)
-        val fusedLocationProviderClient: FusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(activity)
-       /* fusedLocationProviderClient?.requestLocationUpdates(
-            mLocationRequest,
-            listener, Looper.myLooper()
-        )*/
-        fusedLocationProviderClient.lastLocation.addOnSuccessListener {
-            OnSuccessListener<Location> { location ->
-                if (location != null) {
-                    mLocation = location
-                    listener?.updateUi(mLocation)
-                }
-            }
-        }
-
-        /*LocationServices.FusedLocationApi.requestLocationUpdates(
-            mGoogleApiClient,
-            mLocationRequest,
-            this
-        )*/
-    }
-}
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this)
+}}
