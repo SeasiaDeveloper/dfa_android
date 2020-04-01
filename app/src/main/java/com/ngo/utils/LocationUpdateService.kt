@@ -87,7 +87,7 @@ class LocationUpdateService : Service() {
         mLocationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult) {
                 super.onLocationResult(locationResult)
-                onNewLocation(locationResult.lastLocation)
+                //onNewLocation(locationResult.lastLocation,this)
             }
         }
         createLocationRequest()
@@ -162,7 +162,7 @@ class LocationUpdateService : Service() {
         mServiceHandler!!.removeCallbacksAndMessages(null)
         val broadcastIntent = Intent()
         broadcastIntent.action = ACTION_BROADCAST
-        broadcastIntent.setClass(this, HomeActivity.MyReceiver::class.java)
+       // broadcastIntent.setClass(this, HomeActivity.MyReceiver::class.java)
         this.sendBroadcast(broadcastIntent)
     }
 
@@ -179,9 +179,10 @@ class LocationUpdateService : Service() {
             mLocationCallback = object : LocationCallback() {
                 override fun onLocationResult(locationResult: LocationResult) {
                     super.onLocationResult(locationResult)
-                    onNewLocation(locationResult.lastLocation)
+                    onNewLocation(locationResult.lastLocation,context)
                 }
             }
+            createLocationRequest()
             mFusedLocationClient?.requestLocationUpdates(
                 mLocationRequest,
                 mLocationCallback, Looper.myLooper()
@@ -276,15 +277,15 @@ class LocationUpdateService : Service() {
         }
     }
 
-    private fun onNewLocation(location: Location) {
+    private fun onNewLocation(location: Location,context: Context) {
         Log.i(TAG, "New location: $location")
         mLocation = location
         // Notify anyone listening for broadcasts about the new location.
         val intent = Intent(ACTION_BROADCAST)
         intent.putExtra(EXTRA_LOCATION, location)
-        LocalBroadcastManager.getInstance(applicationContext).sendBroadcast(intent)
+        LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
         // Update notification content if running as a foreground service.
-        if (serviceIsRunningInForeground(this)) {
+        if (serviceIsRunningInForeground(context)) {
             mNotificationManager!!.notify(NOTIFICATION_ID, getNotification())
         }
     }
@@ -293,7 +294,7 @@ class LocationUpdateService : Service() {
         sendBroadcast(intent);*/
         val broadcastIntent = Intent()
         broadcastIntent.action = ACTION_BROADCAST
-        broadcastIntent.setClass(this, HomeActivity.MyReceiver::class.java)
+       // broadcastIntent.setClass(this, HomeActivity.MyReceiver::class.java)
         this.sendBroadcast(broadcastIntent)
         super.onTaskRemoved(rootIntent)
     }
