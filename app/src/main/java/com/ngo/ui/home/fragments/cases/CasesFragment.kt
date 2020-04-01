@@ -59,7 +59,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         if (complaints.isNotEmpty()) {
             tvRecord?.visibility = View.GONE
             rvPublic?.visibility = View.VISIBLE
-             type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
+
             rvPublic?.adapter =
                 CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
         } else {
@@ -78,7 +78,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
 
                 Utilities.showProgress(mContext)
                 //hit api with search variable
-                presenter.getComplaints(casesRequest, token)
+                presenter.getComplaints(casesRequest, token,type)
             }
 
             override fun beforeTextChanged(
@@ -110,6 +110,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         super.onAttach(context)
         mContext = context
         token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
+        type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
     }
 
     override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String) {
@@ -169,7 +170,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "0") //type = -1 for fetching all the data
         //  Utilities.showProgress(activity!!)
-        presenter.getComplaints(casesRequest, token)
+        presenter.getComplaints(casesRequest, token, type)
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -182,7 +183,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
             ) //all = "1" and for fetching all the cases which are of type = 0
 
             Utilities.showProgress(mContext)
-            presenter.getComplaints(casesRequest, token)
+            presenter.getComplaints(casesRequest, token, type)
         }
     }
 
@@ -196,7 +197,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "0") //type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token)
+        presenter.getComplaints(casesRequest, token, type)
     }
 
     override fun adhaarSavedSuccess(responseObject: SignupResponse) {
@@ -209,7 +210,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         //refresh the list
         Utilities.showProgress(mContext)
         val casesRequest = CasesRequest("1", "", "0")  //type = -1 for fetching both cases and posts
-        presenter.getComplaints(casesRequest, token)
+        presenter.getComplaints(casesRequest, token , type)
     }
 
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {

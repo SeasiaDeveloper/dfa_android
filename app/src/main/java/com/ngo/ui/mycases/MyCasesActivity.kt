@@ -57,6 +57,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
     override fun setupUI() {
         token = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")!!
+        type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")!!
 
         (toolbarLayout as CenteredToolbar).title = getString(R.string.my_cases)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
@@ -76,7 +77,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             "0"
         ) //all = "0" for my cases and for fetching all the cases which are of type = 0
         Utilities.showProgress(this)
-        presenter.getComplaints(casesRequest, token)
+        presenter.getComplaints(casesRequest, token, type)
     }
 
     //displays my cases list on the view
@@ -86,7 +87,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         if (complaints.isNotEmpty()) {
             tvRecord.visibility = View.GONE
             rvPublic.visibility = View.VISIBLE
-             type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")!!
+
             rvPublic.adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this)
         } else {
             tvRecord.visibility = View.VISIBLE
@@ -104,7 +105,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
                 Utilities.showProgress(this@MyCasesActivity)
                 //hit api with search variable
-                presenter.getComplaints(casesRequest, token)
+                presenter.getComplaints(casesRequest, token, type)
             }
 
             override fun beforeTextChanged(
@@ -137,7 +138,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             "",
             "0"
         ) //all = 0 for only my cases;type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token)
+        presenter.getComplaints(casesRequest, token , type)
         GeneralPublicHomeFragment.change =
             1 // so that list on Home gets refreshed after change in status
     }
@@ -151,7 +152,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(this@MyCasesActivity, responseObject.message!!)
         val casesRequest = CasesRequest("0", "", "0") //type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token)
+        presenter.getComplaints(casesRequest, token, type)
         GeneralPublicHomeFragment.change =
             1 // so that list on Home gets refreshed after change in status
     }
@@ -215,7 +216,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         //refresh the list
         Utilities.showProgress(this)
         val casesRequest = CasesRequest("0", "", "0") //type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token)
+        presenter.getComplaints(casesRequest, token, type)
     }
 
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {

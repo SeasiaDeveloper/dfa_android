@@ -1,5 +1,7 @@
 package com.ngo.ui.home.fragments.home.view
+
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.view.MenuItem
@@ -30,18 +32,13 @@ import com.ngo.ui.profile.ProfileActivity
 import com.ngo.ui.termsConditions.view.TermsAndConditionActivity
 import com.ngo.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.ngo.ui.updatepassword.view.UpdatePasswordActivity
-import com.ngo.utils.ForegroundService
-import com.ngo.utils.LocationUtils
-import com.ngo.utils.PreferenceHandler
-import com.ngo.utils.Utilities
+import com.ngo.utils.*
 import com.ngo.utils.alert.AlertDialog
 import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.nav_header.*
 
-
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
-    GetLogoutDialogCallbacks,LocationListenerCallback {
-
+    GetLogoutDialogCallbacks, LocationListenerCallback {
 
     private var mDrawerLayout: DrawerLayout? = null
     private var mToggle: ActionBarDrawerToggle? = null
@@ -52,7 +49,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var locationManager: LocationManager
     private lateinit var locationUtils: LocationUtils
     private lateinit var locationCallBack: LocationListenerCallback
-
+    private var isGPS: Boolean = false
+    private var isFirst = true
 
     override fun getLayout(): Int {
         return R.layout.home_activity
@@ -62,6 +60,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onResume()
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         homePresenter.hitProfileApi(authorizationToken)
+        if (!isFirst && !isGPS) {
+            askForGPS()
+        }
     }
 
     override fun setupUI() {
@@ -73,8 +74,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         mDrawerLayout!!.addDrawerListener(mToggle!!)
         mToggle!!.syncState()
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        if (getSupportActionBar() != null) {
-            getSupportActionBar()?.setDisplayShowTitleEnabled(false)
+        if (supportActionBar != null) {
+            supportActionBar?.setDisplayShowTitleEnabled(false)
         }
 
         val adapter = TabLayoutAdapter(supportFragmentManager)
@@ -85,13 +86,49 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         viewPager?.adapter = adapter
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)
-        //location
-        locationCallBack=this;
-        //locationUtils = LocationUtils(this)
-        //locationUtils.initLocation(locationCallBack)
+        getLocation()
+    }
 
+    private fun getLocation() {
+        if (!Utilities.checkPermissions(this)) {
+            Utilities.requestPermissions(this)
+        } else {
+            askForGPS()
+        }
+    }
 
-        ForegroundService.startService(applicationContext,"Foreground Service is running...",locationCallBack)
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == Utilities.PERMISSION_ID) {
+            if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED) || (grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+                askForGPS()
+            } else {
+                Utilities.requestPermissions(this)
+            }
+        }
+    }
+
+    private fun askForGPS() {
+        isFirst = false
+        GpsUtils(this).turnGPSOn(object : GpsUtils.onGpsListener {
+            override fun gpsStatus(isGPSEnable: Boolean) {
+                // turn on GPS
+                isGPS = isGPSEnable
+                if (isGPS) {
+                    //location
+                    locationCallBack = this@HomeActivity;
+
+                    ForegroundService.startService(
+                        this@HomeActivity,
+                        "Foreground Service is running...",
+                        locationCallBack
+                    )
+                }
+            }
+        })
     }
 
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
@@ -106,11 +143,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.nav_edit_profile -> {
-                var intent = Intent(this, ProfileActivity::class.java)
+                val intent = Intent(this, ProfileActivity::class.java)
                 startActivity(intent)
             }
             R.id.nav_password -> {
-                var intent = Intent(this, UpdatePasswordActivity::class.java)
+                val intent = Intent(this, UpdatePasswordActivity::class.java)
                 startActivity(intent)
             }
             R.id.nav_logout -> {
@@ -159,7 +196,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onGetProfileSucess(getProfileResponse: GetProfileResponse) {
         dismissProgress()
         loadNavHeader(getProfileResponse)
-        var gson = getProfileResponse.data
+        val gson = getProfileResponse.data
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, gson.toString())
 
         val jsonString = GsonBuilder().create().toJson(getProfileResponse)
@@ -182,7 +219,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         )
     }
 
-
     override fun ongetProfileFailure(error: String) {
         dismissProgress()
         Utilities.showMessage(this, error)
@@ -196,31 +232,28 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onClick() {
         finish()
         PreferenceHandler.clearPreferences(this)
-        var intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
     }
 
     override fun onPostLocationSucess(postLocationResponse: PostLocationResponse) {
-        Utilities.showMessage(applicationContext,"sucess")
+        Utilities.showMessage(applicationContext, "sucess")
     }
 
     override fun onPostLocationFailure(error: String) {
-        Utilities.showMessage(applicationContext,"failuree");
+        Utilities.showMessage(applicationContext, "failuree");
     }
 
     override fun updateUi(location: Location) {
-         Utilities.showMessage(applicationContext,"lat lng"+location.latitude);
-         homePresenter.hitLocationApi(authorizationToken,location.latitude.toString(),location.longitude.toString())
+        Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
+        homePresenter.hitLocationApi(
+            authorizationToken,
+            location.latitude.toString(),
+            location.longitude.toString()
+        )
     }
 
     override fun onLocationNotFound() {
     }
-
-    override fun onPause() {
-        super.onPause()
-      //  ForegroundService.stopService(applicationContext)
-
-    }
-
 }
