@@ -156,4 +156,8 @@
     <string name="location_string">Location String</string>
     <string name="location_message">Location message</string>
     <string name="location_title">Location Title</string>
+    <string name="crime_type">Crime Type:</string>
+    <string name="state">State:</string>
+    <string name="urgency">Urgency:</string>
+    <string name="urgency_level_title">Urgency Level:</string>
 </resources>
