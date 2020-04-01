@@ -1,9 +1,11 @@
 package com.ngo.ui.home.fragments.home.view
 
 
+import android.app.NotificationChannel
 import android.content.Intent
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -41,7 +43,7 @@ import kotlinx.android.synthetic.main.nav_header.*
 
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
-    GetLogoutDialogCallbacks,LocationListenerCallback {
+    GetLogoutDialogCallbacks, LocationListenerCallback {
 
 
     private var mDrawerLayout: DrawerLayout? = null
@@ -53,6 +55,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var locationManager: LocationManager
     private lateinit var locationUtils: LocationUtils
     private lateinit var locationCallBack: LocationListenerCallback
+    private var imageUrl: String = ""
 
 
     override fun getLayout(): Int {
@@ -87,10 +90,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)
         //location
-        locationCallBack=this;
+        locationCallBack = this;
         locationUtils = LocationUtils(this)
         locationUtils.initLocation(locationCallBack)
-
 
         //  ForegroundService.startService(applicationContext,"Foreground Service is running...")
     }
@@ -157,15 +159,28 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         } else super.onOptionsItemSelected(item)
     }
 
+    fun getProfilePic():String {
+        return imageUrl
+    }
+
     override fun onGetProfileSucess(getProfileResponse: GetProfileResponse) {
         dismissProgress()
         loadNavHeader(getProfileResponse)
+        this.imageUrl = getProfileResponse.data?.profile_pic!!
+
         var gson = getProfileResponse.data
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, gson.toString())
 
         val jsonString = GsonBuilder().create().toJson(getProfileResponse)
         //Save that String in SharedPreferences
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, jsonString)
+
+        val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
+        val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
+
+        /*val fragment = GeneralPublicHomeFragment()
+        (fragment as GeneralPublicHomeFragment).changeProfileImage()*/
+
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.USER_ROLE,
@@ -181,6 +196,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             PreferenceHandler.USER_ID,
             getProfileResponse.data?.id.toString()
         )
+
+        imageNavigator.setOnClickListener {
+            var intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
 
@@ -203,16 +224,20 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onPostLocationSucess(postLocationResponse: PostLocationResponse) {
-        Utilities.showMessage(applicationContext,"sucess")
+        // Utilities.showMessage(applicationContext,"sucess")
     }
 
     override fun onPostLocationFailure(error: String) {
-        Utilities.showMessage(applicationContext,"failuree");
+        //   Utilities.showMessage(applicationContext,"failuree");
     }
 
     override fun updateUi(location: Location) {
-         Utilities.showMessage(applicationContext,"lat lng"+location.latitude);
-         homePresenter.hitLocationApi(authorizationToken,location.latitude.toString(),location.longitude.toString())
+        // Utilities.showMessage(applicationContext,"lat lng"+location.latitude);
+       /* homePresenter.hitLocationApi(
+            authorizationToken,
+            location.latitude.toString(),
+            location.longitude.toString()
+        )*/
     }
 
     override fun onLocationNotFound() {

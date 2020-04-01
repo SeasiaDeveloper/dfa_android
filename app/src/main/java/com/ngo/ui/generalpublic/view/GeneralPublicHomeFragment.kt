@@ -37,6 +37,7 @@ import com.ngo.ui.generalpublic.GeneralPublicActivity
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
+import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.RealPathUtil
@@ -60,6 +61,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     private var IMAGE_REQ_CODE = 101
     private var path: String = ""
     private var imageUri: Uri? = null
+    private var imageUrl: String? = null
     private var authorizationToken: String? = ""
     private var media_type: String? = ""
     private var token: String = ""
@@ -99,6 +101,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+        type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
+        adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
+        val horizontalLayoutManager = LinearLayoutManager(
+            mContext,
+            RecyclerView.VERTICAL, false
+        )
+        rvPublic?.layoutManager = horizontalLayoutManager
+        rvPublic?.adapter = adapter
 
         val value = PreferenceHandler.readString(mContext, PreferenceHandler.PROFILE_JSON, "")
         val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
@@ -107,6 +117,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 Glide.with(this).load(jsondata.data.profile_pic).into(imgProfile)
             }
         }
+
 
         imgAdd.setOnClickListener(this)
         Utilities.showProgress(mContext)
@@ -138,6 +149,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             //show the addPost layout
             layoutAddPost.visibility = View.VISIBLE
             layoutPost.visibility = View.GONE
+            edtPostInfo.setText("")
+            imgPost.setImageResource(0)
         }
 
         img_attach.setOnClickListener {
@@ -216,17 +229,21 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         complaints = response.data!!
         if (complaints.isNotEmpty()) {
             tvRecord?.visibility = View.GONE
-
-            type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
-            adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
-            val horizontalLayoutManager = LinearLayoutManager(
-                mContext,
-                RecyclerView.VERTICAL, false
-            )
-            rvPublic?.layoutManager = horizontalLayoutManager
-            rvPublic?.adapter = adapter
+            adapter?.setList(response.data.toMutableList())
+            // rvPublic?.adapter = adapter
+            change = 1
         } else {
             tvRecord.visibility = View.VISIBLE
+        }
+
+        val value = PreferenceHandler.readString(mContext, PreferenceHandler.PROFILE_JSON, "")
+        val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
+        if (jsondata != null) {
+            if (jsondata.data?.profile_pic != null) {
+                if (activity != null) {
+                    Glide.with(this).load(jsondata.data.profile_pic).into(imgProfile)
+                }
+            }
         }
     }
 
@@ -243,7 +260,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
             "action" -> {
                 complaintId = complaintsData.id!!
-               if(complaintsData.status!=null) currentStatus = complaintsData.status
+                if (complaintsData.status != null) currentStatus = complaintsData.status
                 //hit api based on role
                 Utilities.showProgress(mContext)
                 presenter.fetchStatusList(token, type)
@@ -314,13 +331,18 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         Utilities.showMessage(mContext, responseObject.message.toString())
         //refresh the list
         Utilities.showProgress(mContext)
-        val casesRequest = CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
+        val casesRequest =
+            CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
         presenter.getComplaints(casesRequest, token)
     }
 
     override fun showServerError(error: String) {
         Utilities.dismissProgress()
         Utilities.showMessage(mContext, error)
+        if (edtPostInfo != null) {
+            edtPostInfo.setText("")
+            imgPost.setImageResource(0)
+        }
     }
 
     override fun onClick(p0: View?) {
@@ -344,6 +366,20 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
     }
 
+    fun changeProfileImage() {
+        if (activity != null) {
+            val value = PreferenceHandler.readString(mContext, PreferenceHandler.PROFILE_JSON, "")
+            val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
+            if (jsondata != null) {
+                if (jsondata.data?.profile_pic != null) {
+                    Glide.with(this).load(jsondata.data.profile_pic).into(imgProfile)
+                }
+            }
+
+        }
+
+    }
+
     override fun onResume() {
         super.onResume()
         if (isFirst) {
@@ -358,6 +394,10 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             change = 0
 
         }
+
+        // var imageUrl: String = ""
+        // changeProfileImage(imageUrl)
+
     }
 
     override fun onAttach(context: Context) {
@@ -368,12 +408,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun onPostAdded(responseObject: GetCasesResponse) {
         Utilities.dismissProgress()
-        layoutAddPost.visibility = View.GONE
-        layoutPost.visibility = View.VISIBLE
+        layoutAddPost.visibility = View.VISIBLE
+        layoutPost.visibility = View.GONE
         edtPostInfo.setText("")
         imgPost.setImageResource(0)
         path = ""
         Utilities.showMessage(mContext, responseObject.message!!)
+        adapter?.setList(responseObject.data?.toMutableList()!!)
+        //rvPublic?.adapter?.notifyDataSetChanged()
     }
 
     //delete your respective complaint/post

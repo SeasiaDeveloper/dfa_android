@@ -3,6 +3,7 @@ package com.ngo.ui
 import android.content.Intent
 import android.os.Handler
 import android.view.View
+import com.google.firebase.FirebaseApp
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.ui.home.fragments.home.view.HomeActivity

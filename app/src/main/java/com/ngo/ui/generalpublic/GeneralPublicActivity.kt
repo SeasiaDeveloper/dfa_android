@@ -457,6 +457,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         dismissProgress()
         Utilities.showMessage(this, complaintsResponse.message!!)
         GeneralPublicHomeFragment.change = 1
+
         finish()
     }
 

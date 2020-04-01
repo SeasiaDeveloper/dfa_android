@@ -59,7 +59,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         if (complaints.isNotEmpty()) {
             tvRecord?.visibility = View.GONE
             rvPublic?.visibility = View.VISIBLE
-             type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
+            type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
             rvPublic?.adapter =
                 CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
         } else {
@@ -70,15 +70,18 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         etSearch?.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
-                casesRequest = CasesRequest(
-                    "1",
-                    etSearch.text.toString(),
-                    "0"
-                ) //all = "1" for fetching all the cases whose type = 0
+                if (s.length >= 3 || s.length==0) {
+                    casesRequest = CasesRequest(
+                        "1",
+                        etSearch.text.toString(),
+                        "0"
+                    ) //all = "1" for fetching all the cases whose type = 0
 
-                Utilities.showProgress(mContext)
-                //hit api with search variable
-                presenter.getComplaints(casesRequest, token)
+                    Utilities.showProgress(mContext)
+                    //hit api with search variable
+                    presenter.getComplaints(casesRequest, token)
+                }
+
             }
 
             override fun beforeTextChanged(
@@ -125,7 +128,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
 
             "action" -> {
                 complaintId = complaintsData.id!!
-                if(complaintsData.status!=null) currentStatus = complaintsData.status
+                if (complaintsData.status != null) currentStatus = complaintsData.status
                 Utilities.showProgress(mContext)
                 //hit api based on role
                 presenter.fetchStatusList(token, type)
@@ -220,7 +223,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
                 break
             }
         }
-        showStatusDialog("",responseObject)
+        showStatusDialog("", responseObject)
     }
 
     override fun onStatusClick(statusId: String) {
@@ -230,19 +233,31 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
     private fun showStatusDialog(description: String, responseObject: GetStatusResponse) {
         lateinit var dialog: AlertDialog
         val builder = AlertDialog.Builder(mContext)
-        val binding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.dialog_change_status, null, false) as com.ngo.databinding.DialogChangeStatusBinding
+        val binding = DataBindingUtil.inflate(
+            LayoutInflater.from(mContext),
+            R.layout.dialog_change_status,
+            null,
+            false
+        ) as com.ngo.databinding.DialogChangeStatusBinding
         // Inflate and set the layout for the dialog
-        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(description)
+        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(
+            description
+        )
 
         //display the list on the screen
         val statusAdapter = StatusAdapter(mContext, responseObject.data.toMutableList(), this)
         val horizontalLayoutManager = LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
         binding.rvStatus?.layoutManager = horizontalLayoutManager
         binding.rvStatus?.adapter = statusAdapter
-        binding.btnDone.setOnClickListener{
+        binding.btnDone.setOnClickListener {
             Utilities.showProgress(mContext)
             //hit status update api
-            presenter.updateStatus(token,complaintId,statusId,binding.etDescription.text.toString())
+            presenter.updateStatus(
+                token,
+                complaintId,
+                statusId,
+                binding.etDescription.text.toString()
+            )
             dialog.dismiss()
         }
 

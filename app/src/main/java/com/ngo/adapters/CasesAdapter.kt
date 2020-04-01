@@ -50,6 +50,11 @@ class CasesAdapter(
         return mList.size
     }
 
+    fun setList(mList: MutableList<GetCasesResponse.Data>) {
+        this.mList = mList
+        notifyDataSetChanged()
+    }
+
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var index: Int? = null
@@ -165,7 +170,7 @@ class CasesAdapter(
                 itemView.layout_post.visibility = View.GONE
                 itemView.layoutListItem.visibility = View.VISIBLE
 
-             //   itemView.status.text = item.status.toString().toUpperCase()
+                //   itemView.status.text = item.status.toString().toUpperCase()
                 itemView.expandable_Date.text = Utilities.changeDateFormat(item.report_data!!)
                 itemView.expandable_Level.text = "Level " + item.urgency
                 itemView.expandable_Time.text = item.report_time
@@ -261,11 +266,22 @@ class CasesAdapter(
                 itemView.txtStatus.text = item.status
                 itemView.txtUrgencyTitle.text = context.getString(R.string.urgency)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                itemView.txtUrgencyTitle.setTextColor(context.resources.getColor((R.color.colorDarkGreen),context.getTheme()))
-                itemView.expandable_Level.setTextColor(context.resources.getColor((R.color.colorDarkGreen),context.getTheme()))}
-                else{
+                    itemView.txtUrgencyTitle.setTextColor(
+                        context.resources.getColor(
+                            (R.color.colorDarkGreen),
+                            context.getTheme()
+                        )
+                    )
+                    itemView.expandable_Level.setTextColor(
+                        context.resources.getColor(
+                            (R.color.colorDarkGreen),
+                            context.getTheme()
+                        )
+                    )
+                } else {
                     itemView.txtUrgencyTitle.setTextColor(context.resources.getColor(R.color.colorDarkGreen))
-                    itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.colorDarkGreen))}
+                    itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.colorDarkGreen))
+                }
 
             } else {
                 //in case of general public/general user
@@ -276,11 +292,22 @@ class CasesAdapter(
                 itemView.layoutStatus.visibility = View.GONE
                 itemView.txtUrgencyTitle.text = context.getString(R.string.urgency_level_title)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                itemView.txtUrgencyTitle.setTextColor(context.resources.getColor((R.color.black),context.getTheme()))
-                itemView.expandable_Level.setTextColor(context.resources.getColor((R.color.black),context.getTheme()))}
-            else{
-                itemView.txtUrgencyTitle.setTextColor(context.resources.getColor(R.color.black))
-                itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.black))}
+                    itemView.txtUrgencyTitle.setTextColor(
+                        context.resources.getColor(
+                            (R.color.black),
+                            context.getTheme()
+                        )
+                    )
+                    itemView.expandable_Level.setTextColor(
+                        context.resources.getColor(
+                            (R.color.black),
+                            context.getTheme()
+                        )
+                    )
+                } else {
+                    itemView.txtUrgencyTitle.setTextColor(context.resources.getColor(R.color.black))
+                    itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.black))
+                }
             }
         }
     }
