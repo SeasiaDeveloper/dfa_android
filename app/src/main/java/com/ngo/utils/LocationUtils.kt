@@ -29,11 +29,11 @@ class LocationUtils(var activity: Activity) : GoogleApiClient.ConnectionCallback
     //private lateinit var locationManager: LocationManager
 
     // Code for make call back using interface from utility to activity
-    private var listener: LocationListenerCallback = HomeActivity()
+    private var listener: LocationListenerCallback?=null
 
     override fun onLocationChanged(location: Location) {
 //Call the function of interface define in Activity i.e MainActivity
-        listener.updateUi(location)
+        listener?.updateUi(location)
     }
 
     override fun onConnectionSuspended(p0: Int) {
@@ -109,7 +109,7 @@ class LocationUtils(var activity: Activity) : GoogleApiClient.ConnectionCallback
             OnSuccessListener<Location> { location ->
                 if (location != null) {
                     mLocation = location
-                    listener.updateUi(mLocation)
+                    listener?.updateUi(mLocation)
                 }
             }
         }

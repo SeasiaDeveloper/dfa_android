@@ -1,18 +1,33 @@
 package com.ngo.ui.home.fragments.home.view
 
 
-import android.content.Intent
+import android.Manifest
+import android.content.*
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener
+import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.net.Uri
+import android.os.Build
+import android.os.IBinder
+import android.preference.PreferenceManager
+import android.provider.Settings
+import android.util.Log
 
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat.startForegroundService
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.ngo.R
 import com.ngo.adapters.TabLayoutAdapter
@@ -32,16 +47,14 @@ import com.ngo.ui.profile.ProfileActivity
 import com.ngo.ui.termsConditions.view.TermsAndConditionActivity
 import com.ngo.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.ngo.ui.updatepassword.view.UpdatePasswordActivity
-import com.ngo.utils.LocationUtils
-import com.ngo.utils.PreferenceHandler
-import com.ngo.utils.Utilities
+import com.ngo.utils.*
 import com.ngo.utils.alert.AlertDialog
 import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.nav_header.*
 
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
-    GetLogoutDialogCallbacks, LocationListenerCallback {
+    GetLogoutDialogCallbacks{
     private var mDrawerLayout: DrawerLayout? = null
     private var mToggle: ActionBarDrawerToggle? = null
     private var mToolbar: Toolbar? = null
@@ -49,9 +62,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private var authorizationToken: String? = null
     private var preferencesHelper: PreferenceHandler? = null
     private lateinit var locationManager: LocationManager
-    //private lateinit var locationUtils: LocationSecondUtility
-    //private lateinit var locationUtils: LocationSecondUtility
-    private lateinit var locationUtils: LocationUtils
+    //private lateinit var locationUtils: LocationUtils
+
 
     override fun getLayout(): Int {
         return R.layout.home_activity
@@ -85,10 +97,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)
         //location
-      /*  locationUtils = LocationSecondUtility()
-        locationUtils.LocationUtils(this, this, this)*/
-        locationUtils=LocationUtils(this)
-        locationUtils.initLocation()
+        //locationUtils= LocationUtils(this)
+        //locationUtils.initLocation()
     }
 
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
@@ -198,11 +208,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         startActivity(intent)
     }
 
-    override fun updateUi(location: Location) {
+  /*  override fun updateUi(location: Location) {
         Utilities.showMessage(this, "" + location.latitude + " " + location.longitude)
     }
 
     override fun onLocationNotFound() {
         Utilities.showMessage(this, "location not found")
-    }
+    }*/
 }
