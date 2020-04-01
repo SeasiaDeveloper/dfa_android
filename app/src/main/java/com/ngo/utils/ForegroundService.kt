@@ -1,9 +1,6 @@
 package com.ngo.utils
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
-import android.app.Service
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -11,12 +8,20 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.ngo.R
+import com.ngo.ui.home.fragments.cases.view.LocationListenerCallback
 import com.ngo.ui.home.fragments.home.view.HomeActivity
 
 class ForegroundService : Service() {
     private val CHANNEL_ID = "ForegroundService Kotlin"
     companion object {
-        fun startService(context: Context, message: String) {
+        fun startService(
+            context: Context,
+            message: String,
+            locationCallBack: LocationListenerCallback
+        ) {
+             lateinit var locationUtils: LocationUtils
+            locationUtils = LocationUtils(context)
+            locationUtils.initLocation(locationCallBack)
             val startIntent = Intent(context, ForegroundService::class.java)
             startIntent.putExtra("inputExtra", message)
             ContextCompat.startForegroundService(context, startIntent)
@@ -36,7 +41,7 @@ class ForegroundService : Service() {
             0, notificationIntent, 0
         )
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("Foreground Service Kotlin Example")
+            .setContentTitle("DFA Location Synching...")
             .setContentText(input)
             .setSmallIcon(R.drawable.attachment_icon)
             .setContentIntent(pendingIntent)

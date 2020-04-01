@@ -34,6 +34,7 @@ import com.ngo.ui.profile.ProfileActivity
 import com.ngo.ui.termsConditions.view.TermsAndConditionActivity
 import com.ngo.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.ngo.ui.updatepassword.view.UpdatePasswordActivity
+import com.ngo.utils.ForegroundService
 import com.ngo.utils.LocationUtils
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
@@ -43,7 +44,7 @@ import kotlinx.android.synthetic.main.nav_header.*
 
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
-    GetLogoutDialogCallbacks, LocationListenerCallback {
+    GetLogoutDialogCallbacks,LocationListenerCallback {
 
 
     private var mDrawerLayout: DrawerLayout? = null
@@ -90,11 +91,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)
         //location
-        locationCallBack = this;
-        locationUtils = LocationUtils(this)
-        locationUtils.initLocation(locationCallBack)
+        locationCallBack=this;
+        //locationUtils = LocationUtils(this)
+        //locationUtils.initLocation(locationCallBack)
 
-        //  ForegroundService.startService(applicationContext,"Foreground Service is running...")
+
+        ForegroundService.startService(applicationContext,"Foreground Service is running...",locationCallBack)
     }
 
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
@@ -178,9 +180,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
         val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
 
-        /*val fragment = GeneralPublicHomeFragment()
-        (fragment as GeneralPublicHomeFragment).changeProfileImage()*/
-
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.USER_ROLE,
@@ -224,23 +223,25 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onPostLocationSucess(postLocationResponse: PostLocationResponse) {
-        // Utilities.showMessage(applicationContext,"sucess")
+        Utilities.showMessage(applicationContext,"sucess")
     }
 
     override fun onPostLocationFailure(error: String) {
-        //   Utilities.showMessage(applicationContext,"failuree");
+        Utilities.showMessage(applicationContext,"failuree");
     }
 
     override fun updateUi(location: Location) {
-        // Utilities.showMessage(applicationContext,"lat lng"+location.latitude);
-       /* homePresenter.hitLocationApi(
-            authorizationToken,
-            location.latitude.toString(),
-            location.longitude.toString()
-        )*/
+         Utilities.showMessage(applicationContext,"lat lng"+location.latitude);
+         homePresenter.hitLocationApi(authorizationToken,location.latitude.toString(),location.longitude.toString())
     }
 
     override fun onLocationNotFound() {
+    }
+
+    override fun onPause() {
+        super.onPause()
+      //  ForegroundService.stopService(applicationContext)
+
     }
 
 }
