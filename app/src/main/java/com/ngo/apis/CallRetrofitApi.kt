@@ -75,6 +75,10 @@ interface CallRetrofitApi {
     fun getProfileData(@Header("Authorization") authorization: String?): Call<GetProfileResponse>
 
     @Multipart
+    @POST("jwt-auth/v1/update_location")
+    fun postLocationData(@Header("Authorization") authorization: String?,@PartMap params: HashMap<String, RequestBody>): Call<PostLocationResponse>
+
+    @Multipart
     @POST("jwt-auth/v1/edit_profile")
     fun updateProfile(
         @PartMap params: HashMap<String, RequestBody>, @Part profile_pic: MultipartBody.Part, @Header(
