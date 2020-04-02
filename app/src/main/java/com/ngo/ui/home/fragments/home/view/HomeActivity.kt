@@ -45,8 +45,7 @@ import kotlinx.android.synthetic.main.nav_header.*
 import com.ngo.utils.*
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
-    GetLogoutDialogCallbacks, LocationListenerCallback {
-
+    GetLogoutDialogCallbacks, LocationListenerCallback,PoliceDialogCallback {
 
     private var mDrawerLayout: DrawerLayout? = null
     private var mToggle: ActionBarDrawerToggle? = null
@@ -58,6 +57,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var locationUtils: LocationUtils
     private lateinit var locationCallBack: LocationListenerCallback
     private var imageUrl: String = ""
+    private lateinit var mpoliceCallback: PoliceDialogCallback
 
     private var isGPS: Boolean = false
     private var isFirst = true
@@ -73,6 +73,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (!isFirst && !isGPS) {
             askForGPS()
         }
+        mpoliceCallback=this
+        //AlertDialog.showDialog("romy",mpoliceCallback,this);
     }
 
     override fun setupUI() {
@@ -261,6 +263,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onClick() {
+        ForegroundService.stopService(applicationContext)
         finish()
         PreferenceHandler.clearPreferences(this)
         val intent = Intent(this, LoginActivity::class.java)
@@ -269,7 +272,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onPostLocationSucess(postLocationResponse: PostLocationResponse) {
-        Utilities.showMessage(applicationContext, "sucess")
+       // Utilities.showMessage(applicationContext, "sucess")
     }
 
     override fun onPostLocationFailure(error: String) {
@@ -277,7 +280,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun updateUi(location: Location) {
-        Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
+     //   Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
         homePresenter.hitLocationApi(
             authorizationToken,
             location.latitude.toString(),
@@ -288,9 +291,18 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onLocationNotFound() {
     }
 
-    override fun onPause() {
-        super.onPause()
-        //  ForegroundService.stopService(applicationContext)
+    override fun onAcceptClick() {
+        Utilities.showMessage(applicationContext, "accept");
+
+    }
+
+    override fun onRejectClick() {
+        Utilities.showMessage(applicationContext, "reject");
+
+    }
+
+    override fun onOpenClick() {
+        Utilities.showMessage(applicationContext, "open");
 
     }
 
