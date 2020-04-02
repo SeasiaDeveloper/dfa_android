@@ -1,5 +1,6 @@
 package com.ngo.ui.home.fragments.home.presenter
 
+import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.PostLocationResponse
 import com.ngo.ui.home.fragments.home.model.HomeModel
@@ -35,9 +36,16 @@ class HomePresenterImpl(private var homeView: HomeView) :
         homeModel.getProfileData(token)
     }
 
-
-
     override fun showError(error: String) {
-//
+        //
+    }
+
+    //update the status of the complaint
+    override fun updateStatus(token: String, complaintId: String, statusId: String) {
+        homeModel.updateStatus(token,complaintId,statusId)
+    }
+
+    override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
+        homeView.statusUpdationSuccess(responseObject)
     }
 }

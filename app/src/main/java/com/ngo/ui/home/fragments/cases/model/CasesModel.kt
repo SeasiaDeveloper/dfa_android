@@ -296,7 +296,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         val map = HashMap<String, RequestBody>()
         map["complaint_id"] = toRequestBody(complaintId)
         map["status"] = toRequestBody(statusId)
-        map["comment"] = toRequestBody(comment)
+        if(comment.isNotEmpty()) map["comment"] = toRequestBody(comment)
         retrofitApi.updateStatus(token, map)
             .enqueue(object : Callback<DeleteComplaintResponse> {
                 override fun onFailure(call: Call<DeleteComplaintResponse>, t: Throwable) {

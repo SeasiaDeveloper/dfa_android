@@ -8,7 +8,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationManager
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
@@ -27,9 +26,11 @@ import com.google.gson.GsonBuilder
 import com.ngo.R
 import com.ngo.adapters.TabLayoutAdapter
 import com.ngo.base.BaseActivity
+import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.NotificationResponse
 import com.ngo.pojo.response.PostLocationResponse
+import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.earnings.view.MyEarningsActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.CasesFragment
@@ -45,7 +46,6 @@ import com.ngo.ui.termsConditions.view.TermsAndConditionActivity
 import com.ngo.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.ngo.ui.updatepassword.view.UpdatePasswordActivity
 import com.ngo.utils.ForegroundService
-import com.ngo.utils.LocationUtils
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import com.ngo.utils.alert.AlertDialog
@@ -62,15 +62,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private var mToolbar: Toolbar? = null
     private var homePresenter: HomePresenter = HomePresenterImpl(this)
     private var authorizationToken: String? = null
-    private var preferencesHelper: PreferenceHandler? = null
-    private lateinit var locationManager: LocationManager
-    private lateinit var locationUtils: LocationUtils
     private lateinit var locationCallBack: LocationListenerCallback
     private var imageUrl: String = ""
-    private var isPermissionDialogRequired= true
+    private var isPermissionDialogRequired = true
 
     private var isGPS: Boolean = false
-    private var isFirst = true
 
     override fun getLayout(): Int {
         return R.layout.home_activity
@@ -80,29 +76,31 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onResume()
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         homePresenter.hitProfileApi(authorizationToken)
-        if (/*!isFirst && */!isGPS && !isPermissionDialogRequired) {
+        if (!isGPS && !isPermissionDialogRequired) {
             askForGPS()
         }
 
-        registerReceiver(refreshReceiver, IntentFilter("policeJsonReceiver"))
+        registerReceiver(
+            refreshReceiver,
+            IntentFilter("policeJsonReceiver")
+        ) //registering the broadcast receiver
     }
 
     override fun onPause() {
         super.onPause()
-        unregisterReceiver(refreshReceiver)
+        unregisterReceiver(refreshReceiver) //unregistering the broadcast receiver
         //  ForegroundService.stopService(applicationContext)
     }
 
     private val refreshReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val jsonString = intent.getStringExtra("jsonString")
-            displayAcceptRejDialog(jsonString)
+            val notificationResponse =
+                intent.getSerializableExtra("notificationResponse") as NotificationResponse
+            displayAcceptRejDialog(notificationResponse)
         }
     }
 
-    fun displayAcceptRejDialog(jsonString: String?) {
-//        val jsondata = GsonBuilder().create().fromJson(jsonString, NotificationResponse::class.java)
-
+    fun displayAcceptRejDialog(notificationResponse: NotificationResponse) {
         val binding =
             DataBindingUtil.inflate<ViewDataBinding>(
                 LayoutInflater.from(this@HomeActivity),
@@ -115,21 +113,50 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(binding.root)
 
-        // set the custom dialog components - text, image and button
-       // val edt = dialog.findViewById(R.id.edt) as EditText
-
-        (dialog.findViewById(R.id.txtComplainerContact) as TextView).text = "gvjhkjn"
-        (dialog.findViewById(R.id.txtComplaintDate) as TextView).text ="gvhjbn"
-        (dialog.findViewById(R.id.txtComplaintTime) as TextView).text ="dcgfv"
-        (dialog.findViewById(R.id.txtDescription) as TextView).text ="fg"
+        // (dialog.findViewById(R.id.txtComplainerContact) as TextView).text = notificationResponse.username
+        (dialog.findViewById(R.id.txtComplaintDate) as TextView).text =
+            notificationResponse.report_data
+        (dialog.findViewById(R.id.txtComplaintTime) as TextView).text =
+            notificationResponse.report_time
+        (dialog.findViewById(R.id.txtDescription) as TextView).text =
+            notificationResponse.description
 
         val acceptButton = dialog.findViewById(R.id.btnAccept) as Button
         val rejectButton = dialog.findViewById(R.id.btnReject) as Button
         val openButton = dialog.findViewById(R.id.btnOpen) as Button
-        // if button is clicked, close the custom dialog
-        acceptButton.setOnClickListener {}
-        rejectButton.setOnClickListener{}
-        openButton.setOnClickListener{}
+
+        acceptButton.setOnClickListener {
+            //accept = 4
+            Utilities.showProgress(this)
+            //hit status update api for accept status
+            homePresenter.updateStatus(
+                authorizationToken!!,
+                notificationResponse.complaint_id.toString(),
+                "4"
+            )
+            dialog.dismiss()
+        }
+        rejectButton.setOnClickListener {
+            //reject = 6
+            Utilities.showProgress(this)
+            //hit status update api for reject status
+            homePresenter.updateStatus(
+                authorizationToken!!,
+                notificationResponse.complaint_id.toString(),
+                "6"
+            )
+            dialog.dismiss()
+        }
+        openButton.setOnClickListener {
+            //complaintId
+            val intent = Intent(this, IncidentDetailActivity::class.java)
+            intent.putExtra(
+                Constants.PUBLIC_COMPLAINT_DATA,
+                notificationResponse.complaint_id.toString()
+            )
+            intent.putExtra(Constants.POST_OR_COMPLAINT, "0") //) is for complaint type
+            startActivity(intent)
+        }
         dialog.show()
 
 
@@ -165,7 +192,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (!Utilities.checkPermissions(this)) {
             Utilities.requestPermissions(this)
         } else {
-          //  askForGPS()
+            //  askForGPS()
             isPermissionDialogRequired = false
         }
     }
@@ -178,7 +205,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     ) {
         if (requestCode == Utilities.PERMISSION_ID) {
             if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED) || (grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
-              //  askForGPS()
+                //  askForGPS()
                 isPermissionDialogRequired = false
             } else {
                 Utilities.requestPermissions(this)
@@ -188,23 +215,22 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     //checking GPS
     private fun askForGPS() {
-            isFirst = false
-            GpsUtils(this).turnGPSOn(object : GpsUtils.onGpsListener {
-                override fun gpsStatus(isGPSEnable: Boolean) {
-                    // turn on GPS
-                    isGPS = isGPSEnable
-                    if (isGPS) {
-                        //location
-                        locationCallBack = this@HomeActivity;
+        GpsUtils(this).turnGPSOn(object : GpsUtils.onGpsListener {
+            override fun gpsStatus(isGPSEnable: Boolean) {
+                // turn on GPS
+                isGPS = isGPSEnable
+                if (isGPS) {
+                    //location
+                    locationCallBack = this@HomeActivity;
 
-                        ForegroundService.startService(
-                            this@HomeActivity,
-                            "Foreground Service is running...",
-                            locationCallBack
-                        )
-                    }
+                    ForegroundService.startService(
+                        this@HomeActivity,
+                        "Foreground Service is running...",
+                        locationCallBack
+                    )
                 }
-            })
+            }
+        })
     }
 
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
@@ -307,8 +333,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         )
 
         imageNavigator.setOnClickListener {
-            var intent = Intent(this, ProfileActivity::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, ProfileActivity::class.java))
         }
 
     }
@@ -349,6 +374,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onLocationNotFound() {
+    }
+
+    override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
+        Utilities.dismissProgress()
+        Utilities.showMessage(this, responseObject.message.toString())
     }
 
 }
