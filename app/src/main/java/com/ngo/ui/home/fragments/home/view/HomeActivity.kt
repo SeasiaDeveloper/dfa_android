@@ -89,6 +89,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         getLocation()
     }
 
+    //checking location
     private fun getLocation() {
         if (!Utilities.checkPermissions(this)) {
             Utilities.requestPermissions(this)
@@ -97,6 +98,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
+    //handling callback of Location permission
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -111,6 +113,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
+    //checking GPS
     private fun askForGPS() {
         isFirst = false
         GpsUtils(this).turnGPSOn(object : GpsUtils.onGpsListener {
