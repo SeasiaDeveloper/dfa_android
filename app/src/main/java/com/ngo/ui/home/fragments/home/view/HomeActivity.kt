@@ -1,9 +1,12 @@
 package com.ngo.ui.home.fragments.home.view
 
+
+import android.app.NotificationChannel
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -32,13 +35,18 @@ import com.ngo.ui.profile.ProfileActivity
 import com.ngo.ui.termsConditions.view.TermsAndConditionActivity
 import com.ngo.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.ngo.ui.updatepassword.view.UpdatePasswordActivity
-import com.ngo.utils.*
+import com.ngo.utils.ForegroundService
+import com.ngo.utils.LocationUtils
+import com.ngo.utils.PreferenceHandler
+import com.ngo.utils.Utilities
 import com.ngo.utils.alert.AlertDialog
 import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.nav_header.*
+import com.ngo.utils.*
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
     GetLogoutDialogCallbacks, LocationListenerCallback {
+
 
     private var mDrawerLayout: DrawerLayout? = null
     private var mToggle: ActionBarDrawerToggle? = null
@@ -49,6 +57,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var locationManager: LocationManager
     private lateinit var locationUtils: LocationUtils
     private lateinit var locationCallBack: LocationListenerCallback
+    private var imageUrl: String = ""
+
     private var isGPS: Boolean = false
     private var isFirst = true
 
@@ -196,15 +206,27 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         } else super.onOptionsItemSelected(item)
     }
 
+    fun getProfilePic(): String {
+        return imageUrl
+    }
+
     override fun onGetProfileSucess(getProfileResponse: GetProfileResponse) {
         dismissProgress()
         loadNavHeader(getProfileResponse)
         val gson = getProfileResponse.data
+        if (getProfileResponse.data?.profile_pic != null) {
+            this.imageUrl = getProfileResponse.data.profile_pic
+        }
+
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, gson.toString())
 
         val jsonString = GsonBuilder().create().toJson(getProfileResponse)
         //Save that String in SharedPreferences
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, jsonString)
+
+        val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
+        val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
+
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.USER_ROLE,
@@ -220,6 +242,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             PreferenceHandler.USER_ID,
             getProfileResponse.data?.id.toString()
         )
+
+        imageNavigator.setOnClickListener {
+            var intent = Intent(this, ProfileActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     override fun ongetProfileFailure(error: String) {
@@ -259,4 +287,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onLocationNotFound() {
     }
+
+    override fun onPause() {
+        super.onPause()
+        //  ForegroundService.stopService(applicationContext)
+
+    }
+
 }

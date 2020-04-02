@@ -70,15 +70,18 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         etSearch?.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
-                casesRequest = CasesRequest(
-                    "1",
-                    etSearch.text.toString(),
-                    "0"
-                ) //all = "1" for fetching all the cases whose type = 0
+                if (s.length >= 3 || s.length==0) {
+                    casesRequest = CasesRequest(
+                        "1",
+                        etSearch.text.toString(),
+                        "0"
+                    ) //all = "1" for fetching all the cases whose type = 0
 
                 Utilities.showProgress(mContext)
                 //hit api with search variable
                 presenter.getComplaints(casesRequest, token,type)
+            }
+
             }
 
             override fun beforeTextChanged(
@@ -126,7 +129,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
 
             "action" -> {
                 complaintId = complaintsData.id!!
-                if(complaintsData.status!=null) currentStatus = complaintsData.status
+                if (complaintsData.status != null) currentStatus = complaintsData.status
                 Utilities.showProgress(mContext)
                 //hit api based on role
                 presenter.fetchStatusList(token, type)
@@ -221,7 +224,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
                 break
             }
         }
-        showStatusDialog("",responseObject)
+        showStatusDialog("", responseObject)
     }
 
     override fun onStatusClick(statusId: String) {

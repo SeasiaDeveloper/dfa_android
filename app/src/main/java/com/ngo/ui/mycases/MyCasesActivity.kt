@@ -97,16 +97,17 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         //add click listener after adding the list on the view
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                casesRequest = CasesRequest(
-                    "0",
-                    etSearch.text.toString(),
-                    "0"
-                ) //all = "1" for fetching all the cases whose type = 0
+                if (s.length >= 3 || s.length==0) {
+                    casesRequest = CasesRequest(
+                        "0",
+                        etSearch.text.toString(),
+                        "0"
+                    ) //all = "1" for fetching all the cases whose type = 0
 
                 Utilities.showProgress(this@MyCasesActivity)
                 //hit api with search variable
                 presenter.getComplaints(casesRequest, token, type)
-            }
+            }}
 
             override fun beforeTextChanged(
                 s: CharSequence, start: Int,

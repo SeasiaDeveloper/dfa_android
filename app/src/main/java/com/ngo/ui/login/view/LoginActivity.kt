@@ -2,7 +2,11 @@ package com.ngo.ui.login.view
 
 import android.content.Intent
 import android.graphics.Color
+import android.util.Log
 import android.view.View
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.iid.InstanceIdResult
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
@@ -12,11 +16,11 @@ import com.ngo.ui.forgotpassword.view.ForgotPasswordActivity
 import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.ui.login.presenter.LoginActivityPresenterImpl
 import com.ngo.ui.login.presenter.LoginPresenter
-import com.ngo.ui.signup.SignupActivity
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_login_activity.*
 import kotlinx.android.synthetic.main.activity_public.toolbarLayout
+
 
 class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
     private var presenter: LoginPresenter = LoginActivityPresenterImpl(this)
@@ -29,6 +33,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.login)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
         setListeners()
+        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener(
+            this,
+            OnSuccessListener<InstanceIdResult> { instanceIdResult ->
+                val token = instanceIdResult.token
+                Log.i("FCM Token", token)
+                // saveToken(token)
+            })
     }
 
     private fun setListeners() {
