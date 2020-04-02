@@ -196,7 +196,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             getProfileResponse.data?.id.toString()
         )
 
-        imageNavigator.setOnClickListener {
+        navigationLayout.setOnClickListener {
             var intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }

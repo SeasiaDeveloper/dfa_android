@@ -197,6 +197,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 cursor?.close()
                 Glide.with(this).load(picturePath).into(imgPost)
                 path = picturePath!!
+                change=0
             } else if (mime.toLowerCase().contains("video")) {
                 media_type = "videos"
                 if (data?.data != null) {
@@ -208,6 +209,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                         .into(imgPost)
                     path = RealPathUtil.getRealPath(activity!!, data.data!!).toString()
                 }
+                change=0
             }
         }
     }
