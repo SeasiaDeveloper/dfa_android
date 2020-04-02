@@ -16,6 +16,7 @@ import com.ngo.ui.forgotpassword.view.ForgotPasswordActivity
 import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.ui.login.presenter.LoginActivityPresenterImpl
 import com.ngo.ui.login.presenter.LoginPresenter
+import com.ngo.ui.signup.SignupActivity
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_login_activity.*

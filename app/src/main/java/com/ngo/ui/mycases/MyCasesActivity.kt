@@ -39,6 +39,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     override fun onStatusClick(statusId: String) {
         //do nothing for now
     }
+
     override fun onClick(item: Any) {
         Utilities.showProgress(this@MyCasesActivity)
         val complaintsData = item as GetCasesResponse.Data
@@ -88,7 +89,8 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             tvRecord.visibility = View.GONE
             rvPublic.visibility = View.VISIBLE
 
-            rvPublic.adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this)
+            rvPublic.adapter =
+                CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this)
         } else {
             tvRecord.visibility = View.VISIBLE
             rvPublic.visibility = View.GONE
@@ -97,17 +99,18 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         //add click listener after adding the list on the view
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                if (s.length >= 3 || s.length==0) {
+                if (s.length >= 3 || s.length == 0) {
                     casesRequest = CasesRequest(
                         "0",
                         etSearch.text.toString(),
                         "0"
                     ) //all = "1" for fetching all the cases whose type = 0
 
-                Utilities.showProgress(this@MyCasesActivity)
-                //hit api with search variable
-                presenter.getComplaints(casesRequest, token, type)
-            }}
+                    Utilities.showProgress(this@MyCasesActivity)
+                    //hit api with search variable
+                    presenter.getComplaints(casesRequest, token, type)
+                }
+            }
 
             override fun beforeTextChanged(
                 s: CharSequence, start: Int,
@@ -139,7 +142,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             "",
             "0"
         ) //all = 0 for only my cases;type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token , type)
+        presenter.getComplaints(casesRequest, token, type)
         GeneralPublicHomeFragment.change =
             1 // so that list on Home gets refreshed after change in status
     }
@@ -172,17 +175,20 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
             "action" -> {
                 complaintId = complaintsData.id!!
-                if(complaintsData.status!=null) currentStatus = complaintsData.status
+                if (complaintsData.status != null) currentStatus = complaintsData.status
                 Utilities.showProgress(this@MyCasesActivity)
                 //hit api based on role
                 presenter.fetchStatusList(token, type)
             }
 
             else -> {
-        val intent = Intent(this, IncidentDetailActivity::class.java)
-        intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
-        intent.putExtra(Constants.POST_OR_COMPLAINT, "0")
-        startActivity(intent)}}
+                val intent = Intent(this, IncidentDetailActivity::class.java)
+                intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
+                intent.putExtra(Constants.POST_OR_COMPLAINT, "0")
+                intent.putExtra(Constants.FROM_WHERE, "nottohit")
+                startActivity(intent)
+            }
+        }
     }
 
     override fun showDescError() {
@@ -213,7 +219,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
     override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
         Utilities.dismissProgress()
-        Utilities.showMessage(this,responseObject.message.toString())
+        Utilities.showMessage(this, responseObject.message.toString())
         //refresh the list
         Utilities.showProgress(this)
         val casesRequest = CasesRequest("0", "", "0") //type = -1 for fetching all the data
@@ -228,25 +234,37 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                 break
             }
         }
-        showStatusDialog("",responseObject)
+        showStatusDialog("", responseObject)
     }
 
     private fun showStatusDialog(description: String, responseObject: GetStatusResponse) {
         lateinit var dialog: AlertDialog
         val builder = AlertDialog.Builder(this)
-        val binding = DataBindingUtil.inflate(LayoutInflater.from(this), R.layout.dialog_change_status, null, false) as com.ngo.databinding.DialogChangeStatusBinding
+        val binding = DataBindingUtil.inflate(
+            LayoutInflater.from(this),
+            R.layout.dialog_change_status,
+            null,
+            false
+        ) as com.ngo.databinding.DialogChangeStatusBinding
         // Inflate and set the layout for the dialog
-        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(description)
+        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(
+            description
+        )
 
         //display the list on the screen
         val statusAdapter = StatusAdapter(this, responseObject.data.toMutableList(), this)
         val horizontalLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         binding.rvStatus?.layoutManager = horizontalLayoutManager
         binding.rvStatus?.adapter = statusAdapter
-        binding.btnDone.setOnClickListener{
+        binding.btnDone.setOnClickListener {
             Utilities.showProgress(this@MyCasesActivity)
             //hit status update api
-            presenter.updateStatus(token,complaintId,statusId,binding.etDescription.text.toString())
+            presenter.updateStatus(
+                token,
+                complaintId,
+                statusId,
+                binding.etDescription.text.toString()
+            )
             dialog.dismiss()
         }
 

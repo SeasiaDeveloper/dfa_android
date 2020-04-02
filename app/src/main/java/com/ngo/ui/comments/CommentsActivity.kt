@@ -18,6 +18,7 @@ import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.ui.comments.presenter.CommentsPresenter
 import com.ngo.ui.comments.presenter.CommentsPresenterImplClass
 import com.ngo.ui.comments.view.CommentsView
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment.Companion.change
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_comments.*
@@ -94,6 +95,7 @@ class CommentsActivity :AppCompatActivity(), CommentsView {
         Utilities.showMessage(mContext, response.message!!)
         //refresh the list
         presenter.fetchComments(id, token)
+        change=1
     }
 
     override fun showServerError(error: String) {

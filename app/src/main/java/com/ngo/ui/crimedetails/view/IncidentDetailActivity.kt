@@ -37,6 +37,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
     private lateinit var postOrComplaint: String
     private var authorizationToken: String? = null
     private lateinit var getCrimeDetailsResponse: GetCrimeDetailsResponse
+    private var isKnowPostOrComplaint: String? = null
 
     override fun getLayout(): Int {
         return R.layout.activity_incident_detail
@@ -52,28 +53,10 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
         // complaintsData = intent.getSerializableExtra(Constants.PUBLIC_COMPLAINT_DATA) as GetComplaintsResponse.Data
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         complaintId = intent.getStringExtra(Constants.PUBLIC_COMPLAINT_DATA)
-        postOrComplaint = intent.getStringExtra(Constants.POST_OR_COMPLAINT)
-
-        if (postOrComplaint.equals("0")) {
-            //complaint
-            tvTitle.visibility = View.GONE
-            editTitle.visibility = View.GONE
-        } else if (postOrComplaint.equals("1")) {
-            //post
-            tvTitle.visibility = View.VISIBLE
-            editTitle.visibility = View.VISIBLE
-            tvUSerName.visibility = View.GONE
-            etUserName.visibility = View.GONE
-            tvEmail.visibility = View.GONE
-            etEmail.visibility = View.GONE
-            tvContact.visibility = View.GONE
-            etContactNo.visibility = View.GONE
-            tvTypesOfCrime.visibility = View.GONE
-            spTypesOfCrime.visibility = View.GONE
-            tvLevel.visibility = View.GONE
-            sb_steps_5.visibility = View.GONE
-            tvDescription.visibility = View.GONE
-            etDescription.visibility = View.GONE
+        isKnowPostOrComplaint = intent.getStringExtra(Constants.FROM_WHERE)
+        if (isKnowPostOrComplaint.equals("nottohit")) {
+            postOrComplaint = intent.getStringExtra(Constants.POST_OR_COMPLAINT)
+            setUiVisibilityOfdata()
         }
 
         if (isInternetAvailable()) {
@@ -95,13 +78,62 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
             }
             intent.putExtra(
                 Constants.IMAGE_URL,
-                getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0)?.toString())
+                getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0)?.toString()
+            )
             startActivity(intent)
         }
     }
 
+    fun setUiVisibilityOfdata() {
+        if (postOrComplaint != null) {
+            if (postOrComplaint.equals("0")) {
+                //complaint
+                tvTitle.visibility = View.GONE
+                editTitle.visibility = View.GONE
+
+                tvUSerName.visibility = View.VISIBLE
+                etUserName.visibility = View.VISIBLE
+                tvEmail.visibility = View.VISIBLE
+                etEmail.visibility = View.VISIBLE
+                tvContact.visibility = View.VISIBLE
+                etContactNo.visibility = View.VISIBLE
+                tvTypesOfCrime.visibility = View.VISIBLE
+                spTypesOfCrime.visibility = View.VISIBLE
+                tvLevel.visibility = View.VISIBLE
+                sb_steps_5.visibility = View.VISIBLE
+                tvDescription.visibility = View.VISIBLE
+                etDescription.visibility = View.VISIBLE
+                tvStatusOfCrime.visibility=View.VISIBLE
+                spStatusOfCrime.visibility=View.VISIBLE
+
+            } else if (postOrComplaint.equals("1")) {
+                //post
+                tvTitle.visibility = View.VISIBLE
+                editTitle.visibility = View.VISIBLE
+                tvDescription.visibility = View.GONE
+                etDescription.visibility = View.GONE
+                tvUSerName.visibility = View.GONE
+                etUserName.visibility = View.GONE
+                tvEmail.visibility = View.GONE
+                etEmail.visibility = View.GONE
+                tvContact.visibility = View.GONE
+                etContactNo.visibility = View.GONE
+                tvTypesOfCrime.visibility = View.GONE
+                spTypesOfCrime.visibility = View.GONE
+                tvLevel.visibility = View.GONE
+                sb_steps_5.visibility = View.GONE
+                tvDescription.visibility = View.GONE
+                etDescription.visibility = View.GONE
+                tvStatusOfCrime.visibility=View.GONE
+                spStatusOfCrime.visibility=View.GONE
+            }
+        }
+
+    }
+
     private fun setComplaintData(getCrimeDetailsResponse: GetCrimeDetailsResponse) {
         var name = ""
+
         //getCrimeDetailsResponse.data.get(0).userDetail.username
         if (!(getCrimeDetailsResponse.data?.get(0)?.userDetail?.first_name.isNullOrEmpty() || getCrimeDetailsResponse.data?.get(
                 0
@@ -164,6 +196,11 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
     override fun getCrimeDetailsSuccess(getCrimeDetailsResponse: GetCrimeDetailsResponse) {
         dismissProgress()
         this.getCrimeDetailsResponse = getCrimeDetailsResponse
+        if (isKnowPostOrComplaint.equals("tohit")) {
+            postOrComplaint = getCrimeDetailsResponse.data?.get(0)?.type!!
+            setUiVisibilityOfdata()
+        }
+
         if (postOrComplaint.equals("0")) {
             setComplaintData(getCrimeDetailsResponse)
         } else {

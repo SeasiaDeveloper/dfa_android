@@ -57,7 +57,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var locationManager: LocationManager
     private lateinit var locationUtils: LocationUtils
     private lateinit var locationCallBack: LocationListenerCallback
-    private var imageUrl: String = ""
 
     private var isGPS: Boolean = false
     private var isFirst = true
@@ -206,17 +205,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         } else super.onOptionsItemSelected(item)
     }
 
-    fun getProfilePic(): String {
-        return imageUrl
-    }
-
     override fun onGetProfileSucess(getProfileResponse: GetProfileResponse) {
         dismissProgress()
         loadNavHeader(getProfileResponse)
         val gson = getProfileResponse.data
-        if (getProfileResponse.data?.profile_pic != null) {
-            this.imageUrl = getProfileResponse.data.profile_pic
-        }
 
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, gson.toString())
 
@@ -243,7 +235,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             getProfileResponse.data?.id.toString()
         )
 
-        navigationLayout.setOnClickListener {
+     navigationLayout.setOnClickListener {
             var intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
@@ -277,12 +269,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun updateUi(location: Location) {
-        Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
+        /*Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
         homePresenter.hitLocationApi(
             authorizationToken,
             location.latitude.toString(),
             location.longitude.toString()
-        )
+        )*/
     }
 
     override fun onLocationNotFound() {

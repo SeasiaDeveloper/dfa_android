@@ -199,7 +199,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
                 etAddress2.text.toString(),
                 etPinCode.text.toString(),
                 etMobile2.text.toString(),
-                adhaarNo,
+                etAdharNo.text.toString(),//  adhaarNo
                 path, "",
                 token
             )
@@ -210,12 +210,8 @@ class ProfileActivity : BaseActivity(), ProfileView {
                 isAdhaarNoAdded = false
             }
 
-            if (isInternetAvailable()) {
-                showProgress()
-                profilePresenter.checkValidations(signupReq)
-            } else {
-                Utilities.showMessage(this, getString(R.string.no_internet_connection))
-            }
+            profilePresenter.checkValidations(signupReq,isAdhaarNoAdded)
+
         }
 
         layout_profile_image.setOnClickListener {

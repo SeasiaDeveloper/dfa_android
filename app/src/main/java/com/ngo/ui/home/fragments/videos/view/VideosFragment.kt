@@ -110,7 +110,12 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
     }
 
     override fun getComplaintId(id: String?) {
-        if (isInternetAvailable()) {
+        val intent = Intent(activity, IncidentDetailActivity::class.java)
+        intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, id)
+        intent.putExtra(Constants.FROM_WHERE, "tohit")
+        //intent.putExtra(Constants.POST_OR_COMPLAINT, crimeDetailsResponse.data?.get(0)?.type)
+        startActivity(intent)
+        /*if (isInternetAvailable()) {
             Utilities.showProgress(activity!!)
             val crimeDetailsRequest = CrimeDetailsRequest(id!!)
             authorizationToken =
@@ -118,7 +123,7 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
             presenter.getComplaintDetails(crimeDetailsRequest, authorizationToken)
         } else {
             Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
-        }
+        }*/
     }
 
     /*

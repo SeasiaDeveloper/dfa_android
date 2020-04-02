@@ -228,7 +228,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         if (complaints.isNotEmpty()) {
             tvRecord?.visibility = View.GONE
             adapter?.setList(response.data.toMutableList())
-            // rvPublic?.adapter = adapter
+            //rvPublic?.adapter = adapter
             change = 1
         } else {
             tvRecord.visibility = View.VISIBLE
@@ -268,6 +268,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 val intent = Intent(activity, IncidentDetailActivity::class.java)
                 intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
                 intent.putExtra(Constants.POST_OR_COMPLAINT, complaintsData.type)
+                intent.putExtra(Constants.FROM_WHERE, "nottohit")
                 startActivity(intent)
             }
         }
@@ -389,7 +390,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             Utilities.showProgress(activity!!)
             presenter.getComplaints(casesRequest, token, type)
             change = 0
-
         }
     }
 
@@ -423,14 +423,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         presenter.getComplaints(casesRequest, token, type)
     }
 
-    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+/*    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
         if (!isFirst) {
             val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
             Utilities.showProgress(mContext)
             presenter.getComplaints(casesRequest, token, type)
         }
-    }
+    }*/
 
     //changes the like status
     override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {

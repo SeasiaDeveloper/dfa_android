@@ -26,6 +26,7 @@ import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.pojo.response.GetStatusResponse
 import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment.Companion.change
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
@@ -33,6 +34,9 @@ import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_cases.*
+import kotlinx.android.synthetic.main.fragment_cases.rvPublic
+import kotlinx.android.synthetic.main.fragment_cases.tvRecord
+import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialogListener {
 
@@ -51,6 +55,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
     private var statusId = "-1"
     private var complaintId = "-1"
     private var currentStatus = ""
+    private var adapter:CasesAdapter?=null
     var type = ""
 
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
@@ -59,9 +64,8 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         if (complaints.isNotEmpty()) {
             tvRecord?.visibility = View.GONE
             rvPublic?.visibility = View.VISIBLE
+            adapter?.setList(complaints.toMutableList()!!)
 
-            rvPublic?.adapter =
-                CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
         } else {
             tvRecord?.visibility = View.VISIBLE
             rvPublic?.visibility = View.GONE
@@ -139,6 +143,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
                 val intent = Intent(mContext, IncidentDetailActivity::class.java)
                 intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
                 intent.putExtra(Constants.POST_OR_COMPLAINT, "0")
+                intent.putExtra(Constants.FROM_WHERE, "nottohit")
                 startActivity(intent)
             }
         }
@@ -154,11 +159,17 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
         val horizontalLayoutManager = LinearLayoutManager(
             mContext,
             RecyclerView.VERTICAL, false
         )
-        rvPublic.layoutManager = horizontalLayoutManager
+        rvPublic?.layoutManager = horizontalLayoutManager
+        rvPublic?.adapter = adapter
+
+     /*   rvPublic.layoutManager = horizontalLayoutManager
+        adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)*/
     }
 
     override fun onPostAdded(responseObject: GetCasesResponse) {
@@ -174,6 +185,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         val casesRequest = CasesRequest("1", "", "0") //type = -1 for fetching all the data
         //  Utilities.showProgress(activity!!)
         presenter.getComplaints(casesRequest, token, type)
+        change=1
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -195,12 +207,14 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
         //delete the item based on id
         presenter.changeLikeStatus(token!!, complaintsData.id!!)
+        change=1
     }
 
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "0") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
+        change=1
     }
 
     override fun adhaarSavedSuccess(responseObject: SignupResponse) {
