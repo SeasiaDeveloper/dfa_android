@@ -244,9 +244,7 @@ class CasesAdapter(
                 itemView.layout_share.setOnClickListener {
                     Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
                 }
-
             }
-
 
             //in case of NGO and police
             if ((type == 1) || (type == 2)) {
@@ -281,6 +279,15 @@ class CasesAdapter(
                 } else {
                     itemView.txtUrgencyTitle.setTextColor(context.resources.getColor(R.color.colorDarkGreen))
                     itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.colorDarkGreen))
+                }
+
+                //to show action button in case of Police
+                if(type == 2) {
+                    if (item.is_assigned.equals("1")) {
+                        itemView.action_complaint.visibility = View.VISIBLE
+                    } else {
+                        itemView.action_complaint.visibility = View.GONE
+                    }
                 }
 
             } else {

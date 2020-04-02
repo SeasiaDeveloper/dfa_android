@@ -25,7 +25,7 @@ import kotlinx.android.synthetic.main.activity_public.toolbarLayout
 
 class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
     private var presenter: LoginPresenter = LoginActivityPresenterImpl(this)
-    private var token:String = ""
+    private var token: String = ""
 
     override fun getLayout(): Int {
         return R.layout.activity_login_activity
@@ -38,7 +38,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
         FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener(
             this,
             OnSuccessListener<InstanceIdResult> { instanceIdResult ->
-                 token = instanceIdResult.token
+                token = instanceIdResult.token
                 Log.i("FCM Token", token)
                 // saveToken(token)
             })
@@ -97,7 +97,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
             showProgress()
             val request = LoginRequest(
                 email_mobile_number.text.toString(),
-                editPassword.text.toString(),token
+                editPassword.text.toString(), token
             )
             presenter.hitLoginWebService(request)
         } else {
@@ -116,6 +116,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
             this,
             PreferenceHandler.AUTHORIZATION,
             "Bearer " + loginResponse.token
+        )
+
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.USER_ROLE,
+            loginResponse?.user_role.toString()
         )
         Utilities.showMessage(this, "Login Success")
         finish()

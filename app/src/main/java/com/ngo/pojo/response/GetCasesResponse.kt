@@ -9,6 +9,7 @@ class GetCasesResponse : Serializable {
     val code: Int? = null
 
     inner class Data : Serializable {
+        val is_assigned:String?=null
         val id: String? = null
         val user_id: String? = null
         val showDelete: Int? = null

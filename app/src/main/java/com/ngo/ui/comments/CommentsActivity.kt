@@ -18,12 +18,13 @@ import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.ui.comments.presenter.CommentsPresenter
 import com.ngo.ui.comments.presenter.CommentsPresenterImplClass
 import com.ngo.ui.comments.view.CommentsView
-import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment.Companion.change
+import com.ngo.ui.home.fragments.cases.CasesFragment.Companion.change
+import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_comments.*
 
-class CommentsActivity :AppCompatActivity(), CommentsView {
+class CommentsActivity : AppCompatActivity(), CommentsView {
 
     private lateinit var mContext: Context
     private var presenter: CommentsPresenter = CommentsPresenterImplClass(this@CommentsActivity)
@@ -68,7 +69,10 @@ class CommentsActivity :AppCompatActivity(), CommentsView {
 
         tvPost.setOnClickListener {
             if (etComments.text.toString().isEmpty()) {
-                Utilities.showMessage(mContext, getString(R.string.enter_comments_validation_message))
+                Utilities.showMessage(
+                    mContext,
+                    getString(R.string.enter_comments_validation_message)
+                )
             } else {
                 Utilities.showProgress(mContext)
                 presenter.onAddComment(token, id, etComments.text.toString()) //to add the comment
@@ -77,7 +81,7 @@ class CommentsActivity :AppCompatActivity(), CommentsView {
     }
 
     override fun onGetCommentsSuccess(response: GetCommentsResponse) {
-      //gets response containing list of comments
+        //gets response containing list of comments
         Utilities.dismissProgress()
         commentsList = response.data!!
         if (commentsList.isNotEmpty()) {
@@ -95,7 +99,9 @@ class CommentsActivity :AppCompatActivity(), CommentsView {
         Utilities.showMessage(mContext, response.message!!)
         //refresh the list
         presenter.fetchComments(id, token)
-        change=1
+        change = 1
+        MyCasesActivity.change=1
+
     }
 
     override fun showServerError(error: String) {

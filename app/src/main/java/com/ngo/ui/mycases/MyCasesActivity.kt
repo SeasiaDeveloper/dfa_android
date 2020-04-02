@@ -26,6 +26,7 @@ import com.ngo.pojo.response.GetStatusResponse
 import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
+import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
@@ -56,9 +57,29 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     private var currentStatus = ""
     var type = ""
 
+    companion object {
+        var change= 0
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (CasesFragment.change == 1) {
+            casesRequest = CasesRequest(
+                "0",
+                etSearch.text.toString(),
+                "0"
+            ) //all = "1" for fetching all the cases whose type = 0
+
+            Utilities.showProgress(this@MyCasesActivity)
+            //hit api with search variable
+            presenter.getComplaints(casesRequest, token, type)
+        }
+    }
+
+
     override fun setupUI() {
         token = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")!!
-        type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")!!
+        type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
 
         (toolbarLayout as CenteredToolbar).title = getString(R.string.my_cases)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
@@ -143,8 +164,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             "0"
         ) //all = 0 for only my cases;type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
-        GeneralPublicHomeFragment.change =
-            1 // so that list on Home gets refreshed after change in status
+        GeneralPublicHomeFragment.change = 1 // so that list on Home gets refreshed after change in status
     }
 
     //to delete my case
@@ -157,8 +177,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         Utilities.showMessage(this@MyCasesActivity, responseObject.message!!)
         val casesRequest = CasesRequest("0", "", "0") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
-        GeneralPublicHomeFragment.change =
-            1 // so that list on Home gets refreshed after change in status
+        GeneralPublicHomeFragment.change = 1 // so that list on Home gets refreshed after change in status
     }
 
     //displays the detail of my case

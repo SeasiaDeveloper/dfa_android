@@ -26,7 +26,7 @@ import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.pojo.response.GetStatusResponse
 import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
-import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment.Companion.change
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
@@ -55,8 +55,27 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
     private var statusId = "-1"
     private var complaintId = "-1"
     private var currentStatus = ""
-    private var adapter:CasesAdapter?=null
+    private var adapter: CasesAdapter? = null
     var type = ""
+
+    companion object {
+        var change = 0
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (change == 1) {
+            casesRequest = CasesRequest(
+                "1",
+                "",
+                "0"
+            ) //all = "1" for fetching all the cases whose type = 0
+
+            Utilities.showProgress(mContext)
+            //hit api with search variable
+            presenter.getComplaints(casesRequest, token, type)
+        }
+    }
 
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
         Utilities.dismissProgress()
@@ -74,17 +93,17 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         etSearch?.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(s: Editable) {
-                if (s.length >= 3 || s.length==0) {
+                if (s.length >= 3 || s.length == 0) {
                     casesRequest = CasesRequest(
                         "1",
                         etSearch.text.toString(),
                         "0"
                     ) //all = "1" for fetching all the cases whose type = 0
 
-                Utilities.showProgress(mContext)
-                //hit api with search variable
-                presenter.getComplaints(casesRequest, token,type)
-            }
+                    Utilities.showProgress(mContext)
+                    //hit api with search variable
+                    presenter.getComplaints(casesRequest, token, type)
+                }
 
             }
 
@@ -117,7 +136,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         super.onAttach(context)
         mContext = context
         token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
-        type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
+        type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "")!!
     }
 
     override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String) {
@@ -168,8 +187,8 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         rvPublic?.layoutManager = horizontalLayoutManager
         rvPublic?.adapter = adapter
 
-     /*   rvPublic.layoutManager = horizontalLayoutManager
-        adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)*/
+        /*   rvPublic.layoutManager = horizontalLayoutManager
+           adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)*/
     }
 
     override fun onPostAdded(responseObject: GetCasesResponse) {
@@ -185,7 +204,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         val casesRequest = CasesRequest("1", "", "0") //type = -1 for fetching all the data
         //  Utilities.showProgress(activity!!)
         presenter.getComplaints(casesRequest, token, type)
-        change=1
+        change = 1
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -207,14 +226,16 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
         //delete the item based on id
         presenter.changeLikeStatus(token!!, complaintsData.id!!)
-        change=1
+        change = 1
+        GeneralPublicHomeFragment.change=1
     }
 
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "0") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
-        change=1
+        change = 1
+        GeneralPublicHomeFragment.change=1
     }
 
     override fun adhaarSavedSuccess(responseObject: SignupResponse) {
@@ -227,7 +248,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         //refresh the list
         Utilities.showProgress(mContext)
         val casesRequest = CasesRequest("1", "", "0")  //type = -1 for fetching both cases and posts
-        presenter.getComplaints(casesRequest, token , type)
+        presenter.getComplaints(casesRequest, token, type)
     }
 
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {
@@ -248,19 +269,31 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
     private fun showStatusDialog(description: String, responseObject: GetStatusResponse) {
         lateinit var dialog: AlertDialog
         val builder = AlertDialog.Builder(mContext)
-        val binding = DataBindingUtil.inflate(LayoutInflater.from(mContext), R.layout.dialog_change_status, null, false) as com.ngo.databinding.DialogChangeStatusBinding
+        val binding = DataBindingUtil.inflate(
+            LayoutInflater.from(mContext),
+            R.layout.dialog_change_status,
+            null,
+            false
+        ) as com.ngo.databinding.DialogChangeStatusBinding
         // Inflate and set the layout for the dialog
-        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(description)
+        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(
+            description
+        )
 
         //display the list on the screen
         val statusAdapter = StatusAdapter(mContext, responseObject.data.toMutableList(), this)
         val horizontalLayoutManager = LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
         binding.rvStatus?.layoutManager = horizontalLayoutManager
         binding.rvStatus?.adapter = statusAdapter
-        binding.btnDone.setOnClickListener{
+        binding.btnDone.setOnClickListener {
             Utilities.showProgress(mContext)
             //hit status update api
-            presenter.updateStatus(token,complaintId,statusId,binding.etDescription.text.toString())
+            presenter.updateStatus(
+                token,
+                complaintId,
+                statusId,
+                binding.etDescription.text.toString()
+            )
             dialog.dismiss()
         }
 

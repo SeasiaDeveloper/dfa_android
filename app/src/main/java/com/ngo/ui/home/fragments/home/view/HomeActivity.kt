@@ -9,15 +9,13 @@ import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.Window
+import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.core.view.GravityCompat.START
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.drawerlayout.widget.DrawerLayout
@@ -67,7 +65,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var locationUtils: LocationUtils
     private lateinit var locationCallBack: LocationListenerCallback
     private var imageUrl: String = ""
-    private var isPermissionDialogRequired= true
+    private var isPermissionDialogRequired = true
 
     private var isGPS: Boolean = false
     private var isFirst = true
@@ -116,20 +114,20 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         dialog.setContentView(binding.root)
 
         // set the custom dialog components - text, image and button
-       // val edt = dialog.findViewById(R.id.edt) as EditText
+        // val edt = dialog.findViewById(R.id.edt) as EditText
 
         (dialog.findViewById(R.id.txtComplainerContact) as TextView).text = "gvjhkjn"
-        (dialog.findViewById(R.id.txtComplaintDate) as TextView).text ="gvhjbn"
-        (dialog.findViewById(R.id.txtComplaintTime) as TextView).text ="dcgfv"
-        (dialog.findViewById(R.id.txtDescription) as TextView).text ="fg"
+        (dialog.findViewById(R.id.txtComplaintDate) as TextView).text = "gvhjbn"
+        (dialog.findViewById(R.id.txtComplaintTime) as TextView).text = "dcgfv"
+        (dialog.findViewById(R.id.txtDescription) as TextView).text = "fg"
 
         val acceptButton = dialog.findViewById(R.id.btnAccept) as Button
         val rejectButton = dialog.findViewById(R.id.btnReject) as Button
         val openButton = dialog.findViewById(R.id.btnOpen) as Button
         // if button is clicked, close the custom dialog
         acceptButton.setOnClickListener {}
-        rejectButton.setOnClickListener{}
-        openButton.setOnClickListener{}
+        rejectButton.setOnClickListener {}
+        openButton.setOnClickListener {}
         dialog.show()
 
 
@@ -165,7 +163,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (!Utilities.checkPermissions(this)) {
             Utilities.requestPermissions(this)
         } else {
-          //  askForGPS()
+            //  askForGPS()
             isPermissionDialogRequired = false
         }
     }
@@ -178,7 +176,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     ) {
         if (requestCode == Utilities.PERMISSION_ID) {
             if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED) || (grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
-              //  askForGPS()
+                //  askForGPS()
                 isPermissionDialogRequired = false
             } else {
                 Utilities.requestPermissions(this)
@@ -188,23 +186,23 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     //checking GPS
     private fun askForGPS() {
-            isFirst = false
-            GpsUtils(this).turnGPSOn(object : GpsUtils.onGpsListener {
-                override fun gpsStatus(isGPSEnable: Boolean) {
-                    // turn on GPS
-                    isGPS = isGPSEnable
-                    if (isGPS) {
-                        //location
-                        locationCallBack = this@HomeActivity;
+        isFirst = false
+        GpsUtils(this).turnGPSOn(object : GpsUtils.onGpsListener {
+            override fun gpsStatus(isGPSEnable: Boolean) {
+                // turn on GPS
+                isGPS = isGPSEnable
+                if (isGPS) {
+                    //location
+                    locationCallBack = this@HomeActivity;
 
-                        ForegroundService.startService(
-                            this@HomeActivity,
-                            "Foreground Service is running...",
-                            locationCallBack
-                        )
-                    }
+                    ForegroundService.startService(
+                        this@HomeActivity,
+                        "Foreground Service is running...",
+                        locationCallBack
+                    )
                 }
-            })
+            }
+        })
     }
 
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
@@ -254,7 +252,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 )
             )
         }
-
         drawerLayout.closeDrawer(GravityCompat.START)
         return true
     }
@@ -285,11 +282,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         PreferenceHandler.writeString(
             this,
-            PreferenceHandler.USER_ROLE,
-            getProfileResponse.data?.user_role.toString()
-        )
-        PreferenceHandler.writeString(
-            this,
             PreferenceHandler.CONTACT_NUMBER,
             getProfileResponse.data?.username.toString()
         )
@@ -299,7 +291,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             getProfileResponse.data?.id.toString()
         )
 
-     navigationLayout.setOnClickListener {
+        navigationLayout.setOnClickListener {
             var intent = Intent(this, ProfileActivity::class.java)
             startActivity(intent)
         }
