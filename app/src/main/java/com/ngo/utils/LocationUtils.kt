@@ -25,8 +25,8 @@ class LocationUtils(var activity: Context) : GoogleApiClient.ConnectionCallbacks
     private lateinit var mLocation: Location
     private var mLocationManager: LocationManager? = null
     private var mLocationRequest: LocationRequest? = null
-    private val sUINTERVAL = (2 * 1000).toLong()  /* 10 secs */
-    private val sFINTERVAL: Long = 2000 /* 2 sec */
+    private val sUINTERVAL = (30 * 1000).toLong()  /* 10 secs */
+    private val sFINTERVAL: Long = 5000 /* 2 sec */
     //private lateinit var locationManager: LocationManager
 
     // Code for make call back using interface from utility to activity

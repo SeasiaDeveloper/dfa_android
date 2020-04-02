@@ -94,8 +94,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         locationCallBack=this;
         //locationUtils = LocationUtils(this)
         //locationUtils.initLocation(locationCallBack)
-
-
         ForegroundService.startService(applicationContext,"Foreground Service is running...",locationCallBack)
     }
 
@@ -216,6 +214,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onClick() {
         finish()
+        ForegroundService.stopService(applicationContext)
         PreferenceHandler.clearPreferences(this)
         var intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -223,7 +222,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onPostLocationSucess(postLocationResponse: PostLocationResponse) {
-        Utilities.showMessage(applicationContext,"sucess")
+       // Utilities.showMessage(applicationContext,"sucess")
     }
 
     override fun onPostLocationFailure(error: String) {
@@ -231,7 +230,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun updateUi(location: Location) {
-         Utilities.showMessage(applicationContext,"lat lng"+location.latitude);
+        // Utilities.showMessage(applicationContext,"lat lng"+location.latitude);
          homePresenter.hitLocationApi(authorizationToken,location.latitude.toString(),location.longitude.toString())
     }
 
