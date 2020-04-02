@@ -10,6 +10,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.google.gson.GsonBuilder
 import com.ngo.R
 import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.utils.PreferenceHandler
@@ -26,7 +27,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     @SuppressLint("LongLogTag")
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.d(TAG, "Dikirim dari: ${remoteMessage.from}")
+        Log.d(TAG, "Message: ${remoteMessage.from}")
 
         if (remoteMessage.notification != null) {
             showNotification(remoteMessage.notification?.title, remoteMessage.notification?.body)
@@ -36,11 +37,13 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     private fun showNotification(title: String?, body: String?) {
         val intent = Intent(this, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent,
-            PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0, intent,
+            PendingIntent.FLAG_ONE_SHOT
+        )
 
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder = NotificationCompat.Builder(this,CHANNEL_ID)
+        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(title)
             .setContentText(body)
@@ -48,7 +51,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setSound(soundUri)
             .setContentIntent(pendingIntent)
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(0, notificationBuilder.build())
+
+        val jsonString = GsonBuilder().create().toJson(body)
+        val refreshChatIntent = Intent("policeJsonReceiver")
+        refreshChatIntent.putExtra("jsonString", jsonString)
+        sendBroadcast(refreshChatIntent)
+
     }
 }
