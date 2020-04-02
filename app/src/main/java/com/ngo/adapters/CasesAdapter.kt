@@ -1,14 +1,18 @@
 package com.ngo.adapters
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -87,6 +91,11 @@ class CasesAdapter(
             if (userDetail.profile_pic != null) {
                 Glide.with(context).load(userDetail.profile_pic).apply(options)
                     .into(itemView.imgPostProfile)
+
+                itemView.imgPostProfile.setOnClickListener {
+                    //show enlarged image
+                    DisplayLargeImage(context,userDetail,options)
+                }
             }
             if (item.type == "1") {
                 itemView.layout_post.visibility = View.VISIBLE
@@ -166,6 +175,11 @@ class CasesAdapter(
                 if (userDetail.profile_pic != null) {
                     Glide.with(context).load(userDetail.profile_pic).apply(options)
                         .into(itemView.imgCrime)
+
+                    itemView.imgCrime.setOnClickListener {
+                        //show enlarged image
+                        DisplayLargeImage(context,userDetail,options)
+                    }
                 }
                 itemView.layout_post.visibility = View.GONE
                 itemView.layoutListItem.visibility = View.VISIBLE
@@ -316,6 +330,29 @@ class CasesAdapter(
                     itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.black))
                 }
             }
+        }
+
+        fun DisplayLargeImage(
+            context: Context,
+            userDetail: GetCasesResponse.Data.UserDetail,
+            options: RequestOptions
+        ){
+                //show enlarged image
+                val binding =
+                    DataBindingUtil.inflate<ViewDataBinding>(
+                        LayoutInflater.from(context),
+                        R.layout.alert_image_view,
+                        null,
+                        false
+                    )
+
+                val dialog = Dialog(context)
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                dialog.setContentView(binding.root)
+
+                val imageView =  (dialog.findViewById(R.id.imgView) as ImageView)
+                Glide.with(context).load(userDetail.profile_pic).apply(options).into(imageView)
+                dialog.show()
         }
     }
 }
