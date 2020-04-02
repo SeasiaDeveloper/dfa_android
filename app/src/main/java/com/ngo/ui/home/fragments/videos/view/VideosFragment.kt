@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.VideoView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ngo.R
@@ -50,13 +49,13 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
         setAdapter()
         request = GetPhotosRequest("videos")
         Utilities.showProgress(activity!!)
-        var authorizationToken = PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+        val authorizationToken = PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
         presenter.getVideos(authorizationToken,request)
     }
 
     private fun setAdapter() {
         val layoutManager = GridLayoutManager(activity!!, 2)
-        rvVideos.setLayoutManager(layoutManager)
+        rvVideos.layoutManager = layoutManager
         val spanCount = 2
         val spacing = 10
         val includeEdge = true
@@ -68,7 +67,7 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
             )
         )
         adapter = VideosAdapter(activity!!, videos.toMutableList(),this)
-        rvVideos.setAdapter(adapter)
+        rvVideos.adapter = adapter
 
     }
 
@@ -77,12 +76,12 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
         videos = response.data!!
         adapter.changeList(videos.toMutableList())
         if (videos.isNotEmpty()) {
-            tvRecordVideos.visibility = View.GONE
-            rvVideos.visibility = View.VISIBLE
+            tvRecordVideos?.visibility = View.GONE
+            rvVideos?.visibility = View.VISIBLE
 
         } else {
-            tvRecordVideos.visibility = View.VISIBLE
-            rvVideos.visibility = View.GONE
+            tvRecordVideos?.visibility = View.VISIBLE
+            rvVideos?.visibility = View.GONE
         }
     }
 
@@ -94,8 +93,8 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
     override fun getCrimeDetailsSuccess(crimeDetailsResponse: GetCrimeDetailsResponse) {
         Utilities.dismissProgress()
         val intent = Intent(activity, IncidentDetailActivity::class.java)
-        intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, crimeDetailsResponse?.data?.get(0)?.id)
-        intent.putExtra(Constants.POST_OR_COMPLAINT, crimeDetailsResponse?.data?.get(0)?.type)
+        intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, crimeDetailsResponse.data?.get(0)?.id)
+        intent.putExtra(Constants.POST_OR_COMPLAINT, crimeDetailsResponse.data?.get(0)?.type)
         startActivity(intent)
 
     }
@@ -113,7 +112,7 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
     override fun getComplaintId(id: String?) {
         if (isInternetAvailable()) {
             Utilities.showProgress(activity!!)
-            var crimeDetailsRequest = CrimeDetailsRequest(id!!)
+            val crimeDetailsRequest = CrimeDetailsRequest(id!!)
             authorizationToken =
                 PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
             presenter.getComplaintDetails(crimeDetailsRequest, authorizationToken)

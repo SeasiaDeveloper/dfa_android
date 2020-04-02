@@ -18,8 +18,8 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
         model.createPost(request,token)
     }
 
-    override fun getComplaints(casesRequest: CasesRequest,token: String) {
-        model.fetchComplaints(casesRequest,token)
+    override fun getComplaints(casesRequest: CasesRequest,token: String, userRole: String) {
+        model.fetchComplaints(casesRequest,token,userRole)
     }
 
     override fun showError(error: String) {

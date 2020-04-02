@@ -23,7 +23,9 @@ class LoginModel(private var loginPresenter: LoginPresenter) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["username"] = toRequestBody(loginrequest.username)
-        map["password"] = toRequestBody(loginrequest.password) // val profileImg = MultipartBody.Part.createFormData("image", "image", RequestBody.create(MediaType.parse(imgMediaType), complaintsRequest.image))
+        map["password"] = toRequestBody(loginrequest.password)
+        map["device_token"]=toRequestBody(loginrequest.device_token)
+        // val profileImg = MultipartBody.Part.createFormData("image", "image", RequestBody.create(MediaType.parse(imgMediaType), complaintsRequest.image))
         retrofitApi.login(map).enqueue(object :
             Callback<LoginResponse> {
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
