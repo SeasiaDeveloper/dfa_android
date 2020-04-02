@@ -9,7 +9,7 @@ import com.ngo.pojo.response.GetStatusResponse
 import com.ngo.pojo.response.SignupResponse
 
 interface CasesPresenter:BasePresenter {
-    fun getComplaints(casesRequest: CasesRequest,token: String)
+    fun getComplaints(casesRequest: CasesRequest,token: String, userRole: String)
     fun onGetCompaintsSuccess(response: GetCasesResponse)
     fun onGetCompaintsFailed(error: String)
     fun createPost(request: CreatePostRequest,token: String?)

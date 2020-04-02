@@ -42,7 +42,6 @@ import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.RealPathUtil
 import com.ngo.utils.Utilities
-import kotlinx.android.synthetic.main.dialog_change_status.*
 import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
@@ -55,7 +54,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         presenter.deleteComplaint(token, complaintsData.id!!)
     }
 
-    private var pathOfImages = ArrayList<String>()
     lateinit var binding: FragmentPublicHomeBinding
     lateinit var mContext: Context
     private var IMAGE_REQ_CODE = 101
@@ -118,14 +116,12 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             }
         }
 
-
         imgAdd.setOnClickListener(this)
         Utilities.showProgress(mContext)
 
-        val casesRequest =
-            CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
+        val casesRequest = CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
 
-        presenter.getComplaints(casesRequest, token)
+        presenter.getComplaints(casesRequest, token, type)
 
         txtAddPost.setOnClickListener {
             //show the addPost layout
@@ -189,7 +185,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 val selectedImage = data.data
                 val filePathColumn =
                     arrayOf(MediaStore.Images.Media.DATA)
-                val cursor = activity!!.getContentResolver()
+                val cursor = activity!!.contentResolver
                     .query(selectedImage!!, filePathColumn, null, null, null)
                 cursor?.moveToFirst()
                 val columnIndex = cursor?.getColumnIndex(filePathColumn[0])
@@ -199,7 +195,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 path = picturePath!!
             } else if (mime.toLowerCase().contains("video")) {
                 media_type = "videos"
-                if (data?.data != null) {
+                if (data.data != null) {
                     val realpath = RealPathUtil.getRealPath(activity!!, data.data!!)
                     val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
                     Glide.with(mContext)
@@ -260,7 +256,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
             "action" -> {
                 complaintId = complaintsData.id!!
-                if (complaintsData.status != null) currentStatus = complaintsData.status
+               if(complaintsData.status!=null) currentStatus = complaintsData.status
                 //hit api based on role
                 Utilities.showProgress(mContext)
                 presenter.fetchStatusList(token, type)
@@ -331,9 +327,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         Utilities.showMessage(mContext, responseObject.message.toString())
         //refresh the list
         Utilities.showProgress(mContext)
-        val casesRequest =
-            CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
-        presenter.getComplaints(casesRequest, token)
+        val casesRequest = CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
+        presenter.getComplaints(casesRequest, token, type)
     }
 
     override fun showServerError(error: String) {
@@ -386,24 +381,21 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             isFirst = false
             val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
             Utilities.showProgress(mContext)
-            presenter.getComplaints(casesRequest, token)
+            presenter.getComplaints(casesRequest, token, type)
         } else if (change == 1) {
             val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
             Utilities.showProgress(activity!!)
-            presenter.getComplaints(casesRequest, token)
+            presenter.getComplaints(casesRequest, token, type)
             change = 0
 
         }
-
-        // var imageUrl: String = ""
-        // changeProfileImage(imageUrl)
-
     }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
         token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
+        type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
     }
 
     override fun onPostAdded(responseObject: GetCasesResponse) {
@@ -415,7 +407,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         path = ""
         Utilities.showMessage(mContext, responseObject.message!!)
         adapter?.setList(responseObject.data?.toMutableList()!!)
-        //rvPublic?.adapter?.notifyDataSetChanged()
     }
 
     //delete your respective complaint/post
@@ -427,7 +418,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token)
+        presenter.getComplaints(casesRequest, token, type)
     }
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
@@ -435,7 +426,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         if (!isFirst) {
             val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
             Utilities.showProgress(mContext)
-            presenter.getComplaints(casesRequest, token)
+            presenter.getComplaints(casesRequest, token, type)
         }
     }
 
@@ -451,7 +442,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token)
+        presenter.getComplaints(casesRequest, token, type)
     }
 
     override fun adharNoListener(adhaarNo: String) {
