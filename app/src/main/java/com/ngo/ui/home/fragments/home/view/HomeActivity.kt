@@ -101,7 +101,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     fun displayAcceptRejDialog(jsonString: String?) {
-        val jsondata = GsonBuilder().create().fromJson(jsonString, NotificationResponse::class.java)
+//        val jsondata = GsonBuilder().create().fromJson(jsonString, NotificationResponse::class.java)
 
         val binding =
             DataBindingUtil.inflate<ViewDataBinding>(
