@@ -58,6 +58,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var locationUtils: LocationUtils
     private lateinit var locationCallBack: LocationListenerCallback
     private var imageUrl: String = ""
+    private var isPermissionDialogRequired= true
 
     private var isGPS: Boolean = false
     private var isFirst = true
@@ -70,7 +71,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onResume()
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         homePresenter.hitProfileApi(authorizationToken)
-        if (!isFirst && !isGPS) {
+        if (/*!isFirst && */!isGPS && !isPermissionDialogRequired) {
             askForGPS()
         }
     }
@@ -104,7 +105,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (!Utilities.checkPermissions(this)) {
             Utilities.requestPermissions(this)
         } else {
-            askForGPS()
+          //  askForGPS()
+            isPermissionDialogRequired = false
         }
     }
 
@@ -116,7 +118,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     ) {
         if (requestCode == Utilities.PERMISSION_ID) {
             if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED) || (grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
-                askForGPS()
+              //  askForGPS()
+                isPermissionDialogRequired = false
             } else {
                 Utilities.requestPermissions(this)
             }
@@ -125,23 +128,23 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     //checking GPS
     private fun askForGPS() {
-        isFirst = false
-        GpsUtils(this).turnGPSOn(object : GpsUtils.onGpsListener {
-            override fun gpsStatus(isGPSEnable: Boolean) {
-                // turn on GPS
-                isGPS = isGPSEnable
-                if (isGPS) {
-                    //location
-                    locationCallBack = this@HomeActivity;
+            isFirst = false
+            GpsUtils(this).turnGPSOn(object : GpsUtils.onGpsListener {
+                override fun gpsStatus(isGPSEnable: Boolean) {
+                    // turn on GPS
+                    isGPS = isGPSEnable
+                    if (isGPS) {
+                        //location
+                        locationCallBack = this@HomeActivity;
 
-                    ForegroundService.startService(
-                        this@HomeActivity,
-                        "Foreground Service is running...",
-                        locationCallBack
-                    )
+                        ForegroundService.startService(
+                            this@HomeActivity,
+                            "Foreground Service is running...",
+                            locationCallBack
+                        )
+                    }
                 }
-            }
-        })
+            })
     }
 
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
