@@ -1,17 +1,25 @@
 package com.ngo.ui.home.fragments.home.view
 
 
-import android.app.NotificationChannel
+import android.app.Dialog
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
-import android.os.Build
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.Window
+import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
 import com.google.android.material.navigation.NavigationView
@@ -20,6 +28,7 @@ import com.ngo.R
 import com.ngo.adapters.TabLayoutAdapter
 import com.ngo.base.BaseActivity
 import com.ngo.pojo.response.GetProfileResponse
+import com.ngo.pojo.response.NotificationResponse
 import com.ngo.pojo.response.PostLocationResponse
 import com.ngo.ui.earnings.view.MyEarningsActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
@@ -57,6 +66,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var locationManager: LocationManager
     private lateinit var locationUtils: LocationUtils
     private lateinit var locationCallBack: LocationListenerCallback
+    private var imageUrl: String = ""
+    private var isPermissionDialogRequired= true
 
     private var isGPS: Boolean = false
     private var isFirst = true
@@ -69,9 +80,59 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         super.onResume()
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         homePresenter.hitProfileApi(authorizationToken)
-        if (!isFirst && !isGPS) {
+        if (/*!isFirst && */!isGPS && !isPermissionDialogRequired) {
             askForGPS()
         }
+
+        registerReceiver(refreshReceiver, IntentFilter("policeJsonReceiver"))
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(refreshReceiver)
+        //  ForegroundService.stopService(applicationContext)
+    }
+
+    private val refreshReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context, intent: Intent) {
+            val jsonString = intent.getStringExtra("jsonString")
+            displayAcceptRejDialog(jsonString)
+        }
+    }
+
+    fun displayAcceptRejDialog(jsonString: String?) {
+//        val jsondata = GsonBuilder().create().fromJson(jsonString, NotificationResponse::class.java)
+
+        val binding =
+            DataBindingUtil.inflate<ViewDataBinding>(
+                LayoutInflater.from(this@HomeActivity),
+                R.layout.layout_accept_reject_alert,
+                null,
+                false
+            )
+
+        val dialog = Dialog(this@HomeActivity)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.setContentView(binding.root)
+
+        // set the custom dialog components - text, image and button
+       // val edt = dialog.findViewById(R.id.edt) as EditText
+
+        (dialog.findViewById(R.id.txtComplainerContact) as TextView).text = "gvjhkjn"
+        (dialog.findViewById(R.id.txtComplaintDate) as TextView).text ="gvhjbn"
+        (dialog.findViewById(R.id.txtComplaintTime) as TextView).text ="dcgfv"
+        (dialog.findViewById(R.id.txtDescription) as TextView).text ="fg"
+
+        val acceptButton = dialog.findViewById(R.id.btnAccept) as Button
+        val rejectButton = dialog.findViewById(R.id.btnReject) as Button
+        val openButton = dialog.findViewById(R.id.btnOpen) as Button
+        // if button is clicked, close the custom dialog
+        acceptButton.setOnClickListener {}
+        rejectButton.setOnClickListener{}
+        openButton.setOnClickListener{}
+        dialog.show()
+
+
     }
 
     override fun setupUI() {
@@ -96,6 +157,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)
         getLocation()
+
     }
 
     //checking location
@@ -103,7 +165,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (!Utilities.checkPermissions(this)) {
             Utilities.requestPermissions(this)
         } else {
-            askForGPS()
+          //  askForGPS()
+            isPermissionDialogRequired = false
         }
     }
 
@@ -115,7 +178,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     ) {
         if (requestCode == Utilities.PERMISSION_ID) {
             if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED) || (grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
-                askForGPS()
+              //  askForGPS()
+                isPermissionDialogRequired = false
             } else {
                 Utilities.requestPermissions(this)
             }
@@ -124,23 +188,23 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     //checking GPS
     private fun askForGPS() {
-        isFirst = false
-        GpsUtils(this).turnGPSOn(object : GpsUtils.onGpsListener {
-            override fun gpsStatus(isGPSEnable: Boolean) {
-                // turn on GPS
-                isGPS = isGPSEnable
-                if (isGPS) {
-                    //location
-                    locationCallBack = this@HomeActivity;
+            isFirst = false
+            GpsUtils(this).turnGPSOn(object : GpsUtils.onGpsListener {
+                override fun gpsStatus(isGPSEnable: Boolean) {
+                    // turn on GPS
+                    isGPS = isGPSEnable
+                    if (isGPS) {
+                        //location
+                        locationCallBack = this@HomeActivity;
 
-                    ForegroundService.startService(
-                        this@HomeActivity,
-                        "Foreground Service is running...",
-                        locationCallBack
-                    )
+                        ForegroundService.startService(
+                            this@HomeActivity,
+                            "Foreground Service is running...",
+                            locationCallBack
+                        )
+                    }
                 }
-            }
-        })
+            })
     }
 
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
@@ -269,21 +333,15 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun updateUi(location: Location) {
-        /*Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
+        Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
         homePresenter.hitLocationApi(
             authorizationToken,
             location.latitude.toString(),
             location.longitude.toString()
-        )*/
+        )
     }
 
     override fun onLocationNotFound() {
-    }
-
-    override fun onPause() {
-        super.onPause()
-        //  ForegroundService.stopService(applicationContext)
-
     }
 
 }

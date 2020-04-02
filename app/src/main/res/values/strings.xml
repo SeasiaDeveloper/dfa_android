@@ -171,4 +171,10 @@
     <string name="remove_location_updates">Remove location updates</string>
 
     <string name="location_updated">Location Updated: %1$s</string>
+    <string name="accept">Accept</string>
+    <string name="complaint_time">Complaint Time:</string>
+    <string name="complaint_date">Complaint Date:</string>
+    <string name="complainer_contact">Complainer Contact:</string>
+    <string name="new_complaint">New Complaint</string>
+    <string name="reject">Reject</string>
 </resources>
