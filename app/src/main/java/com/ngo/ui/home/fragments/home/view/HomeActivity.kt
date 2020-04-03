@@ -115,8 +115,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(binding.root)
 
-        (dialog.findViewById(R.id.txtComplainerContact) as TextView).text =
-            notificationResponse.username
+       (dialog.findViewById(R.id.txtComplainerContact) as TextView).text = notificationResponse.username
         (dialog.findViewById(R.id.txtComplaintDate) as TextView).text =
             notificationResponse.report_data
         (dialog.findViewById(R.id.txtComplaintTime) as TextView).text =
@@ -157,7 +156,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 Constants.PUBLIC_COMPLAINT_DATA,
                 notificationResponse.complaint_id.toString()
             )
-            //  intent.putExtra(Constants.FROM_WHERE, "nottohit")
+          //  intent.putExtra(Constants.FROM_WHERE, "nottohit")
             intent.putExtra(Constants.POST_OR_COMPLAINT, "0") //) is for complaint type
             startActivity(intent)
             dialog.dismiss()
@@ -343,12 +342,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun ongetProfileFailure(error: String) {
-        dismissProgress()
+        Utilities.dismissProgress()
         Utilities.showMessage(this, error)
     }
 
     override fun onShowError(error: String) {
-        dismissProgress()
+        Utilities.dismissProgress()
         Utilities.showMessage(this, error)
     }
 
@@ -365,6 +364,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onPostLocationFailure(error: String) {
+        Utilities.dismissProgress()
         Utilities.showMessage(applicationContext, "failuree");
     }
 
@@ -381,18 +381,18 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             isFirstTimeEntry = false
         }
 
-        Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
+      //  Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
 
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.LATITUDE,
-            "" + location.latitude
+            ""+location.latitude
         )
 
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.LONGITUDE,
-            "" + location.longitude
+            ""+location.longitude
         )
         homePresenter.hitLocationApi(
             authorizationToken,

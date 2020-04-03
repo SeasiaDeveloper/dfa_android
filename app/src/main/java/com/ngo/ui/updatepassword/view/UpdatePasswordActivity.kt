@@ -14,6 +14,7 @@ import com.ngo.ui.updatepassword.presenter.UpdatePasswordPresenter
 import com.ngo.ui.updatepassword.presenter.UpdatePasswordPresenterImpl
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
+import kotlinx.android.synthetic.main.activity_profile.*
 import kotlinx.android.synthetic.main.change_password_layout.toolbarLayout
 import kotlinx.android.synthetic.main.update_password_layout.*
 import kotlinx.android.synthetic.main.update_password_layout.changePassword
@@ -30,6 +31,10 @@ class UpdatePasswordActivity : BaseActivity(), ChangePasswordView {
     override fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.change_password)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+        (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_arrow)
+        (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
+            onBackPressed()
+        }
         userId = PreferenceHandler.readString(this, PreferenceHandler.USER_ID, "")!!
         changePassword.setOnClickListener {
             if (TextUtils.isEmpty(old_password.text.toString())) {

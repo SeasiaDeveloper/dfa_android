@@ -27,7 +27,6 @@ import com.ngo.ui.policedetail.presenter.PoliceDetailPresenterImpl
 import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
-import kotlinx.android.synthetic.main.activity_incident_detail.*
 import kotlinx.android.synthetic.main.activity_incident_detail.imgView
 import kotlinx.android.synthetic.main.activity_incident_detail.ivVideoIcon
 import kotlinx.android.synthetic.main.activity_incident_detail.ngoDetailLayout

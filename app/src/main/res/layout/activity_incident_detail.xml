@@ -188,6 +188,7 @@
                     android:layout_marginTop="@dimen/_6sdp"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Crime State:"
+                    android:visibility="gone"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
                     android:textStyle="bold"
@@ -216,8 +217,24 @@
                     android:text="Urgency Level:"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
+                    android:visibility="gone"
                     android:textStyle="bold"
                     app:font="@{`semibold`}" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/urgency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_marginStart="@dimen/_9sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:background="@null"
+                    android:padding="@dimen/_3sdp"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    app:font="@{`regular`}" />
 
                 <com.jaygoo.widget.RangeSeekBar
                     android:id="@+id/sb_steps_5"
@@ -230,6 +247,7 @@
                     app:rsb_gravity="bottom"
                     app:rsb_mode="single"
                     app:rsb_progress_color="@color/blue"
+                    android:visibility="gone"
                     app:rsb_step_auto_bonding="true"
                     app:rsb_step_color="@color/blue"
                     app:rsb_step_height="15dp"
@@ -273,6 +291,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Description:"
+                    android:visibility="gone"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
                     android:textStyle="bold"

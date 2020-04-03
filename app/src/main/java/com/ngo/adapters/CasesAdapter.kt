@@ -59,6 +59,14 @@ class CasesAdapter(
         notifyDataSetChanged()
     }
 
+    fun String.intOrString(): Any {
+        val v = toIntOrNull()
+        return when (v) {
+            null -> this
+            else -> v
+        }
+    }
+
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var index: Int? = null
@@ -295,14 +303,25 @@ class CasesAdapter(
                     itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.colorDarkGreen))
                 }
 
+
                 if (item.latitude != null) {
-                    itemView.location.setText(
-                        Utilities.calculateDistance(
-                            item.latitude,
-                            item.longitude,
-                            context
-                        ).toString() + " KM away"
-                    )
+                    val string = item.latitude
+                    var numeric = true
+
+                    try {
+                        val num = string?.toDouble()
+                    } catch (e: NumberFormatException) {
+                        numeric = false
+                    }
+
+                    if (numeric)
+                        itemView.location.setText(
+                            Utilities.calculateDistance(
+                                item.latitude,
+                                item.longitude,
+                                context
+                            ).toString() + " KM away"
+                        )
                 }
 
                 //to show action button in case of Police

@@ -103,8 +103,9 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
                 sb_steps_5.visibility = View.VISIBLE
                 tvDescription.visibility = View.VISIBLE
                 etDescription.visibility = View.VISIBLE
-                tvStatusOfCrime.visibility=View.VISIBLE
-                spStatusOfCrime.visibility=View.VISIBLE
+                tvStatusOfCrime.visibility = View.VISIBLE
+                spStatusOfCrime.visibility = View.VISIBLE
+                urgency.visibility = View.GONE
 
             } else if (postOrComplaint.equals("1")) {
                 //post
@@ -124,9 +125,29 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
                 sb_steps_5.visibility = View.GONE
                 tvDescription.visibility = View.GONE
                 etDescription.visibility = View.GONE
-                tvStatusOfCrime.visibility=View.GONE
-                spStatusOfCrime.visibility=View.GONE
+                tvStatusOfCrime.visibility = View.GONE
+                spStatusOfCrime.visibility = View.GONE
+                urgency.visibility = View.GONE
             }
+        }
+
+        var type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
+        if (type.equals("2") && postOrComplaint.equals("0")) {
+            tvTypesOfCrime.visibility = View.VISIBLE
+            spTypesOfCrime.visibility = View.VISIBLE
+            tvStatusOfCrime.visibility = View.VISIBLE
+            spStatusOfCrime.visibility = View.VISIBLE
+            tvDescription.visibility = View.VISIBLE
+            etDescription.visibility = View.VISIBLE
+            tvLevel.visibility = View.VISIBLE
+            tvContact.visibility = View.GONE
+            etContactNo.visibility = View.GONE
+            tvEmail.visibility = View.GONE
+            etEmail.visibility = View.GONE
+            tvUSerName.visibility = View.GONE
+            etUserName.visibility = View.GONE
+            sb_steps_5.visibility = View.GONE
+            urgency.visibility = View.VISIBLE
         }
 
     }
@@ -176,6 +197,9 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
         sb_steps_5.setProgress(level.toFloat())
 
         sb_steps_5.isEnabled = false
+        if (!getCrimeDetailsResponse.data?.get(0)?.urgency.isNullOrEmpty()) {
+            urgency.setText(getCrimeDetailsResponse.data?.get(0)?.urgency)
+        }
     }
 
     fun setPostData(getCrimeDetailsResponse: GetCrimeDetailsResponse) {

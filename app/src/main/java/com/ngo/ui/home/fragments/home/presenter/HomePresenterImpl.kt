@@ -10,8 +10,8 @@ class HomePresenterImpl(private var homeView: HomeView) :
     HomePresenter {
 
 
-    override fun hitLocationApi(token:String?,latitude:String,longitude:String) {
-        homeModel.getPostLocationData(token,latitude,longitude)
+    override fun hitLocationApi(token: String?, latitude: String, longitude: String) {
+        homeModel.getPostLocationData(token, latitude, longitude)
     }
 
     override fun postLocationSuccess(postLocation: PostLocationResponse) {
@@ -37,12 +37,12 @@ class HomePresenterImpl(private var homeView: HomeView) :
     }
 
     override fun showError(error: String) {
-        //
+        homeView.onShowError(error)
     }
 
     //update the status of the complaint
     override fun updateStatus(token: String, complaintId: String, statusId: String) {
-        homeModel.updateStatus(token,complaintId,statusId)
+        homeModel.updateStatus(token, complaintId, statusId)
     }
 
     override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {

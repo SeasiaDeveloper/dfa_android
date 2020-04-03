@@ -37,7 +37,6 @@ import com.ngo.ui.generalpublic.GeneralPublicActivity
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
-import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.RealPathUtil
@@ -97,9 +96,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         setupUI()
     }
 
-    fun setupUI() {
-        (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
-        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+
+    fun setAdapter() {
         adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
         val horizontalLayoutManager = LinearLayoutManager(
             mContext,
@@ -107,7 +105,12 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         )
         rvPublic?.layoutManager = horizontalLayoutManager
         rvPublic?.adapter = adapter
+    }
 
+    fun setupUI() {
+        (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
+        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+        setAdapter()
         setProfilePic()
 
         imgAdd.setOnClickListener(this)
@@ -373,7 +376,12 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             presenter.getComplaints(casesRequest, token, type)
         } else if (change == 1) {
             val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
-            Utilities.showProgress(activity!!)
+            Utilities.showProgress(mContext)
+            //token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
+            //type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "")!!
+         /*   if (adapter == null) {
+                setAdapter()
+            }*/
             presenter.getComplaints(casesRequest, token, type)
             change = 0
         }
@@ -411,10 +419,10 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-            if (!isFirst) {
-                val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
-                Utilities.showProgress(mContext)
-                presenter.getComplaints(casesRequest, token, type)
+        if (!isFirst) {
+            val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
+            Utilities.showProgress(mContext)
+            presenter.getComplaints(casesRequest, token, type)
         }
     }
 
@@ -453,5 +461,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         val intent = Intent(activity, GeneralPublicActivity::class.java)
         startActivity(intent)
     }
+
+   /* override fun myAction(mContext: Context) {
+        this.mContext = mContext
+        onResume()
+        *//*  val casesRequest =
+              CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
+
+          presenter.getComplaints(casesRequest, token, type)*//*
+    }*/
 
 }
