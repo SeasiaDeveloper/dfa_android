@@ -17,7 +17,6 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
-import androidx.core.view.GravityCompat.START
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.drawerlayout.widget.DrawerLayout
@@ -31,7 +30,7 @@ import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.NotificationResponse
 import com.ngo.pojo.response.PostLocationResponse
-import com.ngo.ui.crimedetails.view.IncidentDetailActivity
+import com.ngo.ui.policedetail.view.PoliceIncidentDetailScreen
 import com.ngo.ui.earnings.view.MyEarningsActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.CasesFragment
@@ -150,14 +149,15 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
         openButton.setOnClickListener {
             //complaintId
-            val intent = Intent(this, IncidentDetailActivity::class.java)
+            val intent = Intent(this, PoliceIncidentDetailScreen::class.java)
             intent.putExtra(
                 Constants.PUBLIC_COMPLAINT_DATA,
                 notificationResponse.complaint_id.toString()
             )
-            intent.putExtra(Constants.FROM_WHERE, "nottohit")
+          //  intent.putExtra(Constants.FROM_WHERE, "nottohit")
             intent.putExtra(Constants.POST_OR_COMPLAINT, "0") //) is for complaint type
             startActivity(intent)
+            dialog.dismiss()
         }
         dialog.show()
 
@@ -324,6 +324,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         navigationLayout.setOnClickListener {
             var intent = Intent(this, ProfileActivity::class.java)
+            drawerLayout.closeDrawer(GravityCompat.START)
             startActivity(intent)
         }
 
@@ -356,7 +357,19 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun updateUi(location: Location) {
-      //  Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
+        Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
+
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.LATITUDE,
+            ""+location.latitude
+        )
+
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.LONGITUDE,
+            ""+location.longitude
+        )
         homePresenter.hitLocationApi(
             authorizationToken,
             location.latitude.toString(),

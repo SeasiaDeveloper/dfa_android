@@ -52,9 +52,11 @@ class LoginModel(private var loginPresenter: LoginPresenter) {
             loginPresenter.onEmptyEmailId()
         } else if (TextUtils.isDigitsOnly(emailId) && emailId.length != 10) {
             loginPresenter.onInvalidNumber()
-        } else if (!TextUtils.isDigitsOnly(emailId) && !isValidEmail(emailId)) {
+        }
+        else if (!TextUtils.isDigitsOnly(emailId) && !isValidEmail(emailId)) {
             loginPresenter.onInvalidEmail()
-        } else if (TextUtils.isEmpty(password)) {
+        }
+        else if (TextUtils.isEmpty(password)) {
             loginPresenter.onEmptyPassword()
         } else {
             loginPresenter.onValidationSuccess()

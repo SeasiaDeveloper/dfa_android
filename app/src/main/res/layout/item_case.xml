@@ -474,7 +474,6 @@
                             android:paddingBottom="@dimen/_4ssp"
                             android:paddingStart="@dimen/_4ssp"
                             android:paddingEnd="@dimen/_4ssp"
-                            android:text="22 KM away"
                             android:textAllCaps="false"
                             android:textColor="@color/colorPrimaryDark"
                             android:textSize="@dimen/_12ssp"

@@ -48,6 +48,8 @@
     <string name="add_comment">Add Comment</string>
     <string name="mark_status">Mark Status</string>
     <string name="crime_types_error">Not getting Crime Types</string>
+    <string name="complaint_details">Complaint Details</string>
+
 
 
     <!--  login screen-->

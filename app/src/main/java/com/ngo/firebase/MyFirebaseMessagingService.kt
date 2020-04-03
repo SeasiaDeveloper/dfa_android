@@ -89,6 +89,5 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val refreshChatIntent = Intent("policeJsonReceiver")
         refreshChatIntent.putExtra("notificationResponse", obj)
         sendBroadcast(refreshChatIntent)
-
     }
 }

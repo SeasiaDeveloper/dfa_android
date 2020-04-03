@@ -4,41 +4,42 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.location.Location
+import android.net.ParseException
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.provider.Settings
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import java.io.IOException
-import android.location.LocationManager
-import androidx.core.content.ContextCompat.getSystemService
-import android.Manifest.permission
-import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.app.Dialog
-import android.net.ParseException
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.ngo.R
+import com.ngo.adapters.StatusAdapter
 import com.ngo.listeners.AdharNoListener
 import com.ngo.listeners.AlertDialogListener
+import com.ngo.listeners.OnCaseItemClickListener
+import com.ngo.listeners.StatusListener
+import com.ngo.pojo.response.GetStatusResponse
 import com.ngo.utils.algo.VerhoeffAlgo
-import de.hdodenhof.circleimageview.CircleImageView
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -237,6 +238,28 @@ object Utilities {
         return isValidAadhar
     }
 
+    fun calculateDistance(latitude: String?, longitude: String?, mContext: Context):Int{
+        var latitude1=PreferenceHandler.readString(mContext, PreferenceHandler.LATITUDE, "")
+        var longitude1=PreferenceHandler.readString(mContext, PreferenceHandler.LONGITUDE, "")
+        val locationA = Location("point A")
+        locationA.latitude=latitude1!!.toDouble()
+        locationA.longitude=longitude1!!.toDouble()
+
+        val locationB = Location("point B")
+        locationB.latitude=latitude!!.toDouble()
+        locationB.longitude=longitude!!.toDouble()
+        return (locationA.distanceTo(locationB)/1000).toInt()
+    }
+
+    fun String.intOrString(latitude: String?): Any {
+        val v = toIntOrNull()
+        return when(v) {
+            null -> this
+            else -> v
+        }
+    }
+
+
     fun isValidMobile(phone: String): Boolean {
         return android.util.Patterns.PHONE.matcher(phone).matches()
     }
@@ -342,6 +365,36 @@ object Utilities {
         dialog.show()
 
 
+    }
+
+     fun showStatusDialog(description: String, responseObject: GetStatusResponse, context:Context,listener: OnCaseItemClickListener,statusListener:StatusListener){
+        lateinit var dialog: android.app.AlertDialog
+        val builder = android.app.AlertDialog.Builder(context)
+        val binding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.dialog_change_status,
+            null,
+            false
+        ) as com.ngo.databinding.DialogChangeStatusBinding
+        // Inflate and set the layout for the dialog
+        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(
+            description
+        )
+
+        //display the list on the screen
+        val statusAdapter = StatusAdapter(context, responseObject.data.toMutableList(), listener)
+        val horizontalLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        binding.rvStatus?.layoutManager = horizontalLayoutManager
+        binding.rvStatus?.adapter = statusAdapter
+        binding.btnDone.setOnClickListener {
+            showProgress(context)
+            statusListener.onStatusSelected( binding.etDescription.text.toString())
+            dialog.dismiss()
+        }
+
+        builder.setView(binding.root)
+        dialog = builder.create()
+        dialog.show()
     }
 
 }
