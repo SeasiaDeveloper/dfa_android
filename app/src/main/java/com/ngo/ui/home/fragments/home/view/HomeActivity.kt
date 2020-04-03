@@ -30,7 +30,6 @@ import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.NotificationResponse
 import com.ngo.pojo.response.PostLocationResponse
-import com.ngo.ui.policedetail.view.PoliceIncidentDetailScreen
 import com.ngo.ui.earnings.view.MyEarningsActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.CasesFragment
@@ -41,17 +40,15 @@ import com.ngo.ui.home.fragments.photos.view.PhotosFragment
 import com.ngo.ui.home.fragments.videos.view.VideosFragment
 import com.ngo.ui.login.view.LoginActivity
 import com.ngo.ui.mycases.MyCasesActivity
+import com.ngo.ui.policedetail.view.PoliceIncidentDetailScreen
 import com.ngo.ui.profile.ProfileActivity
 import com.ngo.ui.termsConditions.view.TermsAndConditionActivity
 import com.ngo.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.ngo.ui.updatepassword.view.UpdatePasswordActivity
-import com.ngo.utils.ForegroundService
-import com.ngo.utils.PreferenceHandler
-import com.ngo.utils.Utilities
+import com.ngo.utils.*
 import com.ngo.utils.alert.AlertDialog
 import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.nav_header.*
-import com.ngo.utils.*
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
     GetLogoutDialogCallbacks, LocationListenerCallback {
@@ -65,11 +62,16 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var locationCallBack: LocationListenerCallback
     private var imageUrl: String = ""
     private var isPermissionDialogRequired = true
+    private lateinit var myInterface: MyInterface
 
     private var isGPS: Boolean = false
 
     override fun getLayout(): Int {
         return R.layout.home_activity
+    }
+
+    fun setListener(listener: MyInterface) {
+        this.myInterface = listener
     }
 
     override fun onResume() {
@@ -154,7 +156,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 Constants.PUBLIC_COMPLAINT_DATA,
                 notificationResponse.complaint_id.toString()
             )
-          //  intent.putExtra(Constants.FROM_WHERE, "nottohit")
+            //  intent.putExtra(Constants.FROM_WHERE, "nottohit")
             intent.putExtra(Constants.POST_OR_COMPLAINT, "0") //) is for complaint type
             startActivity(intent)
         }
@@ -178,6 +180,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         val adapter = TabLayoutAdapter(supportFragmentManager)
         adapter.addFragment(GeneralPublicHomeFragment(), "Home")
+        setListener(GeneralPublicHomeFragment())
         adapter.addFragment(CasesFragment(), "Cases")
         adapter.addFragment(PhotosFragment(), "Photo(s)")
         adapter.addFragment(VideosFragment(), "Video(s)")
@@ -330,12 +333,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun ongetProfileFailure(error: String) {
-        dismissProgress()
+        Utilities.dismissProgress()
         Utilities.showMessage(this, error)
     }
 
     override fun onShowError(error: String) {
-        dismissProgress()
+        Utilities.dismissProgress()
         Utilities.showMessage(this, error)
     }
 
@@ -348,26 +351,28 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onPostLocationSucess(postLocationResponse: PostLocationResponse) {
-       // Utilities.showMessage(applicationContext, "sucess")
+        // Utilities.showMessage(applicationContext, "sucess")
     }
 
     override fun onPostLocationFailure(error: String) {
+        Utilities.dismissProgress()
         Utilities.showMessage(applicationContext, "failuree");
     }
 
     override fun updateUi(location: Location) {
+        Utilities.dismissProgress()
         Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
 
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.LATITUDE,
-            ""+location.latitude
+            "" + location.latitude
         )
 
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.LONGITUDE,
-            ""+location.longitude
+            "" + location.longitude
         )
         homePresenter.hitLocationApi(
             authorizationToken,
@@ -382,6 +387,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
+        myInterface.myAction(this)
     }
 
+}
+
+interface MyInterface {
+    fun myAction(mContext:Context)
 }

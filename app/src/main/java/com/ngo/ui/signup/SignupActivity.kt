@@ -253,6 +253,12 @@ class SignupActivity : BaseActivity(), SignupView {
             "Bearer " + response.token
         )
 
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.USER_ROLE,
+           "0"
+        )
+
         startActivity(Intent(this@SignupActivity, HomeActivity::class.java))
         finish()
     }
