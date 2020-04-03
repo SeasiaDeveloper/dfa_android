@@ -114,7 +114,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(binding.root)
 
-        // (dialog.findViewById(R.id.txtComplainerContact) as TextView).text = notificationResponse.username
+       (dialog.findViewById(R.id.txtComplainerContact) as TextView).text = notificationResponse.username
         (dialog.findViewById(R.id.txtComplaintDate) as TextView).text =
             notificationResponse.report_data
         (dialog.findViewById(R.id.txtComplaintTime) as TextView).text =
