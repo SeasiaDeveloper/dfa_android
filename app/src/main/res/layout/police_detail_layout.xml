@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/ngoDetailLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbarLayout"
+            layout="@layout/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:weightSum="1">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvTypesOfCrime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginEnd="@dimen/_7sdp"
+                        android:layout_weight=".3"
+                        android:text="Crime Type:"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13ssp"
+                        android:textStyle="bold"
+                        android:visibility="visible"
+                        app:font="@{`semibold`}" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/spTypesOfCrime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:layout_weight=".7"
+                        android:background="@null"
+                        android:padding="@dimen/_3sdp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13ssp"
+                        app:font="@{`regular`}" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:weightSum="1">
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvStatusOfCrime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginEnd="@dimen/_7sdp"
+                        android:layout_weight=".3"
+                        android:text="State:"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13ssp"
+                        android:textStyle="bold"
+                        app:font="@{`semibold`}" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/spStatusOfCrime"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:layout_weight=".7"
+                        android:background="@null"
+                        android:padding="@dimen/_3sdp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13ssp"
+                        app:font="@{`regular`}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:weightSum="1">
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/upgency_level"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginEnd="@dimen/_7sdp"
+                        android:layout_weight=".3"
+                        android:text="Urgency:"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13ssp"
+                        android:textStyle="bold"
+                        app:font="@{`semibold`}" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/level"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:layout_weight=".7"
+                        android:background="@null"
+                        android:padding="@dimen/_3sdp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13ssp"
+                        app:font="@{`regular`}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:weightSum="1">
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/reported"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginEnd="@dimen/_7sdp"
+                        android:layout_weight=".3"
+                        android:text="Reported:"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13ssp"
+                        android:textStyle="bold"
+                        app:font="@{`semibold`}" />
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tv_reported"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:layout_weight=".7"
+                        android:background="@null"
+                        android:padding="@dimen/_3sdp"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13ssp"
+                        app:font="@{`regular`}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:gravity="end">
+
+                    <ImageView
+                        android:id="@+id/imgExpandable"
+                        android:layout_width="@dimen/_20sdp"
+                        android:layout_height="@dimen/_20sdp"
+                        android:layout_gravity="end"
+                        android:src="@drawable/ic_expand_more_black_24dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/image_video_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginEnd="@dimen/_7sdp"
+                        android:text="Reported Description:"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13ssp"
+                        android:textStyle="bold"
+                        app:font="@{`semibold`}" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/editDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_9sdp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:background="@null"
+                        android:editable="false"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:gravity="start"
+                        android:imeOptions="actionDone"
+                        android:inputType="textMultiLine"
+                        android:maxLength="500"
+                        android:padding="@dimen/_3sdp"></androidx.appcompat.widget.AppCompatEditText>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imgView"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_200sdp"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:layout_marginEnd="@dimen/_7sdp" />
+
+                        <ImageView
+                            android:id="@+id/ivVideoIcon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/ic_play_circle_outline"
+                            android:visibility="gone" />
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="bottom"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/action_complaint"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:background="@drawable/shape_round_corner_action"
+                        android:drawablePadding="@dimen/_2sdp"
+                        android:drawableTint="@color/white"
+                        android:gravity="center"
+                        android:paddingStart="@dimen/_24ssp"
+                        android:paddingTop="6.3sp"
+                        android:paddingEnd="@dimen/_24ssp"
+                        android:paddingBottom="6.3sp"
+                        android:text="Action"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_12ssp"
+                        android:visibility="visible"
+                        app:font="@{`regular`}" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

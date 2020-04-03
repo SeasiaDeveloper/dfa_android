@@ -4,33 +4,28 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.location.Location
+import android.net.ParseException
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import android.provider.Settings
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.Window
 import android.view.inputmethod.InputMethodManager
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import java.io.IOException
-import android.location.LocationManager
-import androidx.core.content.ContextCompat.getSystemService
-import android.Manifest.permission
-import android.Manifest.permission.ACCESS_FINE_LOCATION
-import android.Manifest.permission.ACCESS_COARSE_LOCATION
-import android.app.Dialog
-import android.net.ParseException
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.Window
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.kaopiz.kprogresshud.KProgressHUD
@@ -38,7 +33,7 @@ import com.ngo.R
 import com.ngo.listeners.AdharNoListener
 import com.ngo.listeners.AlertDialogListener
 import com.ngo.utils.algo.VerhoeffAlgo
-import de.hdodenhof.circleimageview.CircleImageView
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -236,6 +231,28 @@ object Utilities {
         }
         return isValidAadhar
     }
+
+    fun calculateDistance(latitude: String?, longitude: String?, mContext: Context):Int{
+        var latitude1=PreferenceHandler.readString(mContext, PreferenceHandler.LATITUDE, "")
+        var longitude1=PreferenceHandler.readString(mContext, PreferenceHandler.LONGITUDE, "")
+        val locationA = Location("point A")
+        locationA.latitude=latitude1!!.toDouble()
+        locationA.longitude=longitude1!!.toDouble()
+
+        val locationB = Location("point B")
+        locationB.latitude=latitude!!.toDouble()
+        locationB.longitude=longitude!!.toDouble()
+        return (locationA.distanceTo(locationB)/1000).toInt()
+    }
+
+    fun String.intOrString(latitude: String?): Any {
+        val v = toIntOrNull()
+        return when(v) {
+            null -> this
+            else -> v
+        }
+    }
+
 
     fun isValidMobile(phone: String): Boolean {
         return android.util.Patterns.PHONE.matcher(phone).matches()

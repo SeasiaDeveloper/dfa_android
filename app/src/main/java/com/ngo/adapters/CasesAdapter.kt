@@ -94,7 +94,7 @@ class CasesAdapter(
 
                 itemView.imgPostProfile.setOnClickListener {
                     //show enlarged image
-                    DisplayLargeImage(context,userDetail,options)
+                    DisplayLargeImage(context, userDetail, options)
                 }
             }
             if (item.type == "1") {
@@ -178,7 +178,7 @@ class CasesAdapter(
 
                     itemView.imgCrime.setOnClickListener {
                         //show enlarged image
-                        DisplayLargeImage(context,userDetail,options)
+                        DisplayLargeImage(context, userDetail, options)
                     }
                 }
                 itemView.layout_post.visibility = View.GONE
@@ -295,8 +295,18 @@ class CasesAdapter(
                     itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.colorDarkGreen))
                 }
 
+                if (item.latitude != null) {
+                    itemView.location.setText(
+                        Utilities.calculateDistance(
+                            item.latitude,
+                            item.longitude,
+                            context
+                        ).toString() + " KM away"
+                    )
+                }
+
                 //to show action button in case of Police
-                if(type == 2) {
+                if (type == 2) {
                     if (item.is_assigned.equals("1")) {
                         itemView.action_complaint.visibility = View.VISIBLE
                     } else {
@@ -332,27 +342,35 @@ class CasesAdapter(
             }
         }
 
+        fun String.intOrString(): Any {
+            val v = toIntOrNull()
+            return when (v) {
+                null -> this
+                else -> v
+            }
+        }
+
         fun DisplayLargeImage(
             context: Context,
             userDetail: GetCasesResponse.Data.UserDetail,
             options: RequestOptions
-        ){
-                //show enlarged image
-                val binding =
-                    DataBindingUtil.inflate<ViewDataBinding>(
-                        LayoutInflater.from(context),
-                        R.layout.alert_image_view,
-                        null,
-                        false
-                    )
+        ) {
+            //show enlarged image
+            val binding =
+                DataBindingUtil.inflate<ViewDataBinding>(
+                    LayoutInflater.from(context),
+                    R.layout.alert_image_view,
+                    null,
+                    false
+                )
 
-                val dialog = Dialog(context)
-                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                dialog.setContentView(binding.root)
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(binding.root)
 
-                val imageView =  (dialog.findViewById(R.id.imgView) as ImageView)
-                Glide.with(context).load(userDetail.profile_pic).apply(options).into(imageView)
-                dialog.show()
+            val imageView = (dialog.findViewById(R.id.imgView) as ImageView)
+            Glide.with(context).load(userDetail.profile_pic).apply(options).into(imageView)
+            dialog.show()
         }
     }
 }

@@ -53,6 +53,10 @@
             android:windowSoftInputMode="stateHidden"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".ui.policedetail.view.PoliceIncidentDetailScreen"
+            android:windowSoftInputMode="stateHidden"
+            android:screenOrientation="portrait"/>
+
         <activity android:name=".ui.ngo.NGOActivity" />
 
         <activity android:name=".ui.dashboard.PassCodeActivity"

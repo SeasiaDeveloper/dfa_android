@@ -39,37 +39,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun showNotification(title: String?, jsonObj: JSONObject) {
-/*        val notificationManager = context
-            .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        val notification = Notification(icon, message, `when`)
-
-        val notificationIntent = Intent(context, HomeActivity::class.java)
-
-        notificationIntent.flags = (Intent.FLAG_ACTIVITY_CLEAR_TOP
-                or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-
-        val intent = PendingIntent.getActivity(
-            context, 0,
-            notificationIntent, 0
-        )
-
-        notification.setLatestEventInfo(context, title, message, intent)
-        notification.flags = notification.flags or Notification.FLAG_AUTO_CANCEL
-        notificationManager.notify(0, notification)*/
-
-
-
-
         val intent = Intent(this, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         val pendingIntent = PendingIntent.getActivity(
             this, 0, intent,
             PendingIntent.FLAG_UPDATE_CURRENT
                     or PendingIntent.FLAG_ONE_SHOT
         )
-
 
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
@@ -90,11 +67,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         notificationResponse.description = jsonObj.getString("description")
         notificationResponse.report_data = jsonObj.getString("report_data")
         notificationResponse.report_time = jsonObj.getString("report_time")
-      // notificationResponse.username = jsonObj.getString("username")
+        // notificationResponse.username = jsonObj.getString("username")
 
         val refreshChatIntent = Intent("policeJsonReceiver")
         refreshChatIntent.putExtra("notificationResponse", notificationResponse)
         sendBroadcast(refreshChatIntent)
-
     }
 }

@@ -34,7 +34,11 @@ import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_my_cases.*
+import kotlinx.android.synthetic.main.activity_my_cases.etSearch
+import kotlinx.android.synthetic.main.activity_my_cases.rvPublic
 import kotlinx.android.synthetic.main.activity_my_cases.toolbarLayout
+import kotlinx.android.synthetic.main.activity_my_cases.tvRecord
+import kotlinx.android.synthetic.main.fragment_cases.*
 
 class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener {
     override fun onStatusClick(statusId: String) {
@@ -56,6 +60,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     private var complaintId = "-1"
     private var currentStatus = ""
     var type = ""
+    private var adapter: CasesAdapter? = null
 
     companion object {
         var change= 0
@@ -88,10 +93,17 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             onBackPressed()
         }
 
-        val horizontalLayoutManager = LinearLayoutManager(
+     /*   val horizontalLayoutManager = LinearLayoutManager(
             this, RecyclerView.VERTICAL, false
         )
-        rvPublic.layoutManager = horizontalLayoutManager
+        rvPublic.layoutManager = horizontalLayoutManager*/
+
+        adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this)
+        val horizontalLayoutManager = LinearLayoutManager(
+            this, RecyclerView.VERTICAL, false)
+        rvPublic?.layoutManager = horizontalLayoutManager
+        rvPublic?.adapter = adapter
+
 
         casesRequest = CasesRequest(
             "0",
@@ -110,8 +122,11 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             tvRecord.visibility = View.GONE
             rvPublic.visibility = View.VISIBLE
 
-            rvPublic.adapter =
-                CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this)
+            adapter?.setList(complaints.toMutableList()!!)
+
+
+     /*       rvPublic.adapter =
+                CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this)*/
         } else {
             tvRecord.visibility = View.VISIBLE
             rvPublic.visibility = View.GONE
