@@ -11,7 +11,7 @@
     <string name="email">Email</string>
     <string name="contact_no">Contact No</string>
     <string name="level">Urgency Level</string>
-    <string name="description">Description</string>
+    <string name="description">Description: </string>
     <string name="select_photo">Select Photo</string>
     <string name="submit">Submit</string>
     <string name="take_photo">Take Photo</string>
@@ -174,9 +174,9 @@
 
     <string name="location_updated">Location Updated: %1$s</string>
     <string name="accept">Accept</string>
-    <string name="complaint_time">Complaint Time:</string>
-    <string name="complaint_date">Complaint Date:</string>
-    <string name="complainer_contact">Complainer Contact:</string>
+    <string name="complaint_time">Complaint Time: </string>
+    <string name="complaint_date">Complaint Date: </string>
+    <string name="complainer_contact">Complainer Contact: </string>
     <string name="new_complaint">New Complaint</string>
     <string name="reject">Reject</string>
 </resources>

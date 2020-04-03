@@ -2,6 +2,7 @@ package com.ngo.ui.policedetail.view
 
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.view.View
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
@@ -9,10 +10,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
+import com.ngo.listeners.OnCaseItemClickListener
+import com.ngo.listeners.StatusListener
+import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.request.PoliceDetailrequest
-import com.ngo.pojo.response.GetCrimeDetailsResponse
-import com.ngo.pojo.response.NGOResponse
+import com.ngo.pojo.response.*
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenter
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenterImpl
 import com.ngo.ui.imagevideo.ImageVideoScreen
@@ -32,13 +35,60 @@ import kotlinx.android.synthetic.main.activity_incident_detail.spTypesOfCrime
 import kotlinx.android.synthetic.main.activity_incident_detail.toolbarLayout
 import kotlinx.android.synthetic.main.police_detail_layout.*
 
-class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView {
+class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListener,
+    OnCaseItemClickListener {
+    override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
+        Utilities.dismissProgress()
+        Utilities.showMessage(this, responseObject.message.toString())
+        //refresh the back fragment
+        finish()
+    }
+
+    override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String) {
+        when (actionType) {
+            "location" -> {
+                val gmmIntentUri =
+                    Uri.parse("google.navigation:q=" + complaintsData.latitude + "," + complaintsData.longitude + "")
+                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+            }
+        }
+    }
+
+    override fun onDeleteItem(complaintsData: GetCasesResponse.Data) {
+        //do nothing
+    }
+
+    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
+        //do nothing
+    }
+
+    override fun onStatusClick(statusId: String) {
+        this.statusId = statusId
+    }
+
+    override fun onStatusSelected(comment: String) {
+        //hit status update api
+        crimePresenter.updateStatus(
+            authorizationToken!!,
+            complaintId,
+            statusId,
+            comment
+        )
+    }
+
+    override fun onListFetchedSuccess(responseObject: GetStatusResponse) {
+        Utilities.showStatusDialog("", responseObject, this, this, this)
+    }
+
     // private var ngoPresenter: NGOFormPresenter = NGOFormPresenterImpl(this)
     private var crimePresenter: PoliceDetailPresenter = PoliceDetailPresenterImpl(this)
     private lateinit var complaintId: String
     private var authorizationToken: String? = null
     private lateinit var getCrimeDetailsResponse: GetCrimeDetailsResponse
     private var isKnowPostOrComplaint: String? = null
+    private var statusId = "-1"
 
     override fun getLayout(): Int {
         return R.layout.police_detail_layout
@@ -136,11 +186,8 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView {
         }
 
         action_complaint.setOnClickListener {
-           complaintId =complaintId!!
-            //if (getCrimeDetailsResponse.data[].status != null) currentStatus = complaintsData.status
-            //hit api based on role
-        /*    Utilities.showProgress(mContext)
-            presenter.fetchStatusList(token, type)*/
+          //open dialog to fetch status
+            crimePresenter.fetchStatusList(authorizationToken!!, "2") // user role 2 is for police
         }
 
     }

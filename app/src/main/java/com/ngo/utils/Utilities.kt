@@ -28,10 +28,16 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.ngo.R
+import com.ngo.adapters.StatusAdapter
 import com.ngo.listeners.AdharNoListener
 import com.ngo.listeners.AlertDialogListener
+import com.ngo.listeners.OnCaseItemClickListener
+import com.ngo.listeners.StatusListener
+import com.ngo.pojo.response.GetStatusResponse
 import com.ngo.utils.algo.VerhoeffAlgo
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -359,6 +365,36 @@ object Utilities {
         dialog.show()
 
 
+    }
+
+     fun showStatusDialog(description: String, responseObject: GetStatusResponse, context:Context,listener: OnCaseItemClickListener,statusListener:StatusListener){
+        lateinit var dialog: android.app.AlertDialog
+        val builder = android.app.AlertDialog.Builder(context)
+        val binding = DataBindingUtil.inflate(
+            LayoutInflater.from(context),
+            R.layout.dialog_change_status,
+            null,
+            false
+        ) as com.ngo.databinding.DialogChangeStatusBinding
+        // Inflate and set the layout for the dialog
+        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(
+            description
+        )
+
+        //display the list on the screen
+        val statusAdapter = StatusAdapter(context, responseObject.data.toMutableList(), listener)
+        val horizontalLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        binding.rvStatus?.layoutManager = horizontalLayoutManager
+        binding.rvStatus?.adapter = statusAdapter
+        binding.btnDone.setOnClickListener {
+            showProgress(context)
+            statusListener.onStatusSelected( binding.etDescription.text.toString())
+            dialog.dismiss()
+        }
+
+        builder.setView(binding.root)
+        dialog = builder.create()
+        dialog.show()
     }
 
 }

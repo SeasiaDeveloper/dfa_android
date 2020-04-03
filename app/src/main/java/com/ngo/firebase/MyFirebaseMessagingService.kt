@@ -31,16 +31,32 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "Message: ${remoteMessage.from}")
 
+       // remoteMessage.data.get("complaint_id")
         var jsonObj = JSONObject(remoteMessage.notification?.body)
 
-        if (remoteMessage.notification != null) {
+       /* if (remoteMessage.notification != null) {
             showNotification(remoteMessage.notification?.title, jsonObj)
+        }*/
+
+        if(remoteMessage.data != null) {
+            val notificationResponse = NotificationResponse()
+            notificationResponse.complaint_id = remoteMessage.data.get("complaint_id")
+            notificationResponse.description = remoteMessage.data.get("description")
+            notificationResponse.report_data = remoteMessage.data.get("report_data")
+            notificationResponse.report_time = remoteMessage.data.get("report_time")
+            notificationResponse.username = remoteMessage.data.get("username")
+            showNotification(remoteMessage.notification?.title, notificationResponse)
         }
+
+
+
     }
 
-    private fun showNotification(title: String?, jsonObj: JSONObject) {
+    private fun showNotification(title: String?, obj: NotificationResponse) {
+
         val intent = Intent(this, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         val pendingIntent = PendingIntent.getActivity(
             this, 0, intent,
@@ -48,10 +64,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
                     or PendingIntent.FLAG_ONE_SHOT
         )
 
+
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle(title)
+            .setContentTitle("DFA ")
             .setContentText("New Complaint")
             .setAutoCancel(true)
             .setSound(soundUri)
@@ -62,15 +79,15 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         notificationManager.notify(0, notificationBuilder.build())
 
         //put the jsonObj into pojo object
-        val notificationResponse = NotificationResponse()
+        /*val notificationResponse = NotificationResponse()
         notificationResponse.complaint_id = jsonObj.getString("complaint_id")
         notificationResponse.description = jsonObj.getString("description")
         notificationResponse.report_data = jsonObj.getString("report_data")
-        notificationResponse.report_time = jsonObj.getString("report_time")
-        // notificationResponse.username = jsonObj.getString("username")
+        notificationResponse.report_time = jsonObj.getString("report_time")*/
+      // notificationResponse.username = jsonObj.getString("username")
 
         val refreshChatIntent = Intent("policeJsonReceiver")
-        refreshChatIntent.putExtra("notificationResponse", notificationResponse)
+        refreshChatIntent.putExtra("notificationResponse", obj)
         sendBroadcast(refreshChatIntent)
     }
 }

@@ -42,7 +42,7 @@ import kotlinx.android.synthetic.main.fragment_cases.*
 
 class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener {
     override fun onStatusClick(statusId: String) {
-        //do nothing for now
+        this.statusId = statusId
     }
 
     override fun onClick(item: Any) {
