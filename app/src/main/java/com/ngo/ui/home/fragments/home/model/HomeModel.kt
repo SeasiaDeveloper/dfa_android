@@ -2,6 +2,7 @@ package com.ngo.ui.home.fragments.home.model
 
 import com.ngo.apis.ApiClient
 import com.ngo.apis.CallRetrofitApi
+import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.PostLocationResponse
 import com.ngo.ui.home.fragments.home.presenter.HomePresenter
@@ -77,5 +78,37 @@ class HomeModel(private var homePresenter: HomePresenter) {
                 }
             }
         })
+    }
+
+    fun updateStatus(token: String, complaintId: String, statusId: String) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        val map = HashMap<String, RequestBody>()
+        map["complaint_id"] = toRequestBody(complaintId)
+        map["status"] = toRequestBody(statusId)
+
+        retrofitApi.updateStatus(token, map)
+            .enqueue(object : Callback<DeleteComplaintResponse> {
+                override fun onFailure(call: Call<DeleteComplaintResponse>, t: Throwable) {
+                    homePresenter.showError(t.message + "")
+                }
+
+                override fun onResponse(
+                    call: Call<DeleteComplaintResponse>,
+                    response: Response<DeleteComplaintResponse>
+                ) {
+                    val responseObject = response.body()
+                    if (responseObject != null) {
+                        if (responseObject.code == 200) {
+                            homePresenter.statusUpdationSuccess(responseObject)
+                        } else {
+                            homePresenter.showError(
+                                response.body()?.message ?: Constants.SERVER_ERROR
+                            )
+                        }
+                    } else {
+                        homePresenter.showError(Constants.SERVER_ERROR)
+                    }
+                }
+            })
     }
 }

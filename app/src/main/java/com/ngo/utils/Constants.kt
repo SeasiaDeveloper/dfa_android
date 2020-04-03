@@ -9,6 +9,7 @@ object Constants {
     const val IMAGE_URL = "image_url"
     const val POST_OR_COMPLAINT = "post_or_complaint"
     const val REQUEST_LOCATION = 1
+    const val FROM_WHERE="formwhere"
     const val LOCATION_REFRESH_TIME: Long = 1000
     const val LOCATION_REFRESH_DISTANCE: Float = 0.0f
     const val CHANNEL_ID = "my_channel_01"

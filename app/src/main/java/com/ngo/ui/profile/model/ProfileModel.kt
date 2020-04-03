@@ -50,7 +50,7 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
         })
     }
 
-    fun setValidation(request: SignupRequest) {
+    fun setValidation(request: SignupRequest, isAdhaarNoAdded: Boolean) {
         if (request.username.isEmpty()) {
             profilePresenterImplClass.usernameEmptyValidation()
             return
@@ -79,9 +79,11 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
             }
 
             if ((request.adhar_number).isNotEmpty()) {
-                if (!(Utilities.validateAadharNumber(request.adhar_number))) {
-                   profilePresenterImplClass.adhaarNoValidationFailure()
-                    return
+                if (isAdhaarNoAdded) {
+                    if (!(Utilities.validateAadharNumber(request.adhar_number))) {
+                        profilePresenterImplClass.adhaarNoValidationFailure()
+                        return
+                    }
                 }
             }
 
@@ -113,9 +115,9 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
         map["district_id"] = toRequestBody(request.district_id)
         map["pin_code"] = toRequestBody(request.pin_code)
 
-        if (isAdhaarNoAdded) {
-            map["adhar_number"] = toRequestBody(request.adhar_number)
-        }
+        // if (isAdhaarNoAdded) {
+        map["adhar_number"] = toRequestBody(request.adhar_number)
+        // }
 
         if (!request.profile_pic.equals("")) {
             val file = File(request.profile_pic)

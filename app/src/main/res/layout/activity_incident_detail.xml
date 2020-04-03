@@ -34,6 +34,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
                     android:textStyle="bold"
+                    android:visibility="gone"
                     app:font="@{`semibold`}" />
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -62,6 +63,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Title:"
+                    android:visibility="gone"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
                     android:textStyle="bold"
@@ -90,6 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_10sdp"
+                    android:visibility="gone"
                     android:layout_marginTop="@dimen/_6sdp"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Email:"
@@ -125,6 +128,7 @@
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Contact No:"
                     android:textColor="@color/black"
+                    android:visibility="gone"
                     android:textSize="@dimen/_13ssp"
                     android:textStyle="bold"
                     app:font="@{`semibold`}" />
@@ -154,6 +158,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
+                    android:visibility="gone"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Crime Type:"
                     android:textColor="@color/black"
@@ -181,6 +186,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
+                    android:visibility="gone"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Crime State:"
                     android:textColor="@color/black"
@@ -204,6 +210,7 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvLevel"
                     android:layout_width="wrap_content"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_10sdp"
@@ -218,6 +225,7 @@
                     android:id="@+id/sb_steps_5"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:visibility="gone"
                     android:layout_marginStart="@dimen/_10sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_10sdp"
@@ -269,6 +277,7 @@
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Description:"
                     android:textColor="@color/black"
+                    android:visibility="gone"
                     android:textSize="@dimen/_13ssp"
                     android:textStyle="bold"
                     app:font="@{`semibold`}" />

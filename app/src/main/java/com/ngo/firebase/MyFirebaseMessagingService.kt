@@ -13,6 +13,9 @@ import com.google.firebase.messaging.RemoteMessage
 import com.ngo.R
 import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.utils.PreferenceHandler
+import org.json.JSONObject
+import com.ngo.pojo.response.NotificationResponse
+
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     val TAG = "FirebaseMessagingService"
@@ -26,29 +29,47 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
     @SuppressLint("LongLogTag")
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        Log.d(TAG, "Dikirim dari: ${remoteMessage.from}")
+        Log.d(TAG, "Message: ${remoteMessage.from}")
+
+        var jsonObj = JSONObject(remoteMessage.notification?.body)
 
         if (remoteMessage.notification != null) {
-            showNotification(remoteMessage.notification?.title, remoteMessage.notification?.body)
+            showNotification(remoteMessage.notification?.title, jsonObj)
         }
     }
 
-    private fun showNotification(title: String?, body: String?) {
+    private fun showNotification(title: String?, jsonObj: JSONObject) {
         val intent = Intent(this, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent,
-            PendingIntent.FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(
+            this, 0, intent,
+            PendingIntent.FLAG_ONE_SHOT
+        )
 
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder = NotificationCompat.Builder(this,CHANNEL_ID)
+        val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.mipmap.ic_launcher)
             .setContentTitle(title)
-            .setContentText(body)
+            .setContentText("New Complaint")
             .setAutoCancel(true)
             .setSound(soundUri)
             .setContentIntent(pendingIntent)
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(0, notificationBuilder.build())
+
+        //put the jsonObj into pojo object
+        val notificationResponse = NotificationResponse()
+        notificationResponse.complaint_id = jsonObj.getString("complaint_id")
+        notificationResponse.description = jsonObj.getString("description")
+        notificationResponse.report_data = jsonObj.getString("report_data")
+        notificationResponse.report_time = jsonObj.getString("report_time")
+      // notificationResponse.username = jsonObj.getString("username")
+
+        val refreshChatIntent = Intent("policeJsonReceiver")
+        refreshChatIntent.putExtra("notificationResponse", notificationResponse)
+        sendBroadcast(refreshChatIntent)
+
     }
 }

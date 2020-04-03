@@ -45,8 +45,8 @@ class ProfilePresenterImplClass(private var profileView: ProfileView):ProfilePre
 
     private var profileModel: ProfileModel = ProfileModel(this)
 
-    override fun checkValidations(signupRequest: SignupRequest) {
-        profileModel.setValidation(signupRequest)
+    override fun checkValidations(signupRequest: SignupRequest,isAdhaarNoAdded: Boolean) {
+        profileModel.setValidation(signupRequest,isAdhaarNoAdded)
     }
 
     override fun getDist() {

@@ -8,7 +8,7 @@ import com.ngo.pojo.response.SignupResponse
 interface ProfilePresenter : BasePresenter {
     fun getDist()
     fun fetchDistList(responseObject: DistResponse)
-    fun checkValidations(signupRequest: SignupRequest)
+    fun checkValidations(signupRequest: SignupRequest,isAdharCardNumberAdded:Boolean)
     fun onValidationSuccess(request: SignupRequest)
     fun updateProfile(request: SignupRequest,token:String?,isAdhaarNoAdded: Boolean)
     fun onSuccessfulUpdation(responseObject: SignupResponse)

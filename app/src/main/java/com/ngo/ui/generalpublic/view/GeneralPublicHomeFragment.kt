@@ -46,6 +46,7 @@ import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     OnCaseItemClickListener, AlertDialogListener, AdharNoListener {
+    private var isResumeRun: Boolean = false
 
     override fun onClick(item: Any) {
         Utilities.showProgress(mContext)
@@ -99,7 +100,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-        type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
         adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
         val horizontalLayoutManager = LinearLayoutManager(
             mContext,
@@ -108,18 +108,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         rvPublic?.layoutManager = horizontalLayoutManager
         rvPublic?.adapter = adapter
 
-        val value = PreferenceHandler.readString(mContext, PreferenceHandler.PROFILE_JSON, "")
-        val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
-        if (jsondata != null) {
-            if (jsondata.data?.profile_pic != null) {
-                Glide.with(this).load(jsondata.data.profile_pic).into(imgProfile)
-            }
-        }
+        setProfilePic()
 
         imgAdd.setOnClickListener(this)
         Utilities.showProgress(mContext)
 
-        val casesRequest = CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
+        val casesRequest =
+            CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
 
         presenter.getComplaints(casesRequest, token, type)
 
@@ -193,6 +188,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 cursor?.close()
                 Glide.with(this).load(picturePath).into(imgPost)
                 path = picturePath!!
+                change = 0
             } else if (mime.toLowerCase().contains("video")) {
                 media_type = "videos"
                 if (data.data != null) {
@@ -204,6 +200,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                         .into(imgPost)
                     path = RealPathUtil.getRealPath(activity!!, data.data!!).toString()
                 }
+                change = 0
             }
         }
     }
@@ -220,18 +217,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
     }
 
-    override fun showGetComplaintsResponse(response: GetCasesResponse) {
-        Utilities.dismissProgress()
-        complaints = response.data!!
-        if (complaints.isNotEmpty()) {
-            tvRecord?.visibility = View.GONE
-            adapter?.setList(response.data.toMutableList())
-            // rvPublic?.adapter = adapter
-            change = 1
-        } else {
-            tvRecord.visibility = View.VISIBLE
-        }
-
+    fun setProfilePic() {
         val value = PreferenceHandler.readString(mContext, PreferenceHandler.PROFILE_JSON, "")
         val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
         if (jsondata != null) {
@@ -241,6 +227,21 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 }
             }
         }
+    }
+
+    override fun showGetComplaintsResponse(response: GetCasesResponse) {
+        Utilities.dismissProgress() //       val jsondata = GsonBuilder().create().fromJson(response, GetCasesResponse::class.java)
+        complaints = response.data!!
+        if (complaints.isNotEmpty()) {
+            tvRecord?.visibility = View.GONE
+            adapter?.setList(response.data.toMutableList())
+            //rvPublic?.adapter = adapter
+            change = 1
+        } else {
+            tvRecord.visibility = View.VISIBLE
+        }
+
+        setProfilePic()
     }
 
     override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String) {
@@ -256,7 +257,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
             "action" -> {
                 complaintId = complaintsData.id!!
-               if(complaintsData.status!=null) currentStatus = complaintsData.status
+                if (complaintsData.status != null) currentStatus = complaintsData.status
                 //hit api based on role
                 Utilities.showProgress(mContext)
                 presenter.fetchStatusList(token, type)
@@ -266,6 +267,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 val intent = Intent(activity, IncidentDetailActivity::class.java)
                 intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
                 intent.putExtra(Constants.POST_OR_COMPLAINT, complaintsData.type)
+                intent.putExtra(Constants.FROM_WHERE, "nottohit")
                 startActivity(intent)
             }
         }
@@ -327,7 +329,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         Utilities.showMessage(mContext, responseObject.message.toString())
         //refresh the list
         Utilities.showProgress(mContext)
-        val casesRequest = CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
+        val casesRequest =
+            CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
         presenter.getComplaints(casesRequest, token, type)
     }
 
@@ -361,20 +364,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
     }
 
-    fun changeProfileImage() {
-        if (activity != null) {
-            val value = PreferenceHandler.readString(mContext, PreferenceHandler.PROFILE_JSON, "")
-            val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
-            if (jsondata != null) {
-                if (jsondata.data?.profile_pic != null) {
-                    Glide.with(this).load(jsondata.data.profile_pic).into(imgProfile)
-                }
-            }
-
-        }
-
-    }
-
     override fun onResume() {
         super.onResume()
         if (isFirst) {
@@ -387,7 +376,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             Utilities.showProgress(activity!!)
             presenter.getComplaints(casesRequest, token, type)
             change = 0
-
         }
     }
 
@@ -395,7 +383,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         super.onAttach(context)
         mContext = context
         token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
-        type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
+        type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "")!!
     }
 
     override fun onPostAdded(responseObject: GetCasesResponse) {
@@ -423,10 +411,10 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        if (!isFirst) {
-            val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
-            Utilities.showProgress(mContext)
-            presenter.getComplaints(casesRequest, token, type)
+            if (!isFirst) {
+                val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
+                Utilities.showProgress(mContext)
+                presenter.getComplaints(casesRequest, token, type)
         }
     }
 
