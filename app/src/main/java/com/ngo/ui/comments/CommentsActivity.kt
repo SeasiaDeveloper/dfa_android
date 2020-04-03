@@ -58,6 +58,7 @@ class CommentsActivity : AppCompatActivity(), CommentsView {
             }
         }
 
+
         val horizontalLayoutManager = LinearLayoutManager(
             mContext,
             RecyclerView.VERTICAL, false

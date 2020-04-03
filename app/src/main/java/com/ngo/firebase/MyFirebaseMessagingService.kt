@@ -11,10 +11,10 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.ngo.R
+import com.ngo.pojo.response.NotificationResponse
 import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.utils.PreferenceHandler
 import org.json.JSONObject
-import com.ngo.pojo.response.NotificationResponse
 
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
@@ -39,12 +39,37 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun showNotification(title: String?, jsonObj: JSONObject) {
+/*        val notificationManager = context
+            .getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notification = Notification(icon, message, `when`)
+
+        val notificationIntent = Intent(context, HomeActivity::class.java)
+
+        notificationIntent.flags = (Intent.FLAG_ACTIVITY_CLEAR_TOP
+                or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+
+        val intent = PendingIntent.getActivity(
+            context, 0,
+            notificationIntent, 0
+        )
+
+        notification.setLatestEventInfo(context, title, message, intent)
+        notification.flags = notification.flags or Notification.FLAG_AUTO_CANCEL
+        notificationManager.notify(0, notification)*/
+
+
+
+
         val intent = Intent(this, HomeActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+
         val pendingIntent = PendingIntent.getActivity(
             this, 0, intent,
-            PendingIntent.FLAG_ONE_SHOT
+            PendingIntent.FLAG_UPDATE_CURRENT
+                    or PendingIntent.FLAG_ONE_SHOT
         )
+
 
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)

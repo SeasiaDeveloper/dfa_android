@@ -155,6 +155,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 Constants.PUBLIC_COMPLAINT_DATA,
                 notificationResponse.complaint_id.toString()
             )
+            intent.putExtra(Constants.FROM_WHERE, "nottohit")
             intent.putExtra(Constants.POST_OR_COMPLAINT, "0") //) is for complaint type
             startActivity(intent)
         }
