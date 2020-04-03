@@ -101,12 +101,14 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
 
     override fun getCrimeDetailsFailure(error: String) {
         Utilities.dismissProgress()
-        Utilities.showMessage(activity!!, error)
+        if(activity!=null)
+        {  Utilities.showMessage(activity!!, error)}
     }
 
     override fun showServerError(error: String) {
         Utilities.dismissProgress()
-        Utilities.showMessage(activity!!, error)
+        if(activity!=null)
+        { Utilities.showMessage(activity!!, error)}
     }
 
     override fun getComplaintId(id: String?) {
