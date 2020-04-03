@@ -74,6 +74,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             askForGPS()
         }
         mpoliceCallback=this
+
+
+
         //AlertDialog.showDialog("romy",mpoliceCallback,this);
     }
 
