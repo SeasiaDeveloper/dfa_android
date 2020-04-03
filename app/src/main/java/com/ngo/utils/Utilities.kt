@@ -238,22 +238,26 @@ object Utilities {
         return isValidAadhar
     }
 
-    fun calculateDistance(latitude: String?, longitude: String?, mContext: Context):Int{
-        var latitude1=PreferenceHandler.readString(mContext, PreferenceHandler.LATITUDE, "")
-        var longitude1=PreferenceHandler.readString(mContext, PreferenceHandler.LONGITUDE, "")
+    fun calculateDistance(latitude: String?, longitude: String?, mContext: Context): Int {
+        val latitude1 = PreferenceHandler.readString(mContext, PreferenceHandler.LATITUDE, "")
+        val longitude1 = PreferenceHandler.readString(mContext, PreferenceHandler.LONGITUDE, "")
         val locationA = Location("point A")
-        locationA.latitude=latitude1!!.toDouble()
-        locationA.longitude=longitude1!!.toDouble()
+        if (!(latitude1.equals("")) && !(longitude1.equals(""))) {
+            locationA.latitude = latitude1!!.toDouble()
+            locationA.longitude = longitude1!!.toDouble()
 
-        val locationB = Location("point B")
-        locationB.latitude=latitude!!.toDouble()
-        locationB.longitude=longitude!!.toDouble()
-        return (locationA.distanceTo(locationB)/1000).toInt()
+            val locationB = Location("point B")
+            locationB.latitude = latitude!!.toDouble()
+            locationB.longitude = longitude!!.toDouble()
+            return (locationA.distanceTo(locationB) / 1000).toInt()
+        } else {
+            return -1
+        }
     }
 
     fun String.intOrString(latitude: String?): Any {
         val v = toIntOrNull()
-        return when(v) {
+        return when (v) {
             null -> this
             else -> v
         }
@@ -367,7 +371,13 @@ object Utilities {
 
     }
 
-     fun showStatusDialog(description: String, responseObject: GetStatusResponse, context:Context,listener: OnCaseItemClickListener,statusListener:StatusListener){
+    fun showStatusDialog(
+        description: String,
+        responseObject: GetStatusResponse,
+        context: Context,
+        listener: OnCaseItemClickListener,
+        statusListener: StatusListener
+    ) {
         lateinit var dialog: android.app.AlertDialog
         val builder = android.app.AlertDialog.Builder(context)
         val binding = DataBindingUtil.inflate(
@@ -388,7 +398,7 @@ object Utilities {
         binding.rvStatus?.adapter = statusAdapter
         binding.btnDone.setOnClickListener {
             showProgress(context)
-            statusListener.onStatusSelected( binding.etDescription.text.toString())
+            statusListener.onStatusSelected(binding.etDescription.text.toString())
             dialog.dismiss()
         }
 

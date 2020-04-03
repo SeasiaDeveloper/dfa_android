@@ -8,12 +8,14 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.location.Location
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -113,7 +115,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(binding.root)
 
-       (dialog.findViewById(R.id.txtComplainerContact) as TextView).text = notificationResponse.username
+        (dialog.findViewById(R.id.txtComplainerContact) as TextView).text =
+            notificationResponse.username
         (dialog.findViewById(R.id.txtComplaintDate) as TextView).text =
             notificationResponse.report_data
         (dialog.findViewById(R.id.txtComplaintTime) as TextView).text =
@@ -154,7 +157,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 Constants.PUBLIC_COMPLAINT_DATA,
                 notificationResponse.complaint_id.toString()
             )
-          //  intent.putExtra(Constants.FROM_WHERE, "nottohit")
+            //  intent.putExtra(Constants.FROM_WHERE, "nottohit")
             intent.putExtra(Constants.POST_OR_COMPLAINT, "0") //) is for complaint type
             startActivity(intent)
             dialog.dismiss()
@@ -172,11 +175,16 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         mToggle = ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close)
         mDrawerLayout!!.addDrawerListener(mToggle!!)
         mToggle!!.syncState()
+
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         if (supportActionBar != null) {
             supportActionBar?.setDisplayShowTitleEnabled(false)
         }
 
+        getLocation()
+    }
+
+    fun setTabAdapter() {
         val adapter = TabLayoutAdapter(supportFragmentManager)
         adapter.addFragment(GeneralPublicHomeFragment(), "Home")
         adapter.addFragment(CasesFragment(), "Cases")
@@ -185,8 +193,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         viewPager?.adapter = adapter
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)
-        getLocation()
-
     }
 
     //checking location
@@ -227,9 +233,15 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
                     ForegroundService.startService(
                         this@HomeActivity,
-                        "Foreground Service is running...",
+                        "Syncing your location..",
                         locationCallBack
                     )
+                    Utilities.showProgress(this@HomeActivity)
+                    /*  try {
+                          setTabAdapter()
+                      } catch (e: Exception) {
+                          Log.e("Tab Adapter", "Exception----->" + e)
+                      }*/
                 }
             }
         })
@@ -349,26 +361,38 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onPostLocationSucess(postLocationResponse: PostLocationResponse) {
-       // Utilities.showMessage(applicationContext, "sucess")
+        // Utilities.showMessage(applicationContext, "sucess")
     }
 
     override fun onPostLocationFailure(error: String) {
         Utilities.showMessage(applicationContext, "failuree");
     }
 
+    var isFirstTimeEntry = true
     override fun updateUi(location: Location) {
+        if (isFirstTimeEntry) {
+            try {
+
+                setTabAdapter()
+
+            } catch (e: Exception) {
+                Log.e("Tab Adapter", "Exception----->" + e)
+            }
+            isFirstTimeEntry = false
+        }
+
         Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
 
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.LATITUDE,
-            ""+location.latitude
+            "" + location.latitude
         )
 
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.LONGITUDE,
-            ""+location.longitude
+            "" + location.longitude
         )
         homePresenter.hitLocationApi(
             authorizationToken,

@@ -111,7 +111,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         setProfilePic()
 
         imgAdd.setOnClickListener(this)
-        Utilities.showProgress(mContext)
+       // Utilities.showProgress(mContext)
 
         val casesRequest =
             CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
