@@ -28,6 +28,7 @@
         <activity
             android:name=".ui.SplashActivity"
             android:screenOrientation="portrait"
+            android:exported="true"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -64,6 +65,7 @@
 
         <activity android:name="com.ngo.ui.home.fragments.home.view.HomeActivity"
         android:windowSoftInputMode="stateHidden"
+            android:exported="true"
         android:screenOrientation="portrait"/>
 
         <activity android:name=".ui.earnings.view.MyEarningsActivity"
