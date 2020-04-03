@@ -348,7 +348,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onPostLocationSucess(postLocationResponse: PostLocationResponse) {
-        Utilities.showMessage(applicationContext, "sucess")
+       // Utilities.showMessage(applicationContext, "sucess")
     }
 
     override fun onPostLocationFailure(error: String) {
@@ -356,7 +356,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun updateUi(location: Location) {
-        Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
+      //  Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
         homePresenter.hitLocationApi(
             authorizationToken,
             location.latitude.toString(),
