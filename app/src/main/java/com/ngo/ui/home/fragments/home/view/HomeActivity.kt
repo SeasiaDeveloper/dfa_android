@@ -70,9 +70,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         return R.layout.home_activity
     }
 
-    fun setListener(listener: MyInterface) {
+  /*  fun setListener(listener: MyInterface) {
         this.myInterface = listener
-    }
+    }*/
 
     override fun onResume() {
         super.onResume()
@@ -181,7 +181,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         val adapter = TabLayoutAdapter(supportFragmentManager)
         adapter.addFragment(GeneralPublicHomeFragment(), "Home")
-        setListener(GeneralPublicHomeFragment())
+      //  setListener(GeneralPublicHomeFragment())
         adapter.addFragment(CasesFragment(), "Cases")
         adapter.addFragment(PhotosFragment(), "Photo(s)")
         adapter.addFragment(VideosFragment(), "Video(s)")
@@ -362,7 +362,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun updateUi(location: Location) {
         Utilities.dismissProgress()
-        Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
+        //Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
 
         PreferenceHandler.writeString(
             this,
@@ -388,7 +388,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
-        myInterface.myAction(this)
+       // myInterface.myAction(this)
     }
 
 }

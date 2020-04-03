@@ -46,7 +46,7 @@ import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
-    OnCaseItemClickListener, AlertDialogListener, AdharNoListener, MyInterface {
+    OnCaseItemClickListener, AlertDialogListener, AdharNoListener {
     private var isResumeRun: Boolean = false
 
     override fun onClick(item: Any) {
@@ -379,11 +379,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         } else if (change == 1) {
             val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
             Utilities.showProgress(mContext)
-            token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
-            type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "")!!
-            if (adapter == null) {
+            //token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
+            //type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "")!!
+         /*   if (adapter == null) {
                 setAdapter()
-            }
+            }*/
             presenter.getComplaints(casesRequest, token, type)
             change = 0
         }
@@ -464,13 +464,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         startActivity(intent)
     }
 
-    override fun myAction(mContext: Context) {
+   /* override fun myAction(mContext: Context) {
         this.mContext = mContext
         onResume()
-        /*  val casesRequest =
+        *//*  val casesRequest =
               CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
 
-          presenter.getComplaints(casesRequest, token, type)*/
-    }
+          presenter.getComplaints(casesRequest, token, type)*//*
+    }*/
 
 }
