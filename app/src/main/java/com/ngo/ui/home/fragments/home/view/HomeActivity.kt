@@ -356,7 +356,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         finish()
         PreferenceHandler.clearPreferences(this)
         val intent = Intent(this, LoginActivity::class.java)
-        intent.aloddFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
     }
 
