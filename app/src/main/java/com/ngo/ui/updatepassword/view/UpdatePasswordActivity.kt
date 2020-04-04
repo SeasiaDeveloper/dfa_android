@@ -30,7 +30,7 @@ class UpdatePasswordActivity : BaseActivity(), ChangePasswordView {
 
     override fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.change_password)
-        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.BLACK)
         (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_arrow)
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()

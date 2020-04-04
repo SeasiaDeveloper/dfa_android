@@ -214,7 +214,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
 
         }
 
-        imgProfile.setOnClickListener {
+        layout_profile_image.setOnClickListener {
             val resultGallery = getMarshmallowPermission(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
@@ -307,7 +307,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
 
     override fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.edit_profile)
-        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.BLACK)
         (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_arrow)
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()

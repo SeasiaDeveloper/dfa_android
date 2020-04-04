@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout
-        android:id="@+id/splashParent" android:layout_width="match_parent"
+        android:id="@+id/splashParent"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:background="@drawable/background"
         android:gravity="center"
         android:orientation="vertical">
-        <androidx.appcompat.widget.AppCompatTextView
+
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="@string/ngo_app"
-            android:textColor="@color/blue"
-            android:textSize="@dimen/_30ssp"
-            app:font="@{`bold`}"
-        />
+            android:src="@drawable/splash"
+            android:textSize="@dimen/_30ssp" />
     </LinearLayout>
 </layout>
