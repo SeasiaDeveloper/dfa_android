@@ -58,6 +58,7 @@
     <string name="email_mobile_hint">Email / Mobile no</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="please_login_to_your_account">Please Login to Your account!</string>
 
     <!-- forgot password screen-->
     <string name="forgot_password_title">Forgot Password</string>
