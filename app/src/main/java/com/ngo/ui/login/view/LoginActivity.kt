@@ -20,8 +20,6 @@ import com.ngo.ui.signup.SignupActivity
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_login_activity.*
-import kotlinx.android.synthetic.main.activity_public.toolbarLayout
-
 
 class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
     private var presenter: LoginPresenter = LoginActivityPresenterImpl(this)

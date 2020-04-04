@@ -26,7 +26,6 @@ import kotlinx.android.synthetic.main.activity_signup.toolbarLayout
 import kotlin.collections.ArrayList
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
-import com.mikhaellopez.circularimageview.CircularImageView
 import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.ui.login.view.LoginActivity
 import com.ngo.utils.PreferenceHandler
