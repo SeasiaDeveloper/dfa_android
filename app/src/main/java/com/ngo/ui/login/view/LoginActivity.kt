@@ -32,8 +32,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
     }
 
     override fun setupUI() {
-        (toolbarLayout as CenteredToolbar).title = getString(R.string.login)
-        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+       /* (toolbarLayout as CenteredToolbar).title = getString(R.string.login)
+        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)*/
         setListeners()
         FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener(
             this,
