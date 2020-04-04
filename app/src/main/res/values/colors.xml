@@ -24,5 +24,6 @@
 
 
     <color name="grey_text">#6a6a6a</color>
+    <color name="light_grey_text">#6a6a6a</color>
 
 </resources>

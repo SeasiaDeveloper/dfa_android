@@ -25,7 +25,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
     private lateinit var mobile: String
     private lateinit var mAuth: FirebaseAuth
     private lateinit var intent_from: String
-    private lateinit var mVerificationId: String
+    private var mVerificationId: String = ""
     private var presenter: OtpVerificationPresenter = OtpVerificationImpl(this)
     private lateinit var userId: String
     private lateinit var phoneNo: String
@@ -37,7 +37,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
     override fun setupUI() {
         mAuth = FirebaseAuth.getInstance()
         (toolbarLayout as CenteredToolbar).title = getString(R.string.otp_verification)
-        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.BLACK)
         val intent = intent
         mobile = intent.getStringExtra("mobile")
         intent_from = intent.getStringExtra("intent_from")
@@ -101,7 +101,9 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
                     return
                 } else {
                     Utilities.showProgress(this)
-                    verifyVerificationCode(code)
+                    if (mVerificationId != null && !mVerificationId.equals("")) {
+                        verifyVerificationCode(code)
+                    }
                 }
                 //verifying the code entered manually
             }

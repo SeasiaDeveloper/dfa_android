@@ -16,6 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/silver" />
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +45,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:paddingTop="6dp"
                         android:paddingBottom="6dp"
-                        android:src="@drawable/ic_user"
+                        android:src="@drawable/user"
                         app:civ_border_color="@color/black"
                         android:scaleType="centerCrop"
                         app:civ_border_width="0.4dp" />
@@ -101,6 +106,7 @@
                                 android:layout_marginStart="@dimen/_12sdp"
                                 android:layout_marginTop="@dimen/_6sdp"
                                 android:layout_marginEnd="@dimen/_5sdp"
+                                android:singleLine="true"
                                 android:layout_weight=".5"
                                 android:background="@drawable/squarebg"
                                 android:hint="@string/enter_first_name"
@@ -114,6 +120,7 @@
                                 android:layout_marginStart="@dimen/_5sdp"
                                 android:layout_marginTop="@dimen/_6sdp"
                                 android:layout_marginEnd="@dimen/_12sdp"
+                                android:singleLine="true"
                                 android:layout_weight=".5"
                                 android:background="@drawable/squarebg"
                                 android:hint="@string/enter_middle_name"
