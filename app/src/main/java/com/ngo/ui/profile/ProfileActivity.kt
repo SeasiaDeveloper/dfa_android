@@ -138,9 +138,11 @@ class ProfileActivity : BaseActivity(), ProfileView {
             etMobile2.setText(jsondata.data?.mobile)
             etEmail.setText(jsondata.data?.email)
             if (jsondata.data?.isVerified.equals("1")) {
-                isVerified.isChecked = true
+                isVerified.setButtonDrawable(R.drawable.check)
+                //isVerified.isChecked = true
             } else {
-                isVerified.isChecked = false
+                isVerified.setButtonDrawable(R.drawable.un_check)
+                //isVerified.isChecked = false
             }
 
             if (jsondata.data?.adhar_number != null) {
@@ -210,7 +212,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
                 isAdhaarNoAdded = false
             }
 
-            profilePresenter.checkValidations(signupReq,isAdhaarNoAdded)
+            profilePresenter.checkValidations(signupReq, isAdhaarNoAdded)
 
         }
 
@@ -308,7 +310,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
     override fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.edit_profile)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.BLACK)
-        (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_arrow)
+        (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_button)
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }

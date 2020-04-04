@@ -24,7 +24,7 @@ class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
     override fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.terms_and_condition)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-        (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_arrow)
+        (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_button)
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }

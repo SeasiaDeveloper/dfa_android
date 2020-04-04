@@ -88,7 +88,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
         (toolbarLayout as CenteredToolbar).title = getString(R.string.my_cases)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-        (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_arrow)
+        (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_button)
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }

@@ -252,11 +252,15 @@
                     android:id="@+id/isVerified"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:enabled="false"
+                    android:button="@drawable/un_check"
                     android:focusable="false"
+                    android:scaleX="0.70"
+                    android:scaleY="0.70"
+                    android:padding="@dimen/_5sdp"
                     android:text="@string/verified"
                     android:textSize="@dimen/_16sdp" />
 

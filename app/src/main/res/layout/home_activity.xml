@@ -29,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/AppTabLayout"
+                android:background="@color/green"
                 app:tabTextAppearance="@style/AppTabTextAppearance"
                 app:tabGravity="fill"
                 app:tabMode="fixed" />

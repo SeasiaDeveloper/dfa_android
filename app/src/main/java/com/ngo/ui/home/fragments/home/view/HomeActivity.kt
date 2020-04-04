@@ -176,6 +176,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         mDrawerLayout!!.addDrawerListener(mToggle!!)
         mToggle!!.syncState()
 
+        getSupportActionBar()?.setHomeButtonEnabled(true)
+        getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
+        getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.burger_icon)
+
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         if (supportActionBar != null) {
             supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -188,8 +192,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val adapter = TabLayoutAdapter(supportFragmentManager)
         adapter.addFragment(GeneralPublicHomeFragment(), "Home")
         adapter.addFragment(CasesFragment(), "Cases")
-        adapter.addFragment(PhotosFragment(), "Photo(s)")
-        adapter.addFragment(VideosFragment(), "Video(s)")
+        adapter.addFragment(PhotosFragment(), "Photos")
+        adapter.addFragment(VideosFragment(), "Videos")
         viewPager?.adapter = adapter
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)

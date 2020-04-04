@@ -4,28 +4,35 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_cases"
+            android:icon="@drawable/cases"
             android:title="@string/nav_my_cases" />
         <item
             android:id="@+id/nav_edit_profile"
+            android:icon="@drawable/edit"
             android:title="@string/nav_edit_profile" />
         <item
             android:id="@+id/nav_password"
+            android:icon="@drawable/lock"
             android:title="@string/nav_password" />
 
         <item
             android:id="@+id/nav_my_earning"
+            android:icon="@drawable/earning"
             android:title="@string/nav_my_earning" />
 
         <item
             android:id="@+id/nav_invite_friends"
+            android:icon="@drawable/invite"
             android:title="@string/nav_invite_friends" />
 
         <item
             android:id="@+id/nav_terms_and_conditions"
+            android:icon="@drawable/term"
             android:title="@string/nav_terms_and_conditions" />
 
         <item
             android:id="@+id/nav_logout"
+            android:icon="@drawable/logout"
             android:title="@string/nav_logout" />
     </group>
 
