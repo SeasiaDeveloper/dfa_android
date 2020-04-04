@@ -14,6 +14,7 @@ import com.ngo.ui.forgotpassword.presenter.ForgotPassworPresenter
 import com.ngo.ui.forgotpassword.presenter.ForgotPasswordPresenterImpl
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_forgot_password.*
+import kotlinx.android.synthetic.main.activity_my_cases.*
 import kotlinx.android.synthetic.main.activity_public.toolbarLayout
 
 class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPasswordView {
@@ -26,14 +27,23 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
 
     override fun setupUI() {
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+
+        (toolbarLayout as CenteredToolbar).title = getString(R.string.forgot_password_title)
+        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+        (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_arrow)
+        (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
+            onBackPressed()
+        }
         val intent = intent
         clicked_from = intent.getStringExtra("clicked_from")
         if (clicked_from.equals("signup", ignoreCase = true)) {
             (toolbarLayout as CenteredToolbar).title = getString(R.string.verify_mobileno)
             tvTitleDes.setText(R.string.enter_mobileno)
+            edit_mobile_number.setHint(R.string.enter_mobile_number)
         } else if (clicked_from.equals("forgotPassword", ignoreCase = true)) {
             (toolbarLayout as CenteredToolbar).title = getString(R.string.forgot_password)
             tvTitleDes.setText(R.string.forgot_password_heading)
+            edit_mobile_number.setHint(R.string.enter_registered_mobile_number)
         } else {
             // do something
         }

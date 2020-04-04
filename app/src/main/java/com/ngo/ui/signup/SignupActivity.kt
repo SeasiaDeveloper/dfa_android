@@ -26,6 +26,7 @@ import kotlinx.android.synthetic.main.activity_signup.toolbarLayout
 import kotlin.collections.ArrayList
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
+import com.mikhaellopez.circularimageview.CircularImageView
 import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.ui.login.view.LoginActivity
 import com.ngo.utils.PreferenceHandler
@@ -123,7 +124,6 @@ class SignupActivity : BaseActivity(), SignupView {
             if (resultGallery)
                 galleryIntent()
         }
-
     }
 
     override fun fetchDistList(responseObject: DistResponse) {
@@ -256,7 +256,7 @@ class SignupActivity : BaseActivity(), SignupView {
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.USER_ROLE,
-           "0"
+            "0"
         )
 
         startActivity(Intent(this@SignupActivity, HomeActivity::class.java))

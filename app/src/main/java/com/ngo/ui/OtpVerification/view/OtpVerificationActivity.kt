@@ -16,6 +16,7 @@ import com.ngo.ui.OtpVerification.presenter.OtpVerificationImpl
 import com.ngo.ui.OtpVerification.presenter.OtpVerificationPresenter
 import com.ngo.ui.changepassword.view.ChangePasswordActivity
 import com.ngo.ui.signup.SignupActivity
+import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_forgot_password.toolbarLayout
 import kotlinx.android.synthetic.main.activity_otp_verification.*
 
@@ -99,7 +100,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
                     et_otp.requestFocus()
                     return
                 } else {
-                    showProgress()
+                    Utilities.showProgress(this)
                     verifyVerificationCode(code)
                 }
                 //verifying the code entered manually
@@ -107,14 +108,14 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
 
             R.id.btnOtpResend -> {
                 val code: String = et_otp.getText().toString().trim()
-                if (code.isEmpty() || code.length < 6) {
-                    et_otp.setError("Enter valid code")
-                    et_otp.requestFocus()
-                    return
-                } else {
-                    showProgress()
-                    presenter.sendVerificationCode(mobile, mCallbacks)
-                }
+                /*  if (code.isEmpty() || code.length < 6) {
+                      et_otp.setError("Enter valid code")
+                      et_otp.requestFocus()
+                      return
+                  } else {*/
+                Utilities.showProgress(this)
+                presenter.sendVerificationCode(mobile, mCallbacks)
+                //   }
             }
 
         }
@@ -130,7 +131,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
         mAuth.signInWithCredential(credential).addOnCompleteListener(this@OtpVerificationActivity,
             OnCompleteListener<AuthResult?> { task ->
                 if (task.isSuccessful) {
-                    dismissProgress()
+                    Utilities.dismissProgress()
 
                     //verification successful we will start the Change Password activity
                     if (intent_from.equals("signup", ignoreCase = true)) {
@@ -146,7 +147,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
                     }
 
                 } else {
-                    dismissProgress()
+                    Utilities.dismissProgress()
                     Toast.makeText(
                         this@OtpVerificationActivity,
                         task.exception?.message,
