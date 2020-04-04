@@ -214,7 +214,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
 
         }
 
-        layout_profile_image.setOnClickListener {
+        imgProfile.setOnClickListener {
             val resultGallery = getMarshmallowPermission(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
