@@ -6,7 +6,7 @@
         android:id="@+id/loginlayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+
         android:orientation="vertical">
 
         <!--  <include
@@ -17,6 +17,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
+            android:background="@color/white"
             android:layout_height="wrap_content">
 
             <LinearLayout
@@ -149,12 +150,12 @@
                     android:id="@+id/btnSignUp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_20sdp"
-                    android:layout_marginEnd="@dimen/_12sdp"
                     android:background="@drawable/button_green_bg"
                     android:gravity="center"
                     android:padding="@dimen/_12sdp"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
                     android:text="SIGN UP"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_10ssp"

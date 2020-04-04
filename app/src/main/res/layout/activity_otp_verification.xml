@@ -17,6 +17,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/white"
             android:orientation="vertical">
 
             <TextView
@@ -26,7 +27,7 @@
                 android:layout_marginTop="@dimen/_30sdp"
                 android:gravity="center"
                 android:text="@string/please_enter_confirmation_code"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp"
                 app:font="@{`bold`}" />
 
@@ -46,7 +47,7 @@
                 android:maxLength="500"
                 android:maxLines="1"
                 android:minLines="1"
-                android:padding="@dimen/_7sdp" />
+                android:padding="@dimen/_10sdp" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/btnOtpSubmit"
@@ -55,10 +56,10 @@
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_30sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
-                android:background="@drawable/button_red_bg"
+                android:background="@drawable/button_green_bg"
                 android:gravity="center"
-                android:padding="@dimen/_10sdp"
-                android:text="Submit"
+                android:padding="@dimen/_12sdp"
+                android:text="SUBMIT"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_10ssp"
                 app:font="@{`regular`}" />
@@ -72,8 +73,8 @@
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:background="@drawable/button_red_bg"
                 android:gravity="center"
-                android:padding="@dimen/_10sdp"
-                android:text="Resend"
+                android:padding="@dimen/_12sdp"
+                android:text="RESEND"
                 android:textColor="@color/white"
                 android:textSize="@dimen/_10ssp"
                 app:font="@{`regular`}" />
