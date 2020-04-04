@@ -22,4 +22,7 @@
     <color name="red">#ff000a</color>
     <color name="green">#006600</color>
 
+
+    <color name="grey_text">#6a6a6a</color>
+
 </resources>

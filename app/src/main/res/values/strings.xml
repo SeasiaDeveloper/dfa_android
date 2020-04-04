@@ -181,4 +181,5 @@
     <string name="complainer_contact">Complainer Contact: </string>
     <string name="new_complaint">New Complaint</string>
     <string name="reject">Reject</string>
+    <string name="action">Action</string>
 </resources>
