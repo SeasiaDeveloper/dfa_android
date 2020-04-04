@@ -352,11 +352,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onClick() {
+        ForegroundService.stopService(this)
         finish()
         PreferenceHandler.clearPreferences(this)
-        ForegroundService.stopService(this)
         val intent = Intent(this, LoginActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent.aloddFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
     }
 

@@ -247,7 +247,7 @@
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_weight="0.3"
-                    android:background="@drawable/button_bg"
+                    android:background="@drawable/button_red_bg"
                     android:text="@string/update"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />
@@ -261,7 +261,7 @@
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:layout_weight="0.3"
-                    android:background="@drawable/button_bg"
+                    android:background="@drawable/button_red_bg"
                     android:text="@string/cancel"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp" />

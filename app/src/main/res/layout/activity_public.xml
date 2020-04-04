@@ -246,7 +246,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
-                    android:background="@drawable/button_bg"
+                    android:background="@drawable/button_red_bg"
                     android:text="@string/submit"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_14ssp"

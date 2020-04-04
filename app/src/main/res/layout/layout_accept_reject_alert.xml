@@ -113,7 +113,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@drawable/button_bg"
+                android:background="@drawable/button_red_bg"
                 android:text="@string/accept"
                 android:textColor="@color/white"
                 app:font="@{`bold`}" />
@@ -125,7 +125,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@drawable/button_bg"
+                android:background="@drawable/button_red_bg"
                 android:text="@string/reject"
                 android:textColor="@color/white"
                 app:font="@{`bold`}" />
@@ -137,7 +137,7 @@
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@drawable/button_bg"
+                android:background="@drawable/button_red_bg"
                 android:text="@string/open"
                 android:textColor="@color/white"
                 app:font="@{`bold`}" />

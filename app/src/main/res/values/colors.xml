@@ -19,5 +19,7 @@
     <color name="colorGreen">#42CB44</color>
     <color name="colorDarkGreen">#3C9741</color>
     <color name="colorPolice">#4069D5</color>
+    <color name="red">#ff000a</color>
+    <color name="green">#006600</color>
 
 </resources>

@@ -254,7 +254,7 @@
                         android:text="Change Status"
                         android:textSize="@dimen/_10ssp"
                         android:gravity="center"
-                        android:background="@drawable/button_bg"
+                        android:background="@drawable/button_red_bg"
                         android:padding="@dimen/_7sdp"
                         app:font="@{`regular`}"
                         android:textColor="@color/white" />
