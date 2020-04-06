@@ -114,7 +114,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         setProfilePic()
 
         imgAdd.setOnClickListener(this)
-       // Utilities.showProgress(mContext)
+        // Utilities.showProgress(mContext)
 
         val casesRequest =
             CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
@@ -311,15 +311,20 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         binding.rvStatus?.layoutManager = horizontalLayoutManager
         binding.rvStatus?.adapter = statusAdapter
         binding.btnDone.setOnClickListener {
-            //hit status update api
-            Utilities.showProgress(mContext)
-            presenter.updateStatus(
-                token,
-                complaintId,
-                statusId,
-                binding.etDescription.text.toString()
-            )
-            dialog.dismiss()
+
+            if (statusId == "-1") {
+                Utilities.showMessage(mContext, getString(R.string.select_option_validation))
+            } else {
+                //hit status update api
+                Utilities.showProgress(mContext)
+                presenter.updateStatus(
+                    token,
+                    complaintId,
+                    statusId,
+                    binding.etDescription.text.toString()
+                )
+                dialog.dismiss()
+            }
         }
 
         builder.setView(binding.root)
@@ -379,9 +384,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             Utilities.showProgress(mContext)
             //token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
             //type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "")!!
-         /*   if (adapter == null) {
-                setAdapter()
-            }*/
+            /*   if (adapter == null) {
+                   setAdapter()
+               }*/
             presenter.getComplaints(casesRequest, token, type)
             change = 0
         }
@@ -462,10 +467,10 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         startActivity(intent)
     }
 
-   /* override fun myAction(mContext: Context) {
-        this.mContext = mContext
-        onResume()
-        *//*  val casesRequest =
+    /* override fun myAction(mContext: Context) {
+         this.mContext = mContext
+         onResume()
+         *//*  val casesRequest =
               CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
 
           presenter.getComplaints(casesRequest, token, type)*//*

@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.graphics.Color
 import android.location.Location
 import android.util.Log
 import android.view.*
@@ -25,6 +26,7 @@ import com.google.gson.GsonBuilder
 import com.ngo.R
 import com.ngo.adapters.TabLayoutAdapter
 import com.ngo.base.BaseActivity
+import com.ngo.customviews.CenteredToolbar
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.NotificationResponse
@@ -51,6 +53,8 @@ import com.ngo.utils.alert.AlertDialog
 import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.nav_header.*
 import com.ngo.utils.*
+import kotlinx.android.synthetic.main.nav_action.*
+import kotlinx.android.synthetic.main.nav_action.view.*
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
     GetLogoutDialogCallbacks, LocationListenerCallback {
@@ -93,9 +97,16 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private val refreshReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val notificationResponse =
-                intent.getSerializableExtra("notificationResponse") as NotificationResponse
-            displayAcceptRejDialog(notificationResponse)
+            if (PreferenceHandler.readString(
+                    this@HomeActivity,
+                    PreferenceHandler.USER_ROLE,
+                    "0"
+                ).equals("2")
+            ) {
+                val notificationResponse =
+                    intent.getSerializableExtra("notificationResponse") as NotificationResponse
+                displayAcceptRejDialog(notificationResponse)
+            }
         }
     }
 
@@ -148,7 +159,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             dialog.dismiss()
         }
         openButton.setOnClickListener {
-            //complaintId
             val intent = Intent(this, PoliceIncidentDetailScreen::class.java)
             intent.putExtra(
                 Constants.PUBLIC_COMPLAINT_DATA,
@@ -181,6 +191,16 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (supportActionBar != null) {
             supportActionBar?.setDisplayShowTitleEnabled(false)
         }
+
+        val role = PreferenceHandler.readString(this@HomeActivity, PreferenceHandler.USER_ROLE, "0")
+
+        if (role.equals("0"))
+            toolbar_title.text = getString(R.string.dashboard)
+        else if (role.equals("1"))
+            toolbar_title.text = getString(R.string.ngo_dashboard)
+        else if (role.equals("2"))
+            toolbar_title.text = getString(R.string.police_dashboard)
+        (nav_action as Toolbar).setTitleTextColor(Color.BLACK)
 
         getLocation()
     }

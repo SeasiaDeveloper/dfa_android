@@ -26,4 +26,14 @@ interface SignupView :BaseView {
     fun confirmPasswordLengthValidation()
     fun confirmPasswordMismatchValidation()
 
+    fun firstNameAlphabetFailure()
+    fun firstNameLengthFailure()
+    fun middleNameAlphabetFailure()
+    fun middleNameLengthFailure()
+    fun lastNameAlphabetFailure()
+    fun lastNameLengthFailure()
+    fun addressLine1LengthFailure()
+    fun addressLine2LengthFailure()
+    fun pinCodeLengthFailure()
+
 }

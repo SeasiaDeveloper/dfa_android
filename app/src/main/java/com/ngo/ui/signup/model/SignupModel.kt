@@ -35,16 +35,56 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
         } else if (request.first_name.isEmpty()) {
             signupPresenterImplClass.firstNameValidationFailure()
             return
-        } else if (request.last_name.isEmpty()) {
+        }
+        else if (request.first_name.trim().length<3) {
+            signupPresenterImplClass.firstNameLengthFailure()
+            return
+        }
+        else if (!Utilities.isAlphabets(request.first_name)) {
+            signupPresenterImplClass.firstNameAlphabetFailure()
+            return
+        } else if (request.middle_name.isNotEmpty() && request.middle_name.trim().length<3 ) {
+            signupPresenterImplClass.middleNameLengthFailure()
+            return
+        }
+        else if (request.middle_name.isNotEmpty() && !Utilities.isAlphabets(request.middle_name)) {
+            signupPresenterImplClass.middleNameAlphabetFailure()
+            return
+        }
+        else if (request.last_name.isEmpty()) {
             signupPresenterImplClass.lastNameValidationFailure()
             return
-        } else if (request.address_1.isEmpty()) {
+        }
+        else if (request.last_name.trim().length<3) {
+            signupPresenterImplClass.lastNameLengthFailure()
+            return
+        }
+        else if (!Utilities.isAlphabets(request.last_name)) {
+            signupPresenterImplClass.lastNameAlphabetFailure()
+            return
+        }
+        else if (request.address_1.isEmpty()) {
             signupPresenterImplClass.Address1ValidationFailure()
             return
-        } else if (request.pin_code.isEmpty()) {
+        }
+        else if (request.address_1.trim().length<3) {
+            signupPresenterImplClass.addressLine1LengthFailure()
+            return
+        }
+        else if (!(request.last_name.isEmpty() ) && request.address_2.trim().length<3) {
+            signupPresenterImplClass.addressLine2LengthFailure()
+            return
+        }
+        else if (request.pin_code.isEmpty()) {
             signupPresenterImplClass.pinCodeValidationFailure()
             return
-        } else {
+        }
+        else if (request.pin_code.trim().length <7) {
+            signupPresenterImplClass.pinCodeLengthFailure()
+            return
+        }
+
+        else {
 
             if ((request.mobile).isNotEmpty()) {
                 if (!(Utilities.isValidMobile(request.mobile))) {

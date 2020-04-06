@@ -4,12 +4,10 @@ import android.content.Context
 import android.graphics.Typeface
 import android.text.TextUtils
 import android.util.AttributeSet
-import android.view.View
 import android.widget.TextView
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.ngo.R
-
 
 class CenteredToolbar : Toolbar {
     private var titleView: TextView? = null
@@ -24,11 +22,7 @@ class CenteredToolbar : Toolbar {
         titleView?.setTypeface(custom_font)
     }
 
-    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
-        context,
-        attrs,
-        defStyleAttr
-    ) {
+    constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         init()
     }
 
@@ -40,10 +34,7 @@ class CenteredToolbar : Toolbar {
             titleView!!.ellipsize = TextUtils.TruncateAt.END
             addView(
                 titleView,
-                Toolbar.LayoutParams(
-                    Toolbar.LayoutParams.WRAP_CONTENT,
-                    Toolbar.LayoutParams.WRAP_CONTENT
-                )
+                Toolbar.LayoutParams(Toolbar.LayoutParams.WRAP_CONTENT, Toolbar.LayoutParams.WRAP_CONTENT)
             )
         }
     }
@@ -61,11 +52,6 @@ class CenteredToolbar : Toolbar {
     }
 
     override fun setTitleTextColor(color: Int) {
-        if (titleView != null) titleView!!.setTextColor(
-            ContextCompat.getColor(
-                context!!,
-                R.color.white
-            )
-        )
+        if (titleView != null) titleView!!.setTextColor(ContextCompat.getColor(context!!,R.color.black))
     }
 }

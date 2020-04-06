@@ -7,6 +7,7 @@ import com.ngo.ui.signup.model.SignupModel
 import com.ngo.ui.signup.view.SignupView
 
 class SignupPresenterImplClass(private var signupView: SignupView) : SignupPresenter {
+
     override fun passwordEmptyValidation() {
         signupView.passwordEmptyValidation()
     }
@@ -95,6 +96,42 @@ class SignupPresenterImplClass(private var signupView: SignupView) : SignupPrese
 
     override fun onSaveDetailsFailed(error: String) {
         signupView.showServerError(error)
+    }
+
+    override fun firstNameAlphabetFailure() {
+        signupView.firstNameAlphabetFailure()
+    }
+
+    override fun firstNameLengthFailure() {
+        signupView.firstNameLengthFailure()
+    }
+
+    override fun middleNameAlphabetFailure() {
+        signupView.middleNameAlphabetFailure()
+    }
+
+    override fun middleNameLengthFailure() {
+        signupView.middleNameLengthFailure()
+    }
+
+    override fun lastNameAlphabetFailure() {
+        signupView.lastNameAlphabetFailure()
+    }
+
+    override fun lastNameLengthFailure() {
+        signupView.lastNameLengthFailure()
+    }
+
+    override fun addressLine1LengthFailure() {
+        signupView.addressLine1LengthFailure()
+    }
+
+    override fun addressLine2LengthFailure() {
+        signupView.addressLine2LengthFailure()
+    }
+
+    override fun pinCodeLengthFailure() {
+        signupView.pinCodeLengthFailure()
     }
 
 }

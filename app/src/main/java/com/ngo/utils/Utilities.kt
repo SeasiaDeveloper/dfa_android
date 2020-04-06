@@ -407,4 +407,8 @@ object Utilities {
         dialog.show()
     }
 
+    fun isAlphabets(name: String): Boolean {
+        return name.matches("[a-zA-Z]+".toRegex())
+    }
+
 }
