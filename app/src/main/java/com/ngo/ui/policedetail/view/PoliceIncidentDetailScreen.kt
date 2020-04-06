@@ -70,7 +70,8 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
 
     override fun onStatusSelected(comment: String) {
         if (statusId == "-1") {
-            Utilities.showMessage(this@PoliceIncidentDetailScreen, getString(R.string.select_option_validation))
+            Utilities.dismissProgress()
+            Utilities.showMessage(this@PoliceIncidentDetailScreen,getString(R.string.no_option_selected))
         } else {
             //hit status update api
             crimePresenter.updateStatus(
