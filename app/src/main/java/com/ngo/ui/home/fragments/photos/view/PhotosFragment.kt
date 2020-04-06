@@ -56,7 +56,7 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
     private fun setAdapter() {
         val layoutManager = GridLayoutManager(activity!!, 2)
         rvPhotos.setLayoutManager(layoutManager)
-        val spanCount = 2
+        val spanCount = 4
         val spacing = 10
         val includeEdge = true
         rvPhotos.addItemDecoration(

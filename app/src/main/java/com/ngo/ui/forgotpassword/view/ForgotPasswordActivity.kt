@@ -30,7 +30,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
 
         (toolbarLayout as CenteredToolbar).title = getString(R.string.forgot_password_title)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.BLACK)
-        (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_arrow)
+        (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_button)
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }

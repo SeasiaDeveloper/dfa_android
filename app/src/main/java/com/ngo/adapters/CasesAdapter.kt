@@ -217,7 +217,7 @@ class CasesAdapter(
                 if (item.showDelete == 1) {
                     itemView.btnDelete.visibility = View.VISIBLE
                 } else {
-                    itemView.btnDelete.visibility = View.GONE
+                    itemView.btnDelete.visibility = View.INVISIBLE
                 }
 
                 itemView.btnDelete.setOnClickListener {

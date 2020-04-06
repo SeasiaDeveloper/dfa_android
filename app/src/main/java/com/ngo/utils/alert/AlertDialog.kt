@@ -17,7 +17,7 @@ class AlertDialog {
             getLogoutDialogCallbacks: GetLogoutDialogCallbacks
         ) {
             val dialogBuilder = AlertDialog.Builder(context)
-            dialogBuilder.setTitle("LOGOUT")
+            dialogBuilder.setTitle("Logout")
             dialogBuilder.setMessage("Do you want to Logout?")
                 .setCancelable(false)
                 .setPositiveButton("Ok", { dialog, id ->
