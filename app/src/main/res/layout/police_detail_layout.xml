@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:id="@+id/ngoDetailLayout"
@@ -36,7 +36,7 @@
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginEnd="@dimen/_7sdp"
                         android:layout_weight=".3"
-                        android:text="Crime Type:"
+                        android:text="@string/crime_type"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
                         android:textStyle="bold"
@@ -71,7 +71,7 @@
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginEnd="@dimen/_7sdp"
                         android:layout_weight=".3"
-                        android:text="State:"
+                        android:text="@string/state"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
                         android:textStyle="bold"
@@ -105,7 +105,7 @@
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginEnd="@dimen/_7sdp"
                         android:layout_weight=".3"
-                        android:text="Urgency:"
+                        android:text="@string/urgency"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
                         android:textStyle="bold"
@@ -139,7 +139,7 @@
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginEnd="@dimen/_7sdp"
                         android:layout_weight=".3"
-                        android:text="Reported:"
+                        android:text="@string/reported"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
                         android:textStyle="bold"
@@ -187,7 +187,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginEnd="@dimen/_7sdp"
-                        android:text="Reported Description:"
+                        android:text="@string/reported_description"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
                         android:textStyle="bold" />
@@ -206,7 +206,7 @@
                         android:imeOptions="actionDone"
                         android:inputType="textMultiLine"
                         android:maxLength="500"
-                        android:padding="@dimen/_3sdp"></com.ngo.customviews.CustomEditText>
+                        android:padding="@dimen/_3sdp"/>
 
 
                     <RelativeLayout
@@ -249,7 +249,7 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
-                        android:background="@drawable/shape_round_corner_action"
+                        android:background="@drawable/button_green_bg"
                         android:drawablePadding="@dimen/_2sdp"
                         android:drawableTint="@color/white"
                         android:gravity="center"
@@ -257,12 +257,12 @@
                         android:paddingTop="10dp"
                         android:paddingEnd="@dimen/_30ssp"
                         android:paddingBottom="10dp"
-                        android:text="Action"
+                        android:text="@string/action"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         android:visibility="visible"
-                      />
+                        tools:targetApi="m" />
 
                 </LinearLayout>
 

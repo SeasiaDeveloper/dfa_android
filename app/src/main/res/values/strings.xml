@@ -186,4 +186,6 @@
     <string name="ngo_dashboard">NGO Dashboard</string>
     <string name="police_dashboard">Police Dashboard</string>
     <string name="select_option_validation">Please select some option first</string>
+    <string name="reported">Reported:</string>
+    <string name="reported_description">Reported Description:</string>
 </resources>
