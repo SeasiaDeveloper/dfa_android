@@ -23,218 +23,253 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvUSerName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
-                    android:layout_marginEnd="@dimen/_7sdp"
-                    android:text="User Name:"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_13ssp"
-                    android:textStyle="bold"
-                    android:visibility="gone"
-                    app:font="@{`semibold`}" />
-
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etUserName"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_9sdp"
-                    android:layout_marginTop="@dimen/_2sdp"
-                    android:layout_marginEnd="@dimen/_12sdp"
-                    android:background="@null"
-                    android:editable="false"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_7sdp"
+                    android:layout_gravity="center_vertical"
+                    android:visibility="gone"
+                    android:id="@+id/userame_layout">
 
-                    android:ems="10"
-                    android:focusable="false"
-                    android:imeOptions="actionNext"
-                    android:inputType="textPersonName"
-                    android:lines="1"
-                    android:padding="@dimen/_3sdp"
-                    app:font="@{`regular`}" />
+                    <com.ngo.customviews.CustomtextView
+                        android:id="@+id/tvUSerName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:text="User Name:"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13ssp"
+                        android:textStyle="bold"
+                        />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                    <com.ngo.customviews.CustomEditText
+                        android:id="@+id/etUserName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_5sdp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:background="@null"
+                        android:editable="false"
+                        android:textColor="@color/grey"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:imeOptions="actionNext"
+                        android:inputType="textPersonName"
+                        android:lines="1"
+                        android:padding="@dimen/_3sdp" />
+
+                </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_7sdp"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical"
+                android:id="@+id/title_layout">
+
+                <com.ngo.customviews.CustomtextView
                     android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Title:"
-                    android:visibility="gone"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
-                    android:textStyle="bold"
-                    app:font="@{`semibold`}" />
+                    android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.ngo.customviews.CustomEditText
                     android:id="@+id/editTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_9sdp"
-                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
+                    android:textColor="@color/grey"
                     android:background="@null"
                     android:editable="false"
-
                     android:ems="10"
                     android:focusable="false"
                     android:imeOptions="actionNext"
                     android:inputType="textPersonName"
                     android:lines="1"
-                    android:padding="@dimen/_3sdp"
-                    app:font="@{`regular`}" />
+                    android:padding="@dimen/_3sdp" />
+            </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatTextView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_7sdp"
+                android:id="@+id/email_layout"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical">
+
+                <com.ngo.customviews.CustomtextView
                     android:id="@+id/tvEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:visibility="gone"
-                    android:layout_marginTop="@dimen/_6sdp"
+                    android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Email:"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
-                    android:textStyle="bold"
-                    app:font="@{`semibold`}" />
+                    android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.ngo.customviews.CustomEditText
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_9sdp"
-                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:background="@null"
+                    android:textColor="@color/grey"
                     android:editable="false"
                     android:ems="10"
-
                     android:focusable="false"
                     android:imeOptions="actionNext"
                     android:inputType="textPersonName"
                     android:lines="1"
-                    android:padding="@dimen/_3sdp"
-                    app:font="@{`regular`}" />
+                    android:padding="@dimen/_3sdp" />
+            </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatTextView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_7sdp"
+                android:id="@+id/contact_layout"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical">
+
+                <com.ngo.customviews.CustomtextView
                     android:id="@+id/tvContact"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_6sdp"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Contact No:"
                     android:textColor="@color/black"
-                    android:visibility="gone"
                     android:textSize="@dimen/_13ssp"
-                    android:textStyle="bold"
-                    app:font="@{`semibold`}" />
+                    android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.ngo.customviews.CustomEditText
                     android:id="@+id/etContactNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_9sdp"
-                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:background="@null"
+                    android:textColor="@color/grey"
                     android:editable="false"
                     android:ems="10"
-
                     android:focusable="false"
                     android:imeOptions="actionNext"
                     android:inputType="number"
                     android:lines="1"
                     android:maxLength="10"
-                    android:padding="@dimen/_3sdp"
-                    app:font="@{`regular`}" />
+                    android:padding="@dimen/_3sdp" />
+            </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatTextView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_7sdp"
+                android:id="@+id/typecrime_layout"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical">
+
+                <com.ngo.customviews.CustomtextView
                     android:id="@+id/tvTypesOfCrime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:visibility="gone"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Crime Type:"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
-                    android:textStyle="bold"
-                    app:font="@{`semibold`}" />
+                    android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.ngo.customviews.CustomtextView
                     android:id="@+id/spTypesOfCrime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_9sdp"
-                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:background="@null"
                     android:padding="@dimen/_3sdp"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/_13ssp" />
+            </LinearLayout>
 
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_13ssp"
-                    app:font="@{`regular`}" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_7sdp"
+                android:id="@+id/status_layout"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.ngo.customviews.CustomtextView
                     android:id="@+id/tvStatusOfCrime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_6sdp"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Crime State:"
-                    android:visibility="gone"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
-                    android:textStyle="bold"
-                    app:font="@{`semibold`}" />
+                    android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.ngo.customviews.CustomtextView
                     android:id="@+id/spStatusOfCrime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_9sdp"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginTop="@dimen/_2sdp"
+                    android:textColor="@color/grey"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:background="@null"
                     android:padding="@dimen/_3sdp"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_13ssp"
-                    app:font="@{`regular`}" />
+                    android:textSize="@dimen/_13ssp" />
+            </LinearLayout>
 
-                <androidx.appcompat.widget.AppCompatTextView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_7sdp"
+                android:id="@+id/urgency_level_layout"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical">
+
+                <com.ngo.customviews.CustomtextView
                     android:id="@+id/tvLevel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Urgency Level:"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
-                    android:visibility="gone"
-                    android:textStyle="bold"
-                    app:font="@{`semibold`}" />
+                    android:textStyle="bold" />
 
-
-                <androidx.appcompat.widget.AppCompatTextView
+                <com.ngo.customviews.CustomtextView
                     android:id="@+id/urgency"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginStart="@dimen/_9sdp"
-                    android:layout_marginTop="@dimen/_2sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:background="@null"
+                    android:textColor="@color/grey"
                     android:padding="@dimen/_3sdp"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_13ssp"
-                    app:font="@{`regular`}" />
+                    android:textSize="@dimen/_13ssp" />
+            </LinearLayout>
 
                 <com.jaygoo.widget.RangeSeekBar
                     android:id="@+id/sb_steps_5"
@@ -245,11 +280,11 @@
                     android:layout_marginEnd="@dimen/_10sdp"
                     android:scrollIndicators="none"
                     app:rsb_gravity="bottom"
-                    app:rsb_mode="single"
-                    app:rsb_progress_color="@color/blue"
                     android:visibility="gone"
+                    app:rsb_mode="single"
+                    app:rsb_progress_color="@color/grey"
                     app:rsb_step_auto_bonding="true"
-                    app:rsb_step_color="@color/blue"
+                    app:rsb_step_color="@color/grey"
                     app:rsb_step_height="15dp"
                     app:rsb_step_radius="4dp"
                     app:rsb_step_width="10dp"
@@ -278,34 +313,40 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:visibility="gone"
-                        android:src="@drawable/ic_play_circle_outline" />
+                        android:src="@drawable/ic_play_circle_outline"
+                        android:visibility="visible" />
 
                 </RelativeLayout>
 
-                <androidx.appcompat.widget.AppCompatTextView
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginEnd="@dimen/_7sdp"
+                android:id="@+id/desc_layout"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical">
+
+                <com.ngo.customviews.CustomtextView
                     android:id="@+id/tvDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="Description:"
-                    android:visibility="gone"
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp"
-                    android:textStyle="bold"
-                    app:font="@{`semibold`}" />
+                    android:textStyle="bold" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.ngo.customviews.CustomEditText
                     android:id="@+id/etDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_9sdp"
-                    android:layout_marginTop="@dimen/_2sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_8sdp"
                     android:background="@null"
+                    android:textColor="@color/grey"
                     android:editable="false"
                     android:ems="10"
                     android:focusable="false"
@@ -313,8 +354,9 @@
                     android:imeOptions="actionDone"
                     android:inputType="textMultiLine"
                     android:maxLength="500"
-                    android:padding="@dimen/_3sdp"
-                    app:font="@{`regular`}" />
+                    android:padding="@dimen/_3sdp" />
+
+            </LinearLayout>
 
             </LinearLayout>
         </ScrollView>

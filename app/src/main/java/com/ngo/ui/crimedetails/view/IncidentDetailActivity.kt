@@ -28,6 +28,7 @@ import kotlinx.android.synthetic.main.activity_incident_detail.sb_steps_5
 import kotlinx.android.synthetic.main.activity_incident_detail.spTypesOfCrime
 import kotlinx.android.synthetic.main.activity_incident_detail.toolbarLayout
 import kotlinx.android.synthetic.main.adapter_photos.view.*
+import kotlinx.android.synthetic.main.general_complaints_listing_items.*
 
 class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
     // private lateinit var complaintsData: GetComplaintsResponse.Data
@@ -88,66 +89,42 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
         if (postOrComplaint != null) {
             if (postOrComplaint.equals("0")) {
                 //complaint
-                tvTitle.visibility = View.GONE
-                editTitle.visibility = View.GONE
-
-                tvUSerName.visibility = View.VISIBLE
-                etUserName.visibility = View.VISIBLE
-                tvEmail.visibility = View.VISIBLE
-                etEmail.visibility = View.VISIBLE
-                tvContact.visibility = View.VISIBLE
-                etContactNo.visibility = View.VISIBLE
-                tvTypesOfCrime.visibility = View.VISIBLE
-                spTypesOfCrime.visibility = View.VISIBLE
-                tvLevel.visibility = View.VISIBLE
                 sb_steps_5.visibility = View.VISIBLE
-                tvDescription.visibility = View.VISIBLE
-                etDescription.visibility = View.VISIBLE
-                tvStatusOfCrime.visibility = View.VISIBLE
-                spStatusOfCrime.visibility = View.VISIBLE
+                title_layout.visibility = View.GONE
+                userame_layout.visibility = View.VISIBLE
+                email_layout.visibility = View.VISIBLE
+                contact_layout.visibility = View.VISIBLE
+                typecrime_layout.visibility = View.VISIBLE
+                desc_layout.visibility = View.VISIBLE
+                status_layout.visibility = View.VISIBLE
                 urgency.visibility = View.GONE
 
             } else if (postOrComplaint.equals("1")) {
                 //post
-                tvTitle.visibility = View.VISIBLE
-                editTitle.visibility = View.VISIBLE
-                tvDescription.visibility = View.GONE
-                etDescription.visibility = View.GONE
-                tvUSerName.visibility = View.GONE
-                etUserName.visibility = View.GONE
-                tvEmail.visibility = View.GONE
-                etEmail.visibility = View.GONE
-                tvContact.visibility = View.GONE
-                etContactNo.visibility = View.GONE
-                tvTypesOfCrime.visibility = View.GONE
-                spTypesOfCrime.visibility = View.GONE
-                tvLevel.visibility = View.GONE
-                sb_steps_5.visibility = View.GONE
-                tvDescription.visibility = View.GONE
-                etDescription.visibility = View.GONE
-                tvStatusOfCrime.visibility = View.GONE
-                spStatusOfCrime.visibility = View.GONE
+                title_layout.visibility = View.VISIBLE
+                desc_layout.visibility = View.GONE
+                userame_layout.visibility = View.GONE
+                email_layout.visibility = View.GONE
+                contact_layout.visibility = View.GONE
+                typecrime_layout.visibility = View.GONE
+                desc_layout.visibility = View.GONE
+                status_layout.visibility = View.GONE
+                urgency_level_layout.visibility = View.GONE
                 urgency.visibility = View.GONE
+                sb_steps_5.visibility = View.GONE
             }
         }
 
         var type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
         if (type.equals("2") && postOrComplaint.equals("0")) {
-            tvTypesOfCrime.visibility = View.VISIBLE
-            spTypesOfCrime.visibility = View.VISIBLE
-            tvStatusOfCrime.visibility = View.VISIBLE
-            spStatusOfCrime.visibility = View.VISIBLE
-            tvDescription.visibility = View.VISIBLE
-            etDescription.visibility = View.VISIBLE
-            tvLevel.visibility = View.VISIBLE
-            tvContact.visibility = View.GONE
-            etContactNo.visibility = View.GONE
-            tvEmail.visibility = View.GONE
-            etEmail.visibility = View.GONE
-            tvUSerName.visibility = View.GONE
-            etUserName.visibility = View.GONE
-            sb_steps_5.visibility = View.GONE
+            typecrime_layout.visibility = View.VISIBLE
+            status_layout.visibility = View.VISIBLE
+            desc_layout.visibility = View.VISIBLE
+            contact_layout.visibility = View.GONE
+            email_layout.visibility = View.GONE
+            userame_layout.visibility = View.GONE
             urgency.visibility = View.VISIBLE
+            sb_steps_5.visibility = View.GONE
         }
 
     }
@@ -168,14 +145,12 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
         if (!getCrimeDetailsResponse.data?.get(0)?.userDetail?.email.isNullOrEmpty()) {
             etEmail.setText(getCrimeDetailsResponse.data?.get(0)?.userDetail?.email)
         } else {
-            etEmail.visibility = View.GONE
-            tvEmail.visibility = View.GONE
+            email_layout.visibility = View.GONE
         }
         if (!getCrimeDetailsResponse.data?.get(0)?.userDetail?.mobile.isNullOrEmpty()) {
             etContactNo.setText(getCrimeDetailsResponse.data?.get(0)?.userDetail?.mobile)
         } else {
-            etContactNo.visibility = View.GONE
-            tvContact.visibility = View.GONE
+            contact_layout.visibility = View.GONE
         }
         spTypesOfCrime.text = getCrimeDetailsResponse.data?.get(0)?.crime_type
         spStatusOfCrime.text = getCrimeDetailsResponse.data?.get(0)?.status

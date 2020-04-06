@@ -25,7 +25,7 @@
             android:background="@color/white"
             android:orientation="vertical">
 
-            <TextView
+         <com.ngo.customviews.CustomTextViewheading
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -34,9 +34,9 @@
                 android:text="@string/please_enter_confirmation_code"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_16ssp"
-                app:font="@{`bold`}" />
+               />
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.ngo.customviews.CustomEditText
                 android:id="@+id/et_otp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                 android:minLines="1"
                 android:padding="@dimen/_10sdp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.ngo.customviews.CustomTextViewheading
                 android:id="@+id/btnOtpSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -66,10 +66,9 @@
                 android:padding="@dimen/_12sdp"
                 android:text="SUBMIT"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_10ssp"
-                app:font="@{`regular`}" />
+                android:textSize="@dimen/_10ssp" />
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <com.ngo.customviews.CustomTextViewheading
                 android:id="@+id/btnOtpResend"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
@@ -81,8 +80,7 @@
                 android:padding="@dimen/_12sdp"
                 android:text="RESEND"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_10ssp"
-                app:font="@{`regular`}" />
+                android:textSize="@dimen/_10ssp" />
 
         </LinearLayout>
     </LinearLayout>

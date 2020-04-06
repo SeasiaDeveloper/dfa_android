@@ -6,11 +6,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
+        <com.ngo.customviews.CustomTextViewheading
             android:id="@+id/title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
+            android:background="@color/green"
             android:gravity="center"
             android:padding="@dimen/_10sdp"
             android:text="@string/new_complaint"
@@ -46,10 +46,10 @@
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -106,19 +106,20 @@
             android:layout_below="@+id/layout_content"
             android:gravity="center">
 
-            <Button
+            <com.ngo.customviews.CustomtextView
                 android:id="@+id/btnAccept"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_30sdp"
                 android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@drawable/button_red_bg"
+                android:background="@color/green"
+                android:gravity="center"
                 android:text="@string/accept"
                 android:textColor="@color/white"
                 app:font="@{`bold`}" />
 
-            <Button
+            <com.ngo.customviews.CustomtextView
                 android:id="@+id/btnReject"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_30sdp"
@@ -126,11 +127,12 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/button_red_bg"
+                android:gravity="center"
                 android:text="@string/reject"
                 android:textColor="@color/white"
                 app:font="@{`bold`}" />
 
-            <Button
+            <com.ngo.customviews.CustomtextView
                 android:id="@+id/btnOpen"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_30sdp"
@@ -138,6 +140,7 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 android:background="@drawable/button_red_bg"
+                android:gravity="center"
                 android:text="@string/open"
                 android:textColor="@color/white"
                 app:font="@{`bold`}" />

@@ -52,11 +52,12 @@
                         android:orientation="horizontal">
 
 
-                        <androidx.appcompat.widget.AppCompatButton
+                        <com.ngo.customviews.CustomtextView
                             android:id="@+id/btnDelete"
                             android:layout_width="0dp"
                             android:layout_height="30dp"
                             android:layout_weight="0.3"
+                            android:gravity="center"
                             android:background="@drawable/red_button_bg"
                             android:text="@string/delete"
                             android:textColor="@color/white"
@@ -70,7 +71,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
                             android:gravity="end">
-                            <TextView
+                            <com.ngo.customviews.CustomtextView
                                 android:id="@+id/txtName"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -108,7 +109,7 @@
                             android:orientation="horizontal"
                             android:visibility="visible">
 
-                            <TextView
+                            <com.ngo.customviews.CustomtextView
                                 android:id="@+id/expandable_comment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

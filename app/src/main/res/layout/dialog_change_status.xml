@@ -7,13 +7,13 @@
         android:orientation="vertical">
 
 
-        <TextView
+       <com.ngo.customviews.CustomTextViewheading
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/mark_status"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/green"
             android:textSize="@dimen/_16ssp"
             app:font="@{`bold`}" />
 
@@ -93,7 +93,7 @@
             app:font="@{`regular`}" />
 
 
-        <TextView
+       <com.ngo.customviews.CustomTextViewheading
             android:id="@+id/btnDone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
             android:layout_marginRight="@dimen/_20sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:text="@string/ok"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/green"
             android:textSize="@dimen/_16ssp"
             app:font="@{`bold`}" />
 
