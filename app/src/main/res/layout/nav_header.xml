@@ -38,7 +38,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:orientation="vertical">
 
-            <TextView
+          <com.ngo.customviews.CustomTextViewheading
                 android:id="@+id/textName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                 android:textSize="15dp"
                 android:textStyle="bold" />
 
-            <TextView
+            <com.ngo.customviews.CustomTextViewheading
                 android:id="@+id/textAddress"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -29,7 +29,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:weightSum="1">
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/tvTypesOfCrime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -41,9 +41,9 @@
                         android:textSize="@dimen/_13ssp"
                         android:textStyle="bold"
                         android:visibility="visible"
-                        app:font="@{`semibold`}" />
+                        />
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/spTypesOfCrime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
                         android:padding="@dimen/_3sdp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
-                        app:font="@{`regular`}" />
+                     />
 
                 </LinearLayout>
 
@@ -64,7 +64,7 @@
                     android:weightSum="1">
 
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/tvStatusOfCrime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -75,10 +75,10 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
                         android:textStyle="bold"
-                        app:font="@{`semibold`}" />
+                      />
 
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/spStatusOfCrime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                         android:padding="@dimen/_3sdp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
-                        app:font="@{`regular`}" />
+                       />
                 </LinearLayout>
 
                 <LinearLayout
@@ -98,7 +98,7 @@
                     android:weightSum="1">
 
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/upgency_level"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -109,10 +109,10 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
                         android:textStyle="bold"
-                        app:font="@{`semibold`}" />
+                     />
 
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/level"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -122,7 +122,7 @@
                         android:padding="@dimen/_3sdp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
-                        app:font="@{`regular`}" />
+                       />
                 </LinearLayout>
 
                 <LinearLayout
@@ -132,7 +132,7 @@
                     android:weightSum="1">
 
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/reported"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -143,10 +143,10 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
                         android:textStyle="bold"
-                        app:font="@{`semibold`}" />
+                       />
 
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/tv_reported"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -157,7 +157,7 @@
                         android:padding="@dimen/_3sdp"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
-                        app:font="@{`regular`}" />
+                      />
                 </LinearLayout>
 
                 <LinearLayout
@@ -181,7 +181,7 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <androidx.appcompat.widget.AppCompatTextView
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/tvDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -190,10 +190,9 @@
                         android:text="Reported Description:"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
-                        android:textStyle="bold"
-                        app:font="@{`semibold`}" />
+                        android:textStyle="bold" />
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.ngo.customviews.CustomEditText
                         android:id="@+id/editDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -207,7 +206,7 @@
                         android:imeOptions="actionDone"
                         android:inputType="textMultiLine"
                         android:maxLength="500"
-                        android:padding="@dimen/_3sdp"></androidx.appcompat.widget.AppCompatEditText>
+                        android:padding="@dimen/_3sdp"></com.ngo.customviews.CustomEditText>
 
 
                     <RelativeLayout
@@ -243,7 +242,7 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/action_complaint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -263,7 +262,7 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp"
                         android:visibility="visible"
-                        app:font="@{`regular`}" />
+                      />
 
                 </LinearLayout>
 

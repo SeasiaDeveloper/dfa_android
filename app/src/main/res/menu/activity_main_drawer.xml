@@ -1,38 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_cases"
             android:icon="@drawable/cases"
+            app:itemTextAppearance="@style/Style_menu"
             android:title="@string/nav_my_cases" />
         <item
             android:id="@+id/nav_edit_profile"
             android:icon="@drawable/edit"
+            app:itemTextAppearance="@style/Style_menu"
             android:title="@string/nav_edit_profile" />
         <item
             android:id="@+id/nav_password"
             android:icon="@drawable/lock"
+            app:itemTextAppearance="@style/Style_menu"
             android:title="@string/nav_password" />
 
         <item
             android:id="@+id/nav_my_earning"
             android:icon="@drawable/earning"
+            app:itemTextAppearance="@style/Style_menu"
             android:title="@string/nav_my_earning" />
 
         <item
             android:id="@+id/nav_invite_friends"
             android:icon="@drawable/invite"
+            app:itemTextAppearance="@style/Style_menu"
             android:title="@string/nav_invite_friends" />
 
         <item
             android:id="@+id/nav_terms_and_conditions"
             android:icon="@drawable/term"
+            app:itemTextAppearance="@style/Style_menu"
             android:title="@string/nav_terms_and_conditions" />
 
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
+            app:itemTextAppearance="@style/Style_menu"
             android:title="@string/nav_logout" />
     </group>
 

@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:background="@color/light_grey_bg">
 
-            <androidx.appcompat.widget.AppCompatEditText
+            <com.ngo.customviews.CustomEditText
                 android:id="@+id/etSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

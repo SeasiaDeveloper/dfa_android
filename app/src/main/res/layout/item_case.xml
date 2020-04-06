@@ -29,41 +29,41 @@
                 android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_marginStart="@dimen/_6sdp"
-                    android:layout_marginEnd="@dimen/_16sdp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_6sdp"
+                    android:layout_marginEnd="@dimen/_16sdp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/imgCrime"
-                        android:layout_weight="0.1"
                         android:layout_width="@dimen/_40sdp"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_weight="0.1"
                         android:src="@drawable/ic_person_blue"
                         app:civ_border_color="@color/black"
                         app:civ_border_width="0.4dp" />
 
-                    <TextView
-                        android:gravity="start|center_vertical"
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/expandable_username"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_weight="0.3"
-                        android:textColor="@color/grey_text"
-                        app:font="@{`regular`}" />
+                        android:gravity="start|center_vertical"
+                        android:textColor="@color/grey_text" />
 
-                    <androidx.appcompat.widget.AppCompatButton
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/btnDelete"
                         android:layout_width="0dp"
-                        android:layout_gravity="end|center_vertical"
                         android:layout_height="34dp"
+                        android:layout_gravity="end|center_vertical"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
                         android:layout_weight="0.4"
                         android:background="@drawable/red_button_bg"
+                        android:gravity="center"
                         android:text="@string/delete"
                         android:textAllCaps="false"
                         android:textColor="@color/white"
@@ -91,7 +91,7 @@
                         android:orientation="horizontal"
                         android:visibility="gone">
 
-                        <TextView
+                        <com.ngo.customviews.CustomtextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginStart="@dimen/_4sdp"
@@ -99,16 +99,16 @@
                             android:text="Crime Type:"
                             android:textColor="@color/grey_text"
                             android:textStyle="bold"
-                            app:font="@{`semibold`}" />
+                            />
 
-                        <TextView
+                        <com.ngo.customviews.CustomtextView
                             android:id="@+id/tvCrime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_4sdp"
                             android:text=""
                             android:textColor="@color/grey_text"
-                            app:font="@{`regular`}" />
+                            />
 
                     </LinearLayout>
 
@@ -128,16 +128,16 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
 
-                                <TextView
+                                <com.ngo.customviews.CustomtextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/_6sdp"
                                     android:text="@string/crime_type"
                                     android:textColor="@color/grey_text"
                                     android:textStyle="bold"
-                                    app:font="@{`semibold`}" />
+                                />
 
-                                <TextView
+                                <com.ngo.customviews.CustomtextView
                                     android:id="@+id/txtCrimeType"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
@@ -147,7 +147,7 @@
                                     android:layout_weight="0.3"
                                     android:textColor="@color/grey_text"
                                     android:textSize="@dimen/_12ssp"
-                                    app:font="@{`regular`}"
+
                                     tools:text="" />
                             </LinearLayout>
 
@@ -156,16 +156,16 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
-                                <TextView
+                                <com.ngo.customviews.CustomtextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="27dp"
                                     android:layout_marginStart="@dimen/_6sdp"
                                     android:text="@string/state"
                                     android:textColor="@color/grey_text"
                                     android:textStyle="bold"
-                                    app:font="@{`semibold`}" />
+                                  />
 
-                                <TextView
+                                <com.ngo.customviews.CustomtextView
                                     android:id="@+id/txtStatus"
                                     android:layout_width="0dp"
                                     android:layout_height="wrap_content"
@@ -175,7 +175,6 @@
                                     android:layout_weight="0.3"
                                     android:textColor="@color/grey_text"
                                     android:textSize="@dimen/_12ssp"
-                                    app:font="@{`regular`}"
                                     tools:text="" />
                             </LinearLayout>
 
@@ -183,7 +182,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
-                                <TextView
+                                <com.ngo.customviews.CustomtextView
                                     android:id="@+id/txtUrgencyTitle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -191,9 +190,9 @@
                                     android:text="@string/urgency"
                                     android:textColor="@color/grey_text"
                                     android:textStyle="bold"
-                                    app:font="@{`semibold`}" />
+                                 />
 
-                                <TextView
+                                <com.ngo.customviews.CustomtextView
                                     android:id="@+id/expandable_Level"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -202,7 +201,6 @@
                                     android:layout_marginBottom="@dimen/_5sdp"
                                     android:textColor="@color/grey_text"
                                     android:textSize="@dimen/_12ssp"
-                                    app:font="@{`regular`}"
                                     tools:text="" />
                             </LinearLayout>
                         </LinearLayout>
@@ -216,16 +214,15 @@
                         android:layout_gravity="center"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <com.ngo.customviews.CustomtextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_6sdp"
                             android:text="Complaint Date:"
                             android:textColor="@color/grey_text"
-                            android:textStyle="bold"
-                            app:font="@{`semibold`}" />
+                            android:textStyle="bold" />
 
-                        <TextView
+                        <com.ngo.customviews.CustomtextView
                             android:id="@+id/expandable_Date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -234,7 +231,6 @@
                             android:layout_marginBottom="@dimen/_5sdp"
                             android:textColor="@color/grey_text"
                             android:textSize="@dimen/_12ssp"
-                            app:font="@{`regular`}"
                             tools:text="" />
                     </LinearLayout>
 
@@ -244,16 +240,16 @@
                         android:layout_gravity="center"
                         android:orientation="horizontal">
 
-                        <TextView
+                        <com.ngo.customviews.CustomtextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_6sdp"
                             android:text="Complaint Time:"
                             android:textColor="@color/grey_text"
                             android:textStyle="bold"
-                            app:font="@{`semibold`}" />
+                          />
 
-                        <TextView
+                        <com.ngo.customviews.CustomtextView
                             android:id="@+id/expandable_Time"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -262,7 +258,6 @@
                             android:layout_marginBottom="@dimen/_5sdp"
                             android:textColor="@color/grey_text"
                             android:textSize="@dimen/_12ssp"
-                            app:font="@{`regular`}"
                             tools:text="" />
 
                         <LinearLayout
@@ -272,11 +267,11 @@
                             android:gravity="end">
 
                             <ImageView
-                                android:layout_marginEnd="@dimen/_20sdp"
                                 android:id="@+id/imgExpandable"
                                 android:layout_width="@dimen/_25sdp"
                                 android:layout_height="@dimen/_25sdp"
                                 android:layout_gravity="end"
+                                android:layout_marginEnd="@dimen/_20sdp"
                                 android:src="@drawable/ic_expand_more_black_24dp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -298,15 +293,15 @@
                             android:orientation="horizontal"
                             android:visibility="gone">
 
-                            <TextView
-                                android:visibility="gone"
+                            <com.ngo.customviews.CustomtextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_6sdp"
                                 android:text="Username:"
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
-                                app:font="@{`semibold`}" />
+                                android:visibility="gone"
+                               />
 
                         </LinearLayout>
 
@@ -319,16 +314,16 @@
                             android:orientation="horizontal"
                             android:visibility="visible">
 
-                            <TextView
+                            <com.ngo.customviews.CustomtextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_6sdp"
                                 android:text="Complainer Contact:"
                                 android:textColor="@color/grey_text"
                                 android:textStyle="bold"
-                                app:font="@{`semibold`}" />
+                               />
 
-                            <TextView
+                            <com.ngo.customviews.CustomtextView
                                 android:id="@+id/expandable_contactNo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -337,7 +332,6 @@
                                 android:layout_marginBottom="@dimen/_5sdp"
                                 android:textColor="@color/grey_text"
                                 android:textSize="@dimen/_12ssp"
-                                app:font="@{`regular`}"
                                 tools:text="" />
                         </LinearLayout>
 
@@ -355,17 +349,17 @@
                             android:layout_gravity="center"
                             android:orientation="vertical">
 
-                            <TextView
-                                android:layout_marginTop="@dimen/_6sdp"
+                            <com.ngo.customviews.CustomtextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_6sdp"
+                                android:layout_marginTop="@dimen/_6sdp"
                                 android:text="Description:"
                                 android:textColor="@color/grey_text"
                                 android:textStyle="bold"
-                                app:font="@{`semibold`}" />
+                            />
 
-                            <TextView
+                            <com.ngo.customviews.CustomtextView
                                 android:id="@+id/expandable_DescriptionNgo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -374,7 +368,6 @@
                                 android:layout_marginBottom="@dimen/_5sdp"
                                 android:textColor="@color/grey_text"
                                 android:textSize="@dimen/_10ssp"
-                                app:font="@{`regular`}"
                                 tools:text="" />
                         </LinearLayout>
 
@@ -387,16 +380,16 @@
                             android:orientation="vertical"
                             android:visibility="gone">
 
-                            <TextView
+                            <com.ngo.customviews.CustomtextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_6sdp"
                                 android:text="Police Comment:"
                                 android:textColor="@color/grey_text"
                                 android:textStyle="bold"
-                                app:font="@{`semibold`}" />
+                          />
 
-                            <TextView
+                            <com.ngo.customviews.CustomtextView
                                 android:id="@+id/expandable_comment"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -405,18 +398,18 @@
                                 android:layout_marginBottom="@dimen/_5sdp"
                                 android:textColor="@color/grey_text"
                                 android:textSize="@dimen/_10ssp"
-                                app:font="@{`regular`}"
+
                                 tools:text="" />
                         </LinearLayout>
                     </LinearLayout>
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginEnd="@dimen/_5sdp"
-                        android:orientation="horizontal">
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/_5sdp">
 
-                        <TextView
+                        <com.ngo.customviews.CustomtextView
                             android:id="@+id/action_complaint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -428,6 +421,7 @@
                             android:drawablePadding="@dimen/_2sdp"
                             android:drawableTint="@color/white"
                             android:gravity="center"
+                            android:padding="@dimen/_10sdp"
                             android:paddingStart="@dimen/_24ssp"
                             android:paddingTop="10sp"
                             android:paddingEnd="@dimen/_24ssp"
@@ -437,20 +431,21 @@
                             android:textColor="@color/white"
                             android:textSize="@dimen/_12ssp"
                             android:visibility="visible"
-                            app:font="@{`regular`}"
                             tools:targetApi="m" />
 
-                        <TextView
+                        <com.ngo.customviews.CustomtextView
                             android:id="@+id/location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center_vertical"
                             android:layout_margin="@dimen/_10sdp"
                             android:background="@drawable/shape_round_corner_green"
                             android:drawableStart="@drawable/ic_location"
                             android:drawablePadding="@dimen/_2sdp"
                             android:drawableTint="@color/green"
-                            android:layout_gravity="end|center_vertical"
-                            android:gravity="center"
+                            android:gravity="center_vertical"
                             android:paddingStart="@dimen/_4ssp"
                             android:paddingTop="@dimen/_4ssp"
                             android:paddingEnd="@dimen/_4ssp"
@@ -459,10 +454,9 @@
                             android:textColor="@color/green"
                             android:textSize="@dimen/_12ssp"
                             android:visibility="visible"
-                            app:font="@{`regular`}"
                             tools:targetApi="m" />
 
-                    </LinearLayout>
+                    </RelativeLayout>
 
                 </LinearLayout>
 
@@ -474,9 +468,9 @@
                     android:background="@color/grey" />
 
                 <LinearLayout
-                    android:layout_marginBottom="@dimen/_20sdp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_20sdp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -491,23 +485,23 @@
                             android:id="@+id/img_like"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/like_black" />
+                            android:src="@drawable/like" />
 
 
                         <ImageView
                             android:id="@+id/img_like_red"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/like_red"
+                            android:src="@drawable/filled_like"
                             android:visibility="gone" />
 
-                        <TextView
-                            android:textColor="@color/black"
+                        <com.ngo.customviews.CustomtextView
                             android:id="@+id/txtLikeNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6sp"
-                            android:text="123" />
+                            android:text="123"
+                            android:textColor="@color/black" />
 
                     </LinearLayout>
 
@@ -524,13 +518,13 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/comment" />
 
-                        <TextView
-                            android:textColor="@color/black"
+                        <com.ngo.customviews.CustomtextView
                             android:id="@+id/txtCommentNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6sp"
-                            android:text="12" />
+                            android:text="12"
+                            android:textColor="@color/black" />
 
                     </LinearLayout>
 
@@ -547,12 +541,12 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/share" />
 
-                        <TextView
-                            android:textColor="@color/black"
+                        <com.ngo.customviews.CustomtextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6sp"
-                            android:text="12" />
+                            android:text="12"
+                            android:textColor="@color/black" />
 
                     </LinearLayout>
 
@@ -577,178 +571,179 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-        <LinearLayout
-            android:id="@+id/layout_post"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_8sdp"
-            android:layout_marginBottom="@dimen/_4sdp"
-            android:orientation="vertical"
-            android:visibility="visible">
 
             <LinearLayout
+                android:id="@+id/layout_post"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imgPostProfile"
-                    android:layout_width="@dimen/_30sdp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:background="@drawable/squarebg_non_curve"
-                    android:padding="@dimen/_1sdp"
-                    android:scaleType="fitCenter"
-                    android:src="@drawable/ic_person_blue" />
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_10sdp"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/txtUserNameForPost"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/grey" />
-
-                    <TextView
-                        android:id="@+id/txtDateForPost"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/grey" />
-
-                </LinearLayout>
+                android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginBottom="@dimen/_4sdp"
+                android:orientation="vertical"
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:layout_marginEnd="@dimen/_10sdp"
-                    android:gravity="end">
-
-                    <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/btnDeletePost"
-                        android:layout_width="wrap_content"
-                        android:layout_height="30dp"
-                        android:layout_gravity="end"
-                        android:layout_marginBottom="@dimen/_2sdp"
-                        android:background="@drawable/red_button_bg"
-                        android:text="@string/delete"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_10ssp"
-                        android:visibility="gone" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/txtPostInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_8sdp"
-                android:layout_marginTop="@dimen/_8sdp"
-                android:layout_marginEnd="@dimen/_8sdp"
-                android:textColor="@color/grey"
-                android:textSize="@dimen/_12sdp"
-                app:font="@{`bold`}" />
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/imgMediaPost"
-                android:layout_width="match_parent"
-                android:layout_height="156dp"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:background="@drawable/squarebg_non_curve"
-                android:scaleType="fitXY"
-                android:src="@drawable/camera_placeholder" />
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/layout_like_post"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:gravity="center"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:id="@+id/img_like_post"
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgPostProfile"
+                        android:layout_width="@dimen/_30sdp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="@dimen/_16sdp"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:background="@drawable/squarebg_non_curve"
+                        android:padding="@dimen/_1sdp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_person_blue" />
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/like_black" />
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_4sdp"
+                        android:orientation="vertical">
 
+                        <com.ngo.customviews.CustomtextView
+                            android:id="@+id/txtUserNameForPost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/grey" />
 
-                    <ImageView
-                        android:id="@+id/img_like_red_post"
-                        android:layout_width="wrap_content"
+                        <com.ngo.customviews.CustomtextView
+                            android:id="@+id/txtDateForPost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/grey" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/like_red"
-                        android:visibility="gone" />
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:gravity="end">
 
-                    <TextView
-                        android:id="@+id/txtPostLikeNo"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6sp"
-                        android:text="123" />
-
+                        <androidx.appcompat.widget.AppCompatButton
+                            android:id="@+id/btnDeletePost"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_gravity="end"
+                            android:layout_marginBottom="@dimen/_2sdp"
+                            android:background="@drawable/red_button_bg"
+                            android:text="@string/delete"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_10ssp"
+                            android:visibility="gone" />
+                    </LinearLayout>
                 </LinearLayout>
+
+                <com.ngo.customviews.CustomtextView
+                    android:id="@+id/txtPostInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginTop="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:textColor="@color/grey"
+                    android:textSize="@dimen/_12sdp"
+                   />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgMediaPost"
+                    android:layout_width="match_parent"
+                    android:layout_height="156dp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:background="@drawable/squarebg_non_curve"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/camera_placeholder" />
+
 
                 <LinearLayout
-                    android:id="@+id/layoutCommentPost"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
                     android:orientation="horizontal">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:id="@+id/layout_like_post"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/comment" />
+                        android:layout_weight="0.3"
+                        android:gravity="center"
+                        android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/txtPostCommentNo"
-                        android:layout_width="wrap_content"
+                        <ImageView
+                            android:id="@+id/img_like_post"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/like_black" />
+
+
+                        <ImageView
+                            android:id="@+id/img_like_red_post"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/like_red"
+                            android:visibility="gone" />
+
+                        <com.ngo.customviews.CustomtextView
+                            android:id="@+id/txtPostLikeNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6sp"
+                            android:text="123" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutCommentPost"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="6sp"
-                        android:text="12" />
+                        android:layout_weight="0.3"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/comment" />
+
+                        <com.ngo.customviews.CustomtextView
+                            android:id="@+id/txtPostCommentNo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6sp"
+                            android:text="12" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_share_post"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/share" />
+
+                        <com.ngo.customviews.CustomtextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6sp"
+                            android:text="12" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layout_share_post"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.3"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/share" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="6sp"
-                        android:text="12" />
-
-                </LinearLayout>
-
             </LinearLayout>
-            </LinearLayout>
-            </androidx.cardview.widget.CardView>
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 </layout>

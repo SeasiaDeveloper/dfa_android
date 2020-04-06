@@ -1,6 +1,7 @@
 package com.ngo.customviews
 
 import android.content.Context
+import android.graphics.Typeface
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.widget.TextView
@@ -17,6 +18,8 @@ class CenteredToolbar : Toolbar {
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init()
+        val custom_font = Typeface.createFromAsset(context.assets, "fonts/ROBOTO-MEDIUM_0.TTF")
+        titleView?.setTypeface(custom_font)
     }
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {

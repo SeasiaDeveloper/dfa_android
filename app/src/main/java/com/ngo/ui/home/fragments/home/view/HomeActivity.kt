@@ -10,10 +10,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.Window
+import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -275,7 +272,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         textName.setText(getProfileResponse.data?.first_name + " " + getProfileResponse.data?.middle_name + " " + getProfileResponse.data?.last_name)
         textAddress.setText(getProfileResponse.data?.address_1)
         if (getProfileResponse.data?.profile_pic != null) {
-            Glide.with(this).load(getProfileResponse.data?.profile_pic)
+            Glide.with(this).load(getProfileResponse.data.profile_pic)
                 .into(imageNavigator)
         }
     }

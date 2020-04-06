@@ -79,7 +79,7 @@
                         android:layout_weight="0.6"
                         android:orientation="vertical">
 
-                        <androidx.appcompat.widget.AppCompatEditText
+                        <com.ngo.customviews.CustomEditText
                             android:id="@+id/etMobile1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                             android:orientation="horizontal"
                             android:weightSum="1">
 
-                            <androidx.appcompat.widget.AppCompatEditText
+                            <com.ngo.customviews.CustomEditText
                                 android:id="@+id/etFirstName"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
                                 android:padding="@dimen/_10sdp"
                                 android:inputType="text"/>
 
-                            <androidx.appcompat.widget.AppCompatEditText
+                            <com.ngo.customviews.CustomEditText
                                 android:id="@+id/etMiddleName"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
                         </LinearLayout>
 
 
-                        <androidx.appcompat.widget.AppCompatEditText
+                        <com.ngo.customviews.CustomEditText
                             android:id="@+id/etLastName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
                             android:layout_marginEnd="@dimen/_12sdp"
                             android:background="@drawable/bg_spinner" />
 
-                        <androidx.appcompat.widget.AppCompatEditText
+                        <com.ngo.customviews.CustomEditText
                             android:id="@+id/etDist"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -184,7 +184,7 @@
                     android:maxLength="500"
                     android:padding="@dimen/_10sdp" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.ngo.customviews.CustomEditText
                     android:id="@+id/etAddress2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -198,7 +198,7 @@
                     android:maxLength="500"
                     android:padding="@dimen/_10sdp"/>
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.ngo.customviews.CustomEditText
                     android:id="@+id/etPinCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -212,7 +212,7 @@
                     android:maxLength="6"
                     android:padding="@dimen/_10sdp" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.ngo.customviews.CustomEditText
                     android:id="@+id/etMobile2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -226,7 +226,7 @@
                     android:maxLength="13"
                     android:padding="@dimen/_10sdp" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.ngo.customviews.CustomEditText
                     android:id="@+id/etAdharNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -241,7 +241,7 @@
                     android:maxLength="12"
                     android:padding="@dimen/_10sdp" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.ngo.customviews.CustomEditText
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -255,7 +255,7 @@
                     android:maxLength="40"
                     android:padding="@dimen/_10sdp"/>
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.ngo.customviews.CustomEditText
                     android:id="@+id/etPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -269,7 +269,7 @@
                     android:maxLength="20"
                     android:padding="@dimen/_10sdp" />
 
-                <androidx.appcompat.widget.AppCompatEditText
+                <com.ngo.customviews.CustomEditText
                     android:id="@+id/etConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -288,7 +288,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <androidx.appcompat.widget.AppCompatButton
+                    <com.ngo.customviews.CustomTextViewheading
                         android:id="@+id/btnSubmit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -300,16 +300,18 @@
                         android:padding="@dimen/_12sdp"
                         android:background="@drawable/button_green_bg"
                         android:text="@string/submit"
+                        android:gravity="center"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_14ssp" />
 
-                    <androidx.appcompat.widget.AppCompatButton
+                    <com.ngo.customviews.CustomTextViewheading
                         android:id="@+id/btnCancel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:padding="@dimen/_12sdp"
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginTop="@dimen/_10sdp"
+                        android:gravity="center"
                         android:layout_marginEnd="@dimen/_12sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_weight="0.3"
