@@ -69,7 +69,8 @@ class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePassw
     }
 
     override fun onEmptyPassword() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        dismissProgress()
+        Toast.makeText(this, "Password cant be empty", Toast.LENGTH_SHORT).show()
     }
 
     override fun onChangePasswordFailure(error: String) {
@@ -82,7 +83,7 @@ class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePassw
         dismissProgress()
         Toast.makeText(this, changePasswordResponse.message, Toast.LENGTH_SHORT).show()
         this.finish()
-        var intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         startActivity(intent)
 

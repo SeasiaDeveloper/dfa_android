@@ -405,11 +405,13 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     }
 
     fun showVideo(videoUri: String) {
-        mediaControls = MediaController(this)
+        mediaControls = MediaController(this@GeneralPublicActivity)
+        mediaControls.visibility = View.VISIBLE
         mediaControls.setAnchorView(videoView)
         videoView.setMediaController(mediaControls)
         videoView.setVideoURI(Uri.parse(videoUri))
-        videoView.seekTo(100);
+        videoView.setBackgroundColor(Color.TRANSPARENT)
+        videoView.seekTo(100) // displays thumbnail of the video
     }
 
     private fun getImageUri(inContext: Context, inImage: Bitmap): Uri {

@@ -32,6 +32,7 @@ import com.ngo.utils.PreferenceHandler
 import kotlinx.android.synthetic.main.activity_signup.btnSubmit
 
 class SignupActivity : BaseActivity(), SignupView {
+
     private var authorizationToken: String? = ""
     private lateinit var token: String
 
@@ -49,7 +50,6 @@ class SignupActivity : BaseActivity(), SignupView {
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
-
         etMobile1.setText(intent.getStringExtra("phoneNo"))
         etMobile1.isFocusable = false
         etMobile1.isEnabled = false
@@ -83,7 +83,7 @@ class SignupActivity : BaseActivity(), SignupView {
     fun setListeners() {
         btnCancel.setOnClickListener {
             finish()
-            var intent = Intent(this, LoginActivity::class.java)
+            val intent = Intent(this, LoginActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
         }
@@ -337,5 +337,50 @@ class SignupActivity : BaseActivity(), SignupView {
     override fun confirmPasswordMismatchValidation() {
         dismissProgress()
         Utilities.showMessage(this, getString(R.string.confirm_pass_mismatch_pass))
+    }
+
+    override fun firstNameAlphabetFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, "Please enter a valid First name containing only alphabets")
+    }
+
+    override fun firstNameLengthFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, "First name must be minimum 3 alphabets")
+    }
+
+    override fun middleNameAlphabetFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, "Please enter a valid Middle name containing only alphabets")
+    }
+
+    override fun middleNameLengthFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, "Middle name must be minimum 3 alphabets")
+    }
+
+    override fun lastNameAlphabetFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, "Please enter a valid Last name containing only alphabets")
+    }
+
+    override fun lastNameLengthFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, "Middle name must be minimum 3 alphabets")
+    }
+
+    override fun addressLine1LengthFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, "Address Line1 must be minimum 3 alphabets")
+    }
+
+    override fun addressLine2LengthFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, "Address Line2 must be minimum 3 alphabets")
+    }
+
+    override fun pinCodeLengthFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, "Enter a valid Pin Code")
     }
 }

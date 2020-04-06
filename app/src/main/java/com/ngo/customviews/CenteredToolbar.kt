@@ -49,6 +49,6 @@ class CenteredToolbar : Toolbar {
     }
 
     override fun setTitleTextColor(color: Int) {
-        if (titleView != null) titleView!!.setTextColor(ContextCompat.getColor(context!!,R.color.white))
+        if (titleView != null) titleView!!.setTextColor(ContextCompat.getColor(context!!,R.color.black))
     }
 }

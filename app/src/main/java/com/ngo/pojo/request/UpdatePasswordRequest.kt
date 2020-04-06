@@ -1,7 +1,7 @@
 package com.ngo.pojo.request
 
 data class UpdatePasswordRequest (
-    val oldPassword: String,
+    val old_password: String,
     val password: String,
     val confirm_password: String,
     val user_id: String

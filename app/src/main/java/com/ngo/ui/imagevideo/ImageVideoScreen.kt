@@ -9,6 +9,11 @@ import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.utils.Constants
 import kotlinx.android.synthetic.main.image_video_layout.*
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
 
 
 class ImageVideoScreen : BaseActivity() {
@@ -28,12 +33,17 @@ class ImageVideoScreen : BaseActivity() {
         if (mediaType.equals("VIDEOS")) {
             showProgress()
             videoView.visibility = View.VISIBLE
+            val ctrl = MediaController(this@ImageVideoScreen)
+            ctrl.visibility = View.VISIBLE
+            videoView.setMediaController(ctrl)
             showVideo(imageUrl!!)
         } else {
             videoView.visibility = View.GONE
             imageView.visibility = View.VISIBLE
             Glide.with(this).load(imageUrl).into(imageView)
         }
+
+
     }
 
     fun showVideo(videoUri: String) {
