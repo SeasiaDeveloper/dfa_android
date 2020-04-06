@@ -331,6 +331,7 @@ class CasesAdapter(
                     } else {
                         itemView.action_complaint.visibility = View.GONE
                     }
+                    itemView.layoutContact.visibility = View.GONE
                 }
 
             } else {
