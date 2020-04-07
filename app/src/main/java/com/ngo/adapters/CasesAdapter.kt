@@ -22,6 +22,7 @@ import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.ui.comments.CommentsActivity
+import com.ngo.ui.generalpublic.view.AsyncResponse
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.item_case.view.*
 
@@ -371,6 +372,7 @@ class CasesAdapter(
 
             } else {
                 //in case of general public/general user
+                itemView.imgComplaintMedia.visibility = View.VISIBLE
                 itemView.location.visibility = View.GONE
                 itemView.layoutContact.visibility = View.GONE
                 itemView.action_complaint.visibility = View.GONE

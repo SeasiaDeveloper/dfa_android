@@ -2,6 +2,7 @@ package com.ngo.ui.crimedetails.view
 
 import android.content.Intent
 import android.graphics.Color
+import android.net.Uri
 import android.view.View
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -14,6 +15,7 @@ import com.ngo.pojo.response.GetCrimeDetailsResponse
 import com.ngo.pojo.response.NGOResponse
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenter
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenterImpl
+import com.ngo.ui.generalpublic.view.AsyncResponse
 import com.ngo.ui.imagevideo.ImageVideoScreen
 import com.ngo.ui.ngoform.presenter.NGOFormPresenter
 import com.ngo.ui.ngoform.presenter.NGOFormPresenterImpl
@@ -21,16 +23,15 @@ import com.ngo.ui.ngoform.view.NGOFormView
 import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
+import com.ngo.utils.algo.DirectionApiAsyncTask
 import kotlinx.android.synthetic.main.activity_incident_detail.*
 import kotlinx.android.synthetic.main.activity_incident_detail.etDescription
 import kotlinx.android.synthetic.main.activity_incident_detail.imgView
 import kotlinx.android.synthetic.main.activity_incident_detail.sb_steps_5
 import kotlinx.android.synthetic.main.activity_incident_detail.spTypesOfCrime
 import kotlinx.android.synthetic.main.activity_incident_detail.toolbarLayout
-import kotlinx.android.synthetic.main.adapter_photos.view.*
-import kotlinx.android.synthetic.main.general_complaints_listing_items.*
 
-class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
+class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, AsyncResponse {
     // private lateinit var complaintsData: GetComplaintsResponse.Data
     private var ngoPresenter: NGOFormPresenter = NGOFormPresenterImpl(this)
     private var crimePresenter: CrimeDetailsPresenter = CrimeDetailsPresenterImpl(this)
@@ -39,6 +40,8 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
     private var authorizationToken: String? = null
     private lateinit var getCrimeDetailsResponse: GetCrimeDetailsResponse
     private var isKnowPostOrComplaint: String? = null
+    private var latitude: String = ""
+    private var longitude: String = ""
 
     override fun getLayout(): Int {
         return R.layout.activity_incident_detail
@@ -82,6 +85,15 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
                 getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0)?.toString()
             )
             startActivity(intent)
+        }
+
+        show_location.setOnClickListener {
+            val gmmIntentUri =
+                Uri.parse("google.navigation:q=" + latitude + "," + longitude + "")
+            //  val gmmIntentUri = Uri.parse("google.navigation:q="+30.7106607+","+76.7091493+"")
+            val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
         }
     }
 
@@ -133,10 +145,21 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
             ngo_comment_layout.visibility = View.VISIBLE
         }
 
+        if (type.equals("2") && postOrComplaint.equals("0") || type.equals("1") && postOrComplaint.equals(
+                "0"
+            )
+        ) {
+            show_location.visibility = View.VISIBLE
+        } else {
+            show_location.visibility = View.GONE
+        }
+
     }
 
     private fun setComplaintData(getCrimeDetailsResponse: GetCrimeDetailsResponse) {
         var name = ""
+        latitude = getCrimeDetailsResponse.data?.get(0)?.latitude!!
+        longitude = getCrimeDetailsResponse.data.get(0).longitude!!
 
         //getCrimeDetailsResponse.data.get(0).userDetail.username
         if (!(getCrimeDetailsResponse.data?.get(0)?.userDetail?.first_name.isNullOrEmpty() || getCrimeDetailsResponse.data?.get(
@@ -189,6 +212,35 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
             } else {
                 ngo_comment_layout.visibility = View.GONE
             }
+        }
+
+
+        if (getCrimeDetailsResponse.data?.get(0)?.latitude != null) {
+            val string = getCrimeDetailsResponse.data?.get(0)?.latitude
+            var numeric = true
+
+            try {
+                val num = string?.toDouble()
+            } catch (e: NumberFormatException) {
+                numeric = false
+            }
+
+            if (numeric) {
+                var task = DirectionApiAsyncTask(
+                    this,
+                    getCrimeDetailsResponse.data.get(0).latitude!!,
+                    getCrimeDetailsResponse.data.get(0).longitude!!,
+                    this
+                )
+                task.execute()
+            }
+            /*  show.setText(
+                Utilities.calculateDistance(
+                    item.latitude,
+                    item.longitude,
+                    context
+                ).toString() + " KM away"
+            )*/
         }
     }
 
@@ -252,4 +304,9 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
         Utilities.showMessage(this, error)
     }
 
+    override fun processFinish(output: String?) {
+        show_location.setText(output).toString() + "away"
+    }
+
 }
+

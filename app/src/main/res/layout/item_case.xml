@@ -470,7 +470,7 @@
                             android:textAllCaps="true"
                             android:textColor="@color/green"
                             android:textSize="@dimen/_12ssp"
-                            android:visibility="visible"
+                            android:visibility="gone"
                             tools:targetApi="m" />
 
                     </RelativeLayout>
