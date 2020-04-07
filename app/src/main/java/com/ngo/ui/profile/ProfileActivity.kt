@@ -267,7 +267,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
                     } catch (e: Exception) {
                         BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri))
                         imgProfile.setImageURI(imageUri)
-                       // path = getRealPathFromURI(imageUri)
+                     //  path = Utilities.getRealPathFromURI(imageUri)
                     }
                 }
             }
