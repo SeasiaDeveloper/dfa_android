@@ -9,7 +9,7 @@ class GetCasesResponse : Serializable {
     val code: Int? = null
 
     inner class Data : Serializable {
-        val is_assigned:String?=null
+        val is_assigned: String? = null
         val id: String? = null
         val user_id: String? = null
         val showDelete: Int? = null
@@ -35,7 +35,7 @@ class GetCasesResponse : Serializable {
             val first_name: String? = null
             val email: String? = null
             val username: String? = null
-            val profile_pic:String?=null
+            val profile_pic: String? = null
         }
     }
 }
