@@ -190,4 +190,5 @@
     <string name="reported_description">Reported Description:</string>
     <string name="no_option_selected">No option was selected</string>
     <string name="post_description">Post Description</string>
+    <string name="view_fir">View FIR</string>
 </resources>

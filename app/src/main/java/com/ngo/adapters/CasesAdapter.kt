@@ -110,6 +110,9 @@ class CasesAdapter(
             itemView.location.setOnClickListener {
                 listener.onItemClick(item, "location")
             }
+            itemView.view_fir.setOnClickListener {
+                listener.onItemClick(item, "webview")
+            }
 
             //in case of post:
             if (userDetail.profile_pic != null) {
@@ -129,7 +132,9 @@ class CasesAdapter(
                 itemView.txtUserNameForPost.text =
                     userDetail.first_name + " " + userDetail.last_name
                 itemView.txtDateForPost.text =
-                    Utilities.changeDateFormat(item.report_data!!) + " " + Utilities.changeTimeFormat(item.report_time!!)
+                    Utilities.changeDateFormat(item.report_data!!) + " " + Utilities.changeTimeFormat(
+                        item.report_time!!
+                    )
                 itemView.txtPostInfo.text = item.info
 
                 if (item.media_list!!.isNotEmpty()) {
@@ -348,6 +353,11 @@ class CasesAdapter(
                         itemView.action_complaint.visibility = View.GONE
                     }
                     itemView.layoutContact.visibility = View.GONE
+                    itemView.view_fir.visibility = View.VISIBLE
+                    itemView.imgComplaintMedia.visibility = View.GONE
+                } else {
+                    itemView.view_fir.visibility = View.GONE
+                    itemView.imgComplaintMedia.visibility = View.VISIBLE
                 }
 
             } else {

@@ -18,10 +18,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
-
 import com.ngo.R
 import com.ngo.adapters.CasesAdapter
 import com.ngo.adapters.StatusAdapter
@@ -35,7 +33,6 @@ import com.ngo.pojo.request.CreatePostRequest
 import com.ngo.pojo.response.*
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.generalpublic.GeneralPublicActivity
-import com.ngo.ui.generalpublic.pagination.PaginationScrollListener
 import com.ngo.ui.generalpublic.pagination.PaginationScrollListener.Companion.PAGE_START
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
@@ -47,7 +44,8 @@ import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
-    OnCaseItemClickListener, AlertDialogListener, AdharNoListener/*, SwipeRefreshLayout.OnRefreshListener*/ {
+    OnCaseItemClickListener, AlertDialogListener,
+    AdharNoListener/*, SwipeRefreshLayout.OnRefreshListener*/ {
     private var isResumeRun: Boolean = false
 
     override fun onClick(item: Any) {
@@ -165,23 +163,23 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 galleryIntent()
         }
         //pagination
-       /* rvPublic?.addOnScrollListener(object : PaginationScrollListener(horizontalLayoutManager!!) {
-            override fun isLastPage(): Boolean {
-                return isLastPage
-            }
+        /* rvPublic?.addOnScrollListener(object : PaginationScrollListener(horizontalLayoutManager!!) {
+             override fun isLastPage(): Boolean {
+                 return isLastPage
+             }
 
-            override fun isLoading(): Boolean {
-                return isLoading
-            }
+             override fun isLoading(): Boolean {
+                 return isLoading
+             }
 
-            override fun loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                doApiCall()
-                //you have to call loadmore items to get more data
-                getMoreItems()
-            }
-        })*/
+             override fun loadMoreItems() {
+                 isLoading = true;
+                 currentPage++;
+                 doApiCall()
+                 //you have to call loadmore items to get more data
+                 getMoreItems()
+             }
+         })*/
     }
 
     fun doApiCall() {
@@ -283,18 +281,18 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             //rvPublic?.adapter = adapter
 
 
-           /* if (currentPage != PAGE_START)
-            //adapter.removeLoading();
-              adapter?.addData(complaints.toMutableList())
-              swipeRefresh.setRefreshing(false)
-            // check weather is last page or not
-            if (currentPage < totalPage) {
-                adapter?.setList(response.data.toMutableList())
-                //adapter.addLoading();
-            } else {
-                isLastPage = true
-            }
-            isLoading = false*/
+            /* if (currentPage != PAGE_START)
+             //adapter.removeLoading();
+               adapter?.addData(complaints.toMutableList())
+               swipeRefresh.setRefreshing(false)
+             // check weather is last page or not
+             if (currentPage < totalPage) {
+                 adapter?.setList(response.data.toMutableList())
+                 //adapter.addLoading();
+             } else {
+                 isLastPage = true
+             }
+             isLoading = false*/
 
             change = 1
 
@@ -323,6 +321,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 //hit api based on role
                 Utilities.showProgress(mContext)
                 presenter.fetchStatusList(token, type)
+            }
+
+            "webview" -> {
+                val url = complaintsData.fir_url
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(url)
+                startActivity(i)
             }
 
             else -> {
@@ -483,7 +488,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-            if (!isFirst) {
+        if (!isFirst) {
             val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
             Utilities.showProgress(mContext)
             presenter.getComplaints(casesRequest, token, type)

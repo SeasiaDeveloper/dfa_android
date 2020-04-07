@@ -98,8 +98,7 @@
                             android:layout_marginTop="@dimen/_2sdp"
                             android:text="Crime Type:"
                             android:textColor="@color/grey_text"
-                            android:textStyle="bold"
-                            />
+                            android:textStyle="bold" />
 
                         <com.ngo.customviews.CustomtextView
                             android:id="@+id/tvCrime"
@@ -107,8 +106,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_4sdp"
                             android:text=""
-                            android:textColor="@color/grey_text"
-                            />
+                            android:textColor="@color/grey_text" />
 
                     </LinearLayout>
 
@@ -134,8 +132,7 @@
                                     android:layout_marginStart="@dimen/_6sdp"
                                     android:text="@string/crime_type"
                                     android:textColor="@color/grey_text"
-                                    android:textStyle="bold"
-                                />
+                                    android:textStyle="bold" />
 
                                 <com.ngo.customviews.CustomtextView
                                     android:id="@+id/txtCrimeType"
@@ -162,8 +159,7 @@
                                     android:layout_marginStart="@dimen/_6sdp"
                                     android:text="@string/state"
                                     android:textColor="@color/grey_text"
-                                    android:textStyle="bold"
-                                  />
+                                    android:textStyle="bold" />
 
                                 <com.ngo.customviews.CustomtextView
                                     android:id="@+id/txtStatus"
@@ -189,8 +185,7 @@
                                     android:layout_marginStart="@dimen/_6sdp"
                                     android:text="@string/urgency"
                                     android:textColor="@color/grey_text"
-                                    android:textStyle="bold"
-                                 />
+                                    android:textStyle="bold" />
 
                                 <com.ngo.customviews.CustomtextView
                                     android:id="@+id/expandable_Level"
@@ -246,8 +241,7 @@
                             android:layout_marginStart="@dimen/_6sdp"
                             android:text="Complaint Time:"
                             android:textColor="@color/grey_text"
-                            android:textStyle="bold"
-                          />
+                            android:textStyle="bold" />
 
                         <com.ngo.customviews.CustomtextView
                             android:id="@+id/expandable_Time"
@@ -282,7 +276,7 @@
                         android:layout_height="wrap_content"
                         android:animateLayoutChanges="true"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <LinearLayout
                             android:id="@+id/layoutUsername"
@@ -300,8 +294,7 @@
                                 android:text="Username:"
                                 android:textColor="@color/black"
                                 android:textStyle="bold"
-                                android:visibility="gone"
-                               />
+                                android:visibility="gone" />
 
                         </LinearLayout>
 
@@ -320,8 +313,7 @@
                                 android:layout_marginStart="@dimen/_6sdp"
                                 android:text="Complainer Contact:"
                                 android:textColor="@color/grey_text"
-                                android:textStyle="bold"
-                               />
+                                android:textStyle="bold" />
 
                             <com.ngo.customviews.CustomtextView
                                 android:id="@+id/expandable_contactNo"
@@ -341,7 +333,32 @@
                             android:layout_height="156dp"
                             android:layout_marginTop="@dimen/_4sdp"
                             android:scaleType="fitXY"
-                            android:src="@drawable/camera_placeholder" />
+                            android:src="@drawable/camera_placeholder"
+                            android:visibility="gone" />
+
+                        <com.ngo.customviews.CustomtextView
+                            android:id="@+id/view_fir"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_10sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
+                            android:layout_marginEnd="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:background="@drawable/button_green_bg"
+                            android:drawablePadding="@dimen/_2sdp"
+                            android:drawableTint="@color/white"
+                            android:gravity="center"
+                            android:padding="@dimen/_10sdp"
+                            android:paddingStart="@dimen/_24ssp"
+                            android:paddingTop="10sp"
+                            android:paddingEnd="@dimen/_24ssp"
+                            android:paddingBottom="10sp"
+                            android:text="@string/view_fir"
+                            android:textAllCaps="false"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12ssp"
+                            android:visibility="gone"
+                            tools:targetApi="m" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -356,8 +373,7 @@
                                 android:layout_marginTop="@dimen/_6sdp"
                                 android:text="Description:"
                                 android:textColor="@color/grey_text"
-                                android:textStyle="bold"
-                            />
+                                android:textStyle="bold" />
 
                             <com.ngo.customviews.CustomtextView
                                 android:id="@+id/expandable_DescriptionNgo"
@@ -370,6 +386,7 @@
                                 android:textSize="@dimen/_10ssp"
                                 tools:text="" />
                         </LinearLayout>
+
 
                         <LinearLayout
                             android:id="@+id/layoutPoliceComment"
@@ -386,8 +403,7 @@
                                 android:layout_marginStart="@dimen/_6sdp"
                                 android:text="Police Comment:"
                                 android:textColor="@color/grey_text"
-                                android:textStyle="bold"
-                          />
+                                android:textStyle="bold" />
 
                             <com.ngo.customviews.CustomtextView
                                 android:id="@+id/expandable_comment"
@@ -546,8 +562,8 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6sp"
                             android:text="12"
-                            android:visibility="gone"
-                            android:textColor="@color/black" />
+                            android:textColor="@color/black"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
@@ -648,8 +664,7 @@
                     android:layout_marginTop="@dimen/_8sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:textColor="@color/grey"
-                    android:textSize="@dimen/_12sdp"
-                   />
+                    android:textSize="@dimen/_12sdp" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imgMediaPost"
@@ -738,8 +753,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6sp"
-                            android:visibility="gone"
-                            android:text="12" />
+                            android:text="12"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 

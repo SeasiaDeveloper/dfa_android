@@ -43,6 +43,8 @@ class GetCrimeDetailsResponse : Serializable {
 
         val status: String? = null
 
+        val ngo_comment:String?=null
+
         inner class UserDetail : Serializable {
             val isVerified: String? = null
 
