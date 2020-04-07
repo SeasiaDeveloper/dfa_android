@@ -57,19 +57,64 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
         } else if (!(Utilities.isValidMobile(request.username))) {
             profilePresenterImplClass.usernameValidationFailure()
             return
-        } else if (request.first_name.isEmpty()) {
+        } else if (request.first_name.trim().isEmpty()) {
             profilePresenterImplClass.firstNameValidationFailure()
             return
-        } else if (request.last_name.isEmpty()) {
+        }
+
+        else if (request.first_name.trim().length<3) {
+            profilePresenterImplClass.firstNameLengthFailure()
+            return
+        }
+        else if (!Utilities.isAlphabets(request.first_name.trim())) {
+            profilePresenterImplClass.firstNameAlphabetFailure()
+            return
+        } else if (request.middle_name.trim().isNotEmpty() && request.middle_name.trim().length<3 ) {
+            profilePresenterImplClass.middleNameLengthFailure()
+            return
+        }
+        else if (request.middle_name.trim().isNotEmpty() && !Utilities.isAlphabets(request.middle_name.trim())) {
+            profilePresenterImplClass.middleNameAlphabetFailure()
+            return
+        }
+
+        else if (request.last_name.isEmpty()) {
             profilePresenterImplClass.lastNameValidationFailure()
             return
-        } else if (request.address_1.isEmpty()) {
+        }
+
+        else if (request.last_name.trim().length<3) {
+            profilePresenterImplClass.lastNameLengthFailure()
+            return
+        }
+        else if (!Utilities.isAlphabets(request.last_name.trim())) {
+            profilePresenterImplClass.lastNameAlphabetFailure()
+            return
+        }
+        else if (request.address_1.isEmpty()) {
             profilePresenterImplClass.Address1ValidationFailure()
             return
-        } else if (request.pin_code.isEmpty()) {
+        }
+
+        else if (request.address_1.trim().length<3) {
+            profilePresenterImplClass.addressLine1LengthFailure()
+            return
+        }
+        else if (!(request.address_2.isEmpty() ) && request.address_2.trim().length<3) {
+            profilePresenterImplClass.addressLine2LengthFailure()
+            return
+        }
+
+        else if (request.pin_code.trim().isEmpty()) {
             profilePresenterImplClass.pinCodeValidationFailure()
             return
-        } else {
+        }
+
+        else if (request.pin_code.trim().length != 6) {
+            profilePresenterImplClass.pinCodeLengthFailure()
+            return
+        }
+        else {
 
             if ((request.mobile).isNotEmpty()) {
                 if (!(Utilities.isValidMobile(request.mobile))) {
@@ -78,7 +123,7 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
                 }
             }
 
-            if ((request.adhar_number).isNotEmpty()) {
+            if ((request.adhar_number.trim()).isNotEmpty()) {
                 if (isAdhaarNoAdded) {
                     if (!(Utilities.validateAadharNumber(request.adhar_number))) {
                         profilePresenterImplClass.adhaarNoValidationFailure()

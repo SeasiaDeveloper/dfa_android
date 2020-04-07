@@ -192,4 +192,13 @@
     <string name="post_description">Post Description</string>
     <string name="view_fir">View FIR</string>
     <string name="unable_image_fetching_message">Unable to fetch image. Please try again</string>
+    <string name="first_name_alphabet_validation">Please enter a valid First name containing only alphabets</string>
+    <string name="fname_length_validation">First name must be minimum 3 alphabets</string>
+    <string name="mid_name_alphabet_validation">Please enter a valid Middle name containing only alphabets</string>
+    <string name="mid_name_length_validation">Middle name must be minimum 3 alphabets</string>
+    <string name="lastname_alphabets_validation">Please enter a valid Last name containing only alphabets</string>
+    <string name="last_name_length_validation">Last name must be minimum 3 alphabets</string>
+    <string name="adress_length_validation">Address Line1 must be minimum 3 alphabets</string>
+    <string name="adress_two_length_validation">Address Line2 must be minimum 3 alphabets</string>
+    <string name="pin_validation">Enter a valid Pin Code</string>
 </resources>

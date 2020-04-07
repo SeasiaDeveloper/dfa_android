@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.ngo.R
 import com.ngo.adapters.PhotosAdapter
 import com.ngo.customviews.GridSpacingItemDecoration
-import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.request.GetPhotosRequest
 import com.ngo.pojo.response.GetCrimeDetailsResponse
 import com.ngo.pojo.response.GetPhotosResponse
@@ -33,7 +32,6 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
     private var photos: List<GetPhotosResponse.Data> = mutableListOf()
     lateinit var request: GetPhotosRequest
     private var presenter: PhotosPresenter = PhotosPresenterImpl(this)
-    private var authorizationToken: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,13 +46,13 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
         super.onViewCreated(view, savedInstanceState)
         setAdapter()
         request = GetPhotosRequest("photos")
-        Utilities.showProgress(activity!!)
-        var authorizationToken = PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+        showProgress(activity!!)
+        val authorizationToken = PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
         presenter.getPhotos(authorizationToken,request)
     }
 
     private fun setAdapter() {
-        val layoutManager = GridLayoutManager(activity!!, 2)
+        val layoutManager = GridLayoutManager(activity!!, 4)
         rvPhotos.setLayoutManager(layoutManager)
         val spanCount = 4
         val spacing = 10
@@ -66,8 +64,9 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
                 includeEdge
             )
         )
+
         adapter = PhotosAdapter(activity!!, photos.toMutableList(), this)
-        rvPhotos.setAdapter(adapter)
+        rvPhotos.adapter = adapter
 
     }
 
@@ -93,8 +92,8 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
     override fun getCrimeDetailsSuccess(crimeDetailsResponse: GetCrimeDetailsResponse) {
         Utilities.dismissProgress()
         val intent = Intent(activity, IncidentDetailActivity::class.java)
-        intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, crimeDetailsResponse?.data?.get(0)?.id)
-        intent.putExtra(Constants.POST_OR_COMPLAINT, crimeDetailsResponse?.data?.get(0)?.type)
+        intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, crimeDetailsResponse.data?.get(0)?.id)
+        intent.putExtra(Constants.POST_OR_COMPLAINT, crimeDetailsResponse.data?.get(0)?.type)
         startActivity(intent)
 
     }

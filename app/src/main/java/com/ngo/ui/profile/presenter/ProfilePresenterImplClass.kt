@@ -73,5 +73,41 @@ class ProfilePresenterImplClass(private var profileView: ProfileView):ProfilePre
         profileView.onSuccessfulUpdation(responseObject)
     }
 
+    override fun firstNameAlphabetFailure() {
+        profileView.firstNameAlphabetFailure()
+    }
+
+    override fun firstNameLengthFailure() {
+        profileView.firstNameLengthFailure()
+    }
+
+    override fun middleNameAlphabetFailure() {
+        profileView.middleNameAlphabetFailure()
+    }
+
+    override fun middleNameLengthFailure() {
+        profileView.middleNameLengthFailure()
+    }
+
+    override fun lastNameAlphabetFailure() {
+        profileView.lastNameAlphabetFailure()
+    }
+
+    override fun lastNameLengthFailure() {
+        profileView.lastNameLengthFailure()
+    }
+
+    override fun addressLine1LengthFailure() {
+        profileView.addressLine1LengthFailure()
+    }
+
+    override fun addressLine2LengthFailure() {
+        profileView.addressLine2LengthFailure()
+    }
+
+    override fun pinCodeLengthFailure() {
+        profileView.pinCodeLengthFailure()
+    }
+
 
 }
