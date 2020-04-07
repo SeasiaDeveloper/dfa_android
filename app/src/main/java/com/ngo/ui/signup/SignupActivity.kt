@@ -45,6 +45,10 @@ class SignupActivity : BaseActivity(), SignupView {
     override fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.signup)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.BLACK)
+        (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_button)
+        (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
+            onBackPressed()
+        }
         getFirebaseToken()
         if (isInternetAvailable()) {
             showProgress()

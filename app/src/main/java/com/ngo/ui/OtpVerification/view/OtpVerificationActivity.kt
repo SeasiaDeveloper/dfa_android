@@ -95,8 +95,13 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
         when (v?.id) {
             R.id.btnOtpSubmit -> {
                 val code: String = et_otp.getText().toString().trim()
-                if (code.isEmpty() || code.length < 6) {
-                    et_otp.setError("Enter valid code")
+                if(code.trim().isEmpty() ){
+                    et_otp.setError("Enter Verification Code")
+                    et_otp.requestFocus()
+                    return
+                }
+               else if ( code.length < 6) {
+                    et_otp.setError("Incorrect verification code")
                     et_otp.requestFocus()
                     return
                 } else {
@@ -115,7 +120,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
                       et_otp.requestFocus()
                       return
                   } else {*/
-                Utilities.showProgress(this)
+              //  Utilities.showProgress(this)
                 presenter.sendVerificationCode(mobile, mCallbacks)
                 //   }
             }

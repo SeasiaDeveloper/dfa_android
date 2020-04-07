@@ -62,8 +62,8 @@
 
     <!-- forgot password screen-->
     <string name="forgot_password_title">Forgot Password</string>
-    <string name="forgot_password_heading">Please enter the registered mobile number. We will send you an OTP.</string>
-    <string name="enter_registered_mobile_number">Enter registered mobile number</string>
+    <string name="forgot_password_heading">Please Enter The Registered Mobile Number. We Will Send You An OTP.</string>
+    <string name="enter_registered_mobile_number">Enter Registered Mobile Number</string>
     <string name="enter_mobile_number">Enter mobile number</string>
 
     <!-- new password screen-->
@@ -90,7 +90,7 @@
     <string name="update">Update</string>
     <string name="verified">Verified</string>
     <string name="confirm_password">Confirm Password</string>
-    <string name="signup">SignUp</string>
+    <string name="signup">Signup</string>
 
     <!--Otp Verification-->
     <string name="otp_verification">OTP Verification</string>
@@ -99,18 +99,18 @@
 
     <!--Signup and Profile validations-->
     <string name="edit_profile">Edit Profile</string>
-    <string name="fill_mobile">Please fill in the mobile no</string>
-    <string name="valid_mobile_number">Please fill in valid mobile</string>
-    <string name="valid_email">Please fill in a valid email id</string>
-    <string name="valid_adhar">Please fill in a valid Adhaar number</string>
-    <string name="valid_mobile">Please fill in valid mobile no</string>
-    <string name="valid_pin_code">Please fill in pin code</string>
-    <string name="valid_address_1">Please fill in Address1</string>
-    <string name="valid_last_name">Please fill in last name</string>
-    <string name="valid_first_name">Please fill in first name</string>
-    <string name="password_empty">Please fill in Password field</string>
+    <string name="fill_mobile">Please enter the mobile no</string>
+    <string name="valid_mobile_number">Please enter valid mobile</string>
+    <string name="valid_email">Please enter a valid email id</string>
+    <string name="valid_adhar">Please enter a valid Adhaar number</string>
+    <string name="valid_mobile">Please enter valid mobile no</string>
+    <string name="valid_pin_code">Please enter pin code</string>
+    <string name="valid_address_1">Please enter Address1</string>
+    <string name="valid_last_name">Please enter last name</string>
+    <string name="valid_first_name">Please enter first name</string>
+    <string name="password_empty">Please enter Password field</string>
     <string name="pass_length">Password\'s length should be greater than 8</string>
-    <string name="confirm_pass_empty">Please fill in Confirm Password field</string>
+    <string name="confirm_pass_empty">Please enter Confirm Password field</string>
     <string name="confirm_pass_length">Confirm Password\'s length should be greater than 8</string>
     <string name="confirm_pass_mismatch_pass">Confirm Password doesnot match Password</string>
     <string name="delete">Delete</string>
@@ -193,12 +193,12 @@
     <string name="view_fir">View FIR</string>
     <string name="unable_image_fetching_message">Unable to fetch image. Please try again</string>
     <string name="first_name_alphabet_validation">Please enter a valid First name containing only alphabets</string>
-    <string name="fname_length_validation">First name must be minimum 3 alphabets</string>
+    <string name="fname_length_validation">First name field must contain minimum 3 alphabets</string>
     <string name="mid_name_alphabet_validation">Please enter a valid Middle name containing only alphabets</string>
-    <string name="mid_name_length_validation">Middle name must be minimum 3 alphabets</string>
+    <string name="mid_name_length_validation">Middle name field must contain minimum 3 alphabets</string>
     <string name="lastname_alphabets_validation">Please enter a valid Last name containing only alphabets</string>
-    <string name="last_name_length_validation">Last name must be minimum 3 alphabets</string>
-    <string name="adress_length_validation">Address Line1 must be minimum 3 alphabets</string>
-    <string name="adress_two_length_validation">Address Line2 must be minimum 3 alphabets</string>
+    <string name="last_name_length_validation">Last name field must contain minimum 3 alphabets</string>
+    <string name="adress_length_validation">Address Line1 field must contain minimum 3 alphabets</string>
+    <string name="adress_two_length_validation">Address Line2 field must contain minimum 3 alphabets</string>
     <string name="pin_validation">Enter a valid Pin Code</string>
 </resources>
