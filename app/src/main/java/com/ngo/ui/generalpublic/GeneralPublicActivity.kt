@@ -14,6 +14,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -47,6 +48,7 @@ import kotlinx.android.synthetic.main.activity_public.spTypesOfCrime
 import kotlinx.android.synthetic.main.activity_public.toolbarLayout
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.lang.Exception
 import kotlin.collections.ArrayList
 
 class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChangedListener,
@@ -343,30 +345,38 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             if (intent.data != null) {
                 mediaType = "photos"
                 imageUri = intent.data
-                /*   val wholeID = DocumentsContract.getDocumentId(imageUri)
-                   val id =
-                       wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
-                   val column = arrayOf<String>(MediaStore.Images.Media.DATA)
-                   val sel = MediaStore.Images.Media._ID + "=?"
-                   val cursor = getContentResolver().query(
-                       MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                       column, sel, arrayOf<String>(id), null
-                   )
-                   val columnIndex = cursor?.getColumnIndex(column[0])
-                   if (cursor!!.moveToFirst()) {
-                       path = cursor.getString(columnIndex!!)
-                       pathOfImages = ArrayList<String>()
-                       pathOfImages.add(path)
-                   }
-                   cursor.close()*/
+
                 if (imageUri != null) {
-                    BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri!!))
-                    imgView.visibility = View.VISIBLE
-                    videoView.visibility = View.GONE
-                    imgView.setImageURI(imageUri)
-                    path = getRealPathFromURI(imageUri!!)
-                    pathOfImages = ArrayList()
-                    pathOfImages.add(path)
+                    try {
+                        BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri!!))
+                        imgView.visibility = View.VISIBLE
+                        videoView.visibility = View.GONE
+                        imgView.setImageURI(imageUri)
+                        path = getRealPathFromURI(imageUri!!)
+                        pathOfImages = ArrayList()
+                        pathOfImages.add(path)
+                    } catch (e: Exception) {
+                        try {
+                            val wholeID = DocumentsContract.getDocumentId(imageUri)
+                            val id =
+                                wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
+                            val column = arrayOf(MediaStore.Images.Media.DATA)
+                            val sel = MediaStore.Images.Media._ID + "=?"
+                            val cursor = getContentResolver().query(
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                                column, sel, arrayOf(id), null
+                            )
+                            val columnIndex = cursor?.getColumnIndex(column[0])
+                            if (cursor!!.moveToFirst()) {
+                                path = cursor.getString(columnIndex!!)
+                                pathOfImages = ArrayList()
+                                pathOfImages.add(path)
+                            }
+                            cursor.close()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
                 }
             }
         } else if (requestCode == REQUEST_CAMERA) {
