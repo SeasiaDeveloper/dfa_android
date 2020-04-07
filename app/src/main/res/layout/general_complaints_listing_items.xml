@@ -35,7 +35,7 @@
                     android:layout_height="@dimen/_40sdp"
                     android:paddingTop="6dp"
                     android:layout_marginTop="@dimen/_5sdp"
-                    android:src="@drawable/ic_user"
+                    android:src="@drawable/user"
                    />
 
                 <LinearLayout

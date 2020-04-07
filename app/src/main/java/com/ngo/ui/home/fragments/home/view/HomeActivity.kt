@@ -27,6 +27,7 @@ import com.ngo.R
 import com.ngo.adapters.TabLayoutAdapter
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
+import com.ngo.customviews.CustomtextView
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.NotificationResponse
@@ -132,9 +133,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         (dialog.findViewById(R.id.txtDescription) as TextView).text =
             notificationResponse.description
 
-        val acceptButton = dialog.findViewById(R.id.btnAccept) as Button
-        val rejectButton = dialog.findViewById(R.id.btnReject) as Button
-        val openButton = dialog.findViewById(R.id.btnOpen) as Button
+        val acceptButton = dialog.findViewById(R.id.btnAccept) as CustomtextView
+        val rejectButton = dialog.findViewById(R.id.btnReject) as CustomtextView
+        val openButton = dialog.findViewById(R.id.btnOpen) as CustomtextView
 
         acceptButton.setOnClickListener {
             //accept = 4

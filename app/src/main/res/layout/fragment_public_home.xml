@@ -55,7 +55,7 @@
                                 android:layout_weight="0.15"
                                 android:padding="@dimen/_2sdp"
                                 android:scaleType="centerCrop"
-                                android:src="@drawable/ic_person_blue"
+                                android:src="@drawable/user"
                                 app:civ_border_color="@color/black" />
 
                             <LinearLayout

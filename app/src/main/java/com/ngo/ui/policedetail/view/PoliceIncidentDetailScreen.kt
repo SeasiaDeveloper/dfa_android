@@ -69,13 +69,18 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
     }
 
     override fun onStatusSelected(comment: String) {
-        //hit status update api
-        crimePresenter.updateStatus(
-            authorizationToken!!,
-            complaintId,
-            statusId,
-            comment
-        )
+        if (statusId == "-1") {
+            Utilities.dismissProgress()
+            Utilities.showMessage(this@PoliceIncidentDetailScreen,getString(R.string.no_option_selected))
+        } else {
+            //hit status update api
+            crimePresenter.updateStatus(
+                authorizationToken!!,
+                complaintId,
+                statusId,
+                comment
+            )
+        }
     }
 
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {

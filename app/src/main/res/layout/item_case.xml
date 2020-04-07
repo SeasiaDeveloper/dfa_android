@@ -41,7 +41,7 @@
                         android:layout_marginTop="@dimen/_5sdp"
                         android:layout_marginBottom="@dimen/_5sdp"
                         android:layout_weight="0.1"
-                        android:src="@drawable/ic_person_blue"
+                        android:src="@drawable/user"
                         app:civ_border_color="@color/black"
                         app:civ_border_width="0.4dp" />
 
@@ -596,7 +596,7 @@
                         android:background="@drawable/squarebg_non_curve"
                         android:padding="@dimen/_1sdp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/ic_person_blue" />
+                        android:src="@drawable/user" />
 
                     <LinearLayout
                         android:layout_width="wrap_content"

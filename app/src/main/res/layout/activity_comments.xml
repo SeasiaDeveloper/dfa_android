@@ -33,7 +33,7 @@
         <View
             android:id="@+id/view"
             android:layout_above="@+id/layout_add_comment"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/green"
             android:layout_width="match_parent"
             android:layout_height="0.2dp"/>
 
@@ -53,7 +53,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:paddingTop="6dp"
-                android:src="@drawable/ic_user"
+                android:src="@drawable/user"
                 app:civ_border_color="@color/black"
                 app:civ_border_width="0.4dp"/>
 
@@ -75,7 +75,7 @@
                 android:layout_gravity="end"
                 android:gravity="center"
                 android:textSize="@dimen/_12sdp"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/green"
                 android:text="@string/post" />
         </LinearLayout>
 
