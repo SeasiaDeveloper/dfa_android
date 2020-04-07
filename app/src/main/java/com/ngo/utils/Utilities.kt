@@ -30,8 +30,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.SphericalUtil
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.ngo.R
 import com.ngo.adapters.StatusAdapter
@@ -41,7 +39,13 @@ import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.listeners.StatusListener
 import com.ngo.pojo.response.GetStatusResponse
 import com.ngo.utils.algo.VerhoeffAlgo
+import org.json.JSONException
+import org.json.JSONObject
 import java.io.IOException
+import java.io.InputStreamReader
+import java.net.HttpURLConnection
+import java.net.MalformedURLException
+import java.net.URL
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -241,6 +245,108 @@ object Utilities {
         return isValidAadhar
     }
 
+    fun calculateDistanceUsingGoogleApi(
+        latitude: String?,
+        longitude: String?,
+        mContext: Context
+    ): StringBuilder {
+        val latitude1 = PreferenceHandler.readString(mContext, PreferenceHandler.LATITUDE, "")
+        val longitude1 = PreferenceHandler.readString(mContext, PreferenceHandler.LONGITUDE, "")
+/*        var stringBuilder = StringBuilder()
+        var dist = 0.0
+        try {
+            //destinationAddress = destinationAddress.replaceAll(" ", "%20");
+            var url = "http://maps.googleapis.com/maps/api/directions/json?origin=" + latitude1 + "," + longitude1 + "&destination=" + latitude + "," + longitude + "&key=AIzaSyBrYlAvwOypJ4ZYp4u5DDVFvajUQVJ4xkY";
+           // https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=40.6655101,-73.89188969999998&destinations=40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626%7C40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626&key=YOUR_API_KEY
+            var httppost = HttpPost(url);
+
+            var client = DefaultHttpClient();
+            var response: HttpResponse
+
+            response = client.execute(httppost);
+            var entity = response.getEntity();
+            var stream = entity.getContent();
+            var b: Int
+            b = stream.read()
+            while (b != -1) {
+                stringBuilder.append(b)
+            }
+        } catch (e: ClientProtocolException) {
+        } catch (e: IOException) {
+        }
+
+
+        try {
+            var jsonObject = JSONObject(stringBuilder.toString())
+            var array = jsonObject.getJSONArray("routes");
+            var routes = array.getJSONObject(0);
+            var legs = routes.getJSONArray("legs");
+            var steps = legs.getJSONObject(0);
+            var distance = steps.getJSONObject("distance");
+            Log.i("Distance", distance.toString());
+           // dist = Double.parseDouble(distance.getString("text").replaceAll("[^\\.0123456789]", ""));
+
+        } catch (e: JSONException) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }*/
+
+
+        var mUrlConnection: HttpURLConnection? = null
+        var mJsonResults = StringBuilder();
+        try {
+            var urlFinal =
+                "http://maps.googleapis.com/maps/api/directions/json?origin=" + latitude1 + "," + longitude1 + "&destination=" + latitude + "," + longitude + "&key=AIzaSyBrYlAvwOypJ4ZYp4u5DDVFvajUQVJ4xkY";
+            var sb = urlFinal
+            /*sb.append("?origin=" + URLEncoder.encode("Your origin address", "utf8"));
+            sb.append("&destination=" + URLEncoder.encode("Your destination address", "utf8"));
+            sb.append("&key=" + "AIzaSyBrYlAvwOypJ4ZYp4u5DDVFvajUQVJ4xkY");*/
+
+            var url = URL(sb)
+            mUrlConnection = url.openConnection() as HttpURLConnection
+            var inputStremReader = InputStreamReader(mUrlConnection.getInputStream())
+
+            // Load the results into a StringBuilder
+            var read: Int
+            //var buff = Char[1024]
+            val bufferArray = CharArray(1024)
+            //var charArray = ArrayList<Char>(1024)
+            // var buff = Array<Char>[1024]
+            read = inputStremReader.read(bufferArray)
+            while (read != -1) {
+                mJsonResults.append(bufferArray, 0, read);
+            }
+        } catch (e: MalformedURLException) {
+            System.out.println("Error processing Distance Matrix API URL");
+            //return null
+
+        } catch (e: IOException) {
+            System.out.println("Error connecting to Distance Matrix");
+            //return null;
+        } finally {
+            if (mUrlConnection != null) {
+                mUrlConnection.disconnect();
+            }
+        }
+
+
+        try {
+            var jsonObject = JSONObject(mJsonResults.toString())
+            var array = jsonObject.getJSONArray("routes");
+            var routes = array.getJSONObject(0);
+            var legs = routes.getJSONArray("legs");
+            var steps = legs.getJSONObject(0);
+            var distance = steps.getJSONObject("distance");
+            Log.i("Distance", distance.toString());
+            // dist = Double.parseDouble(distance.getString("text").replaceAll("[^\\.0123456789]", ""));
+
+        } catch (e: JSONException) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return mJsonResults;
+    }
+
     fun calculateDistance(latitude: String?, longitude: String?, mContext: Context): Int {
         val latitude1 = PreferenceHandler.readString(mContext, PreferenceHandler.LATITUDE, "")
         val longitude1 = PreferenceHandler.readString(mContext, PreferenceHandler.LONGITUDE, "")
@@ -256,46 +362,6 @@ object Utilities {
         } else {
             return -1
         }
-    }
-
-    fun calculateAccurateDistance(
-        latitude: String?,
-        longitude: String?,
-        mContext: Context
-    ): Double {
-        val latitude1 = PreferenceHandler.readString(mContext, PreferenceHandler.LATITUDE, "")
-        val longitude1 = PreferenceHandler.readString(mContext, PreferenceHandler.LONGITUDE, "")
-        /*val results = FloatArray(1)
-       Location.distanceBetween(
-           latitude1!!.toDouble(), longitude1!!.toDouble(),
-           latitude!!.toDouble(),longitude!!.toDouble(), results
-       )*/
-
-        val Radius = 6371 // radius of earth in Km
-
-        val lat1: Double = latitude1!!.toDouble()
-        val lat2: Double = latitude!!.toDouble()
-        val lon1: Double = longitude1!!.toDouble()
-        val lon2: Double = longitude!!.toDouble()
-        val dLat = Math.toRadians(lat2 - lat1)
-        val dLon = Math.toRadians(lon2 - lon1)
-        val a = (Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + (Math.cos(Math.toRadians(lat1))
-                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
-                * Math.sin(dLon / 2)))
-        val c = 2 * Math.asin(Math.sqrt(a))
-        val valueResult = Radius * c
-        val km = valueResult / 1
-        val newFormat = DecimalFormat("####")
-        val kmInDec: Int = Integer.valueOf(newFormat.format(km))
-        val meter = valueResult % 1000
-        val meterInDec: Int = Integer.valueOf(newFormat.format(meter))
-        Log.i(
-            "Radius Value", "" + valueResult + "   KM  " + kmInDec
-                    + " Meter   " + meterInDec
-        )
-
-        return Radius * c
     }
 
     fun String.intOrString(latitude: String?): Any {
@@ -468,8 +534,8 @@ object Utilities {
         return name.matches("[a-zA-Z]+".toRegex())
     }
 
-    private fun getRealPathFromURI(uri: Uri,context: Context): String {
-       var path :String =""
+    private fun getRealPathFromURI(uri: Uri, context: Context): String {
+        var path: String = ""
         if (context.contentResolver != null) {
             val cursor = context.contentResolver.query(uri, null, null, null, null)
             if (cursor != null) {

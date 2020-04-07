@@ -68,7 +68,8 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
             casesRequest = CasesRequest(
                 "1",
                 "",
-                "0"
+                "0",
+                "1", "8"
             ) //all = "1" for fetching all the cases whose type = 0
 
             Utilities.showProgress(mContext)
@@ -97,7 +98,8 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
                     casesRequest = CasesRequest(
                         "1",
                         etSearch.text.toString(),
-                        "0"
+                        "0",
+                        "1", "8"
                     ) //all = "1" for fetching all the cases whose type = 0
 
                     Utilities.showProgress(mContext)
@@ -209,7 +211,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
 
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
-        val casesRequest = CasesRequest("1", "", "0") //type = -1 for fetching all the data
+        val casesRequest = CasesRequest("1", "", "0","1", "8") //type = -1 for fetching all the data
         //  Utilities.showProgress(activity!!)
         presenter.getComplaints(casesRequest, token, type)
         change = 1
@@ -221,7 +223,8 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
             casesRequest = CasesRequest(
                 "1",
                 /*   etSearch?.text.toString()*/"",
-                "0"
+                "0",
+                "1", "8"
             ) //all = "1" and for fetching all the cases which are of type = 0
 
             Utilities.showProgress(mContext)
@@ -240,7 +243,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
 
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
-        val casesRequest = CasesRequest("1", "", "0") //type = -1 for fetching all the data
+        val casesRequest = CasesRequest("1", "", "0","1", "8") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
         change = 1
         GeneralPublicHomeFragment.change = 1
@@ -255,7 +258,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         Utilities.showMessage(mContext, responseObject.message.toString())
         //refresh the list
         Utilities.showProgress(mContext)
-        val casesRequest = CasesRequest("1", "", "0")  //type = -1 for fetching both cases and posts
+        val casesRequest = CasesRequest("1", "", "0","1", "8")  //type = -1 for fetching both cases and posts
         presenter.getComplaints(casesRequest, token, type)
     }
 
