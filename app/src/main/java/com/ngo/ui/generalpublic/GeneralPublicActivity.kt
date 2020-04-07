@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
@@ -13,7 +14,6 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
@@ -171,7 +171,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
     }
 
-    fun recordVideo() {
+    private fun recordVideo() {
         val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent, CAMERA_REQUEST_CODE_VEDIO);
@@ -216,16 +216,16 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
     private fun videoFromGalleryIntent() {
         if (Build.VERSION.SDK_INT < 19) {
-            var intent = Intent()
-            intent.setType("video/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(Intent.createChooser(intent, "Select videos"), SELECT_VIDEOS);
+            val intent = Intent()
+            intent.setType("video/*")
+            intent.setAction(Intent.ACTION_GET_CONTENT)
+            startActivityForResult(Intent.createChooser(intent, "Select videos"), SELECT_VIDEOS)
         } else {
-            var intent = Intent(Intent.ACTION_OPEN_DOCUMENT);
-            // intent.addCategory(Intent.CATEGORY_OPENABLE);
-            intent.setType("video/*");
-            intent.setAction(Intent.ACTION_GET_CONTENT);
-            startActivityForResult(intent, SELECT_VIDEOS_KITKAT);
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            // intent.addCategory(Intent.CATEGORY_OPENABLE)
+            intent.setType("video/*")
+            intent.setAction(Intent.ACTION_GET_CONTENT)
+            startActivityForResult(intent, SELECT_VIDEOS_KITKAT)
         }
     }
 
@@ -343,25 +343,31 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             if (intent.data != null) {
                 mediaType = "photos"
                 imageUri = intent.data
-                val wholeID = DocumentsContract.getDocumentId(imageUri)
-                val id =
-                    wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
-                val column = arrayOf<String>(MediaStore.Images.Media.DATA)
-                val sel = MediaStore.Images.Media._ID + "=?"
-                val cursor = getContentResolver().query(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    column, sel, arrayOf<String>(id), null
-                )
-                val columnIndex = cursor?.getColumnIndex(column[0])
-                if (cursor!!.moveToFirst()) {
-                    path = cursor.getString(columnIndex!!)
-                    pathOfImages = ArrayList<String>()
+                /*   val wholeID = DocumentsContract.getDocumentId(imageUri)
+                   val id =
+                       wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
+                   val column = arrayOf<String>(MediaStore.Images.Media.DATA)
+                   val sel = MediaStore.Images.Media._ID + "=?"
+                   val cursor = getContentResolver().query(
+                       MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                       column, sel, arrayOf<String>(id), null
+                   )
+                   val columnIndex = cursor?.getColumnIndex(column[0])
+                   if (cursor!!.moveToFirst()) {
+                       path = cursor.getString(columnIndex!!)
+                       pathOfImages = ArrayList<String>()
+                       pathOfImages.add(path)
+                   }
+                   cursor.close()*/
+                if (imageUri != null) {
+                    BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri!!))
+                    imgView.visibility = View.VISIBLE
+                    videoView.visibility = View.GONE
+                    imgView.setImageURI(imageUri)
+                    path = getRealPathFromURI(imageUri!!)
+                    pathOfImages = ArrayList()
                     pathOfImages.add(path)
                 }
-                cursor.close()
-                imgView.visibility = View.VISIBLE
-                videoView.visibility = View.GONE
-                imgView.setImageURI(imageUri)
             }
         } else if (requestCode == REQUEST_CAMERA) {
             mediaType = "photos"
@@ -381,9 +387,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             imgView.visibility = View.GONE
             videoView.visibility = View.VISIBLE
             if (intent?.data != null) {
-                var imagePath = intent.getData()?.getPath()
+                val imagePath = intent.getData()?.getPath()
                 if (imagePath!!.contains("video")) {
-                    var realpath = RealPathUtil.getRealPath(this, intent.data!!)
+                    val realpath = RealPathUtil.getRealPath(this, intent.data!!)
                     val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
                     // imgView.setImageBitmap(thumbnail)
 
@@ -398,7 +404,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             videoView.visibility = View.VISIBLE
             val videoUri = intent?.getData()
             path = getRealPathFromURI(videoUri!!)
-            pathOfImages = ArrayList<String>()
+            pathOfImages = ArrayList()
             pathOfImages.add(path)
             showVideo(path)
         }
@@ -429,7 +435,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 cursor.moveToFirst()
                 val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
                 path = cursor.getString(idx)
-                pathOfImages = ArrayList<String>()
+                pathOfImages = ArrayList()
                 pathOfImages.add(path)
                 cursor.close()
             }
@@ -520,7 +526,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             distValueList.add(dist.name!!)
         }
         val distArray = distValueList.toArray(arrayOfNulls<String>(distValueList.size))
-        var adapter = ArrayAdapter(
+        val adapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item, distArray
         )

@@ -110,7 +110,7 @@
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:layout_marginBottom="@dimen/_4sdp"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/cardView2"
@@ -143,8 +143,9 @@
                             app:font="@{`bold`}" />
 
                         <androidx.appcompat.widget.AppCompatImageView
+                            android:layout_gravity="center_horizontal"
                             android:id="@+id/imgPost"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="156dp"
                             android:layout_marginTop="@dimen/_4sdp"
                             android:scaleType="fitXY"
