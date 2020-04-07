@@ -329,7 +329,8 @@
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/imgComplaintMedia"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
+                            android:layout_gravity="center_horizontal"
                             android:layout_height="156dp"
                             android:layout_marginTop="@dimen/_4sdp"
                             android:scaleType="fitXY"
@@ -668,8 +669,9 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imgMediaPost"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="156dp"
+                    android:layout_gravity="center_horizontal"
                     android:layout_marginTop="@dimen/_4sdp"
                     android:background="@drawable/squarebg_non_curve"
                     android:scaleType="fitXY"
