@@ -425,19 +425,18 @@ object Utilities {
         return name.matches("[a-zA-Z]+".toRegex())
     }
 
-    /*private fun getRealPathFromURI(uri: Uri,context: Context): String {
+    private fun getRealPathFromURI(uri: Uri,context: Context): String {
+       var path :String =""
         if (context.contentResolver != null) {
             val cursor = context.contentResolver.query(uri, null, null, null, null)
             if (cursor != null) {
                 cursor.moveToFirst()
                 val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
                 path = cursor.getString(idx)
-                pathOfImages = ArrayList()
-                pathOfImages.add(path)
                 cursor.close()
             }
         }
         return path
-    }*/
+    }
 
 }
