@@ -30,6 +30,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.SphericalUtil
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.ngo.R
 import com.ngo.adapters.StatusAdapter
@@ -40,6 +42,7 @@ import com.ngo.listeners.StatusListener
 import com.ngo.pojo.response.GetStatusResponse
 import com.ngo.utils.algo.VerhoeffAlgo
 import java.io.IOException
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
@@ -253,6 +256,46 @@ object Utilities {
         } else {
             return -1
         }
+    }
+
+    fun calculateAccurateDistance(
+        latitude: String?,
+        longitude: String?,
+        mContext: Context
+    ): Double {
+        val latitude1 = PreferenceHandler.readString(mContext, PreferenceHandler.LATITUDE, "")
+        val longitude1 = PreferenceHandler.readString(mContext, PreferenceHandler.LONGITUDE, "")
+        /*val results = FloatArray(1)
+       Location.distanceBetween(
+           latitude1!!.toDouble(), longitude1!!.toDouble(),
+           latitude!!.toDouble(),longitude!!.toDouble(), results
+       )*/
+
+        val Radius = 6371 // radius of earth in Km
+
+        val lat1: Double = latitude1!!.toDouble()
+        val lat2: Double = latitude!!.toDouble()
+        val lon1: Double = longitude1!!.toDouble()
+        val lon2: Double = longitude!!.toDouble()
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = (Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + (Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2)))
+        val c = 2 * Math.asin(Math.sqrt(a))
+        val valueResult = Radius * c
+        val km = valueResult / 1
+        val newFormat = DecimalFormat("####")
+        val kmInDec: Int = Integer.valueOf(newFormat.format(km))
+        val meter = valueResult % 1000
+        val meterInDec: Int = Integer.valueOf(newFormat.format(meter))
+        Log.i(
+            "Radius Value", "" + valueResult + "   KM  " + kmInDec
+                    + " Meter   " + meterInDec
+        )
+
+        return Radius * c
     }
 
     fun String.intOrString(latitude: String?): Any {
