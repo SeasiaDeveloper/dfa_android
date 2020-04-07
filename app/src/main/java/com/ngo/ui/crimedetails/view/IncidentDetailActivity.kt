@@ -101,6 +101,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
 
             } else if (postOrComplaint.equals("1")) {
                 //post
+                (toolbarLayout as CenteredToolbar).title = getString(R.string.post_description)
                 title_layout.visibility = View.VISIBLE
                 desc_layout.visibility = View.GONE
                 userame_layout.visibility = View.GONE
@@ -112,6 +113,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
                 urgency_level_layout.visibility = View.GONE
                 urgency.visibility = View.GONE
                 sb_steps_5.visibility = View.GONE
+                tvTitle.visibility =  View.GONE
             }
         }
 

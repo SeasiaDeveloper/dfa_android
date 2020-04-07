@@ -13,7 +13,7 @@
             android:layout_marginStart="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_10sdp"
             android:text="@string/mark_status"
-            android:textColor="@color/green"
+            android:textColor="@color/black"
             android:textSize="@dimen/_16ssp"
             app:font="@{`bold`}" />
 
