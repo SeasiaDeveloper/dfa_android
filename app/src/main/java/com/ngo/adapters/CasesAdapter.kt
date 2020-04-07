@@ -343,6 +343,9 @@ class CasesAdapter(
                                 context
                             ).toString() + " KM away"
                         )
+
+                   /* var task =  DirectionApiAsyncTask(context,item.latitude,item.longitude!!,response)
+                    task.execute()*/
                 }
 
                 //to show action button in case of Police

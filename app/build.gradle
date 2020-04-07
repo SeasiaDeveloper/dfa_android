@@ -27,6 +27,8 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    useLibrary  'org.apache.http.legacy'
 }
 
 dependencies {
@@ -67,3 +69,4 @@ dependencies {
     implementation 'com.google.maps.android:android-maps-utils:0.5'
 }
 apply plugin: 'com.google.gms.google-services'
+
