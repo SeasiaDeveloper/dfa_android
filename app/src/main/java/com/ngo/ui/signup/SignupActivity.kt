@@ -4,7 +4,9 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.Uri
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.view.View
@@ -197,24 +199,53 @@ class SignupActivity : BaseActivity(), SignupView {
         if (requestCode == IMAGE_REQ_CODE && resultCode == Activity.RESULT_OK && null != data) {
             if (data.data != null) {
                 val imageUri = data.data
-                val wholeID = DocumentsContract.getDocumentId(imageUri)
-                val id =
-                    wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
-                val column = arrayOf(MediaStore.Images.Media.DATA)
-                val sel = MediaStore.Images.Media._ID + "=?"
-                val cursor = getContentResolver().query(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    column, sel, arrayOf(id), null
-                )
-                val columnIndex = cursor?.getColumnIndex(column[0])
-                if (cursor!!.moveToFirst()) {
-                    path = cursor.getString(columnIndex!!)
+                if (imageUri != null) {
+                    try {
+                        val wholeID = DocumentsContract.getDocumentId(imageUri)
+                        val id =
+                            wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
+                        val column = arrayOf(MediaStore.Images.Media.DATA)
+                        val sel = MediaStore.Images.Media._ID + "=?"
+                        val cursor = getContentResolver().query(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            column, sel, arrayOf(id), null
+                        )
+                        val columnIndex = cursor?.getColumnIndex(column[0])
+                        if (cursor!!.moveToFirst()) {
+                            path = cursor.getString(columnIndex!!)
+                        }
+                        cursor.close()
+                        imgProfile.setImageURI(imageUri)
+                    } catch (e: Exception) {
+                        try {
+                            BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri))
+                            imgProfile.setImageURI(imageUri)
+                            path = getRealPathFromURI(imageUri)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            Utilities.showMessage(
+                                this@SignupActivity,
+                                getString(R.string.unable_image_fetching_message)
+                            )
+                        }
+                    }
                 }
-                cursor.close()
-                imgProfile.setImageURI(imageUri)
             }
         }
 
+    }
+
+    private fun getRealPathFromURI(uri: Uri): String {
+        if (contentResolver != null) {
+            val cursor = contentResolver.query(uri, null, null, null, null)
+            if (cursor != null) {
+                cursor.moveToFirst()
+                val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+                path = cursor.getString(idx)
+                cursor.close()
+            }
+        }
+        return path
     }
 
     override fun onRequestPermissionsResult(

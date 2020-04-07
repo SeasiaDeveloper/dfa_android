@@ -6,11 +6,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.net.Uri
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
@@ -265,13 +267,31 @@ class ProfileActivity : BaseActivity(), ProfileView {
                         cursor.close()
                         imgProfile.setImageURI(imageUri)
                     } catch (e: Exception) {
-                        BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri))
-                        imgProfile.setImageURI(imageUri)
-                     //  path = Utilities.getRealPathFromURI(imageUri)
+                        try {
+                            BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri))
+                            imgProfile.setImageURI(imageUri)
+                            path = getRealPathFromURI(imageUri)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                            Utilities.showMessage(this@ProfileActivity,getString(R.string.unable_image_fetching_message))
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun getRealPathFromURI(uri: Uri): String {
+        if (contentResolver != null) {
+            val cursor = contentResolver.query(uri, null, null, null, null)
+            if (cursor != null) {
+                cursor.moveToFirst()
+                val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
+                path = cursor.getString(idx)
+                cursor.close()
+            }
+        }
+        return path
     }
 
     override fun onRequestPermissionsResult(

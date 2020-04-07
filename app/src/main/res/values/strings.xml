@@ -191,4 +191,5 @@
     <string name="no_option_selected">No option was selected</string>
     <string name="post_description">Post Description</string>
     <string name="view_fir">View FIR</string>
+    <string name="unable_image_fetching_message">Unable to fetch image. Please try again</string>
 </resources>
