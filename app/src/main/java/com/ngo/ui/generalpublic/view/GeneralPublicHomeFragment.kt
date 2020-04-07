@@ -18,6 +18,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
 
@@ -34,6 +35,8 @@ import com.ngo.pojo.request.CreatePostRequest
 import com.ngo.pojo.response.*
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.generalpublic.GeneralPublicActivity
+import com.ngo.ui.generalpublic.pagination.PaginationScrollListener
+import com.ngo.ui.generalpublic.pagination.PaginationScrollListener.Companion.PAGE_START
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
@@ -44,7 +47,7 @@ import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
-    OnCaseItemClickListener, AlertDialogListener, AdharNoListener {
+    OnCaseItemClickListener, AlertDialogListener, AdharNoListener/*, SwipeRefreshLayout.OnRefreshListener*/ {
     private var isResumeRun: Boolean = false
 
     override fun onClick(item: Any) {
@@ -65,6 +68,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     private var token: String = ""
     var isFirst = true
     var type = ""
+    var horizontalLayoutManager: LinearLayoutManager? = null
+    //pagination
+    private var currentPage: Int = PAGE_START
+    private var isLastPage = false
+    private val totalPage = 10
+    private var isLoading = false
+    var itemCount = 0
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -99,7 +110,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     fun setAdapter() {
         adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
-        val horizontalLayoutManager = LinearLayoutManager(
+        horizontalLayoutManager = LinearLayoutManager(
             mContext,
             RecyclerView.VERTICAL, false
         )
@@ -110,16 +121,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+        //swipeRefresh.setOnRefreshListener(this)
         setAdapter()
         setProfilePic()
 
         imgAdd.setOnClickListener(this)
         // Utilities.showProgress(mContext)
-
-        val casesRequest =
-            CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
-
-        presenter.getComplaints(casesRequest, token, type)
+        doApiCall()
 
         txtAddPost.setOnClickListener {
             //show the addPost layout
@@ -156,6 +164,40 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             if (resultGallery)
                 galleryIntent()
         }
+        //pagination
+       /* rvPublic?.addOnScrollListener(object : PaginationScrollListener(horizontalLayoutManager!!) {
+            override fun isLastPage(): Boolean {
+                return isLastPage
+            }
+
+            override fun isLoading(): Boolean {
+                return isLoading
+            }
+
+            override fun loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                doApiCall()
+                //you have to call loadmore items to get more data
+                getMoreItems()
+            }
+        })*/
+    }
+
+    fun doApiCall() {
+        val casesRequest =
+            CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
+
+        presenter.getComplaints(casesRequest, token, type)
+    }
+
+    fun getMoreItems() {
+        //after fetching your data assuming you have fetched list in your
+        // recyclerview adapter assuming your recyclerview adapter is
+        //rvAdapter
+        //after getting your data you have to assign false to isLoading
+        isLoading = false
+        adapter?.addData(complaints.toMutableList())
     }
 
     private fun galleryIntent() {
@@ -237,11 +279,28 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         complaints = response.data!!
         if (complaints.isNotEmpty()) {
             tvRecord?.visibility = View.GONE
-            adapter?.setList(response.data.toMutableList())
+            adapter?.setList(response.data.toMutableList()) //now
             //rvPublic?.adapter = adapter
+
+
+           /* if (currentPage != PAGE_START)
+            //adapter.removeLoading();
+              adapter?.addData(complaints.toMutableList())
+              swipeRefresh.setRefreshing(false)
+            // check weather is last page or not
+            if (currentPage < totalPage) {
+                adapter?.setList(response.data.toMutableList())
+                //adapter.addLoading();
+            } else {
+                isLastPage = true
+            }
+            isLoading = false*/
+
             change = 1
+
         } else {
             tvRecord.visibility = View.VISIBLE
+            isLoading = false
         }
 
         setProfilePic()
@@ -424,7 +483,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        if (!isFirst) {
+            if (!isFirst) {
             val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
             Utilities.showProgress(mContext)
             presenter.getComplaints(casesRequest, token, type)
@@ -466,6 +525,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         val intent = Intent(activity, GeneralPublicActivity::class.java)
         startActivity(intent)
     }
+
+    /*   override fun onRefresh() {
+       itemCount = 0
+         currentPage = PAGE_START
+         isLastPage = false
+         adapter?.clear()
+         doApiCall()
+    }*/
 
     /* override fun myAction(mContext: Context) {
          this.mContext = mContext

@@ -86,7 +86,7 @@
                     android:weightSum="2">
 
 
-                    <com.ngo.customviews.CustomEditText
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/tvSelectPhoto"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                         android:text="@string/select_photo"
                         android:textColor="@color/white" />
 
-                    <com.ngo.customviews.CustomEditText
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/tvTakePhoto"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                         android:text="Take Photo"
                         android:textColor="@color/white" />
 
-                    <com.ngo.customviews.CustomEditText
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/tvRecordVideo"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                         android:text="Select Video"
                         android:textColor="@color/white" />
 
-                    <com.ngo.customviews.CustomEditText
+                    <com.ngo.customviews.CustomtextView
                         android:id="@+id/tvTakeVideo"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"

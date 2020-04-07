@@ -25,6 +25,7 @@ import com.ngo.ui.comments.CommentsActivity
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.item_case.view.*
 
+
 class CasesAdapter(
     var context: Context,
     var mList: MutableList<GetCasesResponse.Data>,
@@ -32,7 +33,8 @@ class CasesAdapter(
     private var type: Int, private var alertDialogListener: AlertDialogListener
 ) :
     RecyclerView.Adapter<CasesAdapter.ViewHolder>() {
-
+    //private val isLoadingAdded = false
+    private val mCurrentPosition = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = DataBindingUtil.inflate(
@@ -45,6 +47,19 @@ class CasesAdapter(
         return ViewHolder(binding.root)
     }
 
+    fun addData(listItems: MutableList<GetCasesResponse.Data>) {
+        var size = this.mList.size
+        this.mList.addAll(listItems)
+        var sizeNew = this.mList.size
+        notifyItemRangeChanged(size, sizeNew)
+    }
+
+    fun clear() {
+        val size: Int = mList.size
+        mList.clear()
+        notifyItemRangeRemoved(0, size)
+    }
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(context, mList.get(position), position, listener, type, alertDialogListener)
 
@@ -53,6 +68,7 @@ class CasesAdapter(
     override fun getItemCount(): Int {
         return mList.size
     }
+
 
     fun setList(mList: MutableList<GetCasesResponse.Data>) {
         this.mList = mList
@@ -331,6 +347,7 @@ class CasesAdapter(
                     } else {
                         itemView.action_complaint.visibility = View.GONE
                     }
+                    itemView.layoutContact.visibility = View.GONE
                 }
 
             } else {
@@ -359,6 +376,7 @@ class CasesAdapter(
                     itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.grey_text))
                 }
             }
+
         }
 
         fun String.intOrString(): Any {

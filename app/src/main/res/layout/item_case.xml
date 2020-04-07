@@ -546,6 +546,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6sp"
                             android:text="12"
+                            android:visibility="gone"
                             android:textColor="@color/black" />
 
                     </LinearLayout>
@@ -679,14 +680,14 @@
                             android:id="@+id/img_like_post"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/like_black" />
+                            android:src="@drawable/like" />
 
 
                         <ImageView
                             android:id="@+id/img_like_red_post"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/like_red"
+                            android:src="@drawable/filled_like"
                             android:visibility="gone" />
 
                         <com.ngo.customviews.CustomtextView
@@ -737,6 +738,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6sp"
+                            android:visibility="gone"
                             android:text="12" />
 
                     </LinearLayout>
