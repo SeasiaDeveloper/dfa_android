@@ -158,6 +158,14 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
                 presenter.fetchStatusList(token, type)
             }
 
+            "webview" -> {
+                val url = complaintsData.fir_url
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(url)
+                startActivity(i)
+            }
+
+
             else -> {
                 val intent = Intent(mContext, IncidentDetailActivity::class.java)
                 intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
@@ -227,7 +235,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         //delete the item based on id
         presenter.changeLikeStatus(token!!, complaintsData.id!!)
         change = 1
-        GeneralPublicHomeFragment.change=1
+        GeneralPublicHomeFragment.change = 1
     }
 
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
@@ -235,7 +243,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         val casesRequest = CasesRequest("1", "", "0") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
         change = 1
-        GeneralPublicHomeFragment.change=1
+        GeneralPublicHomeFragment.change = 1
     }
 
     override fun adhaarSavedSuccess(responseObject: SignupResponse) {

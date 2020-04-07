@@ -98,7 +98,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
                 desc_layout.visibility = View.VISIBLE
                 status_layout.visibility = View.VISIBLE
                 urgency.visibility = View.GONE
-                ngo_comment_layout.visibility=View.GONE
+                ngo_comment_layout.visibility = View.GONE
 
             } else if (postOrComplaint.equals("1")) {
                 //post
@@ -114,8 +114,8 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
                 urgency_level_layout.visibility = View.GONE
                 urgency.visibility = View.GONE
                 sb_steps_5.visibility = View.GONE
-                tvTitle.visibility =  View.GONE
-                ngo_comment_layout.visibility=View.GONE
+                tvTitle.visibility = View.GONE
+                ngo_comment_layout.visibility = View.GONE
             }
         }
 
@@ -129,8 +129,8 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
             userame_layout.visibility = View.GONE
             urgency.visibility = View.VISIBLE
             sb_steps_5.visibility = View.GONE
-            urgency_level_layout.visibility=View.VISIBLE
-            ngo_comment_layout.visibility=View.VISIBLE
+            urgency_level_layout.visibility = View.VISIBLE
+            ngo_comment_layout.visibility = View.VISIBLE
         }
 
     }
@@ -186,8 +186,8 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
         if (type.equals("2") && postOrComplaint.equals("0")) {
             if (!getCrimeDetailsResponse.data?.get(0)?.ngo_comment.isNullOrEmpty()) {
                 ngo_comment.setText(getCrimeDetailsResponse.data?.get(0)?.ngo_comment)
-            }else{
-                ngo_comment_layout.visibility=View.GONE
+            } else {
+                ngo_comment_layout.visibility = View.GONE
             }
         }
     }
@@ -233,9 +233,12 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView {
                 .centerCrop()
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.noimage)
-            Glide.with(this).load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
-                .apply(options)
-                .into(imgView)
+            if (this != null) {
+                Glide.with(this).load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
+                    .apply(options)
+                    .into(imgView)
+            }
+
             ivVideoIcon.visibility = View.GONE
         }
     }

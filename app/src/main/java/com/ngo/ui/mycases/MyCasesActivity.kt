@@ -215,6 +215,13 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                 presenter.fetchStatusList(token, type)
             }
 
+            "webview" -> {
+                val url = complaintsData.fir_url
+                val i = Intent(Intent.ACTION_VIEW)
+                i.data = Uri.parse(url)
+                startActivity(i)
+            }
+
             else -> {
                 val intent = Intent(this, IncidentDetailActivity::class.java)
                 intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)

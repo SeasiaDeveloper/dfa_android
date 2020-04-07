@@ -352,8 +352,6 @@ class CasesAdapter(
                     } else {
                         itemView.action_complaint.visibility = View.GONE
                     }
-
-
                     itemView.layoutContact.visibility = View.GONE
                     itemView.view_fir.visibility = View.VISIBLE
                     itemView.imgComplaintMedia.visibility = View.GONE
@@ -363,6 +361,9 @@ class CasesAdapter(
                         itemView.view_fir.visibility = View.GONE
                         itemView.imgComplaintMedia.visibility = View.VISIBLE
                     }*/
+                }else{
+                    itemView.view_fir.visibility = View.GONE
+                    itemView.imgComplaintMedia.visibility = View.VISIBLE
                 }
 
             } else {
