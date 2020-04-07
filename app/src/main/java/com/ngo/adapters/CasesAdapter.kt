@@ -113,7 +113,7 @@ class CasesAdapter(
                 itemView.txtUserNameForPost.text =
                     userDetail.first_name + " " + userDetail.last_name
                 itemView.txtDateForPost.text =
-                    Utilities.changeDateFormat(item.report_data!!) + " " + item.report_time
+                    Utilities.changeDateFormat(item.report_data!!) + " " + Utilities.changeTimeFormat(item.report_time!!)
                 itemView.txtPostInfo.text = item.info
 
                 if (item.media_list!!.isNotEmpty()) {
@@ -195,7 +195,7 @@ class CasesAdapter(
                 //   itemView.status.text = item.status.toString().toUpperCase()
                 itemView.expandable_Date.text = Utilities.changeDateFormat(item.report_data!!)
                 itemView.expandable_Level.text = "Level " + item.urgency
-                itemView.expandable_Time.text = item.report_time
+                itemView.expandable_Time.text = Utilities.changeTimeFormat(item.report_time!!)
                 itemView.expandable_DescriptionNgo.text = item.info.toString()
 
                 itemView.expandable_contactNo.text = userDetail.username

@@ -314,6 +314,20 @@ object Utilities {
         return formatedDate
     }
 
+    fun changeTimeFormat(date: String): String {
+        val oldDateFormat = SimpleDateFormat("HH:mm:ss a", Locale.getDefault())
+        val newDateFormat = SimpleDateFormat("HH:mm a", Locale.getDefault())
+        val convertedDate: Date?
+        try {
+            convertedDate = oldDateFormat.parse(date)
+            formatedDate = newDateFormat.format(convertedDate!!)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+
+        }
+        return formatedDate
+    }
+
     fun displayDialog(
         context: Context,
         title: String?,
