@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.provider.DocumentsContract
 import android.provider.MediaStore
@@ -246,21 +247,29 @@ class ProfileActivity : BaseActivity(), ProfileView {
         if (requestCode == IMAGE_REQ_CODE && resultCode == Activity.RESULT_OK && null != data) {
             if (data.data != null) {
                 val imageUri = data.data
-                val wholeID = DocumentsContract.getDocumentId(imageUri)
-                val id =
-                    wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
-                val column = arrayOf(MediaStore.Images.Media.DATA)
-                val sel = MediaStore.Images.Media._ID + "=?"
-                val cursor = getContentResolver().query(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    column, sel, arrayOf(id), null
-                )
-                val columnIndex = cursor?.getColumnIndex(column[0])
-                if (cursor!!.moveToFirst()) {
-                    path = cursor.getString(columnIndex!!)
+                if (imageUri != null) {
+                    try {
+                        val wholeID = DocumentsContract.getDocumentId(imageUri)
+                        val id =
+                            wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
+                        val column = arrayOf(MediaStore.Images.Media.DATA)
+                        val sel = MediaStore.Images.Media._ID + "=?"
+                        val cursor = getContentResolver().query(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                            column, sel, arrayOf(id), null
+                        )
+                        val columnIndex = cursor?.getColumnIndex(column[0])
+                        if (cursor!!.moveToFirst()) {
+                            path = cursor.getString(columnIndex!!)
+                        }
+                        cursor.close()
+                        imgProfile.setImageURI(imageUri)
+                    } catch (e: Exception) {
+                        BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri))
+                        imgProfile.setImageURI(imageUri)
+                       // path = getRealPathFromURI(imageUri)
+                    }
                 }
-                cursor.close()
-                imgProfile.setImageURI(imageUri)
             }
         }
     }
