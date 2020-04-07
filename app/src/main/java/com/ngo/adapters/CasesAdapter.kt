@@ -361,19 +361,19 @@ class CasesAdapter(
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     itemView.txtUrgencyTitle.setTextColor(
                         context.resources.getColor(
-                            (R.color.black),
+                            (R.color.green),
                             context.getTheme()
                         )
                     )
                     itemView.expandable_Level.setTextColor(
                         context.resources.getColor(
-                            (R.color.black),
+                            (R.color.green),
                             context.getTheme()
                         )
                     )
                 } else {
-                    itemView.txtUrgencyTitle.setTextColor(context.resources.getColor(R.color.grey_text))
-                    itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.grey_text))
+                    itemView.txtUrgencyTitle.setTextColor(context.resources.getColor(R.color.green))
+                    itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.green))
                 }
             }
 
