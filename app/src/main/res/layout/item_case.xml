@@ -136,16 +136,14 @@
 
                                 <com.ngo.customviews.CustomtextView
                                     android:id="@+id/txtCrimeType"
-                                    android:layout_width="0dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/_4sdp"
                                     android:layout_marginEnd="@dimen/_4sdp"
                                     android:layout_marginBottom="@dimen/_5sdp"
-                                    android:layout_weight="0.3"
                                     android:textColor="@color/grey_text"
                                     android:textSize="@dimen/_12ssp"
-
-                                    tools:text="" />
+                                    android:text="Suspect"/>
                             </LinearLayout>
 
                             <LinearLayout
@@ -163,15 +161,14 @@
 
                                 <com.ngo.customviews.CustomtextView
                                     android:id="@+id/txtStatus"
-                                    android:layout_width="0dp"
+                                    android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/_4sdp"
                                     android:layout_marginEnd="@dimen/_4sdp"
                                     android:layout_marginBottom="@dimen/_5sdp"
-                                    android:layout_weight="0.3"
                                     android:textColor="@color/grey_text"
                                     android:textSize="@dimen/_12ssp"
-                                    tools:text="" />
+                                    tools:text="Reject" />
                             </LinearLayout>
 
                             <LinearLayout
@@ -196,7 +193,7 @@
                                     android:layout_marginBottom="@dimen/_5sdp"
                                     android:textColor="@color/grey_text"
                                     android:textSize="@dimen/_12ssp"
-                                    tools:text="" />
+                                    tools:text="Level 3" />
                             </LinearLayout>
                         </LinearLayout>
 
@@ -213,7 +210,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_6sdp"
-                            android:text="Complaint Date:"
+                            android:text="Reported:"
                             android:textColor="@color/grey_text"
                             android:textStyle="bold" />
 
@@ -227,33 +224,6 @@
                             android:textColor="@color/grey_text"
                             android:textSize="@dimen/_12ssp"
                             tools:text="" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="horizontal">
-
-                        <com.ngo.customviews.CustomtextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_6sdp"
-                            android:text="Complaint Time:"
-                            android:textColor="@color/grey_text"
-                            android:textStyle="bold" />
-
-                        <com.ngo.customviews.CustomtextView
-                            android:id="@+id/expandable_Time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_4sdp"
-                            android:layout_marginEnd="@dimen/_4sdp"
-                            android:layout_marginBottom="@dimen/_5sdp"
-                            android:textColor="@color/grey_text"
-                            android:textSize="@dimen/_12ssp"
-                            tools:text="" />
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -265,7 +235,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="end"
-                                android:layout_marginEnd="@dimen/_20sdp"
+                                android:layout_marginEnd="@dimen/_14sdp"
                                 android:src="@drawable/ic_expand_more_black_24dp" />
                         </LinearLayout>
                     </LinearLayout>
@@ -279,31 +249,10 @@
                         android:visibility="gone">
 
                         <LinearLayout
-                            android:id="@+id/layoutUsername"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_4sdp"
-                            android:orientation="horizontal"
-                            android:visibility="gone">
-
-                            <com.ngo.customviews.CustomtextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_6sdp"
-                                android:text="Username:"
-                                android:textColor="@color/black"
-                                android:textStyle="bold"
-                                android:visibility="gone" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
                             android:id="@+id/layoutContact"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:layout_marginTop="@dimen/_4sdp"
                             android:orientation="horizontal"
                             android:visibility="visible">
 

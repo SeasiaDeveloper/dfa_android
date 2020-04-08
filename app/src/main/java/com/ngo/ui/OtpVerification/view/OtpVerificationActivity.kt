@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.View
 import android.widget.Toast
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.android.gms.tasks.TaskExecutors
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.PhoneAuthProvider.ForceResendingToken
@@ -19,6 +20,7 @@ import com.ngo.ui.signup.SignupActivity
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_forgot_password.toolbarLayout
 import kotlinx.android.synthetic.main.activity_otp_verification.*
+import java.util.concurrent.TimeUnit
 
 
 class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerificationView {
@@ -52,7 +54,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
 
         setListeners()
         showProgress()
-        presenter.sendVerificationCode(mobile, mCallbacks)
+        sendVerificationCode(mobile, mCallbacks)
 
     }
 
@@ -60,7 +62,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
     private val mCallbacks: OnVerificationStateChangedCallbacks =
         object : OnVerificationStateChangedCallbacks() {
             override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
-                dismissProgress()
+                Utilities.dismissProgress()
                 val code = phoneAuthCredential.smsCode
                 if (code != null) {
                     et_otp.setText(code)
@@ -69,14 +71,14 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
             }
 
             override fun onVerificationFailed(e: FirebaseException) {
-                dismissProgress()
+                Utilities.dismissProgress()
                 Toast.makeText(this@OtpVerificationActivity, e.message, Toast.LENGTH_LONG).show()
                 finish()
             }
 
             override fun onCodeSent(s: String, forceResendingToken: ForceResendingToken) {
                 super.onCodeSent(s, forceResendingToken)
-                dismissProgress()
+                Utilities.dismissProgress()
                 //storing the verification id that is sent to the user
                 mVerificationId = s
             }
@@ -89,6 +91,15 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
 
     override fun handleKeyboard(): View {
         return OtpVerificationLayout
+    }
+
+    fun sendVerificationCode(mobile: String ,mCallbacks  : PhoneAuthProvider.OnVerificationStateChangedCallbacks ) {
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+            "+91" + mobile,
+            60,
+            TimeUnit.SECONDS,
+            TaskExecutors.MAIN_THREAD,
+            mCallbacks)
     }
 
     override fun onClick(v: View?) {
@@ -120,8 +131,8 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
                       et_otp.requestFocus()
                       return
                   } else {*/
-              //  Utilities.showProgress(this)
-                presenter.sendVerificationCode(mobile, mCallbacks)
+              Utilities.showProgress(this)
+               sendVerificationCode(mobile, mCallbacks)
                 //   }
             }
 
