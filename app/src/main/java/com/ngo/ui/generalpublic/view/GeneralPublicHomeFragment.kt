@@ -47,7 +47,7 @@ import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     OnCaseItemClickListener, AlertDialogListener,
-    AdharNoListener, AsyncResponse, SwipeRefreshLayout.OnRefreshListener {
+    AdharNoListener/*, SwipeRefreshLayout.OnRefreshListener*/ {
     private var isResumeRun: Boolean = false
 
     override fun onClick(item: Any) {
@@ -122,7 +122,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-        swipeRefresh.setOnRefreshListener(this)
+       // swipeRefresh.setOnRefreshListener(this)
         setAdapter()
         setProfilePic()
 
@@ -168,7 +168,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 galleryIntent()
         }
         //pagination
-        rvPublic?.addOnScrollListener(object : PaginationScrollListener(horizontalLayoutManager!!) {
+      /*  rvPublic?.addOnScrollListener(object : PaginationScrollListener(horizontalLayoutManager!!) {
             override fun isLastPage(): Boolean {
                 return isLastPage
             }
@@ -182,14 +182,15 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 currentPage++;
                 doApiCall(currentPage.toString(),"8")
                 //you have to call loadmore items to get more data
-                getMoreItems()
+                //getMoreItems()
             }
-        })
+        })*/
     }
+
 
     fun doApiCall(page:String,perPage:String) {
         val casesRequest =
-            CasesRequest("1", "", "-1", page, perPage)  //type = -1 for fetching both cases and posts
+            CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
 
         presenter.getComplaints(casesRequest, token, type)
     }
@@ -199,8 +200,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         // recyclerview adapter assuming your recyclerview adapter is
         //rvAdapter
         //after getting your data you have to assign false to isLoading
-        isLoading = false
-        adapter?.addData(complaints.toMutableList())
+       /* isLoading = false
+        adapter?.addData(complaints.toMutableList())*/
+
+        isLastPage = false
+        doApiCall(currentPage.toString(),"8")
     }
 
     private fun galleryIntent() {
@@ -282,14 +286,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         complaints = response.data!!
         if (complaints.isNotEmpty()) {
             tvRecord?.visibility = View.GONE
-            //adapter?.setList(response.data.toMutableList()) //now
+            adapter?.setList(response.data.toMutableList()) //now
             //rvPublic?.adapter = adapter
 
 
-            if (currentPage != PAGE_START)
+           /* if (currentPage != PAGE_START)
             //adapter.removeLoading();
                 adapter?.addData(complaints.toMutableList())
-            swipeRefresh.setRefreshing(false)
+            //swipeRefresh.setRefreshing(false)
             // check weather is last page or not
             if (currentPage < totalPage) {
                 adapter?.setList(response.data.toMutableList())
@@ -298,7 +302,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 isLastPage = true
             }
             isLoading = false
-
+*/
             change = 1
 
         } else {
@@ -407,7 +411,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         //refresh the list
         Utilities.showProgress(mContext)
         val casesRequest =
-            CasesRequest("1", "", "-1", "1", "8")  //type = -1 for fetching both cases and posts
+            CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
         presenter.getComplaints(casesRequest, token, type)
     }
 
@@ -443,21 +447,16 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun onResume() {
         super.onResume()
-        if (isFirst) {
+       if (isFirst) {
             isFirst = false
             val casesRequest =
-                CasesRequest("1", "", "-1", "1", "8") //type = -1 for fetching all the data
+                CasesRequest("1", "", "-1") //type = -1 for fetching all the data
             Utilities.showProgress(mContext)
             presenter.getComplaints(casesRequest, token, type)
         } else if (change == 1) {
             val casesRequest =
-                CasesRequest("1", "", "-1", "1", "8") //type = -1 for fetching all the data
+                CasesRequest("1", "", "-1") //type = -1 for fetching all the data
             Utilities.showProgress(mContext)
-            //token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
-            //type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "")!!
-            /*   if (adapter == null) {
-                   setAdapter()
-               }*/
             presenter.getComplaints(casesRequest, token, type)
             change = 0
         }
@@ -490,7 +489,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest =
-            CasesRequest("1", "", "-1", "1", "8") //type = -1 for fetching all the data
+            CasesRequest("1", "", "-1") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
     }
 
@@ -498,7 +497,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         super.setUserVisibleHint(isVisibleToUser)
         if (!isFirst) {
             val casesRequest =
-                CasesRequest("1", "", "-1", "1", "8") //type = -1 for fetching all the data
+                CasesRequest("1", "", "-1") //type = -1 for fetching all the data
             Utilities.showProgress(mContext)
             presenter.getComplaints(casesRequest, token, type)
         }
@@ -516,7 +515,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest =
-            CasesRequest("1", "", "-1", "1", "8") //type = -1 for fetching all the data
+            CasesRequest("1", "", "-1") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
     }
 
@@ -541,17 +540,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         startActivity(intent)
     }
 
-    override fun processFinish(output: String?) {
-
-    }
-
-    override fun onRefresh() {
+   /* override fun onRefresh() {
         itemCount = 0
         currentPage = PAGE_START
         isLastPage = false
         adapter?.clear()
         doApiCall(currentPage.toString(),"8")
-    }
+    }*/
 
     /* override fun myAction(mContext: Context) {
          this.mContext = mContext

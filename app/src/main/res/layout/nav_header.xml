@@ -4,7 +4,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/navigationLayout"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="200dp"
         android:background="@color/green"
         android:orientation="vertical">
 
@@ -34,15 +34,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:layout_marginLeft="@dimen/_3sdp"
-            android:layout_marginBottom="@dimen/_5sdp"
             android:layout_marginTop="@dimen/_5sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
             android:orientation="vertical">
 
-          <com.ngo.customviews.CustomTextViewheading
+            <com.ngo.customviews.CustomTextViewheading
                 android:id="@+id/textName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:paddingLeft="@dimen/_5sdp"
+                android:paddingRight="@dimen/_5sdp"
+                android:singleLine="true"
                 android:textColor="#ffffff"
                 android:textSize="15dp"
                 android:textStyle="bold" />
@@ -52,6 +55,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
+                android:maxLines="2"
+                android:paddingLeft="@dimen/_5sdp"
+                android:paddingRight="@dimen/_5sdp"
                 android:gravity="center"
                 android:textColor="#ffffff"
                 android:textSize="15dp"

@@ -34,10 +34,17 @@
                 android:padding="@dimen/_7sdp" />
         </LinearLayout>
 
+      <!--  <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefresh_myCases"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">-->
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPublic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
+
+       <!-- </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
         <TextView
             android:id="@+id/tvRecord"

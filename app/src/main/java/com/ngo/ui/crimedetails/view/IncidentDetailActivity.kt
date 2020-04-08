@@ -88,8 +88,11 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         }
 
         show_location.setOnClickListener {
-            val gmmIntentUri =
-                Uri.parse("google.navigation:q=" + latitude + "," + longitude + "")
+            val latitude1 = PreferenceHandler.readString(this, PreferenceHandler.LATITUDE, "")
+            val longitude1 = PreferenceHandler.readString(this, PreferenceHandler.LONGITUDE, "")
+            //var s="&daddr="
+            //val gmmIntentUri = Uri.parse("http://maps.google.com/maps?saddr="+latitude1+","+longitude1+s+latitude+","+longitude);
+            val gmmIntentUri = Uri.parse("google.navigation:q=" + latitude + "," + longitude + "")
             //  val gmmIntentUri = Uri.parse("google.navigation:q="+30.7106607+","+76.7091493+"")
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
@@ -305,8 +308,11 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
     }
 
     override fun processFinish(output: String?) {
-        show_location.setText(output).toString() + "away"
+        if (output == null || output.equals("")) {
+            show_location.setText("0 KM away").toString()
+        } else {
+            show_location.setText(output + " away").toString()
+        }
     }
-
 }
 

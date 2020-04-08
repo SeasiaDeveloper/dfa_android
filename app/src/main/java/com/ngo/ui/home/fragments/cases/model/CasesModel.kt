@@ -32,6 +32,8 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         map["all"] = toRequestBody(casesRequest.all) //zero for my case 1 for all case
         map["search"] = toRequestBody(casesRequest.search)
         map["type"] = toRequestBody(casesRequest.type) //type = 0 for cases
+       /* map["page"] = toRequestBody(casesRequest.page)
+        map["per_page"] = toRequestBody(casesRequest.per_page)*/
 
         //in case of Police
         if (userRole.equals("2")) {

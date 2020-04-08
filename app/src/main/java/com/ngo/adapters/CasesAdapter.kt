@@ -108,9 +108,9 @@ class CasesAdapter(
             itemView.layoutListItem.setOnClickListener {
                 listener.onItemClick(item, "full")
             }
-            itemView.location.setOnClickListener {
+            /*itemView.location.setOnClickListener {
                 listener.onItemClick(item, "location")
-            }
+            }*/
             itemView.view_fir.setOnClickListener {
                 listener.onItemClick(item, "webview")
             }
@@ -292,12 +292,12 @@ class CasesAdapter(
 
             //in case of NGO and police
             if ((type == 1) || (type == 2)) {
-                itemView.location.visibility = View.VISIBLE
+                //itemView.location.visibility = View.VISIBLE
                 itemView.layoutContact.visibility = View.VISIBLE
                 itemView.action_complaint.visibility = View.VISIBLE
-                itemView.location.setOnClickListener {
+               /* itemView.location.setOnClickListener {
                     listener.onItemClick(item, "location")
-                }
+                }*/
                 itemView.action_complaint.setOnClickListener {
                     listener.onItemClick(item, "action")
                 }
@@ -326,7 +326,7 @@ class CasesAdapter(
                 }
 
 
-                if (item.latitude != null) {
+               /* if (item.latitude != null) {
                     val string = item.latitude
                     var numeric = true
 
@@ -345,9 +345,9 @@ class CasesAdapter(
                             ).toString() + " KM away"
                         )
 
-                   /* var task =  DirectionApiAsyncTask(context,item.latitude,item.longitude!!,response)
-                    task.execute()*/
-                }
+                   *//* var task =  DirectionApiAsyncTask(context,item.latitude,item.longitude!!,response)
+                    task.execute()*//*
+                }*/
 
                 //to show action button in case of Police
                 if (type == 2) {
@@ -373,7 +373,7 @@ class CasesAdapter(
             } else {
                 //in case of general public/general user
                 itemView.imgComplaintMedia.visibility = View.VISIBLE
-                itemView.location.visibility = View.GONE
+               // itemView.location.visibility = View.GONE
                 itemView.layoutContact.visibility = View.GONE
                 itemView.action_complaint.visibility = View.GONE
                 itemView.layoutCrimeType.visibility = View.GONE

@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ngo.R
 import com.ngo.adapters.CasesAdapter
 import com.ngo.adapters.StatusAdapter
@@ -25,6 +26,7 @@ import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.pojo.response.GetStatusResponse
 import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
+import com.ngo.ui.generalpublic.pagination.PaginationScrollListener
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
@@ -39,8 +41,19 @@ import kotlinx.android.synthetic.main.activity_my_cases.rvPublic
 import kotlinx.android.synthetic.main.activity_my_cases.toolbarLayout
 import kotlinx.android.synthetic.main.activity_my_cases.tvRecord
 import kotlinx.android.synthetic.main.fragment_cases.*
+import kotlinx.android.synthetic.main.fragment_public_home.*
 
-class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener {
+class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener
+   /* SwipeRefreshLayout.OnRefreshListener*/ {
+    //pagination
+    private var currentPage: Int = PaginationScrollListener.PAGE_START
+    private var isLastPage = false
+    private val totalPage = 10
+    private var isLoading = false
+    var itemCount = 0
+    var page: String = "0"
+    var perPage: String = "0"
+
     override fun onStatusClick(statusId: String) {
         this.statusId = statusId
     }
@@ -63,7 +76,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     private var adapter: CasesAdapter? = null
 
     companion object {
-        var change= 0
+        var change = 0
     }
 
     override fun onResume() {
@@ -73,8 +86,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                 "0",
                 etSearch.text.toString(),
                 "0"
-            ,"",
-                "8"
+
             ) //all = "1" for fetching all the cases whose type = 0
 
             Utilities.showProgress(this@MyCasesActivity)
@@ -95,27 +107,58 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             onBackPressed()
         }
 
-     /*   val horizontalLayoutManager = LinearLayoutManager(
-            this, RecyclerView.VERTICAL, false
-        )
-        rvPublic.layoutManager = horizontalLayoutManager*/
-
+        /*   val horizontalLayoutManager = LinearLayoutManager(
+               this, RecyclerView.VERTICAL, false
+           )
+           rvPublic.layoutManager = horizontalLayoutManager*/
+        //swipeRefresh_myCases.setOnRefreshListener(this)
         adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this)
         val horizontalLayoutManager = LinearLayoutManager(
-            this, RecyclerView.VERTICAL, false)
+            this, RecyclerView.VERTICAL, false
+        )
         rvPublic?.layoutManager = horizontalLayoutManager
         rvPublic?.adapter = adapter
 
+        page = "1"
+        perPage = "50"
+        doApiCall(page, perPage)
+        //pagination
+       /* rvPublic?.addOnScrollListener(object : PaginationScrollListener(horizontalLayoutManager!!) {
+            override fun isLastPage(): Boolean {
+                return isLastPage
+            }
 
+            override fun isLoading(): Boolean {
+                return isLoading
+            }
+
+            override fun loadMoreItems() {
+                isLoading = true;
+                currentPage++;
+                doApiCall(currentPage.toString(), "8")
+                //you have to call loadmore items to get more data
+                //getMoreItems()
+            }
+        })*/
+    }
+
+    fun doApiCall(page: String, perPage: String) {
         casesRequest = CasesRequest(
             "0",
             etSearch.text.toString(),
-            "0","",
-            "8"
+            "0"
         ) //all = "0" for my cases and for fetching all the cases which are of type = 0
         Utilities.showProgress(this)
         presenter.getComplaints(casesRequest, token, type)
     }
+
+/*    override fun onRefresh() {
+        itemCount = 0
+        currentPage = PaginationScrollListener.PAGE_START
+        isLastPage = false
+        adapter?.clear()
+        doApiCall(currentPage.toString(), "8")
+    }*/
 
     //displays my cases list on the view
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
@@ -128,8 +171,24 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             adapter?.setList(complaints.toMutableList()!!)
 
 
-     /*       rvPublic.adapter =
-                CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this)*/
+          /*  if (currentPage != PaginationScrollListener.PAGE_START)
+            //adapter.removeLoading();
+                adapter?.addData(complaints.toMutableList())
+            swipeRefresh_myCases.setRefreshing(false)
+            // check weather is last page or not
+            if (currentPage < totalPage) {
+                adapter?.setList(response.data.toMutableList())
+                //adapter.addLoading();
+            } else {
+                isLastPage = true
+            }
+            isLoading = false*/
+
+           GeneralPublicHomeFragment.change = 1
+
+
+            /*       rvPublic.adapter =
+                       CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this)*/
         } else {
             tvRecord.visibility = View.VISIBLE
             rvPublic.visibility = View.GONE
@@ -142,8 +201,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                     casesRequest = CasesRequest(
                         "0",
                         etSearch.text.toString(),
-                        "0","",
-                        "8"
+                        "0"
                     ) //all = "1" for fetching all the cases whose type = 0
 
                     Utilities.showProgress(this@MyCasesActivity)
@@ -180,11 +238,11 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         val casesRequest = CasesRequest(
             "0",
             "",
-            "0","",
-            "8"
+            "0"
         ) //all = 0 for only my cases;type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
-        GeneralPublicHomeFragment.change = 1 // so that list on Home gets refreshed after change in status
+        GeneralPublicHomeFragment.change =
+            1 // so that list on Home gets refreshed after change in status
     }
 
     //to delete my case
@@ -195,10 +253,12 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     //refreshing the list after deletion
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(this@MyCasesActivity, responseObject.message!!)
-        val casesRequest = CasesRequest("0", "", "0","",
-            "8") //type = -1 for fetching all the data
+        val casesRequest = CasesRequest(
+            "0", "", "0"
+        ) //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
-        GeneralPublicHomeFragment.change = 1 // so that list on Home gets refreshed after change in status
+        GeneralPublicHomeFragment.change =
+            1 // so that list on Home gets refreshed after change in status
     }
 
     //displays the detail of my case
@@ -269,8 +329,9 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         Utilities.showMessage(this, responseObject.message.toString())
         //refresh the list
         Utilities.showProgress(this)
-        val casesRequest = CasesRequest("0", "", "0","",
-            "8") //type = -1 for fetching all the data
+        val casesRequest = CasesRequest(
+            "0", "", "0"
+        ) //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
     }
 
