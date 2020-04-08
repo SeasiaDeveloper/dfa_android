@@ -215,9 +215,9 @@ class CasesAdapter(
                 itemView.layoutListItem.visibility = View.VISIBLE
 
                 //   itemView.status.text = item.status.toString().toUpperCase()
-                itemView.expandable_Date.text = Utilities.changeDateFormat(item.report_data!!)
+                itemView.expandable_Date.text = Utilities.changeDateFormat(item.report_data!!) + " " + Utilities.changeTimeFormat(item.report_time!!)
                 itemView.expandable_Level.text = "Level " + item.urgency
-                itemView.expandable_Time.text = Utilities.changeTimeFormat(item.report_time!!)
+              //  itemView.expandable_Time.text =
                 itemView.expandable_DescriptionNgo.text = item.info.toString()
 
                 itemView.expandable_contactNo.text = userDetail.username
