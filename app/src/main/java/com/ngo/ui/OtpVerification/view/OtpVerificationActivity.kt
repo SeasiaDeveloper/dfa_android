@@ -31,6 +31,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
     private var presenter: OtpVerificationPresenter = OtpVerificationImpl(this)
     private lateinit var userId: String
     private lateinit var phoneNo: String
+    private var isResend:Boolean=false
 
     override fun getLayout(): Int {
         return R.layout.activity_otp_verification
@@ -53,7 +54,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
 
 
         setListeners()
-        showProgress()
+        Utilities.showProgress(this)
         sendVerificationCode(mobile, mCallbacks)
 
     }
@@ -77,10 +78,16 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
             }
 
             override fun onCodeSent(s: String, forceResendingToken: ForceResendingToken) {
-                super.onCodeSent(s, forceResendingToken)
+               // super.onCodeSent(s, forceResendingToken)
                 Utilities.dismissProgress()
                 //storing the verification id that is sent to the user
                 mVerificationId = s
+                if(isResend)
+                {
+                 Utilities.showMessage(this@OtpVerificationActivity,"Code Resend Successfully")
+                }
+                isResend=false
+
             }
         }
 
@@ -125,6 +132,7 @@ class OtpVerificationActivity : BaseActivity(), View.OnClickListener, OtpVerific
             }
 
             R.id.btnOtpResend -> {
+                isResend=true
                 val code: String = et_otp.getText().toString().trim()
                 /*  if (code.isEmpty() || code.length < 6) {
                       et_otp.setError("Enter valid code")
