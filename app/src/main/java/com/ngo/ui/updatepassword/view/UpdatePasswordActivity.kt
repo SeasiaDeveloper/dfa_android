@@ -60,6 +60,10 @@ class UpdatePasswordActivity : BaseActivity(), ChangePasswordView {
                 }
             }
         }
+
+        cancel_update_password.setOnClickListener{
+            onBackPressed()
+        }
     }
 
     override fun handleKeyboard(): View {
