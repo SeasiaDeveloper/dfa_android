@@ -40,18 +40,18 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
             signupPresenterImplClass.firstNameLengthFailure()
             return
         }
-        else if (!Utilities.isAlphabets(request.first_name)) {
+        else if (!Utilities.isAlphabets(request.first_name.trim())) {
             signupPresenterImplClass.firstNameAlphabetFailure()
             return
-        } else if (request.middle_name.isNotEmpty() && request.middle_name.trim().length<3 ) {
+        } else if (request.middle_name.trim().isNotEmpty() && request.middle_name.trim().length<3 ) {
             signupPresenterImplClass.middleNameLengthFailure()
             return
         }
-        else if (request.middle_name.isNotEmpty() && !Utilities.isAlphabets(request.middle_name)) {
+        else if (request.middle_name.trim().isNotEmpty() && !Utilities.isAlphabets(request.middle_name.trim())) {
             signupPresenterImplClass.middleNameAlphabetFailure()
             return
         }
-        else if (request.last_name.isEmpty()) {
+        else if (request.last_name.trim().isEmpty()) {
             signupPresenterImplClass.lastNameValidationFailure()
             return
         }
@@ -59,7 +59,7 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
             signupPresenterImplClass.lastNameLengthFailure()
             return
         }
-        else if (!Utilities.isAlphabets(request.last_name)) {
+        else if (!Utilities.isAlphabets(request.last_name.trim())) {
             signupPresenterImplClass.lastNameAlphabetFailure()
             return
         }
@@ -71,15 +71,15 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
             signupPresenterImplClass.addressLine1LengthFailure()
             return
         }
-        else if (!(request.last_name.isEmpty() ) && request.address_2.trim().length<3) {
+        else if (!(request.address_2.isEmpty() ) && request.address_2.trim().length<3) {
             signupPresenterImplClass.addressLine2LengthFailure()
             return
         }
-        else if (request.pin_code.isEmpty()) {
+        else if (request.pin_code.trim().isEmpty()) {
             signupPresenterImplClass.pinCodeValidationFailure()
             return
         }
-        else if (request.pin_code.trim().length <7) {
+        else if (request.pin_code.trim().length !=6) {
             signupPresenterImplClass.pinCodeLengthFailure()
             return
         }
@@ -93,7 +93,7 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
                 }
             }
 
-            if ((request.adhar_number).isNotEmpty()) {
+            if ((request.adhar_number.trim()).isNotEmpty()) {
                 if (!(Utilities.validateAadharNumber(request.adhar_number))) {
                     signupPresenterImplClass.adhaarNoValidationFailure()
                     return

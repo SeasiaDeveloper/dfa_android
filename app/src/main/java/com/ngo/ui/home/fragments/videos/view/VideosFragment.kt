@@ -54,7 +54,7 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
     }
 
     private fun setAdapter() {
-        val layoutManager = GridLayoutManager(activity!!, 2)
+        val layoutManager = GridLayoutManager(activity!!, 4)
         rvVideos.layoutManager = layoutManager
         val spanCount = 4
         val spacing = 10

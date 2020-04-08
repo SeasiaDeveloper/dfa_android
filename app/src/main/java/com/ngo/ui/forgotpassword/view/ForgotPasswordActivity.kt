@@ -41,7 +41,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
             tvTitleDes.setText(R.string.enter_mobileno)
             edit_mobile_number.setHint(R.string.enter_mobile_number)
         } else if (clicked_from.equals("forgotPassword", ignoreCase = true)) {
-            (toolbarLayout as CenteredToolbar).title = getString(R.string.forgot_password)
+            (toolbarLayout as CenteredToolbar).title = getString(R.string.forgot_password_title)
             tvTitleDes.setText(R.string.forgot_password_heading)
             edit_mobile_number.setHint(R.string.enter_registered_mobile_number)
         } else {
@@ -104,7 +104,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
 
     override fun onVerifyUserSuccess(verifyUserResponse: VerifyUserResponse) {
         dismissProgress()
-        Utilities.showMessage(this, verifyUserResponse.message)
+       // Utilities.showMessage(this, verifyUserResponse.message)
         val mobile: String = edit_mobile_number.getText().toString().trim()
         val intent = Intent(this, OtpVerificationActivity::class.java)
         intent.putExtra("mobile", mobile)

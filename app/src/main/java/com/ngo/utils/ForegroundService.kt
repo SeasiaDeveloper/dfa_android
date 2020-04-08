@@ -41,7 +41,7 @@ class ForegroundService : Service() {
             0, notificationIntent, 0
         )
         val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle("DFA Location Synching...")
+            .setContentTitle("DFA Location Syncing...")
             .setContentText(input)
             .setSmallIcon(R.drawable.attachment_icon)
             .setContentIntent(pendingIntent)

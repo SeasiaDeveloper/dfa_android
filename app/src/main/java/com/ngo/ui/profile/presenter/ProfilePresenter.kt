@@ -22,4 +22,14 @@ interface ProfilePresenter : BasePresenter {
     fun adhaarNoValidationFailure()
     fun emailValidationFailure()
 
+    fun firstNameAlphabetFailure()
+    fun firstNameLengthFailure()
+    fun middleNameAlphabetFailure()
+    fun middleNameLengthFailure()
+    fun lastNameAlphabetFailure()
+    fun lastNameLengthFailure()
+    fun addressLine1LengthFailure()
+    fun addressLine2LengthFailure()
+    fun pinCodeLengthFailure()
+
 }

@@ -133,7 +133,7 @@
                     android:padding="@dimen/_12sdp"
                     android:text="LOGIN"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10ssp" />
+                    android:textSize="@dimen/_12ssp" />
 
                 <com.ngo.customviews.CustomtextView
                     android:layout_width="match_parent"
@@ -157,7 +157,7 @@
                     android:padding="@dimen/_12sdp"
                     android:text="SIGN UP"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_10ssp" />
+                    android:textSize="@dimen/_12ssp" />
 
             </LinearLayout>
         </ScrollView>

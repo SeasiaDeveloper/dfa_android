@@ -45,6 +45,10 @@ class SignupActivity : BaseActivity(), SignupView {
     override fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.signup)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.BLACK)
+        (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_button)
+        (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
+            onBackPressed()
+        }
         getFirebaseToken()
         if (isInternetAvailable()) {
             showProgress()
@@ -372,46 +376,46 @@ class SignupActivity : BaseActivity(), SignupView {
 
     override fun firstNameAlphabetFailure() {
         dismissProgress()
-        Utilities.showMessage(this, "Please enter a valid First name containing only alphabets")
+        Utilities.showMessage(this, getString(R.string.first_name_alphabet_validation))
     }
 
     override fun firstNameLengthFailure() {
         dismissProgress()
-        Utilities.showMessage(this, "First name must be minimum 3 alphabets")
+        Utilities.showMessage(this, getString(R.string.fname_length_validation))
     }
 
     override fun middleNameAlphabetFailure() {
         dismissProgress()
-        Utilities.showMessage(this, "Please enter a valid Middle name containing only alphabets")
+        Utilities.showMessage(this, getString(R.string.mid_name_alphabet_validation))
     }
 
     override fun middleNameLengthFailure() {
         dismissProgress()
-        Utilities.showMessage(this, "Middle name must be minimum 3 alphabets")
+        Utilities.showMessage(this, getString(R.string.mid_name_length_validation))
     }
 
     override fun lastNameAlphabetFailure() {
         dismissProgress()
-        Utilities.showMessage(this, "Please enter a valid Last name containing only alphabets")
+        Utilities.showMessage(this, getString(R.string.lastname_alphabets_validation))
     }
 
     override fun lastNameLengthFailure() {
         dismissProgress()
-        Utilities.showMessage(this, "Middle name must be minimum 3 alphabets")
+        Utilities.showMessage(this, getString(R.string.last_name_length_validation))
     }
 
     override fun addressLine1LengthFailure() {
         dismissProgress()
-        Utilities.showMessage(this, "Address Line1 must be minimum 3 alphabets")
+        Utilities.showMessage(this, getString(R.string.adress_length_validation))
     }
 
     override fun addressLine2LengthFailure() {
         dismissProgress()
-        Utilities.showMessage(this, "Address Line2 must be minimum 3 alphabets")
+        Utilities.showMessage(this, getString(R.string.adress_two_length_validation))
     }
 
     override fun pinCodeLengthFailure() {
         dismissProgress()
-        Utilities.showMessage(this, "Enter a valid Pin Code")
+        Utilities.showMessage(this, getString(R.string.pin_validation))
     }
 }
