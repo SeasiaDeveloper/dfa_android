@@ -22,10 +22,7 @@ import com.ngo.adapters.StatusAdapter
 import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
-import com.ngo.pojo.response.DeleteComplaintResponse
-import com.ngo.pojo.response.GetCasesResponse
-import com.ngo.pojo.response.GetStatusResponse
-import com.ngo.pojo.response.SignupResponse
+import com.ngo.pojo.response.*
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
@@ -200,7 +197,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
            adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)*/
     }
 
-    override fun onPostAdded(responseObject: GetCasesResponse) {
+    override fun onPostAdded(responseObject: CreatePostResponse) {
         //nothing to do
     }
 

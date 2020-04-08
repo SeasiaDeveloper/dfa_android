@@ -35,7 +35,8 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
         }
 
         if (description.isEmpty()) {
-            complaintsPresenter.onEmptyDescription();return
+            complaintsPresenter.onEmptyDescription();
+            return
         }
         complaintsPresenter.onValidationSuccess()
     }

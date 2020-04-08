@@ -41,11 +41,13 @@ class UpdatePasswordActivity : BaseActivity(), ChangePasswordView {
                 Utilities.showMessage(this, "Please enter old Password")
             } else if (TextUtils.isEmpty(new_password.text.toString())) {
                 Utilities.showMessage(this, "Please enter new Password")
+            } else if (new_password.text.toString().length<6) {
+                Utilities.showMessage(this, "Password should of minimum 6 characters")
             } else if (TextUtils.isEmpty(confirm_password.text.toString())) {
                 Utilities.showMessage(this, "Please confirm Password")
             } else if (!new_password.text.toString().equals(confirm_password.text.toString())) {
                 Utilities.showMessage(this, "Mismatch Passwords")
-            } else {
+            }  else {
                 if (isInternetAvailable()) {
                     showProgress()
                     var changePasswordRequest = UpdatePasswordRequest(
@@ -61,7 +63,7 @@ class UpdatePasswordActivity : BaseActivity(), ChangePasswordView {
             }
         }
 
-        cancel_update_password.setOnClickListener{
+        cancel_update_password.setOnClickListener {
             onBackPressed()
         }
     }
@@ -82,9 +84,10 @@ class UpdatePasswordActivity : BaseActivity(), ChangePasswordView {
     override fun onChangePasswordSuccess(changePasswordResponse: ChangePasswordResponse) {
         dismissProgress()
         Utilities.showMessage(this, changePasswordResponse.message)
-        old_password.setText("")
-        new_password.setText("")
-        confirm_password.setText("")
+        finish()
+        /*   old_password.setText("")
+           new_password.setText("")
+           confirm_password.setText("")*/
     }
 
     override fun showServerError(error: String) {

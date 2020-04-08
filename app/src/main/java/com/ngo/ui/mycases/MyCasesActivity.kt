@@ -21,10 +21,7 @@ import com.ngo.customviews.CenteredToolbar
 import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
-import com.ngo.pojo.response.DeleteComplaintResponse
-import com.ngo.pojo.response.GetCasesResponse
-import com.ngo.pojo.response.GetStatusResponse
-import com.ngo.pojo.response.SignupResponse
+import com.ngo.pojo.response.*
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.generalpublic.pagination.PaginationScrollListener
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
@@ -308,7 +305,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         Utilities.showMessage(this, error)
     }
 
-    override fun onPostAdded(responseObject: GetCasesResponse) {
+    override fun onPostAdded(responseObject: CreatePostResponse) {
         //nothing to do
     }
 

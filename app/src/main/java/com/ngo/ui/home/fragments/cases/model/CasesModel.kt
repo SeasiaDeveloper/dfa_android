@@ -4,10 +4,7 @@ import com.ngo.apis.ApiClient
 import com.ngo.apis.CallRetrofitApi
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CreatePostRequest
-import com.ngo.pojo.response.DeleteComplaintResponse
-import com.ngo.pojo.response.GetCasesResponse
-import com.ngo.pojo.response.GetStatusResponse
-import com.ngo.pojo.response.SignupResponse
+import com.ngo.pojo.response.*
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.utils.Constants
 import okhttp3.MediaType
@@ -148,14 +145,14 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
             }
         }
 
-        retrofitApi.addPost(token, map, parts).enqueue(object : Callback<GetCasesResponse> {
-            override fun onFailure(call: Call<GetCasesResponse>, t: Throwable) {
+        retrofitApi.addPost(token, map, parts).enqueue(object : Callback<CreatePostResponse> {
+            override fun onFailure(call: Call<CreatePostResponse>, t: Throwable) {
                 presenter.showError(t.message + "")
             }
 
             override fun onResponse(
-                call: Call<GetCasesResponse>,
-                response: Response<GetCasesResponse>
+                call: Call<CreatePostResponse>,
+                response: Response<CreatePostResponse>
             ) {
                 val responseObject = response.body()
                 if (responseObject != null) {

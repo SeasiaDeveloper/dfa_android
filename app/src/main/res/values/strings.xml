@@ -67,14 +67,14 @@
     <string name="enter_mobile_number">Enter mobile number</string>
 
     <!-- new password screen-->
-    <string name="change_password">Change password</string>
+    <string name="change_password">Change Password</string>
     <string name="enter_new_password">New Password</string>
 
     <string name="open">Open</string>
     <string name="close">Close</string>
 
 
-    <string name="cancel">Cancel</string>
+    <string name="cancel">CANCEL</string>
     <string name="enter_adhar_no_here">Enter Adhar no here</string>
     <string name="enter_first_name">First name</string>
     <string name="enter_middle_name">Middle name</string>
@@ -87,7 +87,7 @@
     <string name="address_2">Address Line 2</string>
     <string name="address_1">Address Line 1</string>
     <string name="change_image">Change Image</string>
-    <string name="update">Update</string>
+    <string name="update">UPDATE</string>
     <string name="verified">Verified</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="signup">Signup</string>
@@ -127,7 +127,7 @@
     <string name="nav_password">Change Password</string>
     <string name="nav_my_earning">My Earning</string>
     <string name="nav_invite_friends">Invite Friends</string>
-    <string name="nav_terms_and_conditions">Terms and Condition</string>
+    <string name="nav_terms_and_conditions">Terms and Conditions</string>
     <string name="nav_logout">Logout</string>
     <string name="my_cases">My Cases</string>
     <string name="add_comments">Add Comments</string>
@@ -153,8 +153,8 @@
     <string name="enter_comments_validation_message">Please enter your comment first.</string>
     <string name="enter_your_valid_adhaar_no_here">Enter your Adhaar no here..</string>
     <string name="adhar_not_valid">Adhaar No is not valid. Please enter a valid adhar no</string>
-    <string name="terms_and_condition">Terms and Condition</string>
-    <string name="my_earnings">My Earnings</string>
+    <string name="terms_and_condition">Terms and Conditions</string>
+    <string name="my_earnings">My Earning</string>
 
    <!-- locations string -->
     <string name="location_string">Location String</string>

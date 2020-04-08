@@ -86,7 +86,7 @@
                     android:id="@+id/editTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:textColor="@color/grey"
                     android:background="@null"
@@ -290,7 +290,7 @@
                     android:textAllCaps="true"
                     android:textColor="@color/green"
                     android:textSize="@dimen/_12ssp"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     tools:targetApi="m" />
 
             <LinearLayout

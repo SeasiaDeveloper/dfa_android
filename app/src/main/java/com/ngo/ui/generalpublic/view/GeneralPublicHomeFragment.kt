@@ -6,6 +6,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Resources
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
@@ -20,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.gson.GsonBuilder
 import com.ngo.R
 import com.ngo.adapters.CasesAdapter
@@ -47,7 +49,7 @@ import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     OnCaseItemClickListener, AlertDialogListener,
-    AdharNoListener/*, SwipeRefreshLayout.OnRefreshListener*/ {
+    AdharNoListener/*, AsyncResponse, SwipeRefreshLayout.OnRefreshListener*/ {
     private var isResumeRun: Boolean = false
 
     override fun onClick(item: Any) {
@@ -122,7 +124,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-       // swipeRefresh.setOnRefreshListener(this)
+        //swipeRefresh.setOnRefreshListener(this)
         setAdapter()
         setProfilePic()
 
@@ -139,15 +141,22 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
 
         btnPost.setOnClickListener {
-            Utilities.showProgress(mContext)
-            val pathArray = arrayOf(path)
-            //hit api to add post and display post layout
-            val request = CreatePostRequest(edtPostInfo.text.toString(), pathArray, media_type!!)
-            authorizationToken =
-                PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
-            presenter.createPost(request, authorizationToken)
-            layoutAddPost.visibility = View.VISIBLE
-            layoutPost.visibility = View.GONE
+            if (edtPostInfo.text.toString().trim().equals("")) {
+                Utilities.showMessage(activity!!, "Please enter post title")
+            } else if (path == null || path.equals("")) {
+                Utilities.showMessage(activity!!, "Please select image or video")
+            } else {
+                Utilities.showProgress(mContext)
+                val pathArray = arrayOf(path)
+                //hit api to add post and display post layout
+                val request =
+                    CreatePostRequest(edtPostInfo.text.toString().trim(), pathArray, media_type!!)
+                authorizationToken =
+                    PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
+                presenter.createPost(request, authorizationToken)
+                layoutAddPost.visibility = View.VISIBLE
+                layoutPost.visibility = View.GONE
+            }
         }
 
         btnCancel.setOnClickListener {
@@ -155,7 +164,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             layoutAddPost.visibility = View.VISIBLE
             layoutPost.visibility = View.GONE
             edtPostInfo.setText("")
-            imgPost.setImageResource(0)
+            // imgPost.setImageResource(0)
+            Glide.with(this)
+                .load("")
+                .apply(
+                    RequestOptions()
+                        .placeholder(R.drawable.camera_placeholder)
+                )
+                .into(imgPost)
         }
 
         img_attach.setOnClickListener {
@@ -168,27 +184,27 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 galleryIntent()
         }
         //pagination
-      /*  rvPublic?.addOnScrollListener(object : PaginationScrollListener(horizontalLayoutManager!!) {
-            override fun isLastPage(): Boolean {
-                return isLastPage
-            }
+        /*   rvPublic?.addOnScrollListener(object : PaginationScrollListener(horizontalLayoutManager!!) {
+               override fun isLastPage(): Boolean {
+                   return isLastPage
+               }
 
-            override fun isLoading(): Boolean {
-                return isLoading
-            }
+               override fun isLoading(): Boolean {
+                   return isLoading
+               }
 
-            override fun loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                doApiCall(currentPage.toString(),"8")
-                //you have to call loadmore items to get more data
-                //getMoreItems()
-            }
-        })*/
+               override fun loadMoreItems() {
+                   isLoading = true;
+                   currentPage++;
+                   doApiCall(currentPage.toString(),"8")
+                   //you have to call loadmore items to get more data
+                   //getMoreItems()
+               }
+           })*/
     }
 
 
-    fun doApiCall(page:String,perPage:String) {
+    fun doApiCall(page: String, perPage: String) {
         val casesRequest =
             CasesRequest("1", "", "-1")  //type = -1 for fetching both cases and posts
 
@@ -200,11 +216,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         // recyclerview adapter assuming your recyclerview adapter is
         //rvAdapter
         //after getting your data you have to assign false to isLoading
-       /* isLoading = false
-        adapter?.addData(complaints.toMutableList())*/
+        /* isLoading = false
+         adapter?.addData(complaints.toMutableList())*/
 
         isLastPage = false
-        doApiCall(currentPage.toString(),"8")
+        doApiCall(currentPage.toString(), "8")
     }
 
     private fun galleryIntent() {
@@ -289,11 +305,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             adapter?.setList(response.data.toMutableList()) //now
             //rvPublic?.adapter = adapter
 
-
-           /* if (currentPage != PAGE_START)
+/*
+            if (currentPage != PAGE_START)
             //adapter.removeLoading();
                 adapter?.addData(complaints.toMutableList())
-            //swipeRefresh.setRefreshing(false)
+            swipeRefresh.setRefreshing(false)
             // check weather is last page or not
             if (currentPage < totalPage) {
                 adapter?.setList(response.data.toMutableList())
@@ -301,8 +317,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             } else {
                 isLastPage = true
             }
-            isLoading = false
-*/
+            isLoading = false*/
+
             change = 1
 
         } else {
@@ -420,7 +436,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         Utilities.showMessage(mContext, error)
         if (edtPostInfo != null) {
             edtPostInfo.setText("")
-            imgPost.setImageResource(0)
+            //imgPost.setImageResource(0)
+            Glide.with(this)
+                .load("")
+                .apply(
+                    RequestOptions()
+                        .placeholder(R.drawable.camera_placeholder)
+                )
+                .into(imgPost)
         }
     }
 
@@ -447,7 +470,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun onResume() {
         super.onResume()
-       if (isFirst) {
+        if (isFirst) {
             isFirst = false
             val casesRequest =
                 CasesRequest("1", "", "-1") //type = -1 for fetching all the data
@@ -469,15 +492,24 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "")!!
     }
 
-    override fun onPostAdded(responseObject: GetCasesResponse) {
+    override fun onPostAdded(responseObject: CreatePostResponse) {
         Utilities.dismissProgress()
         layoutAddPost.visibility = View.VISIBLE
         layoutPost.visibility = View.GONE
         edtPostInfo.setText("")
-        imgPost.setImageResource(0)
+        //imgPost.setImageResource(0)
+        Glide.with(this)
+            .load("")
+            .apply(
+                RequestOptions()
+                    .placeholder(R.drawable.camera_placeholder)
+            )
+            .into(imgPost)
         path = ""
         Utilities.showMessage(mContext, responseObject.message!!)
-        adapter?.setList(responseObject.data?.toMutableList()!!)
+        val casesRequest =
+            CasesRequest("1", "", "-1") //type = -1 for fetching all the data
+        presenter.getComplaints(casesRequest, token, type)
     }
 
     //delete your respective complaint/post
@@ -540,13 +572,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         startActivity(intent)
     }
 
-   /* override fun onRefresh() {
-        itemCount = 0
-        currentPage = PAGE_START
-        isLastPage = false
-        adapter?.clear()
-        doApiCall(currentPage.toString(),"8")
-    }*/
+    /* override fun onRefresh() {
+         itemCount = 0
+         currentPage = PAGE_START
+         isLastPage = false
+         adapter?.clear()
+         doApiCall(currentPage.toString(),"8")
+     }*/
 
     /* override fun myAction(mContext: Context) {
          this.mContext = mContext

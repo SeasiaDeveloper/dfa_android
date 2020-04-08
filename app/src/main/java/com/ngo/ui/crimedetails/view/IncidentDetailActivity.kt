@@ -193,15 +193,15 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         if (!getCrimeDetailsResponse.data?.get(0)?.info.isNullOrEmpty()) {
             etDescription.setText(getCrimeDetailsResponse.data?.get(0)?.info)
         }
-        var level: Double = 0.0
+        var level: Float = 0f
         if (!getCrimeDetailsResponse.data?.get(0)?.urgency.isNullOrEmpty() && !getCrimeDetailsResponse.data?.get(
                 0
             )?.urgency.equals("10")
         )
-            level = getCrimeDetailsResponse.data?.get(0)?.urgency!!.toFloat() * 11.0
+            level = (getCrimeDetailsResponse.data?.get(0)?.urgency!!.toFloat() * 11)-11
         else
-            level = 100.0
-        sb_steps_5.setProgress(level.toFloat())
+            level = 0f
+        sb_steps_5.setProgress(level)
 
         sb_steps_5.isEnabled = false
         if (!getCrimeDetailsResponse.data?.get(0)?.urgency.isNullOrEmpty()) {

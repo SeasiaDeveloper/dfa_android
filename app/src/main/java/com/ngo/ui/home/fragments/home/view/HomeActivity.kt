@@ -196,7 +196,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val role = PreferenceHandler.readString(this@HomeActivity, PreferenceHandler.USER_ROLE, "0")
 
         if (role.equals("0"))
-            toolbar_title.text = getString(R.string.dashboard)
+            toolbar_title.text = getString(R.string.public_dashboard)
         else if (role.equals("1"))
             toolbar_title.text = getString(R.string.ngo_dashboard)
         else if (role.equals("2"))

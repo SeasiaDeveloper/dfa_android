@@ -6,7 +6,7 @@ import com.ngo.pojo.response.*
 interface CasesView : BaseView {
     fun showGetComplaintsResponse(response: GetCasesResponse)
     fun showDescError()
-    fun onPostAdded(responseObject: GetCasesResponse)
+    fun onPostAdded(responseObject: CreatePostResponse)
     fun onComplaintDeleted(responseObject: DeleteComplaintResponse)
     fun onLikeStatusChanged(responseObject: DeleteComplaintResponse)
     fun adhaarSavedSuccess(responseObject: SignupResponse)

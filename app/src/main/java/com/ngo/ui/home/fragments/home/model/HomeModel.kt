@@ -57,7 +57,7 @@ class HomeModel(private var homePresenter: HomePresenter) {
         retrofitApi.postLocationData(token,map).enqueue(object :
             Callback<PostLocationResponse> {
             override fun onFailure(call: Call<PostLocationResponse>, t: Throwable) {
-                homePresenter.showError(t.message + "")
+                //homePresenter.showError(t.message + "")
             }
 
             override fun onResponse(
@@ -69,12 +69,10 @@ class HomeModel(private var homePresenter: HomePresenter) {
                     if (responseObject.code == 200) {
                         homePresenter.postLocationSuccess(responseObject)
                     } else {
-                        homePresenter.postLocationFailure(
-                            response.body()?.message ?: Constants.SERVER_ERROR
-                        )
+                        //homePresenter.postLocationFailure( response.body()?.message ?: Constants.SERVER_ERROR )
                     }
                 } else {
-                    homePresenter.showError(Constants.SERVER_ERROR)
+                   // homePresenter.showError(Constants.SERVER_ERROR)
                 }
             }
         })
