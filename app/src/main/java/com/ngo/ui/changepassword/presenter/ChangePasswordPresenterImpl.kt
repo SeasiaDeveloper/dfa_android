@@ -10,7 +10,7 @@ class ChangePasswordPresenterImpl(private var changePasswordView: ChangePassword
     private var changeModel: ChangePasswordModel = ChangePasswordModel(this)
 
     override fun onEmptyPasswordField() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun hitChangePasswordApi(changePasswordRequest: ChangePasswordRequest) {

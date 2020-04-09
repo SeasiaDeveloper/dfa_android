@@ -41,16 +41,18 @@ class UpdatePasswordActivity : BaseActivity(), ChangePasswordView {
                 Utilities.showMessage(this, "Please enter old Password")
             } else if (TextUtils.isEmpty(new_password.text.toString())) {
                 Utilities.showMessage(this, "Please enter new Password")
-            } else if (new_password.text.toString().length<6) {
+            } else if (TextUtils.isEmpty(new_password.text.toString())) {
+                Utilities.showMessage(this, getString(R.string.password_invalid))
+            } else if (new_password.text.toString().length < 6) {
                 Utilities.showMessage(this, "Password should of minimum 6 characters")
             } else if (TextUtils.isEmpty(confirm_password.text.toString())) {
                 Utilities.showMessage(this, "Please confirm Password")
             } else if (!new_password.text.toString().equals(confirm_password.text.toString())) {
                 Utilities.showMessage(this, "Mismatch Passwords")
-            }  else {
+            } else {
                 if (isInternetAvailable()) {
                     showProgress()
-                    var changePasswordRequest = UpdatePasswordRequest(
+                    val changePasswordRequest = UpdatePasswordRequest(
                         old_password.text.toString(),
                         new_password.text.toString(),
                         confirm_password.text.toString(),

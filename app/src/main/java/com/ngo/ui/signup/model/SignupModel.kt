@@ -110,13 +110,18 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
             if (request.password.isEmpty()) {
                 signupPresenterImplClass.passwordEmptyValidation()
                 return
-            } else if ((request.password).length < 8) {
+            }
+            else if(!Utilities.isValidPassword(request.password.trim())){
+                signupPresenterImplClass.passwordInvalidValidation()
+                return
+            }
+            else if ((request.password).length < 6) {
                 signupPresenterImplClass.passwordLengthValidation()
                 return
             } else if (request.confirmPass.isEmpty()) {
                 signupPresenterImplClass.confirmPasswordEmptyValidation()
                 return
-            } else if ((request.confirmPass).length < 8) {
+            } else if ((request.confirmPass).length < 6) {
                 signupPresenterImplClass.confirmPasswordLengthValidation()
                 return
             } else if (!(request.password.equals(request.confirmPass))) {
