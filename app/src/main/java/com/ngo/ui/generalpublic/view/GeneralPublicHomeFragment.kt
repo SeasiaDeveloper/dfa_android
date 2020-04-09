@@ -164,7 +164,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             layoutAddPost.visibility = View.VISIBLE
             layoutPost.visibility = View.GONE
             edtPostInfo.setText("")
-            // imgPost.setImageResource(0)
+            imgPost.setImageResource(0)
             Glide.with(this)
                 .load("")
                 .apply(
@@ -394,6 +394,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             description
         )
 
+        val mStatusList = responseObject.data.toMutableList()
+        for(status in mStatusList){
+            if(status.isChecked){
+                statusId = status.id
+            }
+        }
+
         //display the list on the screen
         val statusAdapter = StatusAdapter(mContext, responseObject.data.toMutableList(), this)
         val horizontalLayoutManager = LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
@@ -436,7 +443,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         Utilities.showMessage(mContext, error)
         if (edtPostInfo != null) {
             edtPostInfo.setText("")
-            //imgPost.setImageResource(0)
+            imgPost.setImageResource(0)
             Glide.with(this)
                 .load("")
                 .apply(
@@ -497,7 +504,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         layoutAddPost.visibility = View.VISIBLE
         layoutPost.visibility = View.GONE
         edtPostInfo.setText("")
-        //imgPost.setImageResource(0)
+        imgPost.setImageResource(0)
         Glide.with(this)
             .load("")
             .apply(

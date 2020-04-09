@@ -109,9 +109,9 @@
     <string name="valid_last_name">Please enter last name</string>
     <string name="valid_first_name">Please enter first name</string>
     <string name="password_empty">Please enter Password field</string>
-    <string name="pass_length">Password\'s length should be greater than or equal to 6</string>
+    <string name="pass_length">Password\'s length should be minimum 6 characters</string>
     <string name="confirm_pass_empty">Please enter Confirm Password field</string>
-    <string name="confirm_pass_length">Confirm Password\'s length should be greater than or equal to 6</string>
+    <string name="confirm_pass_length">Confirm Password\'s length should be minimum 6 characters</string>
     <string name="confirm_pass_mismatch_pass">Confirm Password doesnot match Password</string>
     <string name="delete">Delete</string>
     <string name="search">Search</string>

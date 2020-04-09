@@ -425,17 +425,22 @@ object Utilities {
     }
 
     fun changeTimeFormat(date: String): String {
-        val oldDateFormat = SimpleDateFormat("HH:mm:ss a", Locale.getDefault())
-        val newDateFormat = SimpleDateFormat("HH:mm a", Locale.getDefault())
-        val convertedDate: Date?
-        try {
-            convertedDate = oldDateFormat.parse(date)
-            formatedDate = newDateFormat.format(convertedDate!!)
-        } catch (e: ParseException) {
-            e.printStackTrace()
+        /* val oldDateFormat = SimpleDateFormat("HH:mm:ss a", Locale.getDefault())
+         val newDateFormat = SimpleDateFormat("HH:mm a", Locale.getDefault())
+         val convertedDate: Date?
+         try {
+             convertedDate = oldDateFormat.parse(date)
+             formatedDate = newDateFormat.format(convertedDate!!)
+         } catch (e: ParseException) {
+             e.printStackTrace()
 
-        }
-        return formatedDate
+         }*/
+
+        val time = date.split(":") as ArrayList<String>
+        val amPm = date.split(" ") as ArrayList<String>
+
+        val formatedTime = time.get(0) + ":" + time.get(1) + " " + amPm.get(1)
+        return formatedTime
     }
 
     fun displayDialog(

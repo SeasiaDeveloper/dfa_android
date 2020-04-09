@@ -32,7 +32,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         Log.d(TAG, "Message: ${remoteMessage.from}")
 
        // remoteMessage.data.get("complaint_id")
-        var jsonObj = JSONObject(remoteMessage.notification?.body)
+//        var jsonObj = JSONObject(remoteMessage.notification?.body)
 
        /* if (remoteMessage.notification != null) {
             showNotification(remoteMessage.notification?.title, jsonObj)
@@ -45,7 +45,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             notificationResponse.report_data = remoteMessage.data.get("report_data")
             notificationResponse.report_time = remoteMessage.data.get("report_time")
             notificationResponse.username = remoteMessage.data.get("username")
-            showNotification(remoteMessage.notification?.title, notificationResponse)
+            showNotification("DFA App", notificationResponse)
         }
 
 
