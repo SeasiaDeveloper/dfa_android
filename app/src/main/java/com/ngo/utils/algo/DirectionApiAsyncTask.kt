@@ -14,7 +14,12 @@ import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
 
-class DirectionApiAsyncTask(context: Context, latitude: String, longitude: String,var asyncResponse: AsyncResponse) :
+class DirectionApiAsyncTask(
+    context: Context,
+    latitude: String,
+    longitude: String,
+    var asyncResponse: AsyncResponse
+) :
     AsyncTask<URL, Integer, String>() {
     var context = context
     var latitude = latitude
@@ -32,7 +37,7 @@ class DirectionApiAsyncTask(context: Context, latitude: String, longitude: Strin
         var mJsonResults = StringBuilder();
         try {
             var urlFinal =
-                "https://maps.googleapis.com/maps/api/directions/json?origin=" + latitude1 + "," + longitude1 + "&destination=" + latitude + "," + longitude + "&key=AIzaSyDfCcAJOo_cqeIYwKggFlv152B5wVr6iso";
+                "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + latitude1 + "," + longitude1 + "&destinations=" + latitude + "," + longitude + "&key=AIzaSyDfCcAJOo_cqeIYwKggFlv152B5wVr6iso"
             var sb = urlFinal
 
             var url = URL(sb)
@@ -45,9 +50,9 @@ class DirectionApiAsyncTask(context: Context, latitude: String, longitude: Strin
 
             try {
                 var jsonObject = JSONObject(mJsonResults.toString())
-                var array = jsonObject.getJSONArray("routes")
+                var array = jsonObject.getJSONArray("rows")
                 var routes = array.getJSONObject(0)
-                var legs = routes.getJSONArray("legs")
+                var legs = routes.getJSONArray("elements")
                 var steps = legs.getJSONObject(0)
                 var distance = steps.getJSONObject("distance")
                 resultDistance = distance.get("text").toString()

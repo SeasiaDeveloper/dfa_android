@@ -9,7 +9,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
-import com.ngo.pojo.request.ChangePasswordRequest
 import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.response.GetCrimeDetailsResponse
 import com.ngo.pojo.response.NGOResponse
@@ -25,11 +24,7 @@ import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import com.ngo.utils.algo.DirectionApiAsyncTask
 import kotlinx.android.synthetic.main.activity_incident_detail.*
-import kotlinx.android.synthetic.main.activity_incident_detail.etDescription
-import kotlinx.android.synthetic.main.activity_incident_detail.imgView
-import kotlinx.android.synthetic.main.activity_incident_detail.sb_steps_5
-import kotlinx.android.synthetic.main.activity_incident_detail.spTypesOfCrime
-import kotlinx.android.synthetic.main.activity_incident_detail.toolbarLayout
+
 
 class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, AsyncResponse {
     // private lateinit var complaintsData: GetComplaintsResponse.Data
@@ -198,7 +193,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
                 0
             )?.urgency.equals("10")
         )
-            level = (getCrimeDetailsResponse.data?.get(0)?.urgency!!.toFloat() * 11)-11
+            level = (getCrimeDetailsResponse.data?.get(0)?.urgency!!.toFloat() * 11) - 11
         else
             level = 0f
         sb_steps_5.setProgress(level)
@@ -228,14 +223,21 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
                 numeric = false
             }
 
-            if (numeric) {
-                var task = DirectionApiAsyncTask(
-                    this,
-                    getCrimeDetailsResponse.data.get(0).latitude!!,
-                    getCrimeDetailsResponse.data.get(0).longitude!!,
-                    this
+            if (type.equals("2") && postOrComplaint.equals("0") || type.equals("1") && postOrComplaint.equals(
+                    "0"
                 )
-                task.execute()
+            ) {
+                if (numeric) {
+                    var task = DirectionApiAsyncTask(
+                        this,
+                        getCrimeDetailsResponse.data.get(0).latitude!!,
+                        getCrimeDetailsResponse.data.get(0).longitude!!,
+                        this
+                    )
+                    task.execute()
+                }
+            } else {
+                show_location.visibility = View.GONE
             }
             /*  show.setText(
                 Utilities.calculateDistance(
@@ -311,7 +313,18 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         if (output == null || output.equals("")) {
             show_location.setText("0 KM away").toString()
         } else {
-            show_location.setText(output + " away").toString()
+            if (output.contains("mi")) {
+                val number = java.lang.Float.valueOf(
+                    output.replace(
+                        "[^\\d.]+|\\.(?!\\d)".toRegex(),
+                        ""
+                    )
+                ) //val number: String = output.replace("\\D+", "")
+                show_location.setText((number.toInt() * 1.60934).toInt().toString() + "KM away")
+                    .toString()
+            } else {
+                show_location.setText(output + " away").toString()
+            }
         }
     }
 }
