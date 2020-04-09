@@ -164,7 +164,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             layoutAddPost.visibility = View.VISIBLE
             layoutPost.visibility = View.GONE
             edtPostInfo.setText("")
-            // imgPost.setImageResource(0)
+            imgPost.setImageResource(0)
             Glide.with(this)
                 .load("")
                 .apply(
@@ -436,7 +436,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         Utilities.showMessage(mContext, error)
         if (edtPostInfo != null) {
             edtPostInfo.setText("")
-            //imgPost.setImageResource(0)
+            imgPost.setImageResource(0)
             Glide.with(this)
                 .load("")
                 .apply(
@@ -497,7 +497,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         layoutAddPost.visibility = View.VISIBLE
         layoutPost.visibility = View.GONE
         edtPostInfo.setText("")
-        //imgPost.setImageResource(0)
+        imgPost.setImageResource(0)
         Glide.with(this)
             .load("")
             .apply(
