@@ -418,4 +418,10 @@ class SignupActivity : BaseActivity(), SignupView {
         dismissProgress()
         Utilities.showMessage(this, getString(R.string.pin_validation))
     }
+
+    override fun passwordInvalidValidation() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.password_invalid))
+    }
+
 }

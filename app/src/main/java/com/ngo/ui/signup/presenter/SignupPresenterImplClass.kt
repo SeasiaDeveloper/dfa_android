@@ -8,6 +8,10 @@ import com.ngo.ui.signup.view.SignupView
 
 class SignupPresenterImplClass(private var signupView: SignupView) : SignupPresenter {
 
+    override fun passwordInvalidValidation() {
+        signupView.passwordInvalidValidation()
+    }
+
     override fun passwordEmptyValidation() {
         signupView.passwordEmptyValidation()
     }
