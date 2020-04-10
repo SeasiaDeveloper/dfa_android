@@ -9,13 +9,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
-import com.ngo.pojo.request.ChangePasswordRequest
 import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.response.GetCrimeDetailsResponse
 import com.ngo.pojo.response.NGOResponse
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenter
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenterImpl
 import com.ngo.ui.generalpublic.view.AsyncResponse
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.imagevideo.ImageVideoScreen
 import com.ngo.ui.ngoform.presenter.NGOFormPresenter
 import com.ngo.ui.ngoform.presenter.NGOFormPresenterImpl
@@ -38,7 +38,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
     private lateinit var complaintId: String
     private lateinit var postOrComplaint: String
     private var authorizationToken: String? = null
-    private lateinit var getCrimeDetailsResponse: GetCrimeDetailsResponse
+    private var getCrimeDetailsResponse: GetCrimeDetailsResponse? = null
     private var isKnowPostOrComplaint: String? = null
     private var latitude: String = ""
     private var longitude: String = ""
@@ -65,7 +65,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
 
         if (isInternetAvailable()) {
             showProgress()
-            var crimeDetailsRequest = CrimeDetailsRequest(complaintId)
+            val crimeDetailsRequest = CrimeDetailsRequest(complaintId)
             crimePresenter.hiCrimeDetailsApi(crimeDetailsRequest, authorizationToken)
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
@@ -74,15 +74,15 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         sb_steps_5.setOnRangeChangedListener(null)
 
         imgView.setOnClickListener {
-            var intent = Intent(this, ImageVideoScreen::class.java)
-            if (getCrimeDetailsResponse.data?.get(0)?.media_type.equals("videos")) {
+            val intent = Intent(this, ImageVideoScreen::class.java)
+            if (getCrimeDetailsResponse?.data?.get(0)?.media_type.equals("videos")) {
                 intent.putExtra("fromWhere", "VIDEOS")
             } else {
                 intent.putExtra("fromWhere", "IMAGES")
             }
             intent.putExtra(
                 Constants.IMAGE_URL,
-                getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0)?.toString()
+                getCrimeDetailsResponse?.data?.get(0)?.media_list?.get(0)?.toString()
             )
             startActivity(intent)
         }
@@ -134,7 +134,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
             }
         }
 
-        var type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
+        val type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
         if (type.equals("2") && postOrComplaint.equals("0")) {
             typecrime_layout.visibility = View.VISIBLE
             status_layout.visibility = View.VISIBLE
@@ -208,7 +208,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
             urgency.setText(getCrimeDetailsResponse.data?.get(0)?.urgency)
         }
 
-        var type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
+        val type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
         if (type.equals("2") && postOrComplaint.equals("0")) {
             if (!getCrimeDetailsResponse.data?.get(0)?.ngo_comment.isNullOrEmpty()) {
                 ngo_comment.setText(getCrimeDetailsResponse.data?.get(0)?.ngo_comment)
@@ -299,12 +299,11 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
                 .centerCrop()
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.noimage)
-            try  {
+            try {
                 Glide.with(this).load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
                     .apply(options)
                     .into(imgView)
-            }
-            catch (e: Exception) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 
@@ -339,6 +338,12 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
             }
         }
     }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        GeneralPublicHomeFragment.change = 0
+    }
+
 }
 
 

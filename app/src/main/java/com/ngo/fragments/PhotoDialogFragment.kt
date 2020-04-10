@@ -1,8 +1,6 @@
 package com.ngo.fragments
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +12,7 @@ import com.ngo.fragments.presenter.FragmentPresenter
 import com.ngo.fragments.presenter.FragmentPresenterImpl
 import com.ngo.fragments.view.FragmentView
 import com.ngo.pojo.response.GetPoliceFormResponse
-import com.ngo.pojo.response.PoliceStatusResponse
 import com.ngo.utils.Utilities
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_image_dialog_view.*
 import java.lang.Exception
 
