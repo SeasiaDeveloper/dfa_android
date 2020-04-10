@@ -54,7 +54,9 @@ class CommentsActivity : AppCompatActivity(), CommentsView {
         val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
         if (jsondata != null) {
             if (jsondata.data?.profile_pic != null) {
-                Glide.with(this).load(jsondata.data.profile_pic).into(imgProfile)
+              try{  Glide.with(this).load(jsondata.data.profile_pic).into(imgProfile)}catch (e:Exception){
+                  e.printStackTrace()
+              }
             }
         }
 

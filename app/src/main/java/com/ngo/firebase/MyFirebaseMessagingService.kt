@@ -16,7 +16,6 @@ import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.utils.PreferenceHandler
 import org.json.JSONObject
 
-
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     val TAG = "FirebaseMessagingService"
     private val CHANNEL_ID = "channel_01"
@@ -31,39 +30,27 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         Log.d(TAG, "Message: ${remoteMessage.from}")
 
-       // remoteMessage.data.get("complaint_id")
-//        var jsonObj = JSONObject(remoteMessage.notification?.body)
-
-       /* if (remoteMessage.notification != null) {
-            showNotification(remoteMessage.notification?.title, jsonObj)
-        }*/
-
-        if(remoteMessage.data != null) {
+        if (remoteMessage.data != null) {
             val notificationResponse = NotificationResponse()
             notificationResponse.complaint_id = remoteMessage.data.get("complaint_id")
             notificationResponse.description = remoteMessage.data.get("description")
             notificationResponse.report_data = remoteMessage.data.get("report_data")
             notificationResponse.report_time = remoteMessage.data.get("report_time")
             notificationResponse.username = remoteMessage.data.get("username")
+            notificationResponse.is_notify = remoteMessage.data.get("is_notify")
             showNotification("DFA App", notificationResponse)
         }
-
-
-
     }
 
     private fun showNotification(title: String?, obj: NotificationResponse) {
-
         val intent = Intent(this, HomeActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
 
         val pendingIntent = PendingIntent.getActivity(
             this, 0, intent,
             PendingIntent.FLAG_UPDATE_CURRENT
                     or PendingIntent.FLAG_ONE_SHOT
         )
-
 
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
@@ -78,13 +65,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         notificationManager.notify(0, notificationBuilder.build())
 
-        //put the jsonObj into pojo object
-        /*val notificationResponse = NotificationResponse()
-        notificationResponse.complaint_id = jsonObj.getString("complaint_id")
-        notificationResponse.description = jsonObj.getString("description")
-        notificationResponse.report_data = jsonObj.getString("report_data")
-        notificationResponse.report_time = jsonObj.getString("report_time")*/
-      // notificationResponse.username = jsonObj.getString("username")
 
         val refreshChatIntent = Intent("policeJsonReceiver")
         refreshChatIntent.putExtra("notificationResponse", obj)

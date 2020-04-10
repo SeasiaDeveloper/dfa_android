@@ -62,7 +62,9 @@ class PhotosAdapter(
                 .centerCrop()
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.noimage)
-            Glide.with(context).load(item.url).apply(options).into(itemView.ivPhoto)
+            try{Glide.with(context).load(item.url).apply(options).into(itemView.ivPhoto)}catch (e:Exception){
+                e.printStackTrace()
+            }
 
             ivPhoto.setOnClickListener {
                 listener.getComplaintId(item.complaint_id)

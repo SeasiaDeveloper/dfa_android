@@ -40,7 +40,10 @@ class ImageVideoScreen : BaseActivity() {
         } else {
             videoView.visibility = View.GONE
             imageView.visibility = View.VISIBLE
-            Glide.with(this).load(imageUrl).into(imageView)
+            try{Glide.with(this).load(imageUrl).into(imageView)}
+            catch (e:Exception){
+                e.printStackTrace()
+            }
         }
 
 

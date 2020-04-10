@@ -286,19 +286,26 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         if (getCrimeDetailsResponse.data?.get(0)?.media_type.equals("videos")) {
             val requestOptions = RequestOptions()
             requestOptions.isMemoryCacheable
-            Glide.with(this).setDefaultRequestOptions(requestOptions)
-                .load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
-                .into(imgView)
-            ivVideoIcon.visibility = View.VISIBLE
+            try {
+                Glide.with(this).setDefaultRequestOptions(requestOptions)
+                    .load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
+                    .into(imgView)
+                ivVideoIcon.visibility = View.VISIBLE
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         } else {
             val options = RequestOptions()
                 .centerCrop()
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.noimage)
-            if (this != null) {
+            try  {
                 Glide.with(this).load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
                     .apply(options)
                     .into(imgView)
+            }
+            catch (e: Exception) {
+                e.printStackTrace()
             }
 
             ivVideoIcon.visibility = View.GONE

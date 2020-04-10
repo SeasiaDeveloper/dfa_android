@@ -18,6 +18,7 @@ import com.ngo.pojo.response.PoliceStatusResponse
 import com.ngo.utils.Utilities
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_image_dialog_view.*
+import java.lang.Exception
 
 class PhotoDialogFragment(private var complaint_id: Int) : DialogFragment(), FragmentView {
 
@@ -52,7 +53,8 @@ class PhotoDialogFragment(private var complaint_id: Int) : DialogFragment(), Fra
             dialog?.dismiss()
         }else {
            // imgForm.setImageDrawable(mContext.resources.getDrawable(R.drawable.common_full_open_on_phone))
-            Glide.with(mContext).load("http://stgsp.appsndevs.com:9041/Complaint/api/v1/showcomplaint/"+complaint_id).into(imgForm)
+         try{   Glide.with(mContext).load("http://stgsp.appsndevs.com:9041/Complaint/api/v1/showcomplaint/"+complaint_id).into(imgForm)}
+         catch (e:Exception){e.printStackTrace()}
             //Picasso.with(context).load(response.url).into(imgForm)
         }
     }

@@ -202,4 +202,5 @@
     <string name="adress_two_length_validation">Address Line2 field must contain minimum 3 alphabets</string>
     <string name="pin_validation">Enter a valid Pin Code</string>
     <string name="password_invalid">Password is invalid. It must contain 1 small letter, 1 large letter, 1 alphanumeric character, 1 digit</string>
+    <string name="login_message">You are logged in successfully</string>
 </resources>

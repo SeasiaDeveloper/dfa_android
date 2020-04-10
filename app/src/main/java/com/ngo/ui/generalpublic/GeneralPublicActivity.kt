@@ -33,11 +33,8 @@ import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenter
 import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenterImpl
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.generalpublic.view.PublicComplaintView
+import com.ngo.utils.*
 import com.ngo.utils.Constants.GPS_REQUEST
-import com.ngo.utils.GpsUtils
-import com.ngo.utils.PreferenceHandler
-import com.ngo.utils.RealPathUtil
-import com.ngo.utils.Utilities
 import com.ngo.utils.Utilities.PERMISSION_ID
 import kotlinx.android.synthetic.main.activity_public.*
 import kotlinx.android.synthetic.main.activity_public.btnSubmit
@@ -96,8 +93,15 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private fun setListeners() {
         tvSelectPhoto.setOnClickListener(this)
         tvTakePhoto.setOnClickListener(this)
-        tvRecordVideo.setOnClickListener(this)
-        tvTakeVideo.setOnClickListener(this)
+
+        tvRecordVideo.isEnabled = false
+        tvRecordVideo.isClickable = false
+
+        tvTakeVideo.isEnabled = false
+        tvTakeVideo.isClickable = false
+
+       /* tvRecordVideo.setOnClickListener(this)
+        tvTakeVideo.setOnClickListener(this)*/
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         if (isInternetAvailable()) {
             showProgress()
@@ -351,10 +355,15 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri!!))
                         imgView.visibility = View.VISIBLE
                         videoView.visibility = View.GONE
+
                         imgView.setImageURI(imageUri)
                         path = getRealPathFromURI(imageUri!!)
                         pathOfImages = ArrayList()
                         pathOfImages.add(path)
+
+                        var scalledPath =  BitmapUtils.getCompressedImage(path,imgView.scaleType)
+                        pathOfImages.add(scalledPath)
+
                     } catch (e: Exception) {
                         try {
                             val wholeID = DocumentsContract.getDocumentId(imageUri)
@@ -371,6 +380,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                                 path = cursor.getString(columnIndex!!)
                                 pathOfImages = ArrayList()
                                 pathOfImages.add(path)
+                                var scalledPath = BitmapUtils.getCompressedImage(path,imgView.scaleType)
+                                pathOfImages.add(scalledPath)
                             }
                             cursor.close()
                         } catch (e: Exception) {

@@ -27,6 +27,7 @@ import com.ngo.ui.police.presenter.PolicePresenterImpl
 import com.ngo.ui.police.view.PoliceView
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_police.*
+import java.lang.Exception
 
 
 class PoliceActivity : BaseActivity(), PoliceView, OnMarkStatusClickListener {
@@ -134,7 +135,11 @@ class PoliceActivity : BaseActivity(), PoliceView, OnMarkStatusClickListener {
             .centerCrop()
             .placeholder(circularProgressDrawable)
             .error(R.drawable.noimage)
-        Glide.with(this).load(url).apply(options).into(binding.imgForm)
+        try {
+            Glide.with(this).load(url).apply(options).into(binding.imgForm)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         builder.setView(binding.root)
 
 
@@ -167,7 +172,9 @@ class PoliceActivity : BaseActivity(), PoliceView, OnMarkStatusClickListener {
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog
         // layout
-        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(description)
+        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(
+            description
+        )
         when (status.toLowerCase()) {
             "authentic" -> binding.radioAuth.isChecked = true
             "unauthentic" -> binding.radioUnAuth.isChecked = true
