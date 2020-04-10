@@ -359,7 +359,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         imgView.setImageURI(imageUri)
                         path = getRealPathFromURI(imageUri!!)
                         pathOfImages = ArrayList()
-                        pathOfImages.add(path)
+                      //  pathOfImages.add(path)
 
                         var scalledPath =  BitmapUtils.getCompressedImage(path,imgView.scaleType)
                         pathOfImages.add(scalledPath)
@@ -379,7 +379,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                             if (cursor!!.moveToFirst()) {
                                 path = cursor.getString(columnIndex!!)
                                 pathOfImages = ArrayList()
-                                pathOfImages.add(path)
+                             //   pathOfImages.add(path)
                                 var scalledPath = BitmapUtils.getCompressedImage(path,imgView.scaleType)
                                 pathOfImages.add(scalledPath)
                             }
