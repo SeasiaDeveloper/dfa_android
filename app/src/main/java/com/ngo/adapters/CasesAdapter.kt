@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -22,7 +23,6 @@ import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.ui.comments.CommentsActivity
-import com.ngo.ui.generalpublic.view.AsyncResponse
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.item_case.view.*
 
@@ -48,11 +48,87 @@ class CasesAdapter(
         return ViewHolder(binding.root)
     }
 
+    fun updateParticularPosition(position: Int) {
+        notifyItemChanged(position);
+    }
+
     fun addData(listItems: MutableList<GetCasesResponse.Data>) {
         var size = this.mList.size
         this.mList.addAll(listItems)
         var sizeNew = this.mList.size
         notifyItemRangeChanged(size, sizeNew)
+    }
+
+    //to add comment
+    fun notifyParticularItemWithComment(complaintId: String, data: List<GetCasesResponse.Data>) {
+        var commentCount: String? = ""
+        for (i in 0..this.mList.size - 1) {
+            if (complaintId.equals(this.mList.get(i).id)) {
+                for (j in 0..data.size - 1) {
+                    if (complaintId.equals(data.get(j).id)) {
+                        commentCount = data.get(j).comment_count!!.toString()
+                    }
+                }
+                if (commentCount.equals("")) {
+                    this.mList.get(i).comment_count =
+                        (this.mList.get(i).comment_count?.toInt()!! + 1).toString()
+                } else {
+                    this.mList.get(i).comment_count = commentCount.toString()
+                }
+
+                notifyItemChanged(i)
+                //notifyItemRangeChanged(i, getItemCount())
+                break
+            }
+        }
+    }
+
+    //for delete
+    fun removeAt(position: Int) {
+        this.mList.removeAt(position)
+        notifyItemRemoved(position)
+        notifyItemRangeChanged(position, this.mList.size)
+    }
+
+    //for like
+    fun notifyParticularItem(complaintId: String, data: List<GetCasesResponse.Data>) {
+        var likeCount: String? = ""
+        for (i in 0..this.mList.size - 1) {
+            if (complaintId.equals(this.mList.get(i).id)) {
+                for (j in 0..data.size - 1) {
+                    if (complaintId.equals(data.get(j).id)) {
+                        likeCount = data.get(j).like_count!!.toString()
+                    }
+                }
+                if (likeCount.equals("")) {
+                    if (this.mList.get(i).is_liked!!.equals(0)) {
+                        this.mList.get(i).like_count =
+                            (this.mList.get(i).like_count?.toInt()!! - 1).toString()
+                    } else {
+                        this.mList.get(i).like_count =
+                            (this.mList.get(i).like_count?.toInt()!! + 1).toString()
+                    }
+                } else {
+                    this.mList.get(i).like_count = likeCount.toString()
+                }
+
+                notifyItemChanged(i)
+                //notifyItemRangeChanged(i, getItemCount())
+                break
+            }
+        }
+    }
+
+    fun addDataInMyCases(
+        mLayoutManager: LinearLayoutManager,
+        listItems: MutableList<GetCasesResponse.Data>
+    ) {
+        var size = this.mList.size
+        this.mList.addAll(listItems)
+        //this.mList.addAll(mLayoutManager.getItemCount(),listItems)
+        var sizeNew = this.mList.size
+        notifyDataSetChanged()
+        // notifyItemRangeChanged(size, sizeNew)
     }
 
     fun clear() {
@@ -106,13 +182,13 @@ class CasesAdapter(
                 .error(R.drawable.noimage)
 
             itemView.layoutListItem.setOnClickListener {
-                listener.onItemClick(item, "full")
+                listener.onItemClick(item, "full", adapterPosition)
             }
             /*itemView.location.setOnClickListener {
                 listener.onItemClick(item, "location")
             }*/
             itemView.view_fir.setOnClickListener {
-                listener.onItemClick(item, "webview")
+                listener.onItemClick(item, "webview", adapterPosition)
             }
 
             //in case of post:
@@ -155,7 +231,7 @@ class CasesAdapter(
                         context,
                         context.getString(R.string.delete_post_title),
                         context.getString(R.string.delete_post_heading),
-                        item, alertDialogListener
+                        item, alertDialogListener, adapterPosition
                     )
                 }
 
@@ -187,7 +263,7 @@ class CasesAdapter(
                 }
 
                 itemView.layout_post.setOnClickListener {
-                    listener.onItemClick(item, "full")
+                    listener.onItemClick(item, "full", adapterPosition)
                 }
 
                 itemView.layout_share.setOnClickListener {
@@ -195,9 +271,7 @@ class CasesAdapter(
                 }
 
                 itemView.layoutCommentPost.setOnClickListener {
-                    val intent = Intent(context, CommentsActivity::class.java)
-                    intent.putExtra("id", item.id)
-                    context.startActivity(intent)
+                    listener.onItemClick(item, "comment", adapterPosition)
                 }
 
             } else {
@@ -215,9 +289,12 @@ class CasesAdapter(
                 itemView.layoutListItem.visibility = View.VISIBLE
 
                 //   itemView.status.text = item.status.toString().toUpperCase()
-                itemView.expandable_Date.text = Utilities.changeDateFormat(item.report_data!!) + " " + Utilities.changeTimeFormat(item.report_time!!)
+                itemView.expandable_Date.text =
+                    Utilities.changeDateFormat(item.report_data!!) + " " + Utilities.changeTimeFormat(
+                        item.report_time!!
+                    )
                 itemView.expandable_Level.text = "Level " + item.urgency
-              //  itemView.expandable_Time.text =
+                //  itemView.expandable_Time.text =
                 itemView.expandable_DescriptionNgo.text = item.info.toString()
 
                 itemView.expandable_contactNo.text = userDetail.username
@@ -247,7 +324,7 @@ class CasesAdapter(
                         context,
                         context.getString(R.string.delete_case_heading),
                         context.getString(R.string.delete_case_message),
-                        item, alertDialogListener
+                        item, alertDialogListener, adapterPosition
                     )
                 }
 
@@ -295,11 +372,11 @@ class CasesAdapter(
                 //itemView.location.visibility = View.VISIBLE
                 itemView.layoutContact.visibility = View.VISIBLE
                 itemView.action_complaint.visibility = View.VISIBLE
-               /* itemView.location.setOnClickListener {
-                    listener.onItemClick(item, "location")
-                }*/
+                /* itemView.location.setOnClickListener {
+                     listener.onItemClick(item, "location")
+                 }*/
                 itemView.action_complaint.setOnClickListener {
-                    listener.onItemClick(item, "action")
+                    listener.onItemClick(item, "action", adapterPosition)
                 }
 
                 itemView.layoutCrimeType.visibility = View.VISIBLE
@@ -326,26 +403,26 @@ class CasesAdapter(
                 }
 
 
-               /* if (item.latitude != null) {
-                    val string = item.latitude
-                    var numeric = true
+                /* if (item.latitude != null) {
+                     val string = item.latitude
+                     var numeric = true
 
-                    try {
-                        val num = string?.toDouble()
-                    } catch (e: NumberFormatException) {
-                        numeric = false
-                    }
+                     try {
+                         val num = string?.toDouble()
+                     } catch (e: NumberFormatException) {
+                         numeric = false
+                     }
 
-                    if (numeric)
-                        itemView.location.setText(
-                            Utilities.calculateDistance(
-                                item.latitude,
-                                item.longitude,
-                                context
-                            ).toString() + " KM away"
-                        )
+                     if (numeric)
+                         itemView.location.setText(
+                             Utilities.calculateDistance(
+                                 item.latitude,
+                                 item.longitude,
+                                 context
+                             ).toString() + " KM away"
+                         )
 
-                   *//* var task =  DirectionApiAsyncTask(context,item.latitude,item.longitude!!,response)
+                    *//* var task =  DirectionApiAsyncTask(context,item.latitude,item.longitude!!,response)
                     task.execute()*//*
                 }*/
 
@@ -360,12 +437,12 @@ class CasesAdapter(
                     itemView.view_fir.visibility = View.VISIBLE
                     itemView.imgComplaintMedia.visibility = View.GONE
 
-               /* else {
-                    if (itemView.childExpandable.isVisible) {
-                        itemView.view_fir.visibility = View.GONE
-                        itemView.imgComplaintMedia.visibility = View.VISIBLE
-                    }*/
-                }else{
+                    /* else {
+                         if (itemView.childExpandable.isVisible) {
+                             itemView.view_fir.visibility = View.GONE
+                             itemView.imgComplaintMedia.visibility = View.VISIBLE
+                         }*/
+                } else {
                     itemView.view_fir.visibility = View.GONE
                     itemView.imgComplaintMedia.visibility = View.VISIBLE
                 }
@@ -373,7 +450,7 @@ class CasesAdapter(
             } else {
                 //in case of general public/general user
                 itemView.imgComplaintMedia.visibility = View.VISIBLE
-               // itemView.location.visibility = View.GONE
+                // itemView.location.visibility = View.GONE
                 itemView.layoutContact.visibility = View.GONE
                 itemView.action_complaint.visibility = View.GONE
                 itemView.layoutCrimeType.visibility = View.GONE

@@ -82,7 +82,12 @@
             android:name="com.ngo.ui.home.fragments.home.view.HomeActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden" >
+            <intent-filter>
+                <action android:name="DETAILEVENT" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <activity
             android:name=".ui.earnings.view.MyEarningsActivity"

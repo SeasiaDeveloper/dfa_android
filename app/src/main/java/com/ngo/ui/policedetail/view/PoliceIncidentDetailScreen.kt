@@ -44,7 +44,7 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
         finish()
     }
 
-    override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String) {
+    override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String,position:Int) {
         when (actionType) {
             "location" -> {
                 val gmmIntentUri =

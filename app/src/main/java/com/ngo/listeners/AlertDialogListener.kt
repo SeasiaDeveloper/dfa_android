@@ -2,6 +2,6 @@ package com.ngo.listeners
 
 interface AlertDialogListener {
 
-    fun onClick(item:Any)
+    fun onClick(item:Any,position:Int)
 
 }

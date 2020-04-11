@@ -15,6 +15,8 @@ import com.ngo.fragments.presenter.FragmentPresenterImpl
 import com.ngo.fragments.view.FragmentView
 import com.ngo.pojo.response.GetPoliceFormResponse
 import com.ngo.pojo.response.PoliceStatusResponse
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
+import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.utils.Utilities
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_image_dialog_view.*
@@ -45,6 +47,7 @@ class PhotoDialogFragment(private var complaint_id: Int) : DialogFragment(), Fra
       //  policePresenter.savePoliceFormRequest(complaint_id)
 
     }
+
 
     override fun showPoliceFormResponse(response: GetPoliceFormResponse) {
         if(response.status==404){

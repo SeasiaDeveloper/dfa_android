@@ -2,7 +2,8 @@ package com.ngo.utils
 
 object Constants {
     //const val BASE_URL="http://stgsp.appsndevs.com:9041/Complaint/api/"
-    const val BASE_URL = " http://stgsp.appsndevs.com:9041/drugfree/wp-json/"
+    //http://drugfree.appsndevs.com/wp-json/
+    const val BASE_URL = "http://drugfree.appsndevs.com/wp-json/"   //http://stgsp.appsndevs.com:9041/drugfree/wp-json/jwt-auth/v1/crime_list
     const val SERVER_ERROR = "Something went wrong.Please try again"
     const val PUBLIC_COMPLAINT_DATA = "complaint_data"
     const val GPS_REQUEST = 101

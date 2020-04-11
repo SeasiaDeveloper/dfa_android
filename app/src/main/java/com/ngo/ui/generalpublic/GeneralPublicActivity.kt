@@ -90,7 +90,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         setListeners()
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         Utilities.requestPermissions(this)
-
+        //GeneralPublicHomeFragment.fromIncidentDetailScreen=1
+        GeneralPublicHomeFragment.change=0
     }
 
     private fun setListeners() {

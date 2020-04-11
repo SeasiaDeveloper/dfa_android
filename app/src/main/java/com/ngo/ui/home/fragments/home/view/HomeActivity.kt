@@ -204,6 +204,22 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         (nav_action as Toolbar).setTitleTextColor(Color.BLACK)
 
         getLocation()
+
+        //dialog
+        if (getIntent() != null && getIntent().getExtras() != null && (getIntent().getExtras()?.getString(
+                "complaint_id"
+            ) != null) && getIntent().getExtras()?.getString("report_time") != "" &&
+            PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "") == "2"
+        ) {
+            val notificationResponse = NotificationResponse()
+            notificationResponse.username = getIntent().getExtras()?.getString("username")
+            notificationResponse.report_time = getIntent().getExtras()?.getString("report_time")
+            notificationResponse.report_data = getIntent().getExtras()?.getString("report_data")
+            notificationResponse.description = getIntent().getExtras()?.getString("description")
+            notificationResponse.complaint_id = getIntent().getExtras()?.getString("complaint_id")
+            notificationResponse.is_notify = getIntent().getExtras()?.getString("is_notify")
+            displayAcceptRejDialog(notificationResponse)
+        }
     }
 
     fun setTabAdapter() {

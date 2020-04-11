@@ -19,6 +19,8 @@ import com.ngo.pojo.request.GetPhotosRequest
 import com.ngo.pojo.response.GetCrimeDetailsResponse
 import com.ngo.pojo.response.GetPhotosResponse
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
+import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.home.fragments.photos.view.OnClickOfVideoAndPhoto
 import com.ngo.ui.home.fragments.videos.presenter.VideoPresenter
 import com.ngo.ui.home.fragments.videos.presenter.VideosPresenterImpl
@@ -51,6 +53,12 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
         Utilities.showProgress(activity!!)
         val authorizationToken = PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
         presenter.getVideos(authorizationToken,request)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        CasesFragment.change=1
+        GeneralPublicHomeFragment.change=1
     }
 
     private fun setAdapter() {

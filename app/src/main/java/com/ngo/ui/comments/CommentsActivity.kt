@@ -1,6 +1,8 @@
 package com.ngo.ui.comments
 
+import android.R.id.message
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -18,11 +20,15 @@ import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.ui.comments.presenter.CommentsPresenter
 import com.ngo.ui.comments.presenter.CommentsPresenterImplClass
 import com.ngo.ui.comments.view.CommentsView
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
+import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.home.fragments.cases.CasesFragment.Companion.change
+import com.ngo.ui.home.fragments.cases.CasesFragment.Companion.commentChange
 import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_comments.*
+
 
 class CommentsActivity : AppCompatActivity(), CommentsView {
 
@@ -49,7 +55,11 @@ class CommentsActivity : AppCompatActivity(), CommentsView {
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
-
+        GeneralPublicHomeFragment.change =0
+        GeneralPublicHomeFragment.fromIncidentDetailScreen=0
+        CasesFragment.fromIncidentDetailScreen=0
+        MyCasesActivity.change=0
+        change=0
         val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
         val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
         if (jsondata != null) {
@@ -100,9 +110,19 @@ class CommentsActivity : AppCompatActivity(), CommentsView {
         Utilities.showMessage(mContext, response.message!!)
         //refresh the list
         presenter.fetchComments(id, token)
-        change = 1
-        MyCasesActivity.change=1
+        //change = 1
+        commentChange=id.toInt()
+        GeneralPublicHomeFragment.commentChange=id.toInt()
+        //MyCasesActivity.change=1
+        MyCasesActivity.commentChange=id.toInt()
+    }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+       /* val intent = Intent()
+        intent.putExtra("ID", id)
+        setResult(2, intent)
+        finish()*/
     }
 
     override fun showServerError(error: String) {

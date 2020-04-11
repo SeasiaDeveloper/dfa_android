@@ -18,6 +18,8 @@ import com.ngo.pojo.request.GetPhotosRequest
 import com.ngo.pojo.response.GetCrimeDetailsResponse
 import com.ngo.pojo.response.GetPhotosResponse
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
+import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.home.fragments.photos.presenter.PhotosPresenter
 import com.ngo.ui.home.fragments.photos.presenter.PhotosPresenterImpl
 import com.ngo.utils.Constants
@@ -68,6 +70,12 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
         adapter = PhotosAdapter(activity!!, photos.toMutableList(), this)
         rvPhotos.adapter = adapter
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        CasesFragment.change=1
+        GeneralPublicHomeFragment.change=1
     }
 
     override fun showGetPhotosResponse(response: GetPhotosResponse) {

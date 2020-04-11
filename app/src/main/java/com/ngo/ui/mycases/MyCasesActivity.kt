@@ -8,11 +8,9 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.ngo.R
 import com.ngo.adapters.CasesAdapter
 import com.ngo.adapters.StatusAdapter
@@ -22,7 +20,9 @@ import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.response.*
+import com.ngo.ui.comments.CommentsActivity
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
+import com.ngo.ui.generalpublic.pagination.EndlessRecyclerViewScrollListenerImplementation
 import com.ngo.ui.generalpublic.pagination.PaginationScrollListener
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.CasesFragment
@@ -33,32 +33,37 @@ import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_my_cases.*
-import kotlinx.android.synthetic.main.activity_my_cases.etSearch
-import kotlinx.android.synthetic.main.activity_my_cases.rvPublic
-import kotlinx.android.synthetic.main.activity_my_cases.toolbarLayout
-import kotlinx.android.synthetic.main.activity_my_cases.tvRecord
-import kotlinx.android.synthetic.main.fragment_cases.*
-import kotlinx.android.synthetic.main.fragment_public_home.*
 
-class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener
-   /* SwipeRefreshLayout.OnRefreshListener*/ {
+
+class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener,
+    EndlessRecyclerViewScrollListenerImplementation.OnScrollPageChangeListener {
     //pagination
-    private var currentPage: Int = PaginationScrollListener.PAGE_START
-    private var isLastPage = false
-    private val totalPage = 10
-    private var isLoading = false
-    var itemCount = 0
-    var page: String = "0"
-    var perPage: String = "0"
+    var pageCount: Int = 1
+    var endlessScrollListener: EndlessRecyclerViewScrollListenerImplementation? = null
+    var isLike: Boolean = false
+    var complaintIdTobeLiked: String? = null
+    var whenDeleteCall: Boolean = false
+    var deleteItemposition: Int? = null
+    lateinit var horizontalLayoutManager: LinearLayoutManager
 
     override fun onStatusClick(statusId: String) {
         this.statusId = statusId
     }
 
-    override fun onClick(item: Any) {
+    override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+        if (!search) {
+            pageCount = page
+            val casesRequest =
+                CasesRequest("0", "", "0", page.toString(), "10")//*totalItemsCount.toString()*//*)
+            presenter.getComplaints(casesRequest, token, type)
+        }
+    }
+
+    override fun onClick(item: Any, position: Int) {
         Utilities.showProgress(this@MyCasesActivity)
         val complaintsData = item as GetCasesResponse.Data
         //delete the item based on id
+        deleteItemposition = position
         presenter.deleteComplaint(token, complaintsData.id!!)
     }
 
@@ -71,18 +76,21 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     private var currentStatus = ""
     var type = ""
     private var adapter: CasesAdapter? = null
+    private var search: Boolean = false
 
     companion object {
         var change = 0
+        var commentChange = 0
+        var fromIncidentDetailScreen = 1
     }
 
     override fun onResume() {
         super.onResume()
-        if (CasesFragment.change == 1) {
+        if (change == 1 || commentChange != 0) {
             casesRequest = CasesRequest(
                 "0",
                 etSearch.text.toString(),
-                "0"
+                "0", "1", "10"
 
             ) //all = "1" for fetching all the cases whose type = 0
 
@@ -90,6 +98,11 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             //hit api with search variable
             presenter.getComplaints(casesRequest, token, type)
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        change = 1
     }
 
 
@@ -104,58 +117,33 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             onBackPressed()
         }
 
-        /*   val horizontalLayoutManager = LinearLayoutManager(
-               this, RecyclerView.VERTICAL, false
-           )
-           rvPublic.layoutManager = horizontalLayoutManager*/
-        //swipeRefresh_myCases.setOnRefreshListener(this)
         adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this)
-        val horizontalLayoutManager = LinearLayoutManager(
+        horizontalLayoutManager = LinearLayoutManager(
             this, RecyclerView.VERTICAL, false
         )
         rvPublic?.layoutManager = horizontalLayoutManager
         rvPublic?.adapter = adapter
 
-        page = "1"
-        perPage = "50"
-        doApiCall(page, perPage)
-        //pagination
-       /* rvPublic?.addOnScrollListener(object : PaginationScrollListener(horizontalLayoutManager!!) {
-            override fun isLastPage(): Boolean {
-                return isLastPage
-            }
+        if (endlessScrollListener == null)
+            endlessScrollListener =
+                EndlessRecyclerViewScrollListenerImplementation(horizontalLayoutManager, this)
+        else
+            endlessScrollListener?.setmLayoutManager(horizontalLayoutManager)
+        rvPublic.addOnScrollListener(endlessScrollListener!!)
+        endlessScrollListener?.resetState()
 
-            override fun isLoading(): Boolean {
-                return isLoading
-            }
-
-            override fun loadMoreItems() {
-                isLoading = true;
-                currentPage++;
-                doApiCall(currentPage.toString(), "8")
-                //you have to call loadmore items to get more data
-                //getMoreItems()
-            }
-        })*/
+        doApiCall()
     }
 
-    fun doApiCall(page: String, perPage: String) {
+    fun doApiCall() {
         casesRequest = CasesRequest(
             "0",
             etSearch.text.toString(),
-            "0"
-        ) //all = "0" for my cases and for fetching all the cases which are of type = 0
+            "0", "1", "10"
+        ) //all = "0"  my cases and for fetching all the cases which are of type = 0
         Utilities.showProgress(this)
         presenter.getComplaints(casesRequest, token, type)
     }
-
-/*    override fun onRefresh() {
-        itemCount = 0
-        currentPage = PaginationScrollListener.PAGE_START
-        isLastPage = false
-        adapter?.clear()
-        doApiCall(currentPage.toString(), "8")
-    }*/
 
     //displays my cases list on the view
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
@@ -165,46 +153,84 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             tvRecord.visibility = View.GONE
             rvPublic.visibility = View.VISIBLE
 
-            adapter?.setList(complaints.toMutableList()!!)
-
-
-          /*  if (currentPage != PaginationScrollListener.PAGE_START)
-            //adapter.removeLoading();
-                adapter?.addData(complaints.toMutableList())
-            swipeRefresh_myCases.setRefreshing(false)
-            // check weather is last page or not
-            if (currentPage < totalPage) {
-                adapter?.setList(response.data.toMutableList())
-                //adapter.addLoading();
+            if (!isLike) {
+                if (commentChange == 0 && !whenDeleteCall) {
+                    if (pageCount == 1) {
+                        adapter?.clear()
+                        adapter?.setList(response.data.toMutableList()) //now
+                    } else {
+                        if (search /*&& pageCount==1*/) {
+                            adapter?.clear()
+                            adapter?.setList(response.data.toMutableList()) //now
+                        } else {
+                            adapter?.addDataInMyCases(
+                                horizontalLayoutManager!!,
+                                complaints.toMutableList()
+                            )
+                        }
+                        //adapter?.setList(response.data.toMutableList())
+                    }
+                } else {
+                    if (whenDeleteCall) {
+                        adapter?.removeAt(deleteItemposition!!)
+                        whenDeleteCall = false
+                    } else {
+                        adapter?.notifyParticularItemWithComment(
+                            commentChange.toString(),
+                            response.data
+                        )
+                        commentChange = 0
+                    }
+                }
             } else {
-                isLastPage = true
+                //when to change like status
+                adapter?.notifyParticularItem(complaintIdTobeLiked!!, response.data)
+                isLike = false
             }
-            isLoading = false*/
-
-           GeneralPublicHomeFragment.change = 1
-
-
-            /*       rvPublic.adapter =
-                       CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this)*/
+            //change = 1
         } else {
-            tvRecord.visibility = View.VISIBLE
-            rvPublic.visibility = View.GONE
+            if (pageCount == 1) {
+                tvRecord.visibility = View.VISIBLE
+                rvPublic.visibility = View.GONE
+            } else {
+                if (search && complaints.size == 0) {
+                    tvRecord.visibility = View.VISIBLE
+                    rvPublic.visibility = View.GONE
+                }
+                search = false
+            }
         }
 
         //add click listener after adding the list on the view
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 if (s.length >= 3 || s.length == 0) {
-                    casesRequest = CasesRequest(
-                        "0",
-                        etSearch.text.toString(),
-                        "0"
-                    ) //all = "1" for fetching all the cases whose type = 0
+                    endlessScrollListener?.resetState()
+                    if (s.length == 0) {
+                        search = false
+                        pageCount = 1
+                        casesRequest = CasesRequest(
+                            "0",
+                            etSearch.text.toString(),
+                            "0", "1", "10"
+                        ) //all = "1" for fetching all the cases whose type = 0
 
+                    } else {
+                        search = true
+                        casesRequest = CasesRequest(
+                            "0",
+                            etSearch.text.toString(),
+                            "0", "1", "30"
+                        ) //all = "1" for fetching all the cases whose type = 0
+                    }
+
+
+                    // endlessScrollListener?.resetState()
                     Utilities.showProgress(this@MyCasesActivity)
                     //hit api with search variable
                     presenter.getComplaints(casesRequest, token, type)
                 }
+
             }
 
             override fun beforeTextChanged(
@@ -226,16 +252,19 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         Utilities.showProgress(this)
         val token = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         //delete the item based on id
+        complaintIdTobeLiked = complaintsData.id
         presenter.changeLikeStatus(token!!, complaintsData.id!!)
+
     }
 
     //refreshing the list after changing the like status
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(this, responseObject.message!!)
+        isLike = true
         val casesRequest = CasesRequest(
             "0",
             "",
-            "0"
+            "0", "1", "10"
         ) //all = 0 for only my cases;type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
         GeneralPublicHomeFragment.change =
@@ -250,8 +279,9 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     //refreshing the list after deletion
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.showMessage(this@MyCasesActivity, responseObject.message!!)
+        whenDeleteCall = true
         val casesRequest = CasesRequest(
-            "0", "", "0"
+            "0", "", "0", "1", "10"
         ) //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
         GeneralPublicHomeFragment.change =
@@ -259,7 +289,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     }
 
     //displays the detail of my case
-    override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String) {
+    override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String,position: Int) {
         when (actionType) {
             "location" -> {
                 val gmmIntentUri =
@@ -283,6 +313,12 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                 val i = Intent(Intent.ACTION_VIEW)
                 i.data = Uri.parse(url)
                 startActivity(i)
+            }
+
+            "comment" -> {
+                val intent = Intent(this, CommentsActivity::class.java)
+                intent.putExtra("id", complaintsData.id!!)
+                startActivity(intent)
             }
 
             else -> {
@@ -327,7 +363,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         //refresh the list
         Utilities.showProgress(this)
         val casesRequest = CasesRequest(
-            "0", "", "0"
+            "0", "", "0", "1", "10"
         ) //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
     }

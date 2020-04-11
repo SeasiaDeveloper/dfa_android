@@ -15,7 +15,10 @@ import com.ngo.pojo.response.NGOResponse
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenter
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenterImpl
 import com.ngo.ui.generalpublic.view.AsyncResponse
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
+import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.imagevideo.ImageVideoScreen
+import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.ui.ngoform.presenter.NGOFormPresenter
 import com.ngo.ui.ngoform.presenter.NGOFormPresenterImpl
 import com.ngo.ui.ngoform.view.NGOFormView
@@ -24,6 +27,7 @@ import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import com.ngo.utils.algo.DirectionApiAsyncTask
 import kotlinx.android.synthetic.main.activity_incident_detail.*
+import java.lang.Exception
 
 
 class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, AsyncResponse {
@@ -49,6 +53,12 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
+        GeneralPublicHomeFragment.fromIncidentDetailScreen=1
+        GeneralPublicHomeFragment.change=0
+        CasesFragment.change=0
+        CasesFragment.fromIncidentDetailScreen=1
+        MyCasesActivity.change=0
+        MyCasesActivity.fromIncidentDetailScreen=1
         // complaintsData = intent.getSerializableExtra(Constants.PUBLIC_COMPLAINT_DATA) as GetComplaintsResponse.Data
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         complaintId = intent.getStringExtra(Constants.PUBLIC_COMPLAINT_DATA)
@@ -290,10 +300,12 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
                 .centerCrop()
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.noimage)
-            if (this != null) {
+            try {
                 Glide.with(this).load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
                     .apply(options)
                     .into(imgView)
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
 
             ivVideoIcon.visibility = View.GONE

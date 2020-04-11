@@ -443,7 +443,8 @@ object Utilities {
         title: String?,
         message: String?,
         item: Any,
-        alertDialogListener: AlertDialogListener
+        alertDialogListener: AlertDialogListener,
+        position:Int
     ) {
 
         val dialogBuilder = android.app.AlertDialog.Builder(context)
@@ -451,7 +452,7 @@ object Utilities {
         dialogBuilder.setMessage(message)
             .setCancelable(false)
             .setPositiveButton("Ok", { dialog, id ->
-                alertDialogListener.onClick(item)
+                alertDialogListener.onClick(item,position)
 
             })
             .setNegativeButton("Cancel", { dialog, id ->
