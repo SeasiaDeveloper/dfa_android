@@ -82,6 +82,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         var change = 0
         var commentChange = 0
         var fromIncidentDetailScreen = 1
+        var commentsCount=0
     }
 
     override fun onResume() {
@@ -164,7 +165,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                             adapter?.setList(response.data.toMutableList()) //now
                         } else {
                             adapter?.addDataInMyCases(
-                                horizontalLayoutManager!!,
+                                horizontalLayoutManager,
                                 complaints.toMutableList()
                             )
                         }
@@ -177,8 +178,9 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                     } else {
                         adapter?.notifyParticularItemWithComment(
                             commentChange.toString(),
-                            response.data
+                            response.data,commentsCount
                         )
+                        commentsCount=0
                         commentChange = 0
                     }
                 }

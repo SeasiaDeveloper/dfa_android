@@ -37,6 +37,7 @@ class CommentsActivity : AppCompatActivity(), CommentsView {
     private var commentsList: List<GetCommentsResponse.CommentData> = mutableListOf()
     var token: String = ""
     var id: String = ""
+    var itemCount: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,11 +56,11 @@ class CommentsActivity : AppCompatActivity(), CommentsView {
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
-        GeneralPublicHomeFragment.change =0
-        GeneralPublicHomeFragment.fromIncidentDetailScreen=0
-        CasesFragment.fromIncidentDetailScreen=0
-        MyCasesActivity.change=0
-        change=0
+        GeneralPublicHomeFragment.change = 0
+        GeneralPublicHomeFragment.fromIncidentDetailScreen = 0
+        CasesFragment.fromIncidentDetailScreen = 0
+        MyCasesActivity.change = 0
+        change = 0
         val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
         val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
         if (jsondata != null) {
@@ -99,6 +100,9 @@ class CommentsActivity : AppCompatActivity(), CommentsView {
             tvRecord.visibility = View.GONE
             rvComments.visibility = View.VISIBLE
             rvComments.adapter = CommentsAdapter(this, commentsList.toMutableList())
+            MyCasesActivity.commentsCount = rvComments.adapter?.itemCount!!
+            CasesFragment.commentsCount = rvComments.adapter?.itemCount!!
+            GeneralPublicHomeFragment.commentsCount = rvComments.adapter?.itemCount!!
         } else {
             tvRecord.visibility = View.VISIBLE
             rvComments.visibility = View.GONE
@@ -111,18 +115,18 @@ class CommentsActivity : AppCompatActivity(), CommentsView {
         //refresh the list
         presenter.fetchComments(id, token)
         //change = 1
-        commentChange=id.toInt()
-        GeneralPublicHomeFragment.commentChange=id.toInt()
+        commentChange = id.toInt()
+        GeneralPublicHomeFragment.commentChange = id.toInt()
         //MyCasesActivity.change=1
-        MyCasesActivity.commentChange=id.toInt()
+        MyCasesActivity.commentChange = id.toInt()
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-       /* val intent = Intent()
-        intent.putExtra("ID", id)
-        setResult(2, intent)
-        finish()*/
+        /* val intent = Intent()
+         intent.putExtra("ID", id)
+         setResult(2, intent)
+         finish()*/
     }
 
     override fun showServerError(error: String) {

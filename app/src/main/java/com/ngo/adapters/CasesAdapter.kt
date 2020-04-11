@@ -60,7 +60,7 @@ class CasesAdapter(
     }
 
     //to add comment
-    fun notifyParticularItemWithComment(complaintId: String, data: List<GetCasesResponse.Data>) {
+    fun notifyParticularItemWithComment(complaintId: String, data: List<GetCasesResponse.Data>,commentsCounts:Int) {
         var commentCount: String? = ""
         for (i in 0..this.mList.size - 1) {
             if (complaintId.equals(this.mList.get(i).id)) {
@@ -70,8 +70,7 @@ class CasesAdapter(
                     }
                 }
                 if (commentCount.equals("")) {
-                    this.mList.get(i).comment_count =
-                        (this.mList.get(i).comment_count?.toInt()!! + 1).toString()
+                    this.mList.get(i).comment_count =/* (this.mList.get(i).comment_count?.toInt()!! + 1)*/commentsCounts.toString()
                 } else {
                     this.mList.get(i).comment_count = commentCount.toString()
                 }

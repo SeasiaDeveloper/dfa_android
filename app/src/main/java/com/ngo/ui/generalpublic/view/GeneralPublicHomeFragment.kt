@@ -103,6 +103,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         var change = 0
         var commentChange = 0
         var fromIncidentDetailScreen = 0
+        var commentsCount=0
     }
 
     private var complaints: List<GetCasesResponse.Data> = mutableListOf()
@@ -306,9 +307,10 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                             } else {
                                 adapter?.notifyParticularItemWithComment(
                                     commentChange.toString(),
-                                    response.data
+                                    response.data, commentsCount
                                 )
                             }
+                            commentsCount=0
                             commentChange = 0
                         }
                     }

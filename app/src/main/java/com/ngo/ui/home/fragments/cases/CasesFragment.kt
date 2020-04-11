@@ -71,6 +71,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         var change = 0
         var commentChange = 0
         var fromIncidentDetailScreen = 0
+        var commentsCount=0
     }
 
     override fun onResume() {
@@ -140,8 +141,9 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
                     } else {
                         adapter?.notifyParticularItemWithComment(
                             commentChange.toString(),
-                            response.data
+                            response.data,commentsCount
                         )
+                        commentsCount=0
                         commentChange = 0
                     }
                 }
