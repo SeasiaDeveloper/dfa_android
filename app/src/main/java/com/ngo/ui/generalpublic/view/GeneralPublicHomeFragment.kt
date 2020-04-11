@@ -46,6 +46,7 @@ import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.RealPathUtil
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_my_cases.*
+import com.ngo.utils.*
 import kotlinx.android.synthetic.main.fragment_public_home.*
 import kotlinx.android.synthetic.main.fragment_public_home.rvPublic
 import kotlinx.android.synthetic.main.fragment_public_home.toolbarLayout
@@ -105,6 +106,12 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         var fromIncidentDetailScreen = 0
         var commentsCount=0
     }
+
+   /* fun refreshList() {
+        val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
+        Utilities.showProgress(mContext)
+        presenter.getComplaints(casesRequest, token, type)
+    }*/
 
     private var complaints: List<GetCasesResponse.Data> = mutableListOf()
     private var adapter: CasesAdapter? = null
@@ -182,13 +189,17 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             layoutPost.visibility = View.GONE
             edtPostInfo.setText("")
             imgPost.setImageResource(0)
-            Glide.with(this)
-                .load("")
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.camera_placeholder)
-                )
-                .into(imgPost)
+            try {
+                Glide.with(this)
+                    .load("")
+                    .apply(
+                        RequestOptions()
+                            .placeholder(R.drawable.camera_placeholder)
+                    )
+                    .into(imgPost)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         img_attach.setOnClickListener {
@@ -233,19 +244,36 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 val columnIndex = cursor?.getColumnIndex(filePathColumn[0])
                 val picturePath = cursor?.getString(columnIndex!!)
                 cursor?.close()
-                Glide.with(this).load(picturePath).into(imgPost)
-                path = picturePath!!
+                try {
+                    Glide.with(this).load(picturePath).into(imgPost)
+                    //path = picturePath!!
+                    //compression
+                    val compClass = CompressImageUtilities()
+                    val newPathString = compClass.compressImage(mContext, picturePath!!)
+                    path = newPathString
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
                 change = 0
             } else if (mime.toLowerCase().contains("video")) {
                 media_type = "videos"
                 if (data.data != null) {
                     val realpath = RealPathUtil.getRealPath(activity!!, data.data!!)
                     val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
-                    Glide.with(mContext)
-                        .load(thumbnail)
-                        //.apply(options)
-                        .into(imgPost)
+                    try {
+                        Glide.with(mContext)
+                            .load(thumbnail)
+                            //.apply(options)
+                            .into(imgPost)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                     path = RealPathUtil.getRealPath(activity!!, data.data!!).toString()
+
+                    //compression
+                    /*   val compClass = CompressImageUtilities()
+                       val newPathString = compClass.compressImage(mContext, path)
+                       path = newPathString*/
                 }
                 change = 0
             }
@@ -270,7 +298,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         if (jsondata != null) {
             if (jsondata.data?.profile_pic != null) {
                 if (activity != null) {
-                    Glide.with(this).load(jsondata.data.profile_pic).into(imgProfile)
+                    try {
+                        Glide.with(this).load(jsondata.data.profile_pic).into(imgProfile)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
             }
         }
@@ -411,6 +443,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             description
         )
 
+        val mStatusList = responseObject.data.toMutableList()
+        for (status in mStatusList) {
+            if (status.isChecked) {
+                statusId = status.id
+            }
+        }
+
         //display the list on the screen
         val statusAdapter = StatusAdapter(mContext, responseObject.data.toMutableList(), this)
         val horizontalLayoutManager = LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
@@ -455,13 +494,17 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         if (edtPostInfo != null) {
             edtPostInfo.setText("")
             imgPost.setImageResource(0)
-            Glide.with(this)
-                .load("")
-                .apply(
-                    RequestOptions()
-                        .placeholder(R.drawable.camera_placeholder)
-                )
-                .into(imgPost)
+            try {
+                Glide.with(this)
+                    .load("")
+                    .apply(
+                        RequestOptions()
+                            .placeholder(R.drawable.camera_placeholder)
+                    )
+                    .into(imgPost)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -533,13 +576,17 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         layoutPost.visibility = View.GONE
         edtPostInfo.setText("")
         imgPost.setImageResource(0)
-        Glide.with(this)
-            .load("")
-            .apply(
-                RequestOptions()
-                    .placeholder(R.drawable.camera_placeholder)
-            )
-            .into(imgPost)
+        try {
+            Glide.with(this)
+                .load("")
+                .apply(
+                    RequestOptions()
+                        .placeholder(R.drawable.camera_placeholder)
+                )
+                .into(imgPost)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         path = ""
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest =

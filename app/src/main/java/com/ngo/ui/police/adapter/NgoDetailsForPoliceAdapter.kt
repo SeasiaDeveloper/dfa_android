@@ -66,7 +66,11 @@ class NgoDetailsForPoliceAdapter(
 
 
         holder.txtStatusMark.setOnClickListener {
-            listener.onMarkClick(ngoData.forward_id, ngoData.status, ngoData.police_comment.toString())
+            listener.onMarkClick(
+                ngoData.forward_id,
+                ngoData.status,
+                ngoData.police_comment.toString()
+            )
         }
         holder.txtLocation.setOnClickListener {
             listener.onLocationClick(ngoData.lat, ngoData.lng)
@@ -82,13 +86,18 @@ class NgoDetailsForPoliceAdapter(
             .placeholder(circularProgressDrawable)
             .error(R.drawable.noimage)
 
-            Glide.with(context).load("http://stgsp.appsndevs.com:9041/Complaint/api/v1/showcomplaint/"+ngoData.id.toInt())
-            .apply(options)
-            .into(holder.imgViewPhoto)
+        try {
+            Glide.with(context)
+                .load("http://stgsp.appsndevs.com:9041/Complaint/api/v1/showcomplaint/" + ngoData.id.toInt())
+                .apply(options)
+                .into(holder.imgViewPhoto)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
 
 
         holder.txtViewPhoto.setOnClickListener {
-           // listener.onPhotoClick(ngoData.id.toInt())
+            // listener.onPhotoClick(ngoData.id.toInt())
             listener.onDescPhotoClick(ngoData.image)
         }
         if (ngoData.lat.isNotEmpty() && ngoData.lng.isNotEmpty()) {
@@ -101,16 +110,18 @@ class NgoDetailsForPoliceAdapter(
             holder.txtLevel.setTextColor(context.getColor(R.color.colorGreen))
             holder.tvUrgency.setTextColor(context.getColor(R.color.colorGreen))
 
-        }
-        else  {
+        } else {
             holder.txtLevel.setTextColor(context.getColor(R.color.colorRed))
             holder.tvUrgency.setTextColor(context.getColor(R.color.colorRed))
 
         }
         val splited = ngoData.created_at.split(" ")
-        holder.txtViewDate.text = Utilities.dateFormat(ngoData.created_at) + ", at " +Utilities.dateFormatFromDate( splited[1])
+        holder.txtViewDate.text =
+            Utilities.dateFormat(ngoData.created_at) + ", at " + Utilities.dateFormatFromDate(
+                splited[1]
+            )
         val time = splited[1]
-       // holder.txtTime.text = Utilities.dateFormatFromDate(time)
+        // holder.txtTime.text = Utilities.dateFormatFromDate(time)
 
 
         holder.expandable_DescriptionNgo.text = ngoData.description

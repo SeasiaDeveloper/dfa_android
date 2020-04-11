@@ -48,6 +48,8 @@ import java.net.MalformedURLException
 import java.net.URL
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -113,7 +115,6 @@ object Utilities {
     fun showMessage(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
-
 
     fun showAlert(activity: Activity, message1: String) {
         val binding =
@@ -288,7 +289,6 @@ object Utilities {
            // dist = Double.parseDouble(distance.getString("text").replaceAll("[^\\.0123456789]", ""));
 
         } catch (e: JSONException) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }*/
 
@@ -342,7 +342,7 @@ object Utilities {
             // dist = Double.parseDouble(distance.getString("text").replaceAll("[^\\.0123456789]", ""));
 
         } catch (e: JSONException) {
-            // TODO Auto-generated catch block
+
             e.printStackTrace();
         }
         return mJsonResults;
@@ -425,17 +425,10 @@ object Utilities {
     }
 
     fun changeTimeFormat(date: String): String {
-        val oldDateFormat = SimpleDateFormat("HH:mm:ss a", Locale.getDefault())
-        val newDateFormat = SimpleDateFormat("HH:mm a", Locale.getDefault())
-        val convertedDate: Date?
-        try {
-            convertedDate = oldDateFormat.parse(date)
-            formatedDate = newDateFormat.format(convertedDate!!)
-        } catch (e: ParseException) {
-            e.printStackTrace()
-
-        }
-        return formatedDate
+        val time = date.split(":") as ArrayList<String>
+        val amPm = date.split(" ") as ArrayList<String>
+        val formatedTime = time.get(0) + ":" + time.get(1) + " " + amPm.get(1)
+        return formatedTime
     }
 
     fun displayDialog(
@@ -492,8 +485,6 @@ object Utilities {
             }
         }
         dialog.show()
-
-
     }
 
     fun showStatusDialog(
@@ -537,16 +528,20 @@ object Utilities {
     }
 
     fun isValidPassword(password: String): Boolean {
-
         val pattern: Pattern
         val matcher: Matcher
-
         val PASSWORD_PATTERN = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$"
-
         pattern = Pattern.compile(PASSWORD_PATTERN)
         matcher = pattern.matcher(password)
-
         return matcher.matches()
+    }
+
+    fun dateTime():String{
+        val current = LocalDateTime.now()
+
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
+        val formatted = current.format(formatter)
+        return formatted
     }
 
 }

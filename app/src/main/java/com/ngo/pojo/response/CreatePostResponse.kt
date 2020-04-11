@@ -4,7 +4,7 @@ import java.io.Serializable
 
 class CreatePostResponse : Serializable {
 
-    val data: Data?= null
+   // val data: Data?= null
     val message: String? = null
     val code: Int? = null
 

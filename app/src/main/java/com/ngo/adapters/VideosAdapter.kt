@@ -64,8 +64,10 @@ class VideosAdapter(
 
             val requestOptions = RequestOptions()
             requestOptions.isMemoryCacheable
-            Glide.with(context).setDefaultRequestOptions(requestOptions).load(item.url.toString())
-                .into(itemView.ivPhoto)
+           try{ Glide.with(context).setDefaultRequestOptions(requestOptions).load(item.url.toString())
+                .into(itemView.ivPhoto)}catch (e:Exception){
+               e.printStackTrace()
+           }
 
             ivPhoto.setOnClickListener {
                 listener.getComplaintId(item.complaint_id)

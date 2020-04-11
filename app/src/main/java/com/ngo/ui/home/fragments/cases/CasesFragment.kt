@@ -409,6 +409,13 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
             description
         )
 
+        val mStatusList = responseObject.data.toMutableList()
+        for(status in mStatusList){
+            if(status.isChecked){
+                statusId = status.id
+            }
+        }
+
         //display the list on the screen
         val statusAdapter = StatusAdapter(mContext, responseObject.data.toMutableList(), this)
         val horizontalLayoutManager = LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)

@@ -60,7 +60,6 @@ class DirectionApiAsyncTask(
                 // dist = Double.parseDouble(distance.getString("text").replaceAll("[^\\.0123456789]", ""));
 
             } catch (e: JSONException) {
-                // TODO Auto-generated catch block
                 e.printStackTrace()
             }
         } catch (e: MalformedURLException) {

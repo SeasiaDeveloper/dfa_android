@@ -88,6 +88,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             refreshReceiver,
             IntentFilter("policeJsonReceiver")
         ) //registering the broadcast receiver
+
     }
 
     override fun onPause() {
@@ -147,6 +148,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 "4"
             )
             dialog.dismiss()
+            try {
+                genPubHomeFrag.refreshList()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            //GeneralPublicHomeFragment.change = 1
         }
         rejectButton.setOnClickListener {
             //reject = 6
@@ -220,11 +227,13 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             notificationResponse.is_notify = getIntent().getExtras()?.getString("is_notify")
             displayAcceptRejDialog(notificationResponse)
         }
+
     }
 
+    var genPubHomeFrag = GeneralPublicHomeFragment()
     fun setTabAdapter() {
         val adapter = TabLayoutAdapter(supportFragmentManager)
-        adapter.addFragment(GeneralPublicHomeFragment(), "Home")
+        adapter.addFragment(genPubHomeFrag, "Home")
         adapter.addFragment(CasesFragment(), "Cases")
         adapter.addFragment(PhotosFragment(), "Photos")
         adapter.addFragment(VideosFragment(), "Videos")
@@ -289,8 +298,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         textName.setText(getProfileResponse.data?.first_name + " " + getProfileResponse.data?.middle_name + " " + getProfileResponse.data?.last_name)
         textAddress.setText(getProfileResponse.data?.address_1)
         if (getProfileResponse.data?.profile_pic != null) {
-            Glide.with(this).load(getProfileResponse.data.profile_pic)
-                .into(imageNavigator)
+            try {
+                Glide.with(this).load(getProfileResponse.data.profile_pic)
+                    .into(imageNavigator)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
     }
 
@@ -373,7 +386,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         )
 
         navigationLayout.setOnClickListener {
-            var intent = Intent(this, ProfileActivity::class.java)
+            val intent = Intent(this, ProfileActivity::class.java)
             drawerLayout.closeDrawer(GravityCompat.START)
             startActivity(intent)
         }

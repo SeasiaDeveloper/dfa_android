@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.change_password_layout.toolbarLayout
 
 class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePasswordView {
     private var presenter: ChangePasswordPresenter = ChangePasswordPresenterImpl(this)
-    private lateinit var userId: String
+    private /*lateinit*/ var userId: String = "23"
 
     override fun getLayout(): Int {
         return R.layout.change_password_layout
@@ -29,8 +29,8 @@ class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePassw
         (toolbarLayout as CenteredToolbar).title = getString(R.string.change_password)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.BLACK)
         setListeners()
-        val intent = intent
-        userId = intent.getStringExtra("userId")
+       /* val intent = intent
+        userId = intent.getStringExtra("userId")*/
     }
 
     fun setListeners() {
@@ -48,7 +48,9 @@ class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePassw
                     Toast.makeText(this, "Please enter new password", Toast.LENGTH_SHORT).show()
                 } else if(!(Utilities.isValidPassword(new_password.text.toString()))){
                     Toast.makeText(this, getString(R.string.password_invalid), Toast.LENGTH_SHORT).show()
-                }else if (TextUtils.isEmpty(confirm_password.text.toString())) {
+                }else if (new_password.text.toString().length < 6) {
+                    Utilities.showMessage(this, "Password should of minimum 6 characters")
+                } else if (TextUtils.isEmpty(confirm_password.text.toString())) {
                     Toast.makeText(this, "Please enter confirm password", Toast.LENGTH_SHORT).show()
                 } else if (!confirm_password.text.toString().equals(new_password.text.toString())) {
                     Toast.makeText(this, "Mismatch Passwords", Toast.LENGTH_SHORT)

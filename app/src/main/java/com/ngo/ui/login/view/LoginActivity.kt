@@ -30,8 +30,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
     }
 
     override fun setupUI() {
-       /* (toolbarLayout as CenteredToolbar).title = getString(R.string.login)
-        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)*/
+        /* (toolbarLayout as CenteredToolbar).title = getString(R.string.login)
+         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)*/
         setListeners()
         FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener(
             this,
@@ -110,8 +110,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
 
     override fun onLoginSuccess(loginResponse: LoginResponse) {
         dismissProgress()
-        if(loginResponse.token!=null)
-        {
+
+        if (loginResponse.token != null) {
             PreferenceHandler.writeString(
                 this,
                 PreferenceHandler.AUTHORIZATION,
@@ -121,16 +121,15 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
             PreferenceHandler.writeString(
                 this,
                 PreferenceHandler.USER_ROLE,
-                loginResponse.user_role.toString()
+                loginResponse?.user_role.toString()
             )
-            Utilities.showMessage(this, "Login Success")
+            Utilities.showMessage(this, getString(R.string.login_message))
             finish()
             val intent = Intent(this, HomeActivity::class.java) //GeneralPublicActivity
             startActivity(intent)
-        }else{
-            Utilities.showMessage(this,loginResponse.message);
+        } else {
+            Utilities.showMessage(this, loginResponse.message/*"Username or password is incorrect"*/)
         }
-
     }
 
     override fun showServerError(error: String) {

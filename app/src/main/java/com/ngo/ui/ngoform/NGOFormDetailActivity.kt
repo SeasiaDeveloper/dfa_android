@@ -94,7 +94,10 @@ class NGOFormDetailActivity : BaseActivity(), NGOFormView {
             .centerCrop()
             .placeholder(R.drawable.noimage)
             .error(R.drawable.noimage)
-        Glide.with(this).load(complaintsData.image).apply(options).into(imgView)
+        try{Glide.with(this).load(complaintsData.image).apply(options).into(imgView)}
+        catch (e:Exception){
+            e.printStackTrace()
+        }
     }
 
     override fun handleKeyboard(): View {

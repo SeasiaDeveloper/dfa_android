@@ -33,11 +33,8 @@ import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenter
 import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenterImpl
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.generalpublic.view.PublicComplaintView
+import com.ngo.utils.*
 import com.ngo.utils.Constants.GPS_REQUEST
-import com.ngo.utils.GpsUtils
-import com.ngo.utils.PreferenceHandler
-import com.ngo.utils.RealPathUtil
-import com.ngo.utils.Utilities
 import com.ngo.utils.Utilities.PERMISSION_ID
 import kotlinx.android.synthetic.main.activity_public.*
 import kotlinx.android.synthetic.main.activity_public.btnSubmit
@@ -63,9 +60,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private var pathOfImages = ArrayList<String>()
     private val REQUEST_CAMERA = 0
     private var IMAGE_MULTIPLE = 1
-    private var userChoosenTask: String? = null
     private var imageUri: Uri? = null
-    private val REQUEST_TAKE_GALLERY_VIDEO = 1889
     private var authorizationToken: String? = ""
     private var complaintsPresenter: PublicComplaintPresenter = PublicComplaintPresenterImpl(this)
     private var range = 1
@@ -97,8 +92,15 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private fun setListeners() {
         tvSelectPhoto.setOnClickListener(this)
         tvTakePhoto.setOnClickListener(this)
-        tvRecordVideo.setOnClickListener(this)
-        tvTakeVideo.setOnClickListener(this)
+
+        tvRecordVideo.isEnabled = false
+        tvRecordVideo.isClickable = false
+
+        tvTakeVideo.isEnabled = false
+        tvTakeVideo.isClickable = false
+
+       /* tvRecordVideo.setOnClickListener(this)
+        tvTakeVideo.setOnClickListener(this)*/ //commented for next ,milestone(server was overloaded)
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         if (isInternetAvailable()) {
             showProgress()
@@ -352,10 +354,17 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri!!))
                         imgView.visibility = View.VISIBLE
                         videoView.visibility = View.GONE
+
                         imgView.setImageURI(imageUri)
-                        path = getRealPathFromURI(imageUri!!)
+                      //  path = getRealPathFromURI(imageUri!!)
+
+                        //compression
+                        val compClass = CompressImageUtilities()
+                        val newPathString = compClass.compressImage(this@GeneralPublicActivity, getRealPathFromURI(imageUri!!))
+                        path = newPathString
+
                         pathOfImages = ArrayList()
-                        pathOfImages.add(path)
+                       pathOfImages.add(path)
                     } catch (e: Exception) {
                         try {
                             val wholeID = DocumentsContract.getDocumentId(imageUri)
@@ -369,9 +378,14 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                             )
                             val columnIndex = cursor?.getColumnIndex(column[0])
                             if (cursor!!.moveToFirst()) {
-                                path = cursor.getString(columnIndex!!)
+                              //  path = cursor.getString(columnIndex!!)
+                                //compression
+                                val compClass = CompressImageUtilities()
+                                val newPathString = compClass.compressImage(this@GeneralPublicActivity, cursor.getString(columnIndex!!))
+                                path = newPathString
+
                                 pathOfImages = ArrayList()
-                                pathOfImages.add(path)
+                               pathOfImages.add(path)
                             }
                             cursor.close()
                         } catch (e: Exception) {
@@ -389,11 +403,18 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 videoView.visibility = View.GONE
                 val tempUri = getImageUri(applicationContext, photo)
                 file = File(getRealPathFromURI(tempUri))
+
+                //compression
+                val compClass = CompressImageUtilities()
+                val newPathString = compClass.compressImage(this@GeneralPublicActivity, getRealPathFromURI(tempUri))
+                path = newPathString
             }
-        } else if (requestCode == GPS_REQUEST) {
+        }
+        else if (requestCode == GPS_REQUEST) {
             isGPS = true
             getLocation()
-        } else if (requestCode == SELECT_VIDEOS && resultCode == Activity.RESULT_OK || requestCode == SELECT_VIDEOS_KITKAT && resultCode == Activity.RESULT_OK) {
+        }
+        else if (requestCode == SELECT_VIDEOS && resultCode == Activity.RESULT_OK || requestCode == SELECT_VIDEOS_KITKAT && resultCode == Activity.RESULT_OK) {
             mediaType = "videos"
             imgView.visibility = View.GONE
             videoView.visibility = View.VISIBLE
@@ -409,7 +430,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 pathOfImages = ArrayList<String>()
                 pathOfImages.add(RealPathUtil.getRealPath(this, intent.data!!).toString())
             }
-        } else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
+        }
+        else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
             mediaType = "videos"
             imgView.visibility = View.GONE
             videoView.visibility = View.VISIBLE
@@ -496,18 +518,11 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
         if (isInternetAvailable()) {
             showProgress()
-            /* var name = "Nabam Serbang"
-             var contact = "911234567890"
-             var email = "nabam@gmail.com"*/
             val request = ComplaintRequest(
-                //name,
-                // contact,
-                //email,
                 id!!, //crimeType
                 range,
                 pathOfImages.toArray(array),
                 etDescription.text.toString().trim(),
-                //"",
                 lattitude,
                 longitude,
                 mediaType!!
@@ -516,7 +531,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
-
     }
 
     override fun showEmptyLevelError() {

@@ -192,8 +192,9 @@ class CasesAdapter(
 
             //in case of post:
             if (userDetail.profile_pic != null) {
-                Glide.with(context).load(userDetail.profile_pic).apply(options)
-                    .into(itemView.imgPostProfile)
+              try{  Glide.with(context).load(userDetail.profile_pic).apply(options)
+                    .into(itemView.imgPostProfile)}
+              catch (e:Exception){e.printStackTrace()}
 
                 itemView.imgPostProfile.setOnClickListener {
                     //show enlarged image
@@ -215,7 +216,8 @@ class CasesAdapter(
 
                 if (item.media_list!!.isNotEmpty()) {
                     val mediaUrl: String = item.media_list[0]
-                    Glide.with(context).load(mediaUrl).into(itemView.imgMediaPost)
+                   try{ Glide.with(context).load(mediaUrl).into(itemView.imgMediaPost)}
+                   catch(e:Exception){e.printStackTrace()}
                 }
 
                 //btnDelete visibility
@@ -276,8 +278,9 @@ class CasesAdapter(
             } else {
                 //in case of complaint:
                 if (userDetail.profile_pic != null) {
-                    Glide.with(context).load(userDetail.profile_pic).apply(options)
-                        .into(itemView.imgCrime)
+                   try{ Glide.with(context).load(userDetail.profile_pic).apply(options)
+                        .into(itemView.imgCrime)}
+                   catch(e:Exception){e.printStackTrace()}
 
                     itemView.imgCrime.setOnClickListener {
                         //show enlarged image
@@ -302,7 +305,9 @@ class CasesAdapter(
 
                 if (item.media_list!!.isNotEmpty()) {
                     val mediaUrl: String = item.media_list[0]
-                    Glide.with(context).load(mediaUrl).into(itemView.imgComplaintMedia)
+                  try{  Glide.with(context).load(mediaUrl).into(itemView.imgComplaintMedia)}catch (e:Exception){
+                      e.printStackTrace()
+                  }
                 }
 
                 itemView.imgExpandable.setOnClickListener {
@@ -503,7 +508,10 @@ class CasesAdapter(
             dialog.setContentView(binding.root)
 
             val imageView = (dialog.findViewById(R.id.imgView) as ImageView)
-            Glide.with(context).load(userDetail.profile_pic).apply(options).into(imageView)
+            try{Glide.with(context).load(userDetail.profile_pic).apply(options).into(imageView)}
+            catch (e:Exception){
+                e.printStackTrace()
+            }
             dialog.show()
         }
     }

@@ -16,7 +16,6 @@ import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.utils.PreferenceHandler
 import org.json.JSONObject
 
-
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     val TAG = "FirebaseMessagingService"
     private val CHANNEL_ID = "channel_01"

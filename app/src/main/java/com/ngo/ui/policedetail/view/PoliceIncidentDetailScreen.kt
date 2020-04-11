@@ -71,7 +71,10 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
     override fun onStatusSelected(comment: String) {
         if (statusId == "-1") {
             Utilities.dismissProgress()
-            Utilities.showMessage(this@PoliceIncidentDetailScreen,getString(R.string.no_option_selected))
+            Utilities.showMessage(
+                this@PoliceIncidentDetailScreen,
+                getString(R.string.no_option_selected)
+            )
         } else {
             //hit status update api
             crimePresenter.updateStatus(
@@ -84,7 +87,12 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
     }
 
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {
-        Utilities.showStatusDialog("", responseObject, this, this, this)
+        try {
+            Utilities.dismissProgress()
+            Utilities.showStatusDialog("", responseObject, this, this, this)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     // private var ngoPresenter: NGOFormPresenter = NGOFormPresenterImpl(this)
@@ -113,7 +121,7 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
 
         if (isInternetAvailable()) {
             showProgress()
-            var crimeDetailsRequest = PoliceDetailrequest(complaintId, "1")
+            val crimeDetailsRequest = PoliceDetailrequest(complaintId, "1")
             crimePresenter.hitCrimeDetailsApi(crimeDetailsRequest, authorizationToken)
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
@@ -175,23 +183,36 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
         if (getCrimeDetailsResponse.data?.get(0)?.media_type.equals("videos")) {
             val requestOptions = RequestOptions()
             requestOptions.isMemoryCacheable
-            Glide.with(this).setDefaultRequestOptions(requestOptions)
-                .load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
-                .into(imgView)
-            ivVideoIcon.visibility = View.VISIBLE
+            try {
+                Glide.with(this).setDefaultRequestOptions(requestOptions)
+                    .load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
+                    .into(imgView)
+                ivVideoIcon.visibility = View.VISIBLE
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         } else {
             val options = RequestOptions()
                 .centerCrop()
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.noimage)
-            Glide.with(this).load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
-                .apply(options)
-                .into(imgView)
-            ivVideoIcon.visibility = View.GONE
+            try {
+                Glide.with(this).load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
+                    .apply(options)
+                    .into(imgView)
+                ivVideoIcon.visibility = View.GONE
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
 
         action_complaint.setOnClickListener {
-          //open dialog to fetch status
+            try {
+                Utilities.showProgress(this@PoliceIncidentDetailScreen)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            //open dialog to fetch status
             crimePresenter.fetchStatusList(authorizationToken!!, "2") // user role 2 is for police
         }
 
