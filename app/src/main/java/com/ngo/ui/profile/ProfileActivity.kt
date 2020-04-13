@@ -315,8 +315,14 @@ class ProfileActivity : BaseActivity(), ProfileView {
         dismissProgress()
         Utilities.showMessage(this, responseObject.message)
         val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.PROFILE_IMAGE,
+            "true"
+        )
         val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
         if (isAdhaarNoAdded) {
+
             jsondata.data?.adhar_number = responseObject.data.adhar_number //add adhar no
         }
         jsondata.data?.profile_pic = responseObject.data.profile_pic

@@ -298,7 +298,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 if (activity != null) {
                     try {
                         imgProfile.setImageResource(0)
-                        Glide.with(this).load(jsondata.data.profile_pic).into(imgProfile)
+                        Glide.with(activity!!).load(jsondata.data.profile_pic).into(imgProfile)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -533,6 +533,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun onResume() {  //isfirst // !isfirst //
         super.onResume()
+
+        val profile_image =
+            PreferenceHandler.readString(activity!!, PreferenceHandler.PROFILE_IMAGE, "")
         if (isFirst) {
             doApiCall()
             isFirst = false
@@ -549,7 +552,19 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
             }
         }
-        setProfilePic()
+
+        if (profile_image.equals("true")) {
+            adapter?.clear()
+            endlessScrollListener?.resetState()
+            doApiCall()
+            change = 0
+            PreferenceHandler.writeString(
+                activity!!,
+                PreferenceHandler.PROFILE_IMAGE,
+                "false"
+            )
+        }
+       // setProfilePic()
         fromIncidentDetailScreen == 0
     }
 
