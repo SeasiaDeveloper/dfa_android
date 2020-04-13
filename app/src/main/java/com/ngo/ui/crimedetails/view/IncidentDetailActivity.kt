@@ -206,6 +206,11 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
             level = (getCrimeDetailsResponse.data?.get(0)?.urgency!!.toFloat() * 11) - 11
         else
             level = 0f
+
+        if(getCrimeDetailsResponse!=null && getCrimeDetailsResponse.data!=null && getCrimeDetailsResponse.data?.get(0)!=null && getCrimeDetailsResponse.data?.get(0)?.urgency.equals("10"))
+        {
+            level= 99f
+        }
         sb_steps_5.setProgress(level)
 
         sb_steps_5.isEnabled = false

@@ -93,14 +93,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         tvSelectPhoto.setOnClickListener(this)
         tvTakePhoto.setOnClickListener(this)
 
-        tvRecordVideo.isEnabled = false
-        tvRecordVideo.isClickable = false
-
-        tvTakeVideo.isEnabled = false
-        tvTakeVideo.isClickable = false
-
-       /* tvRecordVideo.setOnClickListener(this)
-        tvTakeVideo.setOnClickListener(this)*/ //commented for next ,milestone(server was overloaded)
+        tvRecordVideo.setOnClickListener(this)
+        tvTakeVideo.setOnClickListener(this)
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         if (isInternetAvailable()) {
             showProgress()
@@ -152,23 +146,27 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     cameraIntent()
             }
             R.id.tvRecordVideo -> {
-                path = ""
+                Utilities.showMessage(this,getString(R.string.coming_soon))
+                //commented for next ,milestone(server was overloaded)
+              /*  path = ""
                 val resultVideo = getMarshmallowPermission(
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
                 )
                 if (resultVideo)
-                    videoFromGalleryIntent()
+                    videoFromGalleryIntent()*/
             }
 
             R.id.tvTakeVideo -> {
-                path = ""
+                Utilities.showMessage(this,getString(R.string.coming_soon))
+                //commented for next ,milestone(server was overloaded)
+           /*     path = ""
                 val resultVideo = getMarshmallowPermission(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
                     Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
                 )
                 if (resultVideo)
-                    recordVideo()
+                    recordVideo()*/
             }
             R.id.btnSubmit -> {
                 complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
@@ -396,8 +394,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
         } else if (requestCode == REQUEST_CAMERA) {
             mediaType = "photos"
-            if (null != intent) {
-                val photo = intent?.getExtras()?.get("data") as Bitmap
+            if (intent != null && intent.getExtras() !=null &&  intent.getExtras()!!.get("data") !=null) {
+                val photo = intent.getExtras()!!.get("data") as Bitmap
                 imgView.setImageBitmap(photo)
                 imgView.visibility = View.VISIBLE
                 videoView.visibility = View.GONE
@@ -487,6 +485,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     ) {
         // Utilities.showMessage(this, leftValue.toString())
         range = Math.ceil(leftValue.toDouble()).toInt()
+        if(leftValue>=9){
+            range = 10
+        }
     }
 
     override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
