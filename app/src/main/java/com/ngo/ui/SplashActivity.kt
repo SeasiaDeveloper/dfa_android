@@ -3,7 +3,6 @@ package com.ngo.ui
 import android.content.Intent
 import android.os.Handler
 import android.view.View
-import com.google.firebase.FirebaseApp
 import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.ui.home.fragments.home.view.HomeActivity
@@ -21,12 +20,10 @@ class SplashActivity : BaseActivity() {
         Handler().postDelayed({
             run {
                 if (!PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "").equals("")) {
-                    val mIntent: Intent = Intent(this@SplashActivity, HomeActivity::class.java)
-                    startActivity(mIntent)
+                    startActivity( Intent(this@SplashActivity, HomeActivity::class.java))
                     finish()
                 } else {
-                    val mIntent: Intent = Intent(this@SplashActivity, LoginActivity::class.java)
-                    startActivity(mIntent)
+                    startActivity( Intent(this@SplashActivity, LoginActivity::class.java))
                     finish()
                 }
             }

@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.change_password_layout.toolbarLayout
 
 class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePasswordView {
     private var presenter: ChangePasswordPresenter = ChangePasswordPresenterImpl(this)
-    private /*lateinit*/ var userId: String = "23"
+    private /*lateinit*/ var userId: String = ""//"23"
 
     override fun getLayout(): Int {
         return R.layout.change_password_layout
