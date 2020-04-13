@@ -165,6 +165,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
                 }
                 search = false
             }
+            progressBar.visibility=View.GONE
         }
 
         etSearch?.addTextChangedListener(object : TextWatcher {
@@ -371,11 +372,13 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         //do nothing
     }
 
-    override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
+    override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         Utilities.dismissProgress()
         Utilities.showMessage(mContext, responseObject.message.toString())
         //refresh the list
         Utilities.showProgress(mContext)
+        adapter?.clear()
+        endlessScrollListener?.resetState()
         val casesRequest =
             CasesRequest("1", "", "0", "1", "10")  //type = -1 for fetching both cases and posts
         presenter.getComplaints(casesRequest, token, type)

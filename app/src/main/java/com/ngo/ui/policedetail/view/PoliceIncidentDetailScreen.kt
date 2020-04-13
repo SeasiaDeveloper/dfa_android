@@ -37,7 +37,7 @@ import kotlinx.android.synthetic.main.police_detail_layout.*
 
 class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListener,
     OnCaseItemClickListener {
-    override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
+    override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
         //refresh the back fragment

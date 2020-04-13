@@ -22,6 +22,7 @@ import com.ngo.databinding.ItemCaseBinding
 import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.response.GetCasesResponse
+import com.ngo.pojo.response.UpdateStatusSuccess
 import com.ngo.ui.comments.CommentsActivity
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.item_case.view.*
@@ -48,19 +49,31 @@ class CasesAdapter(
         return ViewHolder(binding.root)
     }
 
-    fun updateParticularPosition(position: Int) {
-        notifyItemChanged(position);
-    }
+/*    fun updateParticularPosition(position: Int,GetCasesResponse.Data) {
 
-    fun addData(listItems: MutableList<GetCasesResponse.Data>) {
+        notifyItemChanged(position)
+    }*/
+
+    fun notifyActionData(listItems: Array<UpdateStatusSuccess.Data>) {
         var size = this.mList.size
-        this.mList.addAll(listItems)
-        var sizeNew = this.mList.size
-        notifyItemRangeChanged(size, sizeNew)
+        var complaintId: String? = null
+        var position: Int? = null
+        for (i in 0..this.mList.size - 1) {
+            if (listItems[0].id.equals(this.mList.get(i).id)) {
+                complaintId = this.mList.get(i).id
+                position = i
+                break
+            }
+        }
+        notifyItemChanged(position!!, listItems)
     }
 
     //to add comment
-    fun notifyParticularItemWithComment(complaintId: String, data: List<GetCasesResponse.Data>,commentsCounts:Int) {
+    fun notifyParticularItemWithComment(
+        complaintId: String,
+        data: List<GetCasesResponse.Data>,
+        commentsCounts: Int
+    ) {
         var commentCount: String? = ""
         for (i in 0..this.mList.size - 1) {
             if (complaintId.equals(this.mList.get(i).id)) {
@@ -70,7 +83,8 @@ class CasesAdapter(
                     }
                 }
                 if (commentCount.equals("")) {
-                    this.mList.get(i).comment_count =/* (this.mList.get(i).comment_count?.toInt()!! + 1)*/commentsCounts.toString()
+                    this.mList.get(i).comment_count =
+/* (this.mList.get(i).comment_count?.toInt()!! + 1)*/commentsCounts.toString()
                 } else {
                     this.mList.get(i).comment_count = commentCount.toString()
                 }
@@ -192,9 +206,12 @@ class CasesAdapter(
 
             //in case of post:
             if (userDetail.profile_pic != null) {
-              try{  Glide.with(context).load(userDetail.profile_pic).apply(options)
-                    .into(itemView.imgPostProfile)}
-              catch (e:Exception){e.printStackTrace()}
+                try {
+                    Glide.with(context).load(userDetail.profile_pic).apply(options)
+                        .into(itemView.imgPostProfile)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
 
                 itemView.imgPostProfile.setOnClickListener {
                     //show enlarged image
@@ -216,8 +233,11 @@ class CasesAdapter(
 
                 if (item.media_list!!.isNotEmpty()) {
                     val mediaUrl: String = item.media_list[0]
-                   try{ Glide.with(context).load(mediaUrl).into(itemView.imgMediaPost)}
-                   catch(e:Exception){e.printStackTrace()}
+                    try {
+                        Glide.with(context).load(mediaUrl).into(itemView.imgMediaPost)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
 
 
@@ -279,9 +299,12 @@ class CasesAdapter(
             } else {
                 //in case of complaint:
                 if (userDetail.profile_pic != null) {
-                   try{ Glide.with(context).load(userDetail.profile_pic).apply(options)
-                        .into(itemView.imgCrime)}
-                   catch(e:Exception){e.printStackTrace()}
+                    try {
+                        Glide.with(context).load(userDetail.profile_pic).apply(options)
+                            .into(itemView.imgCrime)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
 
                     itemView.imgCrime.setOnClickListener {
                         //show enlarged image
@@ -306,9 +329,11 @@ class CasesAdapter(
 
                 if (item.media_list!!.isNotEmpty()) {
                     val mediaUrl: String = item.media_list[0]
-                 try{  Glide.with(context).load(mediaUrl).into(itemView.imgComplaintMedia)}catch (e:Exception){
-                      e.printStackTrace()
-                  }
+                    try {
+                        Glide.with(context).load(mediaUrl).into(itemView.imgComplaintMedia)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
 
                 itemView.imgExpandable.setOnClickListener {
@@ -509,8 +534,9 @@ class CasesAdapter(
             dialog.setContentView(binding.root)
 
             val imageView = (dialog.findViewById(R.id.imgView) as ImageView)
-            try{Glide.with(context).load(userDetail.profile_pic).apply(options).into(imageView)}
-            catch (e:Exception){
+            try {
+                Glide.with(context).load(userDetail.profile_pic).apply(options).into(imageView)
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
             dialog.show()

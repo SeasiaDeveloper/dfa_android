@@ -4,6 +4,7 @@ import com.ngo.base.presenter.BasePresenter
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.PostLocationResponse
+import com.ngo.pojo.response.UpdateStatusSuccess
 
 interface HomePresenter : BasePresenter {
     fun getProfileSuccess(getProfileResponse: GetProfileResponse)
@@ -14,5 +15,5 @@ interface HomePresenter : BasePresenter {
     fun hitLocationApi(token :String?,lat:String,lng:String)
 
     fun updateStatus(token: String, complaintId: String, statusId: String)
-    fun statusUpdationSuccess(responseObject: DeleteComplaintResponse)
+    fun statusUpdationSuccess(responseObject: UpdateStatusSuccess)
 }

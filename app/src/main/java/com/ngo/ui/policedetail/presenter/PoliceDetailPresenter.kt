@@ -6,6 +6,7 @@ import com.ngo.pojo.request.PoliceDetailrequest
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCrimeDetailsResponse
 import com.ngo.pojo.response.GetStatusResponse
+import com.ngo.pojo.response.UpdateStatusSuccess
 
 interface PoliceDetailPresenter : BasePresenter {
     fun crimeDetailsSuccess(getComplaintsResponse: GetCrimeDetailsResponse)
@@ -14,5 +15,5 @@ interface PoliceDetailPresenter : BasePresenter {
     fun onListFetchedSuccess(responseObject: GetStatusResponse)
     fun updateStatus(token: String, complaintId: String, statusId: String, comment: String)
     fun fetchStatusList(token: String, userRole: String)
-    fun statusUpdationSuccess(responseObject: DeleteComplaintResponse)
+    fun statusUpdationSuccess(responseObject: UpdateStatusSuccess)
 }

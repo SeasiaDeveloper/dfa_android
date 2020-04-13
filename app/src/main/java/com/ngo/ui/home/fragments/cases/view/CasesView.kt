@@ -11,5 +11,5 @@ interface CasesView : BaseView {
     fun onLikeStatusChanged(responseObject: DeleteComplaintResponse)
     fun adhaarSavedSuccess(responseObject: SignupResponse)
     fun onListFetchedSuccess(responseObject: GetStatusResponse)
-    fun statusUpdationSuccess(responseObject: DeleteComplaintResponse)
+    fun statusUpdationSuccess(responseObject: UpdateStatusSuccess)
 }

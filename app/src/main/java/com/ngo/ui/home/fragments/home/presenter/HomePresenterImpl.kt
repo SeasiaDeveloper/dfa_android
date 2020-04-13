@@ -3,6 +3,7 @@ package com.ngo.ui.home.fragments.home.presenter
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.PostLocationResponse
+import com.ngo.pojo.response.UpdateStatusSuccess
 import com.ngo.ui.home.fragments.home.model.HomeModel
 import com.ngo.ui.home.fragments.home.view.HomeView
 
@@ -45,7 +46,7 @@ class HomePresenterImpl(private var homeView: HomeView) :
         homeModel.updateStatus(token, complaintId, statusId)
     }
 
-    override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
+    override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         homeView.statusUpdationSuccess(responseObject)
     }
 }
