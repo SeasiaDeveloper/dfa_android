@@ -208,11 +208,29 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">-->
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rvPublic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/_20sdp"
                     android:visibility="visible" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:visibility="invisible"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:layout_alignParentBottom="true"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            </RelativeLayout>
          <!--</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
             <TextView

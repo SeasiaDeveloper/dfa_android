@@ -16,7 +16,6 @@ import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenter
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenterImpl
 import com.ngo.ui.generalpublic.view.AsyncResponse
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
-import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.imagevideo.ImageVideoScreen
 import com.ngo.ui.mycases.MyCasesActivity

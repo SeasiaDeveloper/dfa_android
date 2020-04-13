@@ -6,14 +6,17 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.drawToBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,25 +39,16 @@ import com.ngo.ui.comments.CommentsActivity
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.generalpublic.GeneralPublicActivity
 import com.ngo.ui.generalpublic.pagination.EndlessRecyclerViewScrollListenerImplementation
-import com.ngo.ui.generalpublic.pagination.PaginationScrollListener.Companion.PAGE_START
 import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
-import com.ngo.utils.Constants
-import com.ngo.utils.PreferenceHandler
-import com.ngo.utils.RealPathUtil
-import com.ngo.utils.Utilities
-import kotlinx.android.synthetic.main.activity_my_cases.*
 import com.ngo.utils.*
 import kotlinx.android.synthetic.main.fragment_public_home.*
-import kotlinx.android.synthetic.main.fragment_public_home.rvPublic
-import kotlinx.android.synthetic.main.fragment_public_home.toolbarLayout
-import kotlinx.android.synthetic.main.fragment_public_home.tvRecord
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     OnCaseItemClickListener, AlertDialogListener,
-    AdharNoListener, EndlessRecyclerViewScrollListenerImplementation.OnScrollPageChangeListener {
+    AdharNoListener, EndlessRecyclerViewScrollListenerImplementation.OnScrollPageChangeListener{
     private var isResumeRun: Boolean = false
     lateinit var binding: FragmentPublicHomeBinding
     lateinit var mContext: Context
@@ -104,14 +98,15 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         var change = 0
         var commentChange = 0
         var fromIncidentDetailScreen = 0
-        var commentsCount=0
+        var commentsCount = 0
     }
 
-   /* fun refreshList() {
-        val casesRequest = CasesRequest("1", "", "-1") //type = -1 for fetching all the data
+    fun refreshList() {
+        val casesRequest =
+            CasesRequest("1", "", "-1", "1", "10") //type = -1 for fetching all the data
         Utilities.showProgress(mContext)
         presenter.getComplaints(casesRequest, token, type)
-    }*/
+    }
 
     private var complaints: List<GetCasesResponse.Data> = mutableListOf()
     private var adapter: CasesAdapter? = null
@@ -322,6 +317,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                             adapter?.clear()
                             adapter?.setList(response.data.toMutableList()) //now
                         } else {
+                            progressBar.visibility=View.GONE
                             adapter?.addDataInMyCases(
                                 horizontalLayoutManager!!,
                                 complaints.toMutableList()
@@ -342,7 +338,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                                     response.data, commentsCount
                                 )
                             }
-                            commentsCount=0
+                            commentsCount = 0
                             commentChange = 0
                         }
                     }
@@ -364,6 +360,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 }
             }
         }
+
         setProfilePic()
     }
 
@@ -664,5 +661,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         val casesRequest =
             CasesRequest("1", "", "-1", page.toString(), "10" /*totalItemsCount.toString()*/)
         presenter.getComplaints(casesRequest, token, type)
+        progressBar.visibility=View.VISIBLE
     }
 }

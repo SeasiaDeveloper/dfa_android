@@ -24,6 +24,9 @@ import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.ui.comments.CommentsActivity
 import com.ngo.utils.Utilities
+import com.nostra13.universalimageloader.core.DisplayImageOptions
+import com.nostra13.universalimageloader.core.ImageLoader
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
 import kotlinx.android.synthetic.main.item_case.view.*
 
 
@@ -220,6 +223,7 @@ class CasesAdapter(
                    catch(e:Exception){e.printStackTrace()}
                 }
 
+
                 //btnDelete visibility
                 if (item.showDelete == 1) {
                     itemView.btnDeletePost.visibility = View.VISIBLE
@@ -305,7 +309,7 @@ class CasesAdapter(
 
                 if (item.media_list!!.isNotEmpty()) {
                     val mediaUrl: String = item.media_list[0]
-                  try{  Glide.with(context).load(mediaUrl).into(itemView.imgComplaintMedia)}catch (e:Exception){
+                 try{  Glide.with(context).load(mediaUrl).into(itemView.imgComplaintMedia)}catch (e:Exception){
                       e.printStackTrace()
                   }
                 }

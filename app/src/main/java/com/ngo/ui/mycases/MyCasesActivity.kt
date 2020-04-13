@@ -32,7 +32,14 @@ import com.ngo.ui.home.fragments.cases.view.CasesView
 import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
+import com.nostra13.universalimageloader.core.ImageLoader
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import kotlinx.android.synthetic.main.activity_my_cases.*
+import kotlinx.android.synthetic.main.activity_my_cases.progressBar
+import kotlinx.android.synthetic.main.activity_my_cases.rvPublic
+import kotlinx.android.synthetic.main.activity_my_cases.toolbarLayout
+import kotlinx.android.synthetic.main.activity_my_cases.tvRecord
+import kotlinx.android.synthetic.main.fragment_public_home.*
 
 
 class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener,
@@ -56,6 +63,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             val casesRequest =
                 CasesRequest("0", "", "0", page.toString(), "10")//*totalItemsCount.toString()*//*)
             presenter.getComplaints(casesRequest, token, type)
+            progressBar.visibility=View.VISIBLE
         }
     }
 
@@ -117,7 +125,6 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
-
         adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this)
         horizontalLayoutManager = LinearLayoutManager(
             this, RecyclerView.VERTICAL, false
@@ -168,6 +175,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                                 horizontalLayoutManager,
                                 complaints.toMutableList()
                             )
+                            progressBar.visibility=View.GONE
                         }
                         //adapter?.setList(response.data.toMutableList())
                     }

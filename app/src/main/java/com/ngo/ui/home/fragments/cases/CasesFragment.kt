@@ -32,6 +32,9 @@ import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
+import com.nostra13.universalimageloader.core.ImageLoader
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
+import kotlinx.android.synthetic.main.activity_my_cases.*
 import kotlinx.android.synthetic.main.fragment_cases.etSearch
 import kotlinx.android.synthetic.main.fragment_cases.rvPublic
 import kotlinx.android.synthetic.main.fragment_cases.tvRecord
@@ -131,6 +134,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
                                 horizontalLayoutManager!!,
                                 complaints.toMutableList()
                             )
+                            progressBar.visibility=View.GONE
                         }
                         //adapter?.setList(response.data.toMutableList())
                     }
@@ -282,7 +286,6 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
         horizontalLayoutManager = LinearLayoutManager(
             mContext,
@@ -343,6 +346,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
             val casesRequest =
                 CasesRequest("1", "", "0", page.toString(), "10")//*totalItemsCount.toString()*//*)
             presenter.getComplaints(casesRequest, token, type)
+            progressBar.visibility=View.VISIBLE
         }
     }
 
