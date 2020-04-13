@@ -29,8 +29,8 @@ class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePassw
         (toolbarLayout as CenteredToolbar).title = getString(R.string.change_password)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.BLACK)
         setListeners()
-       /* val intent = intent
-        userId = intent.getStringExtra("userId")*/
+        val intent = intent
+        userId = intent.getStringExtra("userId")
     }
 
     fun setListeners() {

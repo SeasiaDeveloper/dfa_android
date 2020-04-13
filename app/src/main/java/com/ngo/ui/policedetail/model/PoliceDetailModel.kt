@@ -7,6 +7,7 @@ import com.ngo.pojo.request.PoliceDetailrequest
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetCrimeDetailsResponse
 import com.ngo.pojo.response.GetStatusResponse
+import com.ngo.pojo.response.UpdateStatusSuccess
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenter
 import com.ngo.ui.policedetail.presenter.PoliceDetailPresenter
 import com.ngo.utils.Constants
@@ -87,14 +88,14 @@ class PoliceDetailModel(private var policeDetailPresenter: PoliceDetailPresenter
         map["status"] = toRequestBody(statusId)
         if(comment.isNotEmpty()) map["comment"] = toRequestBody(comment)
         retrofitApi.updateStatus(token, map)
-            .enqueue(object : Callback<DeleteComplaintResponse> {
-                override fun onFailure(call: Call<DeleteComplaintResponse>, t: Throwable) {
+            .enqueue(object : Callback<UpdateStatusSuccess> {
+                override fun onFailure(call: Call<UpdateStatusSuccess>, t: Throwable) {
                     policeDetailPresenter.showError(t.message + "")
                 }
 
                 override fun onResponse(
-                    call: Call<DeleteComplaintResponse>,
-                    response: Response<DeleteComplaintResponse>
+                    call: Call<UpdateStatusSuccess>,
+                    response: Response<UpdateStatusSuccess>
                 ) {
                     val responseObject = response.body()
                     if (responseObject != null) {

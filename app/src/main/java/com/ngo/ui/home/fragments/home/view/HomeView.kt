@@ -4,6 +4,7 @@ package com.ngo.ui.home.fragments.home.view
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.PostLocationResponse
+import com.ngo.pojo.response.UpdateStatusSuccess
 
 interface HomeView {
     fun onGetProfileSucess(getProfileResponse: GetProfileResponse)
@@ -11,5 +12,5 @@ interface HomeView {
     fun onShowError(error: String)
     fun onPostLocationSucess(postLocationResponse: PostLocationResponse)
     fun onPostLocationFailure(error: String)
-    fun statusUpdationSuccess(responseObject: DeleteComplaintResponse)
+    fun statusUpdationSuccess(responseObject: UpdateStatusSuccess)
 }

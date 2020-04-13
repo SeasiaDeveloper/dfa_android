@@ -209,6 +209,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                 }
                 search = false
             }
+            progressBar.visibility = View.GONE
         }
 
         //add click listener after adding the list on the view
@@ -367,11 +368,13 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         //do nothing
     }
 
-    override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
+    override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
         //refresh the list
         Utilities.showProgress(this)
+        adapter?.clear()
+        endlessScrollListener?.resetState()
         val casesRequest = CasesRequest(
             "0", "", "0", "1", "10"
         ) //type = -1 for fetching all the data

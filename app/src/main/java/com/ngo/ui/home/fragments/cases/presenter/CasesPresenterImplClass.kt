@@ -73,7 +73,7 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
         model.updateStatus(token,complaintId,statusId, comment)
     }
 
-    override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
+    override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         view.statusUpdationSuccess(responseObject)
     }
 }

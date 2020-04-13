@@ -297,14 +297,14 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         map["status"] = toRequestBody(statusId)
         if(comment.isNotEmpty()) map["comment"] = toRequestBody(comment)
         retrofitApi.updateStatus(token, map)
-            .enqueue(object : Callback<DeleteComplaintResponse> {
-                override fun onFailure(call: Call<DeleteComplaintResponse>, t: Throwable) {
+            .enqueue(object : Callback<UpdateStatusSuccess> {
+                override fun onFailure(call: Call<UpdateStatusSuccess>, t: Throwable) {
                     presenter.showError(t.message + "")
                 }
 
                 override fun onResponse(
-                    call: Call<DeleteComplaintResponse>,
-                    response: Response<DeleteComplaintResponse>
+                    call: Call<UpdateStatusSuccess>,
+                    response: Response<UpdateStatusSuccess>
                 ) {
                     val responseObject = response.body()
                     if (responseObject != null) {

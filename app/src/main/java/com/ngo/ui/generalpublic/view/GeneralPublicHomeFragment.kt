@@ -44,11 +44,16 @@ import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
 import com.ngo.utils.*
+import kotlinx.android.synthetic.main.activity_my_cases.*
 import kotlinx.android.synthetic.main.fragment_public_home.*
+import kotlinx.android.synthetic.main.fragment_public_home.progressBar
+import kotlinx.android.synthetic.main.fragment_public_home.rvPublic
+import kotlinx.android.synthetic.main.fragment_public_home.toolbarLayout
+import kotlinx.android.synthetic.main.fragment_public_home.tvRecord
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     OnCaseItemClickListener, AlertDialogListener,
-    AdharNoListener, EndlessRecyclerViewScrollListenerImplementation.OnScrollPageChangeListener{
+    AdharNoListener, EndlessRecyclerViewScrollListenerImplementation.OnScrollPageChangeListener {
     private var isResumeRun: Boolean = false
     lateinit var binding: FragmentPublicHomeBinding
     lateinit var mContext: Context
@@ -254,21 +259,21 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 media_type = "videos"
 
                 //below is commented for this milestone
-               /* if (data.data != null) {
-                    val realpath = RealPathUtil.getRealPath(activity!!, data.data!!)
-                    val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
-                    try {
-                        Glide.with(mContext)
-                            .load(thumbnail)
-                            //.apply(options)
-                            .into(imgPost)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                    path = RealPathUtil.getRealPath(activity!!, data.data!!).toString()
+                /* if (data.data != null) {
+                     val realpath = RealPathUtil.getRealPath(activity!!, data.data!!)
+                     val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
+                     try {
+                         Glide.with(mContext)
+                             .load(thumbnail)
+                             //.apply(options)
+                             .into(imgPost)
+                     } catch (e: Exception) {
+                         e.printStackTrace()
+                     }
+                     path = RealPathUtil.getRealPath(activity!!, data.data!!).toString()
 
-                }
-                change = 0*/
+                 }
+                 change = 0*/
             }
         }
     }
@@ -315,7 +320,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                             adapter?.clear()
                             adapter?.setList(response.data.toMutableList()) //now
                         } else {
-                            progressBar.visibility=View.GONE
+                            progressBar.visibility = View.GONE
                             adapter?.addDataInMyCases(
                                 horizontalLayoutManager!!,
                                 complaints.toMutableList()
@@ -357,6 +362,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                     rvPublic.visibility = View.GONE
                 }
             }
+            progressBar.visibility = View.GONE
         }
 
         setProfilePic()
@@ -472,12 +478,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         dialog.show()
     }
 
-    override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
+    override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         Utilities.dismissProgress()
         Utilities.showMessage(mContext, responseObject.message.toString())
         //refresh the list
         Utilities.showProgress(mContext)
         actionChanged = true
+        adapter?.clear()
+        endlessScrollListener?.resetState()
         val casesRequest =
             CasesRequest("1", "", "-1", "1", "10")  //type = -1 for fetching both cases and posts
         presenter.getComplaints(casesRequest, token, type)
@@ -530,6 +538,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             doApiCall()
             isFirst = false
         } else if (!isFirst && change == 1) {
+            tvRecord.visibility = View.VISIBLE
             adapter?.clear()
             endlessScrollListener?.resetState()
             doApiCall()
@@ -659,6 +668,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         val casesRequest =
             CasesRequest("1", "", "-1", page.toString(), "10" /*totalItemsCount.toString()*/)
         presenter.getComplaints(casesRequest, token, type)
-        progressBar.visibility=View.VISIBLE
+        progressBar.visibility = View.VISIBLE
     }
 }

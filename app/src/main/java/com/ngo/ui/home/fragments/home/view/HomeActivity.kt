@@ -28,10 +28,7 @@ import com.ngo.adapters.TabLayoutAdapter
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.customviews.CustomtextView
-import com.ngo.pojo.response.DeleteComplaintResponse
-import com.ngo.pojo.response.GetProfileResponse
-import com.ngo.pojo.response.NotificationResponse
-import com.ngo.pojo.response.PostLocationResponse
+import com.ngo.pojo.response.*
 import com.ngo.ui.policedetail.view.PoliceIncidentDetailScreen
 import com.ngo.ui.earnings.view.MyEarningsActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
@@ -457,7 +454,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onLocationNotFound() {
     }
 
-    override fun statusUpdationSuccess(responseObject: DeleteComplaintResponse) {
+    override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
     }

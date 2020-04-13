@@ -5,6 +5,7 @@ import com.ngo.apis.CallRetrofitApi
 import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.PostLocationResponse
+import com.ngo.pojo.response.UpdateStatusSuccess
 import com.ngo.ui.home.fragments.home.presenter.HomePresenter
 import com.ngo.utils.Constants
 import okhttp3.MediaType
@@ -85,14 +86,14 @@ class HomeModel(private var homePresenter: HomePresenter) {
         map["status"] = toRequestBody(statusId)
 
         retrofitApi.updateStatus(token, map)
-            .enqueue(object : Callback<DeleteComplaintResponse> {
-                override fun onFailure(call: Call<DeleteComplaintResponse>, t: Throwable) {
+            .enqueue(object : Callback<UpdateStatusSuccess> {
+                override fun onFailure(call: Call<UpdateStatusSuccess>, t: Throwable) {
                     homePresenter.showError(t.message + "")
                 }
 
                 override fun onResponse(
-                    call: Call<DeleteComplaintResponse>,
-                    response: Response<DeleteComplaintResponse>
+                    call: Call<UpdateStatusSuccess>,
+                    response: Response<UpdateStatusSuccess>
                 ) {
                     val responseObject = response.body()
                     if (responseObject != null) {

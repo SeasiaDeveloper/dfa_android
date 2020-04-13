@@ -138,6 +138,6 @@ interface CallRetrofitApi {
 
     @Multipart
     @POST("jwt-auth/v1/status_update")
-    fun updateStatus(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<DeleteComplaintResponse>
+    fun updateStatus(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<UpdateStatusSuccess>
 
 }
