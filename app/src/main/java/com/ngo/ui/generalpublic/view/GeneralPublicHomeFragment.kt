@@ -538,7 +538,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             doApiCall()
             isFirst = false
         } else if (!isFirst && change == 1) {
-            tvRecord.visibility = View.VISIBLE
             adapter?.clear()
             endlessScrollListener?.resetState()
             doApiCall()
