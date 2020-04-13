@@ -55,17 +55,16 @@ class CasesAdapter(
     }*/
 
     fun notifyActionData(listItems: Array<UpdateStatusSuccess.Data>) {
-        var size = this.mList.size
-        var complaintId: String? = null
+        val data=listItems[0]
         var position: Int? = null
         for (i in 0..this.mList.size - 1) {
             if (listItems[0].id.equals(this.mList.get(i).id)) {
-                complaintId = this.mList.get(i).id
                 position = i
                 break
             }
         }
-        notifyItemChanged(position!!, listItems)
+        this.mList.get(position!!).status=data.status
+        notifyItemChanged(position)
     }
 
     //to add comment

@@ -314,11 +314,12 @@ class ProfileActivity : BaseActivity(), ProfileView {
     override fun onSuccessfulUpdation(responseObject: SignupResponse) {
         dismissProgress()
         Utilities.showMessage(this, responseObject.message)
+        val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
+        val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
         if (isAdhaarNoAdded) {
-            val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
-            val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
             jsondata.data?.adhar_number = responseObject.data.adhar_number //add adhar no
         }
+        jsondata.data?.profile_pic = responseObject.data.profile_pic
         finish()
     }
 

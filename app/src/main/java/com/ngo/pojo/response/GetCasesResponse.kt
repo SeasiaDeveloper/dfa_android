@@ -22,7 +22,7 @@ class GetCasesResponse : Serializable {
         val crime_type_id: String? = null
         val urgency: String? = null
         val type: String? = null
-        val status: String? = null
+        var status: String? = null
         val media_list: List<String>? = null
         val crime_type: String? = null
         var like_count: String? = null

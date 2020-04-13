@@ -11,6 +11,7 @@ object PreferenceHandler {
     const val LAT = "lat"
     const val LNG = "lng"
     const val PROFILE_JSON = "profileData"
+    const val PROFILE_IMAGE="image"
     const val USER_ROLE = "userRole"
     const val CONTACT_NUMBER = "contact_number"
     const val USER_ID = "userId"

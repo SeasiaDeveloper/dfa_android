@@ -245,7 +245,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
 
             "action" -> {
                 complaintId = complaintsData.id!!
-                if (complaintsData.status != null) currentStatus = complaintsData.status
+                if (complaintsData.status != null) currentStatus = complaintsData.status!!
                 Utilities.showProgress(mContext)
                 //hit api based on role
                 presenter.fetchStatusList(token, type)
@@ -376,12 +376,10 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         Utilities.dismissProgress()
         Utilities.showMessage(mContext, responseObject.message.toString())
         //refresh the list
-        Utilities.showProgress(mContext)
-        adapter?.clear()
-        endlessScrollListener?.resetState()
-        val casesRequest =
-            CasesRequest("1", "", "0", "1", "10")  //type = -1 for fetching both cases and posts
-        presenter.getComplaints(casesRequest, token, type)
+        //actionChanged = true
+        if (responseObject.data?.size != 0) {
+            adapter?.notifyActionData(responseObject.data!!)
+        }
     }
 
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {

@@ -297,6 +297,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             if (jsondata.data?.profile_pic != null) {
                 if (activity != null) {
                     try {
+                        imgProfile.setImageResource(0)
                         Glide.with(this).load(jsondata.data.profile_pic).into(imgProfile)
                     } catch (e: Exception) {
                         e.printStackTrace()
@@ -382,7 +383,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             "action" -> {
                 adapterActionPosition = pos
                 complaintId = complaintsData.id!!
-                if (complaintsData.status != null) currentStatus = complaintsData.status
+                if (complaintsData.status != null) currentStatus = complaintsData.status!!
                 //hit api based on role
                 Utilities.showProgress(mContext)
                 presenter.fetchStatusList(token, type)
@@ -482,13 +483,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         Utilities.dismissProgress()
         Utilities.showMessage(mContext, responseObject.message.toString())
         //refresh the list
-        Utilities.showProgress(mContext)
+        //Utilities.showProgress(mContext)
         actionChanged = true
-        adapter?.clear()
-        endlessScrollListener?.resetState()
-        val casesRequest =
-            CasesRequest("1", "", "-1", "1", "10")  //type = -1 for fetching both cases and posts
-        presenter.getComplaints(casesRequest, token, type)
+        if (responseObject.data?.size != 0) {
+            adapter?.notifyActionData(responseObject.data!!)
+        }
     }
 
     override fun showServerError(error: String) {
@@ -550,6 +549,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
             }
         }
+        setProfilePic()
         fromIncidentDetailScreen == 0
     }
 

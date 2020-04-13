@@ -311,7 +311,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
             "action" -> {
                 complaintId = complaintsData.id!!
-                if (complaintsData.status != null) currentStatus = complaintsData.status
+                if (complaintsData.status != null) currentStatus = complaintsData.status!!
                 Utilities.showProgress(this@MyCasesActivity)
                 //hit api based on role
                 presenter.fetchStatusList(token, type)
@@ -370,13 +370,9 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
         //refresh the list
-        Utilities.showProgress(this)
-        adapter?.clear()
-        endlessScrollListener?.resetState()
-        val casesRequest = CasesRequest(
-            "0", "", "0", "1", "10"
-        ) //type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token, type)
+        if (responseObject.data?.size != 0) {
+            adapter?.notifyActionData(responseObject.data!!)
+        }
     }
 
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {

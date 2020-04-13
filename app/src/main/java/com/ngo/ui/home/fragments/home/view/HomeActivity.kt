@@ -361,9 +361,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         dismissProgress()
         loadNavHeader(getProfileResponse)
         val gson = getProfileResponse.data
-
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, gson.toString())
-
+        try {
+            genPubHomeFrag.setProfilePic()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
         val jsonString = GsonBuilder().create().toJson(getProfileResponse)
         //Save that String in SharedPreferences
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, jsonString)

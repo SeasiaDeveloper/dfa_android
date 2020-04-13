@@ -5,7 +5,7 @@ import java.io.Serializable
 class UpdateStatusSuccess : Serializable {
     val code: Int? = null
 
-    //val data: Array<Data>? = null
+    val data: Array<Data>? = null
 
     val message: String? = null
 

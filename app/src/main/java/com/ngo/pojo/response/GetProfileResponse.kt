@@ -20,7 +20,7 @@ class GetProfileResponse {
 
         val mobile: String? = null
 
-        val profile_pic: String? = null
+        var profile_pic: String? = null
 
         val last_name: String? = null
 
