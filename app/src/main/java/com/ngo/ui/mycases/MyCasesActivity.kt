@@ -32,8 +32,6 @@ import com.ngo.ui.home.fragments.cases.view.CasesView
 import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
-import com.nostra13.universalimageloader.core.ImageLoader
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration
 import kotlinx.android.synthetic.main.activity_my_cases.*
 import kotlinx.android.synthetic.main.activity_my_cases.progressBar
 import kotlinx.android.synthetic.main.activity_my_cases.rvPublic

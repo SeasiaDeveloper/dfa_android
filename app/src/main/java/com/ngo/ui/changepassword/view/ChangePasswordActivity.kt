@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.change_password_layout.toolbarLayout
 
 class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePasswordView {
     private var presenter: ChangePasswordPresenter = ChangePasswordPresenterImpl(this)
-    private /*lateinit*/ var userId: String = "23"
+    private /*lateinit*/ var userId: String = ""//"23"
 
     override fun getLayout(): Int {
         return R.layout.change_password_layout
@@ -29,8 +29,8 @@ class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePassw
         (toolbarLayout as CenteredToolbar).title = getString(R.string.change_password)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.BLACK)
         setListeners()
-       /* val intent = intent
-        userId = intent.getStringExtra("userId")*/
+        val intent = intent
+        userId = intent.getStringExtra("userId")
     }
 
     fun setListeners() {

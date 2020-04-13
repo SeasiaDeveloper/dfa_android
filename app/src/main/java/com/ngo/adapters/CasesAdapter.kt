@@ -24,9 +24,6 @@ import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.ui.comments.CommentsActivity
 import com.ngo.utils.Utilities
-import com.nostra13.universalimageloader.core.DisplayImageOptions
-import com.nostra13.universalimageloader.core.ImageLoader
-import com.nostra13.universalimageloader.core.listener.ImageLoadingListener
 import kotlinx.android.synthetic.main.item_case.view.*
 
 
