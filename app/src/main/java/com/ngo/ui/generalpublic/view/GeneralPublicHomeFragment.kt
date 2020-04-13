@@ -210,7 +210,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     private fun galleryIntent() {
         val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        pickIntent.type = "image/* video/*"
+        pickIntent.type = "image/*" //"image/* video/*"
         startActivityForResult(pickIntent, IMAGE_REQ_CODE)
     }
 
@@ -252,7 +252,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 change = 0
             } else if (mime.toLowerCase().contains("video")) {
                 media_type = "videos"
-                if (data.data != null) {
+
+                //below is commented for this milestone
+               /* if (data.data != null) {
                     val realpath = RealPathUtil.getRealPath(activity!!, data.data!!)
                     val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
                     try {
@@ -265,12 +267,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                     }
                     path = RealPathUtil.getRealPath(activity!!, data.data!!).toString()
 
-                    //compression
-                    /*   val compClass = CompressImageUtilities()
-                       val newPathString = compClass.compressImage(mContext, path)
-                       path = newPathString*/
                 }
-                change = 0
+                change = 0*/
             }
         }
     }
