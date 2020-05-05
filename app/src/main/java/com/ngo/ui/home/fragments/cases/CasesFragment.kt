@@ -3,6 +3,7 @@ package com.ngo.ui.home.fragments.cases
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -10,6 +11,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,9 +34,11 @@ import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_my_cases.*
+import kotlinx.android.synthetic.main.activity_my_cases.progressBar
 import kotlinx.android.synthetic.main.fragment_cases.etSearch
 import kotlinx.android.synthetic.main.fragment_cases.rvPublic
 import kotlinx.android.synthetic.main.fragment_cases.tvRecord
+import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialogListener,
     EndlessRecyclerViewScrollListenerImplementation.OnScrollPageChangeListener {
@@ -71,7 +75,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         var change = 0
         var commentChange = 0
         var fromIncidentDetailScreen = 0
-        var commentsCount=0
+        var commentsCount = 0
     }
 
     override fun onResume() {
@@ -107,7 +111,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
 
     override fun onPause() {
         super.onPause()
-        GeneralPublicHomeFragment.change=1
+        GeneralPublicHomeFragment.change = 1
     }
 
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
@@ -116,6 +120,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         if (complaints.isNotEmpty()) {
             tvRecord.visibility = View.GONE
             rvPublic.visibility = View.VISIBLE
+            itemsswipetorefresh.visibility = View.VISIBLE
 
             if (!isLike) {
                 if (commentChange == 0 && !whenDeleteCall) {
@@ -131,7 +136,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
                                 horizontalLayoutManager!!,
                                 complaints.toMutableList()
                             )
-                            progressBar.visibility=View.GONE
+                            progressBar.visibility = View.GONE
                         }
                         //adapter?.setList(response.data.toMutableList())
                     }
@@ -142,9 +147,9 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
                     } else {
                         adapter?.notifyParticularItemWithComment(
                             commentChange.toString(),
-                            response.data,commentsCount
+                            response.data, commentsCount
                         )
-                        commentsCount=0
+                        commentsCount = 0
                         commentChange = 0
                     }
                 }
@@ -153,19 +158,21 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
                 adapter?.notifyParticularItem(complaintIdTobeLiked!!, response.data)
                 isLike = false
             }
-              GeneralPublicHomeFragment.change = 1
+            GeneralPublicHomeFragment.change = 1
         } else {
             if (pageCount == 1) {
                 tvRecord.visibility = View.VISIBLE
+                itemsswipetorefresh.visibility = View.GONE
                 rvPublic.visibility = View.GONE
             } else {
                 if (search && complaints.size == 0) {
                     tvRecord.visibility = View.VISIBLE
                     rvPublic.visibility = View.GONE
+                    itemsswipetorefresh.visibility = View.GONE
                 }
                 search = false
             }
-            progressBar.visibility=View.GONE
+            progressBar.visibility = View.GONE
         }
 
         etSearch?.addTextChangedListener(object : TextWatcher {
@@ -232,7 +239,11 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "")!!
     }
 
-    override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String,position:Int) {
+    override fun onItemClick(
+        complaintsData: GetCasesResponse.Data,
+        actionType: String,
+        position: Int
+    ) {
         when (actionType) {
             "location" -> {
                 val gmmIntentUri =
@@ -300,6 +311,25 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         rvPublic.addOnScrollListener(endlessScrollListener!!)
         endlessScrollListener?.resetState()
 
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(
+            ContextCompat.getColor(
+                activity!!,
+                R.color.colorDarkGreen
+            )
+        )
+        itemsswipetorefresh.setColorSchemeColors(Color.WHITE)
+
+        itemsswipetorefresh.setOnRefreshListener {
+            pageCount = 1
+            adapter?.clear()
+            endlessScrollListener?.resetState()
+            doApiCall()
+            // itemsCells.clear()
+            // setItemsData()
+            // adapter = Items_RVAdapter(itemsCells)
+            //  itemsrv.adapter = adapter
+            itemsswipetorefresh.isRefreshing = false
+        }
         /*   rvPublic.layoutManager = horizontalLayoutManager
            adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)*/
     }
@@ -344,7 +374,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
             val casesRequest =
                 CasesRequest("1", "", "0", page.toString(), "10")//*totalItemsCount.toString()*//*)
             presenter.getComplaints(casesRequest, token, type)
-            progressBar.visibility=View.VISIBLE
+            progressBar.visibility = View.VISIBLE
         }
     }
 
@@ -359,7 +389,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
     }
 
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
-        Utilities.showMessage(mContext, responseObject.message!!)
+        // Utilities.showMessage(mContext, responseObject.message!!)
         isLike = true
         val casesRequest =
             CasesRequest("1", "", "0", "1", "10") //type = -1 for fetching all the data
@@ -412,8 +442,8 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         )
 
         val mStatusList = responseObject.data.toMutableList()
-        for(status in mStatusList){
-            if(status.isChecked){
+        for (status in mStatusList) {
+            if (status.isChecked) {
                 statusId = status.id
             }
         }

@@ -31,6 +31,7 @@ import com.ngo.customviews.CustomtextView
 import com.ngo.pojo.response.*
 import com.ngo.ui.policedetail.view.PoliceIncidentDetailScreen
 import com.ngo.ui.earnings.view.MyEarningsActivity
+import com.ngo.ui.emergency.EmergencyFragment
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.home.fragments.cases.view.LocationListenerCallback
@@ -229,8 +230,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     var genPubHomeFrag = GeneralPublicHomeFragment()
     fun setTabAdapter() {
+
         val adapter = TabLayoutAdapter(supportFragmentManager)
-        adapter.addFragment(genPubHomeFrag, "Home")
+        if (!genPubHomeFrag.isAdded) {
+            adapter.addFragment(genPubHomeFrag, "Home")
+        }
+        adapter.addFragment(EmergencyFragment(), "Emergency")
         adapter.addFragment(CasesFragment(), "Cases")
         adapter.addFragment(PhotosFragment(), "Photos")
         adapter.addFragment(VideosFragment(), "Videos")

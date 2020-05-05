@@ -23,6 +23,7 @@ import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.pojo.response.UpdateStatusSuccess
+import com.ngo.ui.commentlikelist.CommentLikeUsersList
 import com.ngo.ui.comments.CommentsActivity
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.item_case.view.*
@@ -55,7 +56,7 @@ class CasesAdapter(
     }*/
 
     fun notifyActionData(listItems: Array<UpdateStatusSuccess.Data>) {
-        val data=listItems[0]
+        val data = listItems[0]
         var position: Int? = null
         for (i in 0..this.mList.size - 1) {
             if (listItems[0].id.equals(this.mList.get(i).id)) {
@@ -63,7 +64,7 @@ class CasesAdapter(
                 break
             }
         }
-        this.mList.get(position!!).status=data.status
+        this.mList.get(position!!).status = data.status
         notifyItemChanged(position)
     }
 
@@ -283,6 +284,14 @@ class CasesAdapter(
                     listener.changeLikeStatus(item)
                 }
 
+                itemView.layout_like_post.setOnLongClickListener {
+                    val intent = Intent(context, CommentLikeUsersList::class.java)
+                    intent.putExtra("for", "liked")
+                    intent.putExtra("id", item.id)
+                    context.startActivity(intent)
+                    true
+                }
+
                 itemView.layout_post.setOnClickListener {
                     listener.onItemClick(item, "full", adapterPosition)
                 }
@@ -294,6 +303,15 @@ class CasesAdapter(
                 itemView.layoutCommentPost.setOnClickListener {
                     listener.onItemClick(item, "comment", adapterPosition)
                 }
+
+                itemView.layoutCommentPost.setOnLongClickListener {
+                    val intent = Intent(context, CommentLikeUsersList::class.java)
+                    intent.putExtra("for", "commented")
+                    intent.putExtra("id", item.id)
+                    context.startActivity(intent)
+                    true
+                }
+
 
             } else {
                 //in case of complaint:
@@ -385,11 +403,29 @@ class CasesAdapter(
                 }
 
 
+                itemView.layout_like.setOnLongClickListener {
+                    val intent = Intent(context, CommentLikeUsersList::class.java)
+                    intent.putExtra("for", "liked")
+                    intent.putExtra("id", item.id)
+                    context.startActivity(intent)
+                    true
+                }
+
                 itemView.layoutComment.setOnClickListener {
                     val intent = Intent(context, CommentsActivity::class.java)
                     intent.putExtra("id", item.id)
                     context.startActivity(intent)
                 }
+
+                itemView.layoutComment.setOnLongClickListener {
+                    val intent = Intent(context, CommentLikeUsersList::class.java)
+                    intent.putExtra("for", "commented")
+                    intent.putExtra("id", item.id)
+                    context.startActivity(intent)
+                    true
+                }
+
+
 
                 itemView.layout_share.setOnClickListener {
                     Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()

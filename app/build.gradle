@@ -28,7 +28,7 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    useLibrary  'org.apache.http.legacy'
+    useLibrary 'org.apache.http.legacy'
 }
 
 dependencies {
@@ -69,4 +69,3 @@ dependencies {
 
 }
 apply plugin: 'com.google.gms.google-services'
-

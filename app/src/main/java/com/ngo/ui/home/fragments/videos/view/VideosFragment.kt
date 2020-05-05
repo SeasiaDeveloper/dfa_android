@@ -2,6 +2,7 @@ package com.ngo.ui.home.fragments.videos.view
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -9,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ngo.R
@@ -27,7 +29,9 @@ import com.ngo.ui.home.fragments.videos.presenter.VideosPresenterImpl
 import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
+import kotlinx.android.synthetic.main.fragment_public_home.*
 import kotlinx.android.synthetic.main.fragment_videos.*
+import kotlinx.android.synthetic.main.fragment_videos.itemsswipetorefresh
 
 class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
 
@@ -51,14 +55,27 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
         setAdapter()
         request = GetPhotosRequest("videos")
         Utilities.showProgress(activity!!)
-        val authorizationToken = PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
-        presenter.getVideos(authorizationToken,request)
+        val authorizationToken =
+            PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+        presenter.getVideos(authorizationToken, request)
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(
+            ContextCompat.getColor(
+                activity!!,
+                R.color.colorDarkGreen
+            )
+        )
+        itemsswipetorefresh.setColorSchemeColors(Color.WHITE)
+
+        itemsswipetorefresh.setOnRefreshListener {
+            presenter.getVideos(authorizationToken, request)
+            itemsswipetorefresh.isRefreshing = false
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        CasesFragment.change=1
-        GeneralPublicHomeFragment.change=1
+        CasesFragment.change = 1
+        GeneralPublicHomeFragment.change = 1
     }
 
     private fun setAdapter() {
@@ -74,7 +91,7 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
                 includeEdge
             )
         )
-        adapter = VideosAdapter(activity!!, videos.toMutableList(),this)
+        adapter = VideosAdapter(activity!!, videos.toMutableList(), this)
         rvVideos.adapter = adapter
 
     }

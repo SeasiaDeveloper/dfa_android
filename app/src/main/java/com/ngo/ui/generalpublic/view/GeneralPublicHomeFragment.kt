@@ -16,6 +16,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.view.drawToBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -210,6 +211,26 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             )
             if (resultGallery)
                 galleryIntent()
+        }
+
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(
+            ContextCompat.getColor(
+                activity!!,
+                R.color.colorDarkGreen
+            )
+        )
+        itemsswipetorefresh.setColorSchemeColors(Color.WHITE)
+
+        itemsswipetorefresh.setOnRefreshListener {
+            pageCount = 1
+            adapter?.clear()
+            endlessScrollListener?.resetState()
+            doApiCall()
+            // itemsCells.clear()
+            // setItemsData()
+            // adapter = Items_RVAdapter(itemsCells)
+            //  itemsrv.adapter = adapter
+            itemsswipetorefresh.isRefreshing = false
         }
     }
 
@@ -564,7 +585,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 "false"
             )
         }
-       // setProfilePic()
+        // setProfilePic()
         fromIncidentDetailScreen == 0
     }
 
@@ -649,7 +670,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     //refresh the list after like status is changed
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
-        Utilities.showMessage(mContext, responseObject.message!!)
+        //Utilities.showMessage(mContext, responseObject.message!!)
         isLike = true
         val casesRequest =
             CasesRequest("1", "", "-1", "1", "10") //type = -1 for fetching all the data
