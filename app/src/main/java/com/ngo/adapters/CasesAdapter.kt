@@ -55,7 +55,7 @@ class CasesAdapter(
     }*/
 
     fun notifyActionData(listItems: Array<UpdateStatusSuccess.Data>) {
-        val data=listItems[0]
+        val data = listItems[0]
         var position: Int? = null
         for (i in 0..this.mList.size - 1) {
             if (listItems[0].id.equals(this.mList.get(i).id)) {
@@ -63,7 +63,7 @@ class CasesAdapter(
                 break
             }
         }
-        this.mList.get(position!!).status=data.status
+        this.mList.get(position!!).status = data.status
         notifyItemChanged(position)
     }
 
@@ -237,6 +237,8 @@ class CasesAdapter(
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
+                } else {
+                    itemView.imgMediaPost.visibility = View.GONE
                 }
 
 
@@ -320,7 +322,12 @@ class CasesAdapter(
                     )
                 itemView.expandable_Level.text = "Level " + item.urgency
                 //  itemView.expandable_Time.text =
-                itemView.expandable_DescriptionNgo.text = item.info.toString()
+                if (!item.info.toString().isEmpty() && item.info != null) {
+                    itemView.expandable_DescriptionNgo.visibility = View.VISIBLE
+                    itemView.expandable_DescriptionNgo.text = item.info.toString()
+                } else {
+                    itemView.expandable_DescriptionNgo.visibility = View.GONE
+                }
 
                 itemView.expandable_contactNo.text = userDetail.username
                 itemView.expandable_username.text =
@@ -404,9 +411,7 @@ class CasesAdapter(
                 /* itemView.location.setOnClickListener {
                      listener.onItemClick(item, "location")
                  }*/
-                itemView.action_complaint.setOnClickListener {
-                    listener.onItemClick(item, "action", adapterPosition)
-                }
+
 
                 itemView.layoutCrimeType.visibility = View.VISIBLE
                 itemView.layoutStatus.visibility = View.VISIBLE
@@ -457,6 +462,9 @@ class CasesAdapter(
 
                 //to show action button in case of Police
                 if (type == 2) {
+                    itemView.action_complaint.setOnClickListener {
+                        listener.onItemClick(item, "action", adapterPosition)
+                    }
                     if (item.is_assigned.equals("1")) {
                         itemView.action_complaint.visibility = View.VISIBLE
                     } else {
@@ -472,8 +480,10 @@ class CasesAdapter(
                              itemView.imgComplaintMedia.visibility = View.VISIBLE
                          }*/
                 } else {
+                    //in case of NGO
                     itemView.view_fir.visibility = View.GONE
                     itemView.imgComplaintMedia.visibility = View.VISIBLE
+                    itemView.action_complaint.setText(item.status)
                 }
 
             } else {

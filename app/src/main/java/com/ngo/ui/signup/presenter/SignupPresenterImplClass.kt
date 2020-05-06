@@ -48,6 +48,10 @@ class SignupPresenterImplClass(private var signupView: SignupView) : SignupPrese
         signupView.lastNameValidationFailure()
     }
 
+    override fun districtValidationFailure() {
+        signupView.districtValidationFailure()
+    }
+
     override fun Address1ValidationFailure() {
         signupView.Address1ValidationFailure()
     }

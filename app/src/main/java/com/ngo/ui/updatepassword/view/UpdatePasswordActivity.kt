@@ -41,9 +41,9 @@ class UpdatePasswordActivity : BaseActivity(), ChangePasswordView {
                 Utilities.showMessage(this, "Please enter old Password")
             } else if (TextUtils.isEmpty(new_password.text.toString())) {
                 Utilities.showMessage(this, "Please enter new Password")
-            } else if (!(Utilities.isValidPassword(new_password.text.toString()))) {
+            } /*else if (!(Utilities.isValidPassword(new_password.text.toString()))) {
                 Utilities.showMessage(this, getString(R.string.password_invalid))
-            } else if (new_password.text.toString().length < 6) {
+            } */else if (new_password.text.toString().length < 6) {
                 Utilities.showMessage(this, "Password should of minimum 6 characters")
             }
             else if(new_password.text.toString().equals(old_password.text.toString())){

@@ -63,6 +63,11 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
             signupPresenterImplClass.lastNameAlphabetFailure()
             return
         }
+        else if (request.district_id.equals("-1") ){
+            signupPresenterImplClass.districtValidationFailure()
+            return
+        }
+
         else if (request.address_1.isEmpty()) {
             signupPresenterImplClass.Address1ValidationFailure()
             return

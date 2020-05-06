@@ -46,9 +46,9 @@ class ChangePasswordActivity : BaseActivity(), View.OnClickListener, ChangePassw
             R.id.changePassword -> {
                 if (TextUtils.isEmpty(new_password.text.toString())) {
                     Toast.makeText(this, "Please enter new password", Toast.LENGTH_SHORT).show()
-                } else if(!(Utilities.isValidPassword(new_password.text.toString()))){
+                } /*else if(!(Utilities.isValidPassword(new_password.text.toString()))){
                     Toast.makeText(this, getString(R.string.password_invalid), Toast.LENGTH_SHORT).show()
-                }else if (new_password.text.toString().length < 6) {
+                }*/else if (new_password.text.toString().length < 6) {
                     Utilities.showMessage(this, "Password should of minimum 6 characters")
                 } else if (TextUtils.isEmpty(confirm_password.text.toString())) {
                     Toast.makeText(this, "Please enter confirm password", Toast.LENGTH_SHORT).show()

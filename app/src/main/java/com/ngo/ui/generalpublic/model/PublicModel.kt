@@ -34,10 +34,10 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
             return
         }
 
-        if (description.isEmpty()) {
+       /* if (description.isEmpty()) {
             complaintsPresenter.onEmptyDescription();
             return
-        }
+        }*/
         complaintsPresenter.onValidationSuccess()
     }
 

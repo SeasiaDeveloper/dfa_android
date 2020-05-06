@@ -167,9 +167,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         btnPost.setOnClickListener {
             if (edtPostInfo.text.toString().trim().equals("")) {
                 Utilities.showMessage(activity!!, "Please enter post title")
-            } else if (path == null || path.equals("")) {
+            } /*else if (path == null || path.equals("")) {
                 Utilities.showMessage(activity!!, "Please select image or video")
-            } else {
+            }*/ else {
                 Utilities.showProgress(mContext)
                 val pathArray = arrayOf(path)
                 //hit api to add post and display post layout
@@ -185,6 +185,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
         btnCancel.setOnClickListener {
             //show the addPost layout
+            imgPost.visibility = View.GONE
+            path = ""
             layoutAddPost.visibility = View.VISIBLE
             layoutPost.visibility = View.GONE
             edtPostInfo.setText("")
@@ -230,6 +232,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_REQ_CODE && resultCode == Activity.RESULT_OK && null != data) {
+            imgPost.visibility = View.VISIBLE
             media_type = "photos"
             val selectedMedia: Uri = data.getData()!!
             val cr = mContext.contentResolver
@@ -564,7 +567,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 "false"
             )
         }
-       // setProfilePic()
+        // setProfilePic()
         fromIncidentDetailScreen == 0
     }
 

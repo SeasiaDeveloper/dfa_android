@@ -1,17 +1,25 @@
 package com.ngo.ui.crimedetails.view
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.view.LayoutInflater
 import android.view.View
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.ngo.R
+import com.ngo.adapters.CasesAdapter
+import com.ngo.adapters.StatusAdapter
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
+import com.ngo.databinding.DialogChangeStatusBinding
+import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CrimeDetailsRequest
-import com.ngo.pojo.response.GetCrimeDetailsResponse
-import com.ngo.pojo.response.NGOResponse
+import com.ngo.pojo.response.*
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenter
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenterImpl
 import com.ngo.ui.generalpublic.view.AsyncResponse
@@ -19,8 +27,6 @@ import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.imagevideo.ImageVideoScreen
 import com.ngo.ui.mycases.MyCasesActivity
-import com.ngo.ui.ngoform.presenter.NGOFormPresenter
-import com.ngo.ui.ngoform.presenter.NGOFormPresenterImpl
 import com.ngo.ui.ngoform.view.NGOFormView
 import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
@@ -30,9 +36,9 @@ import kotlinx.android.synthetic.main.activity_incident_detail.*
 import java.lang.Exception
 
 
-class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, AsyncResponse {
-    // private lateinit var complaintsData: GetComplaintsResponse.Data
-    private var ngoPresenter: NGOFormPresenter = NGOFormPresenterImpl(this)
+class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, AsyncResponse,
+    OnCaseItemClickListener {
+
     private var crimePresenter: CrimeDetailsPresenter = CrimeDetailsPresenterImpl(this)
     private lateinit var complaintId: String
     private lateinit var postOrComplaint: String
@@ -41,6 +47,10 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
     private var isKnowPostOrComplaint: String? = null
     private var latitude: String = ""
     private var longitude: String = ""
+    private var currentStatus = ""
+    private var adapter: CasesAdapter? = null
+    private var statusId = "-1"
+    var type = ""
 
     override fun getLayout(): Int {
         return R.layout.activity_incident_detail
@@ -60,6 +70,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         MyCasesActivity.change=0
         MyCasesActivity.fromIncidentDetailScreen=1
         // complaintsData = intent.getSerializableExtra(Constants.PUBLIC_COMPLAINT_DATA) as GetComplaintsResponse.Data
+         type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         complaintId = intent.getStringExtra(Constants.PUBLIC_COMPLAINT_DATA)
         isKnowPostOrComplaint = intent.getStringExtra(Constants.FROM_WHERE)
@@ -170,40 +181,40 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         longitude = getCrimeDetailsResponse.data.get(0).longitude!!
 
         //getCrimeDetailsResponse.data.get(0).userDetail.username
-        if (!(getCrimeDetailsResponse.data?.get(0)?.userDetail?.first_name.isNullOrEmpty() || getCrimeDetailsResponse.data?.get(
+        if (!(getCrimeDetailsResponse.data.get(0).userDetail?.first_name.isNullOrEmpty() || getCrimeDetailsResponse.data.get(
                 0
-            )?.userDetail?.first_name.isNullOrEmpty().equals(
+            ).userDetail?.first_name.isNullOrEmpty().equals(
                 ""
             ))
         ) {
-            name = getCrimeDetailsResponse.data?.get(0)?.userDetail?.first_name.toString()
+            name = getCrimeDetailsResponse.data.get(0).userDetail?.first_name.toString()
             etUserName.setText(name)
         }
-        if (!getCrimeDetailsResponse.data?.get(0)?.userDetail?.email.isNullOrEmpty()) {
-            etEmail.setText(getCrimeDetailsResponse.data?.get(0)?.userDetail?.email)
+        if (!getCrimeDetailsResponse.data.get(0).userDetail?.email.isNullOrEmpty()) {
+            etEmail.setText(getCrimeDetailsResponse.data.get(0).userDetail?.email)
         } else {
             email_layout.visibility = View.GONE
         }
-        if (!getCrimeDetailsResponse.data?.get(0)?.userDetail?.mobile.isNullOrEmpty()) {
-            etContactNo.setText(getCrimeDetailsResponse.data?.get(0)?.userDetail?.mobile)
+        if (!getCrimeDetailsResponse.data.get(0).userDetail?.mobile.isNullOrEmpty()) {
+            etContactNo.setText(getCrimeDetailsResponse.data.get(0).userDetail?.mobile)
         } else {
             contact_layout.visibility = View.GONE
         }
-        spTypesOfCrime.text = getCrimeDetailsResponse.data?.get(0)?.crime_type
-        spStatusOfCrime.text = getCrimeDetailsResponse.data?.get(0)?.status
+        spTypesOfCrime.text = getCrimeDetailsResponse.data.get(0).crime_type
+        spStatusOfCrime.text = getCrimeDetailsResponse.data.get(0).status
 
-        if (!getCrimeDetailsResponse.data?.get(0)?.urgency.isNullOrEmpty()) {
-            sb_steps_5.setIndicatorTextDecimalFormat(getCrimeDetailsResponse.data?.get(0)?.urgency)
+        if (!getCrimeDetailsResponse.data.get(0).urgency.isNullOrEmpty()) {
+            sb_steps_5.setIndicatorTextDecimalFormat(getCrimeDetailsResponse.data.get(0).urgency)
         }
-        if (!getCrimeDetailsResponse.data?.get(0)?.info.isNullOrEmpty()) {
-            etDescription.setText(getCrimeDetailsResponse.data?.get(0)?.info)
+        if (!getCrimeDetailsResponse.data.get(0).info.isNullOrEmpty()) {
+            etDescription.setText(getCrimeDetailsResponse.data.get(0).info)
         }
         var level: Float = 0f
-        if (!getCrimeDetailsResponse.data?.get(0)?.urgency.isNullOrEmpty() && !getCrimeDetailsResponse.data?.get(
+        if (!getCrimeDetailsResponse.data.get(0).urgency.isNullOrEmpty() && !getCrimeDetailsResponse.data.get(
                 0
-            )?.urgency.equals("10")
+            ).urgency.equals("10")
         )
-            level = (getCrimeDetailsResponse.data?.get(0)?.urgency!!.toFloat() * 11) - 11
+            level = (getCrimeDetailsResponse.data.get(0).urgency!!.toFloat() * 11) - 11
         else
             level = 0f
 
@@ -214,26 +225,25 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         sb_steps_5.setProgress(level)
 
         sb_steps_5.isEnabled = false
-        if (!getCrimeDetailsResponse.data?.get(0)?.urgency.isNullOrEmpty()) {
-            urgency.setText(getCrimeDetailsResponse.data?.get(0)?.urgency)
+        if (!getCrimeDetailsResponse.data.get(0).urgency.isNullOrEmpty()) {
+            urgency.setText(getCrimeDetailsResponse.data.get(0).urgency)
         }
 
-        val type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
         if (type.equals("2") && postOrComplaint.equals("0")) {
-            if (!getCrimeDetailsResponse.data?.get(0)?.ngo_comment.isNullOrEmpty()) {
-                ngo_comment.setText(getCrimeDetailsResponse.data?.get(0)?.ngo_comment)
+            if (!getCrimeDetailsResponse.data.get(0).ngo_comment.isNullOrEmpty()) {
+                ngo_comment.setText(getCrimeDetailsResponse.data.get(0).ngo_comment)
             } else {
                 ngo_comment_layout.visibility = View.GONE
             }
         }
 
 
-        if (getCrimeDetailsResponse.data?.get(0)?.latitude != null) {
-            val string = getCrimeDetailsResponse.data?.get(0)?.latitude
+        if (getCrimeDetailsResponse.data.get(0).latitude != null) {
+            //val string = getCrimeDetailsResponse.data?.get(0)?.latitude
             var numeric = true
 
             try {
-                val num = string?.toDouble()
+               // val num = string?.toDouble()
             } catch (e: NumberFormatException) {
                 numeric = false
             }
@@ -243,7 +253,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
                 )
             ) {
                 if (numeric) {
-                    var task = DirectionApiAsyncTask(
+                    val task = DirectionApiAsyncTask(
                         this,
                         getCrimeDetailsResponse.data.get(0).latitude!!,
                         getCrimeDetailsResponse.data.get(0).longitude!!,
@@ -254,13 +264,17 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
             } else {
                 show_location.visibility = View.GONE
             }
-            /*  show.setText(
-                Utilities.calculateDistance(
-                    item.latitude,
-                    item.longitude,
-                    context
-                ).toString() + " KM away"
-            )*/
+
+            //in case of NGO
+            if(type.equals("1")){
+                layout_action.visibility = View.VISIBLE
+                action_complaint.setOnClickListener {
+                    if (getCrimeDetailsResponse.data.get(0).status != null) currentStatus = getCrimeDetailsResponse.data.get(0).status!!
+                    //hit api based on role
+                    Utilities.showProgress(this@IncidentDetailActivity)
+                    crimePresenter.fetchStatusList(authorizationToken!!, type)
+                }
+            }
         }
     }
 
@@ -332,7 +346,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
 
     override fun processFinish(output: String?) {
         if (output == null || output.equals("")) {
-            show_location.setText("0 KM away").toString()
+            show_location.setText(getString(R.string.zero_km_away)).toString()
         } else {
             if (output.contains("mi")) {
                 val number = java.lang.Float.valueOf(
@@ -347,6 +361,102 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
                 show_location.setText(output + " away").toString()
             }
         }
+    }
+
+    override fun onListFetchedSuccess(responseObject: GetStatusResponse) {
+        Utilities.dismissProgress()
+        for (element in responseObject.data) {
+            if (element.name.equals(currentStatus)) {
+                element.isChecked = true
+                break
+            }
+        }
+        showStatusDialog("", responseObject)
+    }
+
+    override fun onStatusClick(statusId: String) {
+        this.statusId = statusId
+    }
+
+    private fun showStatusDialog(description: String, responseObject: GetStatusResponse) {
+        lateinit var dialog: AlertDialog
+        val builder = AlertDialog.Builder(this@IncidentDetailActivity)
+        val binding = DataBindingUtil.inflate(
+            LayoutInflater.from(this@IncidentDetailActivity),
+            R.layout.dialog_change_status,
+            null,
+            false
+        ) as DialogChangeStatusBinding
+        // Inflate and set the layout for the dialog
+        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(
+            description
+        )
+
+        val mStatusList = responseObject.data.toMutableList()
+        for (status in mStatusList) {
+            if (status.isChecked) {
+                statusId = status.id
+            }
+        }
+
+        //display the list on the screen
+        val statusAdapter = StatusAdapter(this@IncidentDetailActivity, responseObject.data.toMutableList(), this)
+        val horizontalLayoutManager = LinearLayoutManager(this@IncidentDetailActivity, RecyclerView.VERTICAL, false)
+        binding.rvStatus?.layoutManager = horizontalLayoutManager
+        binding.rvStatus?.adapter = statusAdapter
+        binding.btnDone.setOnClickListener {
+
+            if (statusId == "-1") {
+                Utilities.showMessage(this@IncidentDetailActivity, getString(R.string.select_option_validation))
+            } else {
+                //hit status update api
+                Utilities.showProgress(this@IncidentDetailActivity)
+                crimePresenter.updateStatus(
+                    authorizationToken!!,
+                    complaintId,
+                    statusId,
+                    binding.etDescription.text.toString()
+                )
+                dialog.dismiss()
+            }
+        }
+
+        builder.setView(binding.root)
+        dialog = builder.create()
+        dialog.show()
+    }
+
+    override fun statusUpdationSuccess(
+        responseObject: UpdateStatusSuccess,
+        complaint: UpdateStatusSuccess.Data
+    ) {
+        Utilities.dismissProgress()
+        Utilities.showMessage(this@IncidentDetailActivity, responseObject.message.toString())
+        spStatusOfCrime.setText(complaint.status)
+        if (responseObject.data?.size != 0) {
+            adapter?.notifyActionData(responseObject.data!!)
+        }
+        GeneralPublicHomeFragment.change = 1
+        CasesFragment.change = 1
+    }
+
+    override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String, position: Int) {
+        when (actionType) {
+            "action" -> {
+                if (getCrimeDetailsResponse?.data?.get(0)?.status != null) currentStatus = getCrimeDetailsResponse?.data?.get(0)?.status!!
+                //hit api based on role
+                Utilities.showProgress(this@IncidentDetailActivity)
+                crimePresenter.fetchStatusList(authorizationToken!!, type)
+            }
+        }
+    }
+
+    override fun onDeleteItem(complaintsData: GetCasesResponse.Data) {
+        //nothing to do
+    }
+
+    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
+        //nothing to do
     }
 
     override fun onBackPressed() {

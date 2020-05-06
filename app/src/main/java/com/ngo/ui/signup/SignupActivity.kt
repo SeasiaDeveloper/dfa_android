@@ -56,10 +56,10 @@ class SignupActivity : BaseActivity(), SignupView {
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
-        etMobile1.setText(intent.getStringExtra("phoneNo"))
-        etMobile1.isFocusable = false
-        etMobile1.isEnabled = false
-        etMobile1.isClickable = false
+        /*  etMobile1.setText(intent.getStringExtra("phoneNo"))
+          etMobile1.isFocusable = false
+          etMobile1.isEnabled = false
+          etMobile1.isClickable = false*/
     }
 
     private fun getFirebaseToken() {
@@ -139,6 +139,7 @@ class SignupActivity : BaseActivity(), SignupView {
         distList = responseObject.data
 
         val distValueList = ArrayList<String>()
+        distValueList.add("Select your district")
         for (dist in distList) {
             distValueList.add(dist.name)
         }
@@ -168,11 +169,14 @@ class SignupActivity : BaseActivity(), SignupView {
             ) {
                 // Display the selected item text on text view
                 "Spinner selected : ${parent.getItemAtPosition(position)}"
-
-                for (dist in distList) {
-                    if (parent.getItemAtPosition(position).equals(dist.name)) {
-                        distId = (dist.id).toInt()
-                        break
+                if (position == 0) {
+                   distId = -1
+                } else {
+                    for (dist in distList) {
+                        if (parent.getItemAtPosition(position).equals(dist.name)) {
+                            distId = (dist.id).toInt()
+                            break
+                        }
                     }
                 }
             }
@@ -422,6 +426,11 @@ class SignupActivity : BaseActivity(), SignupView {
     override fun passwordInvalidValidation() {
         dismissProgress()
         Utilities.showMessage(this, getString(R.string.password_invalid))
+    }
+
+    override fun districtValidationFailure() {
+        dismissProgress()
+        Utilities.showMessage(this, getString(R.string.district_validation))
     }
 
 }

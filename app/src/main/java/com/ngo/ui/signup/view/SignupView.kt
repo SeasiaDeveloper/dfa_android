@@ -36,5 +36,6 @@ interface SignupView :BaseView {
     fun addressLine2LengthFailure()
     fun pinCodeLengthFailure()
     fun passwordInvalidValidation()
+    fun districtValidationFailure()
 
 }

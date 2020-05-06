@@ -136,7 +136,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_8sdp"
                             android:layout_marginTop="@dimen/_8sdp"
-                            android:maxLength="50"
+                            android:maxHeight="100dp"
                             android:layout_marginEnd="@dimen/_8sdp"
                             android:hint="@string/enter_the_headline"
                             android:textColor="@color/black"
@@ -152,6 +152,7 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_marginTop="@dimen/_4sdp"
                             android:scaleType="centerCrop"
+                            android:visibility="gone"
                             android:background="@drawable/squarebg_non_curve"
                             android:src="@drawable/camera_placeholder" />
 

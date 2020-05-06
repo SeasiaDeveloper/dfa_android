@@ -41,4 +41,5 @@ interface SignupPresenter : BasePresenter {
     fun pinCodeLengthFailure()
 
     fun passwordInvalidValidation()
+    fun districtValidationFailure()
 }
