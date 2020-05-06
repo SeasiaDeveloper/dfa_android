@@ -50,7 +50,7 @@ class CommentsActivity : AppCompatActivity(), CommentsView {
         token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
         id = intent.getStringExtra("id")
 
-        (toolbarLayout as CenteredToolbar).title = getString(R.string.add_comments)
+        //(toolbarLayout as CenteredToolbar).title = getString(R.string.add_comments)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
         (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_arrow)
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
@@ -113,7 +113,7 @@ class CommentsActivity : AppCompatActivity(), CommentsView {
 
     override fun onCommentsAddedSuccess(response: DeleteComplaintResponse) {
         etComments.text?.clear()
-        Utilities.showMessage(mContext, response.message!!)
+       // Utilities.showMessage(mContext, response.message!!)
         //refresh the list
         presenter.fetchComments(id, token)
         //change = 1

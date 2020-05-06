@@ -6,8 +6,10 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.fragment.app.FragmentStatePagerAdapter
 
 
-class TabLayoutAdapter(supportFragmentManager: FragmentManager) : FragmentStatePagerAdapter(supportFragmentManager,
-    FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class TabLayoutAdapter(supportFragmentManager: FragmentManager) : FragmentStatePagerAdapter(
+    supportFragmentManager,
+    FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+) {
 
     private val mFragmentList = ArrayList<Fragment>()
     private val mFragmentTitleList = ArrayList<String>()
@@ -25,7 +27,10 @@ class TabLayoutAdapter(supportFragmentManager: FragmentManager) : FragmentStateP
     }
 
     fun addFragment(fragment: Fragment, title: String) {
-        mFragmentList.add(fragment)
-        mFragmentTitleList.add(title)
+        if (!mFragmentList.contains(fragment)) {
+            mFragmentList.add(fragment)
+            mFragmentTitleList.add(title)
+        }
+
     }
 }

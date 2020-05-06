@@ -2,6 +2,7 @@ package com.ngo.ui.home.fragments.photos.view
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
@@ -9,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.ngo.R
@@ -27,6 +29,9 @@ import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import com.ngo.utils.Utilities.showProgress
 import kotlinx.android.synthetic.main.fragment_photos.*
+import kotlinx.android.synthetic.main.fragment_photos.itemsswipetorefresh
+import kotlinx.android.synthetic.main.fragment_photos.tvRecord
+import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
 
@@ -49,8 +54,25 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
         setAdapter()
         request = GetPhotosRequest("photos")
         showProgress(activity!!)
-        val authorizationToken = PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
-        presenter.getPhotos(authorizationToken,request)
+        val authorizationToken =
+            PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+        presenter.getPhotos(authorizationToken, request)
+
+        itemsswipetorefresh.setProgressBackgroundColorSchemeColor(
+            ContextCompat.getColor(
+                activity!!,
+                R.color.colorDarkGreen
+            )
+        )
+        itemsswipetorefresh.setColorSchemeColors(Color.WHITE)
+
+        itemsswipetorefresh.setOnRefreshListener {
+            //pageCount = 0
+            photos.toMutableList().clear()
+            presenter.getPhotos(authorizationToken, request)
+            itemsswipetorefresh.isRefreshing = false
+
+        }
     }
 
     private fun setAdapter() {
@@ -74,8 +96,8 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
 
     override fun onPause() {
         super.onPause()
-        CasesFragment.change=1
-        GeneralPublicHomeFragment.change=1
+        CasesFragment.change = 1
+        GeneralPublicHomeFragment.change = 1
     }
 
     override fun showGetPhotosResponse(response: GetPhotosResponse) {
@@ -108,33 +130,35 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
 
     override fun getCrimeDetailsFailure(error: String) {
         Utilities.dismissProgress()
-        if(activity!=null)
-        {  Utilities.showMessage(activity!!, error)}
+        if (activity != null) {
+            Utilities.showMessage(activity!!, error)
+        }
     }
 
     override fun showServerError(error: String) {
         Utilities.dismissProgress()
-        if(activity!=null)
-        { Utilities.showMessage(activity!!, error)}
+        if (activity != null) {
+            Utilities.showMessage(activity!!, error)
+        }
     }
 
     override fun getComplaintId(id: String?) {
         val intent = Intent(activity, IncidentDetailActivity::class.java)
-        intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA,id)
-       // intent.putExtra(Constants.POST_OR_COMPLAINT, crimeDetailsResponse?.data?.get(0)?.type)
+        intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, id)
+        // intent.putExtra(Constants.POST_OR_COMPLAINT, crimeDetailsResponse?.data?.get(0)?.type)
         intent.putExtra(Constants.FROM_WHERE, "tohit")
         startActivity(intent)
 
 
-       /* if (isInternetAvailable()) {
-            Utilities.showProgress(activity!!)
-            var crimeDetailsRequest = CrimeDetailsRequest(id!!)
-            authorizationToken =
-                PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
-            presenter.getComplaintDetails(crimeDetailsRequest, authorizationToken)
-        } else {
-            Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
-        }*/
+        /* if (isInternetAvailable()) {
+             Utilities.showProgress(activity!!)
+             var crimeDetailsRequest = CrimeDetailsRequest(id!!)
+             authorizationToken =
+                 PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+             presenter.getComplaintDetails(crimeDetailsRequest, authorizationToken)
+         } else {
+             Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
+         }*/
     }
 
     /*

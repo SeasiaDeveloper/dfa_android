@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -61,7 +62,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             val casesRequest =
                 CasesRequest("0", "", "0", page.toString(), "10")//*totalItemsCount.toString()*//*)
             presenter.getComplaints(casesRequest, token, type)
-            progressBar.visibility=View.VISIBLE
+            progressBar.visibility = View.VISIBLE
         }
     }
 
@@ -88,24 +89,29 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         var change = 0
         var commentChange = 0
         var fromIncidentDetailScreen = 1
-        var commentsCount=0
+        var commentsCount = 0
     }
 
     override fun onResume() {
         super.onResume()
         if (change == 1 || commentChange != 0) {
-            casesRequest = CasesRequest(
-                "0",
-                etSearch.text.toString(),
-                "0", "1", "10"
-
-            ) //all = "1" for fetching all the cases whose type = 0
-
-            Utilities.showProgress(this@MyCasesActivity)
-            //hit api with search variable
-            presenter.getComplaints(casesRequest, token, type)
+            myCasesApiCall()
         }
     }
+
+    private fun myCasesApiCall() {
+        casesRequest = CasesRequest(
+            "0",
+            etSearch.text.toString(),
+            "0", "1", "10"
+
+        ) //all = "1" for fetching all the cases whose type = 0
+
+        Utilities.showProgress(this@MyCasesActivity)
+        //hit api with search variable
+        presenter.getComplaints(casesRequest, token, type)
+    }
+
 
     override fun onPause() {
         super.onPause()
@@ -139,6 +145,27 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         endlessScrollListener?.resetState()
 
         doApiCall()
+
+        swipeView.setProgressBackgroundColorSchemeColor(
+            ContextCompat.getColor(
+                this,
+                R.color.colorDarkGreen
+            )
+        )
+        swipeView.setColorSchemeColors(Color.WHITE)
+
+        swipeView.setOnRefreshListener {
+            pageCount = 1
+            adapter?.clear()
+            endlessScrollListener?.resetState()
+            myCasesApiCall()
+            // itemsCells.clear()
+            // setItemsData()
+            // adapter = Items_RVAdapter(itemsCells)
+            //  itemsrv.adapter = adapter
+            swipeView.isRefreshing = false
+        }
+
     }
 
     fun doApiCall() {
@@ -158,7 +185,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         if (complaints.isNotEmpty()) {
             tvRecord.visibility = View.GONE
             rvPublic.visibility = View.VISIBLE
-
+            swipeView.visibility = View.VISIBLE
             if (!isLike) {
                 if (commentChange == 0 && !whenDeleteCall) {
                     if (pageCount == 1) {
@@ -173,7 +200,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                                 horizontalLayoutManager,
                                 complaints.toMutableList()
                             )
-                            progressBar.visibility=View.GONE
+                            progressBar.visibility = View.GONE
                         }
                         //adapter?.setList(response.data.toMutableList())
                     }
@@ -184,9 +211,9 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                     } else {
                         adapter?.notifyParticularItemWithComment(
                             commentChange.toString(),
-                            response.data,commentsCount
+                            response.data, commentsCount
                         )
-                        commentsCount=0
+                        commentsCount = 0
                         commentChange = 0
                     }
                 }
@@ -200,6 +227,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             if (pageCount == 1) {
                 tvRecord.visibility = View.VISIBLE
                 rvPublic.visibility = View.GONE
+                swipeView.visibility = View.GONE
             } else {
                 if (search && complaints.size == 0) {
                     tvRecord.visibility = View.VISIBLE
@@ -268,7 +296,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
     //refreshing the list after changing the like status
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
-        Utilities.showMessage(this, responseObject.message!!)
+       // Utilities.showMessage(this, responseObject.message!!)
         isLike = true
         val casesRequest = CasesRequest(
             "0",
@@ -298,7 +326,11 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     }
 
     //displays the detail of my case
-    override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String,position: Int) {
+    override fun onItemClick(
+        complaintsData: GetCasesResponse.Data,
+        actionType: String,
+        position: Int
+    ) {
         when (actionType) {
             "location" -> {
                 val gmmIntentUri =

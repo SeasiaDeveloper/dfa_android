@@ -12,21 +12,24 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".application.MyApplication"
         android:allowBackup="true"
+        android:hardwareAccelerated="true"
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        android:hardwareAccelerated="true"
-        android:largeHeap="true">
+        android:theme="@style/AppTheme">
+        <activity android:name=".ui.commentlikelist.CommentLikeUsersList"></activity>
+
         <service android:name=".utils.ForegroundService" />
 
-        <activity android:name=".ui.OtpVerification.view.OtpVerificationActivity"/>
+        <activity android:name=".ui.OtpVerification.view.OtpVerificationActivity" />
         <activity
             android:name=".ui.SplashActivity"
             android:exported="true"
@@ -52,89 +55,74 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.ngo.ui.ngoform.NGOFormDetailActivity"
+            android:name=".ui.ngoform.NGOFormDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".ui.imagevideo.ImageVideoScreen"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".ui.policedetail.view.PoliceIncidentDetailScreen"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity android:name=".ui.ngo.NGOActivity" />
-
         <activity
             android:name=".ui.dashboard.PassCodeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".ui.generalpublic.view.GeneralPublicHomeFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
-            android:name="com.ngo.ui.home.fragments.home.view.HomeActivity"
+            android:name=".ui.home.fragments.home.view.HomeActivity"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="DETAILEVENT" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ui.earnings.view.MyEarningsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".ui.termsConditions.view.TermsAndConditionActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".ui.crimedetails.view.IncidentDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".ui.login.view.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".ui.forgotpassword.view.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".ui.changepassword.view.ChangePasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".ui.updatepassword.view.UpdatePasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".ui.signup.SignupActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".ui.profile.ProfileActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.mycases.MyCasesActivity" />
-
         <activity android:name=".ui.comments.CommentsActivity" />
 
         <service android:name=".firebase.MyFirebaseMessagingService">
@@ -143,7 +131,6 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
-
         <service
             android:name=".utils.LocationUpdateService"
             android:enabled="true"
