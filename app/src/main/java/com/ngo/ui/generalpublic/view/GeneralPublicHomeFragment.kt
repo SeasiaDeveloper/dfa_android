@@ -234,6 +234,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             //  itemsrv.adapter = adapter
             itemsswipetorefresh.isRefreshing = false
         }
+        /*  */
+        rvPublic.setOnClickListener {
+            layoutAddPost.visibility = View.VISIBLE
+            layoutPost.visibility = View.GONE
+        }
     }
 
     private fun galleryIntent() {
@@ -429,13 +434,19 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             }
 
             else -> {
-                change = 0
-                fromIncidentDetailScreen = 0
-                val intent = Intent(activity, IncidentDetailActivity::class.java)
-                intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
-                intent.putExtra(Constants.POST_OR_COMPLAINT, complaintsData.type)
-                intent.putExtra(Constants.FROM_WHERE, "nottohit")
-                startActivity(intent)
+                if (layoutPost.visibility == View.VISIBLE) {
+                    layoutAddPost.visibility = View.VISIBLE
+                    layoutPost.visibility = View.GONE
+                } else {
+                    change = 0
+                    fromIncidentDetailScreen = 0
+                    val intent = Intent(activity, IncidentDetailActivity::class.java)
+                    intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
+                    intent.putExtra(Constants.POST_OR_COMPLAINT, complaintsData.type)
+                    intent.putExtra(Constants.FROM_WHERE, "nottohit")
+                    startActivity(intent)
+                }
+
             }
         }
     }
