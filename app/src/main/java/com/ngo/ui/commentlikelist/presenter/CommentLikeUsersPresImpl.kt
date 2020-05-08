@@ -17,11 +17,11 @@ class CommentLikeUsersPresImpl(private var view: CommentLikeUserView):CommentLik
     }
 
     override fun getLikeListSuccess(response: GetCommentsResponse) {
-        view.onGetCommentsListSuccess(response)
+        view.onGetLikeListSuccess(response)
     }
 
     override fun getCommentListSuccess(response: GetCommentsResponse) {
-        view.onGetLikeListSuccess(response)
+        view.onGetCommentsListSuccess(response)
     }
 
     override fun showError(error: String) {

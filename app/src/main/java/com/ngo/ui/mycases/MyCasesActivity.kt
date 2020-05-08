@@ -129,7 +129,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
-        adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this)
+        adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this, this)
         horizontalLayoutManager = LinearLayoutManager(
             this, RecyclerView.VERTICAL, false
         )

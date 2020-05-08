@@ -54,7 +54,7 @@ class LikesAdapter(
                 .error(R.drawable.noimage)
 
                 itemView.txtName.text = item.first_name + " " + item.last_name
-                itemView.expandable_comment.text = item.comment
+                itemView.expandable_comment.visibility = View.GONE
 
                 if (item.profile_pic != null  && item.profile_pic.isNotEmpty()) {
                   try{  Glide.with(context).load(item.profile_pic).into(itemView.imgProfile)}catch (e:Exception){

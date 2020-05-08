@@ -28,6 +28,7 @@ import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.imagevideo.ImageVideoScreen
 import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.ui.ngoform.view.NGOFormView
+import com.ngo.ui.profile.ProfileActivity
 import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
@@ -274,8 +275,20 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
                     Utilities.showProgress(this@IncidentDetailActivity)
                     crimePresenter.fetchStatusList(authorizationToken!!, type)
                 }
+                etUserName.setOnClickListener {
+                    val intent = Intent(this@IncidentDetailActivity, ProfileActivity::class.java)
+                    intent.putExtra("id",getCrimeDetailsResponse.data.get(0).userDetail?.id)
+                   startActivity(intent)
+                }
             }
         }
+
+        //in case of police or General Public
+        if(type.equals("0") || type.equals("2")){
+            etUserName.setText(resources.getString(R.string.drug_free_arunachal))
+            contact_layout.visibility = View.GONE
+        }
+
     }
 
     fun setPostData(getCrimeDetailsResponse: GetCrimeDetailsResponse) {

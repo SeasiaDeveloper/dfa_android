@@ -1,5 +1,6 @@
 package com.ngo.ui.home.fragments.cases
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -295,7 +296,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
+        adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this,activity as Activity)
         horizontalLayoutManager = LinearLayoutManager(
             mContext,
             RecyclerView.VERTICAL, false

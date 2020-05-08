@@ -1,5 +1,6 @@
 package com.ngo.adapters
 
+import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
@@ -14,6 +15,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -26,6 +28,7 @@ import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.pojo.response.UpdateStatusSuccess
 import com.ngo.ui.commentlikelist.CommentLikeUsersList
 import com.ngo.ui.comments.CommentsActivity
+import com.ngo.ui.profile.ProfileActivity
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.item_case.view.*
 
@@ -34,7 +37,8 @@ class CasesAdapter(
     var context: Context,
     var mList: MutableList<GetCasesResponse.Data>,
     private var listener: OnCaseItemClickListener,
-    private var type: Int, private var alertDialogListener: AlertDialogListener
+    private var type: Int, private var alertDialogListener: AlertDialogListener,
+    var activity: Activity
 ) :
     RecyclerView.Adapter<CasesAdapter.ViewHolder>() {
     //private val isLoadingAdded = false
@@ -152,7 +156,7 @@ class CasesAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(context, mList.get(position), position, listener, type, alertDialogListener)
+        holder.bind(context, mList.get(position), position, listener, type, alertDialogListener,activity)
 
     }
 
@@ -184,7 +188,7 @@ class CasesAdapter(
             item: GetCasesResponse.Data,
             index: Int,
             listener: OnCaseItemClickListener,
-            type: Int, alertDialogListener: AlertDialogListener
+            type: Int, alertDialogListener: AlertDialogListener,activity :Activity
         ) {
             this.index = index
 
@@ -343,19 +347,7 @@ class CasesAdapter(
 
             } else {
                 //in case of complaint:
-                if (userDetail.profile_pic != null) {
-                    try {
-                        Glide.with(context).load(userDetail.profile_pic).apply(options)
-                            .into(itemView.imgCrime)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
 
-                    itemView.imgCrime.setOnClickListener {
-                        //show enlarged image
-                        DisplayLargeImage(context, userDetail, options)
-                    }
-                }
                 itemView.layout_post.visibility = View.GONE
                 itemView.layoutListItem.visibility = View.VISIBLE
 
@@ -463,6 +455,35 @@ class CasesAdapter(
                 itemView.layout_share.setOnClickListener {
                     Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
                 }
+
+                //if NGO show profile image
+                if(type == 1)
+                {  if (userDetail.profile_pic != null) {
+                    try {
+                        Glide.with(context).load(userDetail.profile_pic).apply(options)
+                            .into(itemView.imgCrime)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }}
+
+                    itemView.imgCrime.setOnClickListener {
+                        //show enlarged image
+                        DisplayLargeImage(context, userDetail, options)
+                    }
+
+                    itemView.expandable_username.setOnClickListener{
+                        val intent = Intent(activity,ProfileActivity::class.java)
+                        intent.putExtra("id",item.userDetail.id)
+                        context.startActivity(intent)
+                    }
+
+                }
+                //in case of General public or police
+                else{
+                    Glide.with(context).load(getImage(context,"app_icon")).apply(options).into(itemView.imgCrime)
+                    itemView.expandable_username.text = context.resources.getString(R.string.drug_free_arunachal)
+                }
+
             }
 
             //in case of NGO and police
@@ -497,30 +518,6 @@ class CasesAdapter(
                     itemView.txtUrgencyTitle.setTextColor(context.resources.getColor(R.color.green))
                     itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.green))
                 }
-
-
-                /* if (item.latitude != null) {
-                     val string = item.latitude
-                     var numeric = true
-
-                     try {
-                         val num = string?.toDouble()
-                     } catch (e: NumberFormatException) {
-                         numeric = false
-                     }
-
-                     if (numeric)
-                         itemView.location.setText(
-                             Utilities.calculateDistance(
-                                 item.latitude,
-                                 item.longitude,
-                                 context
-                             ).toString() + " KM away"
-                         )
-
-                    *//* var task =  DirectionApiAsyncTask(context,item.latitude,item.longitude!!,response)
-                    task.execute()*//*
-                }*/
 
                 //to show action button in case of Police
                 if (type == 2) {
@@ -578,13 +575,6 @@ class CasesAdapter(
 
         }
 
-        fun String.intOrString(): Any {
-            val v = toIntOrNull()
-            return when (v) {
-                null -> this
-                else -> v
-            }
-        }
 
         fun DisplayLargeImage(
             context: Context,
@@ -612,5 +602,13 @@ class CasesAdapter(
             }
             dialog.show()
         }
+
+       fun getImage(context:Context, imageName: String):Int {
+            val drawableResourceId = context.getResources().getIdentifier(imageName, "drawable", context.getPackageName())
+            return drawableResourceId
+        }
+
     }
+
+
 }

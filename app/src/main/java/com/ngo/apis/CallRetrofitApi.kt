@@ -129,9 +129,9 @@ interface CallRetrofitApi {
     @GET("jwt-auth/v1/comment_list")
     fun getComments(@Header("Authorization") authorization: String?, @Query("complaint_id") id: Int): Call<GetCommentsResponse>
 
-    //api wip
-    @GET("jwt-auth/v1/likes_list")
-    fun getLikes(@Header("Authorization") authorization: String?, @Query("complaint_id") id: Int): Call<GetCommentsResponse>
+    @Multipart
+    @POST("jwt-auth/v1/comment_likes")
+    fun getLikes(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<GetCommentsResponse>
 
     @Multipart
     @POST("jwt-auth/v1/comment_complaint")

@@ -12,11 +12,9 @@ import android.provider.MediaStore
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.ngo.R
 import com.ngo.base.BaseActivity
@@ -46,7 +44,6 @@ import kotlinx.android.synthetic.main.activity_profile.etPinCode
 import kotlinx.android.synthetic.main.activity_profile.imgProfile
 import kotlinx.android.synthetic.main.activity_profile.spDist
 import kotlinx.android.synthetic.main.activity_profile.toolbarLayout
-import kotlinx.android.synthetic.main.activity_signup.*
 
 class ProfileActivity : BaseActivity(), ProfileView {
 
@@ -60,6 +57,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
     private var adhaarNo = ""
     private var isAdhaarNoAdded = false
     private lateinit var prevAdhaarValue: String
+    private var userId = ""
 
     override fun fetchDistList(responseObject: DistResponse) {
         dismissProgress()
@@ -86,44 +84,55 @@ class ProfileActivity : BaseActivity(), ProfileView {
 
         // Finally, data bind the spinner object with dapter
         spDist.adapter = adapter
-        setData()
 
-        // Set an on item selected listener for spinner object
-        spDist.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                // Display the selected item text on text view
-                "Spinner selected : ${parent.getItemAtPosition(position)}"
+        if (userId.equals("")) {
+            val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
+            setData(value)
+        } else {
+            getUserProfile(userId)
+        }
 
-                for (dist in distList) {
-                    if (parent.getItemAtPosition(position).equals(dist.name)) {
-                        distId = (dist.id).toInt()
-                        break
-                    }
+    // Set an on item selected listener for spinner object
+    spDist.onItemSelectedListener =
+    object : AdapterView.OnItemSelectedListener {
+        override fun onItemSelected(
+            parent: AdapterView<*>,
+            view: View,
+            position: Int,
+            id: Long
+        ) {
+            // Display the selected item text on text view
+            "Spinner selected : ${parent.getItemAtPosition(position)}"
+
+            for (dist in distList) {
+                if (parent.getItemAtPosition(position).equals(dist.name)) {
+                    distId = (dist.id).toInt()
+                    break
                 }
             }
+        }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Another interface callback
-            }
+        override fun onNothingSelected(parent: AdapterView<*>) {
+            // Another interface callback
         }
     }
+}
 
-    fun setData() {
-        //  var data = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
-        val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
+    private fun getUserProfile(userId: String) {
+
+    }
+
+    fun setData(value: String?) {
+
         val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
         if (jsondata != null) {
             if (jsondata.data?.profile_pic != null) {
-              try{  Glide.with(this).load(jsondata.data?.profile_pic)
-                    .into(imgProfile)}
-              catch(e:Exception){
-                  e.printStackTrace()
-              }
+                try {
+                    Glide.with(this).load(jsondata.data?.profile_pic)
+                        .into(imgProfile)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
             //path=jsondata.data?.profile_pic!!
             etAddress1.setText(jsondata.data?.address_1)
@@ -276,7 +285,10 @@ class ProfileActivity : BaseActivity(), ProfileView {
                             path = getRealPathFromURI(imageUri)
                         } catch (e: Exception) {
                             e.printStackTrace()
-                            Utilities.showMessage(this@ProfileActivity,getString(R.string.unable_image_fetching_message))
+                            Utilities.showMessage(
+                                this@ProfileActivity,
+                                getString(R.string.unable_image_fetching_message)
+                            )
                         }
                     }
                 }
@@ -360,6 +372,8 @@ class ProfileActivity : BaseActivity(), ProfileView {
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
+
+        userId = intent.getStringExtra("id")
     }
 
     override fun handleKeyboard(): View {

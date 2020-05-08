@@ -130,7 +130,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
 
     fun setAdapter() {
-        adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this)
+        adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this,activity as Activity)
         horizontalLayoutManager = LinearLayoutManager(
             mContext,
             RecyclerView.VERTICAL, false
