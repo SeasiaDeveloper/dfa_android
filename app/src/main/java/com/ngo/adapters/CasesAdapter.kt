@@ -231,7 +231,8 @@ class CasesAdapter(
                     )
                 itemView.txtPostInfo.text = item.info
 
-                if (item.media_list!!.isNotEmpty()) {
+                if (item.media_list!=null && item.media_list.isNotEmpty()) {
+                    itemView.imgMediaPost.visibility = View.VISIBLE
                     val mediaUrl: String = item.media_list[0]
                     try {
                         Glide.with(context).load(mediaUrl).into(itemView.imgMediaPost)
