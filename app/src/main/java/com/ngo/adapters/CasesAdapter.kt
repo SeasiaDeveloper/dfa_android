@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -301,8 +302,32 @@ class CasesAdapter(
 
                 itemView.layout_share.setOnClickListener {
                     Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
-                }
+                    val sharingIntent = Intent(Intent.ACTION_SEND)
+                    sharingIntent.type = "text/plain" //http://pingnpaark.app.link/U43Z7CV0Q3
 
+                    sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "DFA")
+                    sharingIntent.putExtra(
+                        Intent.EXTRA_TEXT,
+                        "Hi, Your friend " + "Akash" + " " + "Gharu" +
+                                "  sent you a post Click here app\n www.dfa.com/home?id=" + "1" + ""
+                    )
+                    context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
+
+                }
+                itemView.layout_share_post.setOnClickListener {
+                    Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
+                    val sharingIntent = Intent(Intent.ACTION_SEND)
+                    sharingIntent.type = "text/plain" //http://pingnpaark.app.link/U43Z7CV0Q3
+
+                    sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "DFA")
+                    sharingIntent.putExtra(
+                        Intent.EXTRA_TEXT,
+                        "Hi, Your friend " + "Akash" + " " + "Gharu" +
+                                "  sent you a post. Click here app\n www.dfa.com/home?id=" + "1" + ""
+                    )
+                    context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
+
+                }
                 itemView.layoutCommentPost.setOnClickListener {
                     listener.onItemClick(item, "comment", adapterPosition)
                 }
