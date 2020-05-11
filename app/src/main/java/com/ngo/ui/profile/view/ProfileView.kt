@@ -3,6 +3,7 @@ package com.ngo.ui.profile.view
 import com.ngo.base.view.BaseView
 import com.ngo.pojo.request.SignupRequest
 import com.ngo.pojo.response.DistResponse
+import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.SignupResponse
 
 interface ProfileView:BaseView {
@@ -28,4 +29,5 @@ interface ProfileView:BaseView {
     fun addressLine1LengthFailure()
     fun addressLine2LengthFailure()
     fun pinCodeLengthFailure()
+    fun getUserProfileSuccess(responseObject: GetProfileResponse)
 }

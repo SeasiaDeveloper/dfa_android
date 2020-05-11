@@ -44,8 +44,9 @@ import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
+import com.ngo.ui.home.fragments.home.view.HomeActivity
+import com.ngo.ui.login.view.LoginActivity
 import com.ngo.utils.*
-import kotlinx.android.synthetic.main.activity_my_cases.*
 import kotlinx.android.synthetic.main.fragment_public_home.*
 import kotlinx.android.synthetic.main.fragment_public_home.progressBar
 import kotlinx.android.synthetic.main.fragment_public_home.rvPublic
@@ -527,6 +528,18 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun showServerError(error: String) {
         Utilities.dismissProgress()
+        if(error.equals(Constants.TOKEN_ERROR)){
+            //logout user
+            //(activity as GeneralPublicActivity).logoutUser
+            ForegroundService.stopService(activity as Context)
+            (activity as HomeActivity).finish()
+            PreferenceHandler.clearPreferences(activity as Context)
+            val intent = Intent(activity, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+        }
+
+        else{
         Utilities.showMessage(mContext, error)
         if (edtPostInfo != null) {
             edtPostInfo.setText("")
@@ -542,7 +555,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-        }
+        }}
     }
 
     override fun onClick(p0: View?) {

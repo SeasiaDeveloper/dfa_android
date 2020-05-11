@@ -1,7 +1,5 @@
 package com.ngo.ui.home.fragments.home.view
 
-
-import com.ngo.pojo.response.DeleteComplaintResponse
 import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.PostLocationResponse
 import com.ngo.pojo.response.UpdateStatusSuccess

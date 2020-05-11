@@ -3,6 +3,7 @@ package com.ngo.ui.profile.presenter
 import com.ngo.base.presenter.BasePresenter
 import com.ngo.pojo.request.SignupRequest
 import com.ngo.pojo.response.DistResponse
+import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.SignupResponse
 
 interface ProfilePresenter : BasePresenter {
@@ -31,5 +32,6 @@ interface ProfilePresenter : BasePresenter {
     fun addressLine1LengthFailure()
     fun addressLine2LengthFailure()
     fun pinCodeLengthFailure()
-
+    fun fetchUserInfo(userId: String)
+    fun getUserProfileSuccess(responseObject: GetProfileResponse)
 }

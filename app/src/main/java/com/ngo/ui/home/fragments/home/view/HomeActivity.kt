@@ -53,7 +53,6 @@ import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.nav_header.*
 import com.ngo.utils.*
 import kotlinx.android.synthetic.main.nav_action.*
-import kotlinx.android.synthetic.main.nav_action.view.*
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
     GetLogoutDialogCallbacks, LocationListenerCallback {
@@ -333,9 +332,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             )
 
             R.id.nav_invite_friends -> {
+                val appUrl = PreferenceHandler.readString(this,PreferenceHandler.APP_URL,"")
                 val shareIntent = Intent()
                 shareIntent.action = Intent.ACTION_SEND
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "https://www.google.co.in/")
+                shareIntent.putExtra(Intent.EXTRA_TEXT, appUrl)
                 shareIntent.type = "text/plain"
                 startActivity(Intent.createChooser(shareIntent, "send to"))
 
@@ -367,6 +367,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         loadNavHeader(getProfileResponse)
         val gson = getProfileResponse.data
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, gson.toString())
+        PreferenceHandler.writeString(this, PreferenceHandler.APP_URL, getProfileResponse.data?.app_url!!)
         /*try {
             genPubHomeFrag.setProfilePic()
         } catch (e: Exception) {
@@ -465,6 +466,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
+    }
+
+    fun logoutUser(){
+
     }
 
 }

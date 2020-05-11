@@ -2,6 +2,7 @@ package com.ngo.ui.profile.presenter
 
 import com.ngo.pojo.request.SignupRequest
 import com.ngo.pojo.response.DistResponse
+import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.profile.model.ProfileModel
 import com.ngo.ui.profile.view.ProfileView
@@ -109,5 +110,12 @@ class ProfilePresenterImplClass(private var profileView: ProfileView):ProfilePre
         profileView.pinCodeLengthFailure()
     }
 
+    override fun fetchUserInfo(userId: String) {
+        profileModel.fetchUserInfo(userId)
+    }
+
+    override fun getUserProfileSuccess(responseObject: GetProfileResponse) {
+        profileView.getUserProfileSuccess(responseObject)
+    }
 
 }

@@ -33,6 +33,7 @@ import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenter
 import com.ngo.ui.generalpublic.presenter.PublicComplaintPresenterImpl
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.generalpublic.view.PublicComplaintView
+import com.ngo.ui.login.view.LoginActivity
 import com.ngo.utils.*
 import com.ngo.utils.Constants.GPS_REQUEST
 import com.ngo.utils.Utilities.PERMISSION_ID
@@ -86,7 +87,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         Utilities.requestPermissions(this)
         //GeneralPublicHomeFragment.fromIncidentDetailScreen=1
-        GeneralPublicHomeFragment.change=0
+        GeneralPublicHomeFragment.change = 0
     }
 
     private fun setListeners() {
@@ -146,27 +147,27 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     cameraIntent()
             }
             R.id.tvRecordVideo -> {
-                Utilities.showMessage(this,getString(R.string.coming_soon))
+                Utilities.showMessage(this, getString(R.string.coming_soon))
                 //commented for next ,milestone(server was overloaded)
-              /*  path = ""
-                val resultVideo = getMarshmallowPermission(
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
-                )
-                if (resultVideo)
-                    videoFromGalleryIntent()*/
+                /*  path = ""
+                  val resultVideo = getMarshmallowPermission(
+                      Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                      Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
+                  )
+                  if (resultVideo)
+                      videoFromGalleryIntent()*/
             }
 
             R.id.tvTakeVideo -> {
-                Utilities.showMessage(this,getString(R.string.coming_soon))
+                Utilities.showMessage(this, getString(R.string.coming_soon))
                 //commented for next ,milestone(server was overloaded)
-           /*     path = ""
-                val resultVideo = getMarshmallowPermission(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
-                )
-                if (resultVideo)
-                    recordVideo()*/
+                /*     path = ""
+                     val resultVideo = getMarshmallowPermission(
+                         Manifest.permission.READ_EXTERNAL_STORAGE,
+                         Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
+                     )
+                     if (resultVideo)
+                         recordVideo()*/
             }
             R.id.btnSubmit -> {
                 complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
@@ -354,15 +355,18 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         videoView.visibility = View.GONE
 
                         imgView.setImageURI(imageUri)
-                      //  path = getRealPathFromURI(imageUri!!)
+                        //  path = getRealPathFromURI(imageUri!!)
 
                         //compression
                         val compClass = CompressImageUtilities()
-                        val newPathString = compClass.compressImage(this@GeneralPublicActivity, getRealPathFromURI(imageUri!!))
+                        val newPathString = compClass.compressImage(
+                            this@GeneralPublicActivity,
+                            getRealPathFromURI(imageUri!!)
+                        )
                         path = newPathString
 
                         pathOfImages = ArrayList()
-                       pathOfImages.add(path)
+                        pathOfImages.add(path)
                     } catch (e: Exception) {
                         try {
                             val wholeID = DocumentsContract.getDocumentId(imageUri)
@@ -376,14 +380,17 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                             )
                             val columnIndex = cursor?.getColumnIndex(column[0])
                             if (cursor!!.moveToFirst()) {
-                              //  path = cursor.getString(columnIndex!!)
+                                //  path = cursor.getString(columnIndex!!)
                                 //compression
                                 val compClass = CompressImageUtilities()
-                                val newPathString = compClass.compressImage(this@GeneralPublicActivity, cursor.getString(columnIndex!!))
+                                val newPathString = compClass.compressImage(
+                                    this@GeneralPublicActivity,
+                                    cursor.getString(columnIndex!!)
+                                )
                                 path = newPathString
 
                                 pathOfImages = ArrayList()
-                               pathOfImages.add(path)
+                                pathOfImages.add(path)
                             }
                             cursor.close()
                         } catch (e: Exception) {
@@ -394,7 +401,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
         } else if (requestCode == REQUEST_CAMERA) {
             mediaType = "photos"
-            if (intent != null && intent.getExtras() !=null &&  intent.getExtras()!!.get("data") !=null) {
+            if (intent != null && intent.getExtras() != null && intent.getExtras()!!.get("data") != null) {
                 val photo = intent.getExtras()!!.get("data") as Bitmap
                 imgView.setImageBitmap(photo)
                 imgView.visibility = View.VISIBLE
@@ -404,15 +411,14 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                 //compression
                 val compClass = CompressImageUtilities()
-                val newPathString = compClass.compressImage(this@GeneralPublicActivity, getRealPathFromURI(tempUri))
+                val newPathString =
+                    compClass.compressImage(this@GeneralPublicActivity, getRealPathFromURI(tempUri))
                 path = newPathString
             }
-        }
-        else if (requestCode == GPS_REQUEST) {
+        } else if (requestCode == GPS_REQUEST) {
             isGPS = true
             getLocation()
-        }
-        else if (requestCode == SELECT_VIDEOS && resultCode == Activity.RESULT_OK || requestCode == SELECT_VIDEOS_KITKAT && resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == SELECT_VIDEOS && resultCode == Activity.RESULT_OK || requestCode == SELECT_VIDEOS_KITKAT && resultCode == Activity.RESULT_OK) {
             mediaType = "videos"
             imgView.visibility = View.GONE
             videoView.visibility = View.VISIBLE
@@ -428,8 +434,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 pathOfImages = ArrayList<String>()
                 pathOfImages.add(RealPathUtil.getRealPath(this, intent.data!!).toString())
             }
-        }
-        else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
             mediaType = "videos"
             imgView.visibility = View.GONE
             videoView.visibility = View.VISIBLE
@@ -485,7 +490,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     ) {
         // Utilities.showMessage(this, leftValue.toString())
         range = Math.ceil(leftValue.toDouble()).toInt()
-        if(leftValue>=9){
+        if (leftValue >= 9) {
             range = 10
         }
     }
@@ -567,6 +572,17 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
     override fun showServerError(error: String) {
         dismissProgress()
-        Utilities.showMessage(this, error)
+        if (error.equals(Constants.TOKEN_ERROR)) {
+            ForegroundService.stopService(this@GeneralPublicActivity)
+            finish()
+            PreferenceHandler.clearPreferences(this@GeneralPublicActivity)
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+        }
+        else{
+        Utilities.showMessage(this, error)}
     }
+
+
 }

@@ -24,6 +24,7 @@ class SplashActivity : BaseActivity() {
         if (intent != null) {
             val data: Uri? = intent.data
             if (data != null) { //URL scheme...
+                //if logged in
                 val mParkingId = data.getQueryParameter("id")
                 Log.i("ID", ">>>>>>>>>>>>>>>>>>>>> ID" + data.getQueryParameter("id"))
                 // helper.save(PreferenceKeys.SCHEME_PARKING_ID, mParkingId)

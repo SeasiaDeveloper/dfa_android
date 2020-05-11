@@ -37,6 +37,8 @@ class GetProfileResponse {
         val username: String? = null
 
         var adhar_number:String? =null
+
+        var app_url:String ?= null
     }
 
 }

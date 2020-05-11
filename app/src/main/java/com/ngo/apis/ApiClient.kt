@@ -14,6 +14,7 @@ object ApiClient {
             val builder = chain.request().newBuilder()
             val build = builder.addHeader("Content-Type", "application/json")
                 .build()
+            builder
             chain.proceed(build)
         }
 

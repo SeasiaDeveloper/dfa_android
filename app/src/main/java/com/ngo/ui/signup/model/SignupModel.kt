@@ -116,10 +116,10 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
                 signupPresenterImplClass.passwordEmptyValidation()
                 return
             }
-            else if(!Utilities.isValidPassword(request.password.trim())){
+           /* else if(!Utilities.isValidPassword(request.password.trim())){
                 signupPresenterImplClass.passwordInvalidValidation()
                 return
-            }
+            }*/
             else if ((request.password).length < 6) {
                 signupPresenterImplClass.passwordLengthValidation()
                 return

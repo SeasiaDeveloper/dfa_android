@@ -4,6 +4,7 @@ import com.ngo.apis.ApiClient
 import com.ngo.apis.CallRetrofitApi
 import com.ngo.pojo.request.SignupRequest
 import com.ngo.pojo.response.DistResponse
+import com.ngo.pojo.response.GetProfileResponse
 import com.ngo.pojo.response.SignupResponse
 import com.ngo.ui.profile.presenter.ProfilePresenterImplClass
 import com.ngo.utils.Constants
@@ -222,5 +223,35 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
                     }
                 })
         }
+    }
+
+    fun fetchUserInfo(userId: String) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        val map = HashMap<String, RequestBody>()
+        map["user_id"] = toRequestBody(userId)
+        retrofitApi.getUserProfileData(map).enqueue(object :
+            Callback<GetProfileResponse> {
+            override fun onFailure(call: Call<GetProfileResponse>, t: Throwable) {
+                profilePresenterImplClass.showError(t.message + "")
+            }
+
+            override fun onResponse(
+                call: Call<GetProfileResponse>,
+                response: Response<GetProfileResponse>
+            ) {
+                val responseObject = response.body()
+                if (responseObject != null) {
+                    if (responseObject.code == 200) {
+                        profilePresenterImplClass.getUserProfileSuccess(responseObject)
+                    } else {
+                        profilePresenterImplClass.showError(
+                            response.body()?.message ?: Constants.SERVER_ERROR
+                        )
+                    }
+                } else {
+                    profilePresenterImplClass.showError(Constants.SERVER_ERROR)
+                }
+            }
+        })
     }
 }

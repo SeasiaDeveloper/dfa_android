@@ -359,10 +359,11 @@ class CasesAdapter(
                 itemView.expandable_Level.text = "Level " + item.urgency
                 //  itemView.expandable_Time.text =
                 if (!item.info.toString().isEmpty() && item.info != null) {
+                    itemView.layout_info.visibility = View.VISIBLE
                     itemView.expandable_DescriptionNgo.visibility = View.VISIBLE
                     itemView.expandable_DescriptionNgo.text = item.info.toString()
                 } else {
-                    itemView.expandable_DescriptionNgo.visibility = View.GONE
+                    itemView.layout_info.visibility = View.GONE
                 }
 
                 itemView.expandable_contactNo.text = userDetail.username
@@ -482,6 +483,9 @@ class CasesAdapter(
                 else{
                     Glide.with(context).load(getImage(context,"app_icon")).apply(options).into(itemView.imgCrime)
                     itemView.expandable_username.text = context.resources.getString(R.string.drug_free_arunachal)
+                    itemView.expandable_username.setOnClickListener{
+                        Toast.makeText(context,context.resources.getString(R.string.contact_ngo_message),Toast.LENGTH_LONG).show()
+                    }
                 }
 
             }
@@ -530,7 +534,7 @@ class CasesAdapter(
                         itemView.action_complaint.visibility = View.GONE
                     }
                     itemView.layoutContact.visibility = View.GONE
-                    itemView.view_fir.visibility = View.VISIBLE
+                  //  itemView.view_fir.visibility = View.VISIBLE
                     itemView.imgComplaintMedia.visibility = View.GONE
 
                     /* else {
@@ -540,7 +544,7 @@ class CasesAdapter(
                          }*/
                 } else {
                     //in case of NGO
-                    itemView.view_fir.visibility = View.GONE
+                  //  itemView.view_fir.visibility = View.GONE
                     itemView.imgComplaintMedia.visibility = View.VISIBLE
                     itemView.action_complaint.setText(item.status)
                 }
@@ -571,6 +575,11 @@ class CasesAdapter(
                     itemView.txtUrgencyTitle.setTextColor(context.resources.getColor(R.color.green))
                     itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.green))
                 }
+            }
+
+
+            if(!(item.status.equals("Unassigned"))){
+                itemView.view_fir.visibility = View.VISIBLE
             }
 
         }

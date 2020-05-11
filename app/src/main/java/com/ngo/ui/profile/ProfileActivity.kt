@@ -60,7 +60,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
     private var userId = ""
 
     override fun fetchDistList(responseObject: DistResponse) {
-        dismissProgress()
+      if(userId.equals(""))  dismissProgress()
 
         setListeners()
 
@@ -119,7 +119,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
 }
 
     private fun getUserProfile(userId: String) {
-
+        profilePresenter.fetchUserInfo(userId)
     }
 
     fun setData(value: String?) {
@@ -373,6 +373,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
 
+        if(intent.getStringExtra("id")!=null)
         userId = intent.getStringExtra("id")
     }
 
@@ -474,5 +475,57 @@ class ProfileActivity : BaseActivity(), ProfileView {
         dismissProgress()
         Utilities.showMessage(this, getString(R.string.pin_validation))
     }
+
+    override fun getUserProfileSuccess(responseObject: GetProfileResponse)
+    {
+        dismissProgress()
+        val jsonString = GsonBuilder().create().toJson(responseObject)
+        //Save that String in SharedPreferences
+       setData(jsonString)
+        btnUpdate.visibility = View.GONE
+        btnCancel.visibility = View.GONE
+        layout_profile_image.visibility = View.GONE
+        //set edittexts as non editable
+        etFirstName.isFocusable = false
+        etFirstName.isEnabled = false
+        etFirstName.isClickable = false
+
+        etMiddleName.isFocusable = false
+        etMiddleName.isEnabled = false
+        etMiddleName.isClickable = false
+
+        etLastName.isFocusable = false
+        etLastName.isEnabled = false
+        etLastName.isClickable = false
+
+        spDist.visibility = View.GONE
+        etDist.visibility = View.VISIBLE
+        etDist.setText(responseObject.data?.district)
+        etDist.isFocusable = false
+        etDist.isEnabled = false
+        etDist.isClickable = false
+
+        etAddress1.isFocusable = false
+        etAddress1.isEnabled = false
+        etAddress1.isClickable = false
+
+        etAddress2.isFocusable = false
+        etAddress2.isEnabled = false
+        etAddress2.isClickable = false
+
+        etPinCode.isFocusable = false
+        etPinCode.isEnabled = false
+        etPinCode.isClickable = false
+
+        etMobile2.isFocusable = false
+        etMobile2.isEnabled = false
+        etMobile2.isClickable = false
+
+        etEmail.isFocusable = false
+        etEmail.isEnabled = false
+        etEmail.isClickable = false
+
+    }
+
 
 }

@@ -19,6 +19,7 @@ object PreferenceHandler {
     const val LATITUDE = "latitude"
     const val LONGITUDE = "longitude"
     const val DEVICE_TOKEN = "token"
+    const val APP_URL = "app_url"
 
     fun writeBoolean(context: Context, key: String, value: Boolean) {
         getEditor(context)
