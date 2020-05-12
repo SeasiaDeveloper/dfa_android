@@ -112,6 +112,10 @@ interface CallRetrofitApi {
     fun addPost(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>, @Part images: Array<MultipartBody.Part?>): Call<CreatePostResponse> //@Part post_pics: MultipartBody.Part
 
     @Multipart
+    @POST("jwt-auth/v1/create_post")
+    fun addPostWithoutMedia(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<CreatePostResponse> //@Part post_pics: MultipartBody.Part
+
+    @Multipart
     @POST("jwt-auth/v1/delete_complaint")
     fun deleteComplaintOrPost(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<DeleteComplaintResponse>
 

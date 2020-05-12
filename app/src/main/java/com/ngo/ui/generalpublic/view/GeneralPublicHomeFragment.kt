@@ -518,11 +518,17 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         Utilities.dismissProgress()
         Utilities.showMessage(mContext, responseObject.message.toString())
-        //refresh the list
-        //Utilities.showProgress(mContext)
-        actionChanged = true
-        if (responseObject.data?.size != 0) {
-            adapter?.notifyActionData(responseObject.data!!)
+
+        if(responseObject.data?.get(0)?.status!!.equals("Unauthentic") || responseObject.data.get(0).status!!.equals("Reject")){
+            //refresh the list
+            Utilities.showProgress(mContext)
+            doApiCall()
+        }
+        else {
+            actionChanged = true
+            if (responseObject.data.size != 0) {
+                adapter?.notifyActionData(responseObject.data)
+            }
         }
     }
 

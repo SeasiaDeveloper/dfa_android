@@ -38,6 +38,12 @@
             android:title="@string/nav_terms_and_conditions" />
 
         <item
+            android:id="@+id/nav_contact_us"
+            android:icon="@drawable/logout"
+            app:itemTextAppearance="@style/Style_menu"
+            android:title="@string/contact_us" />
+
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
             app:itemTextAppearance="@style/Style_menu"

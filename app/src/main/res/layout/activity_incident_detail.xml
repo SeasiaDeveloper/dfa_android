@@ -80,21 +80,16 @@
                         android:text="Title:"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_13ssp"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:visibility="gone"/>
 
-                    <com.ngo.customviews.CustomEditText
+                    <TextView
+                        android:textSize="@dimen/_16sdp"
                         android:id="@+id/editTitle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginEnd="@dimen/_12sdp"
-                        android:background="@null"
-                        android:editable="false"
-                        android:ems="10"
-                        android:focusable="false"
-                        android:imeOptions="actionNext"
-                        android:inputType="textPersonName"
-                        android:lines="1"
                         android:padding="@dimen/_3sdp"
                         android:textColor="@color/grey" />
                 </LinearLayout>
@@ -407,6 +402,7 @@
                             app:rsb_tick_mark_text_margin="20dp" />
 
                         <RelativeLayout
+                            android:id="@+id/layout_media"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal">

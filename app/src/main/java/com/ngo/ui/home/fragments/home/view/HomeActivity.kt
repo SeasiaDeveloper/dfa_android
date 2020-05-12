@@ -29,6 +29,7 @@ import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.customviews.CustomtextView
 import com.ngo.pojo.response.*
+import com.ngo.ui.contactus.ContactUsActivity
 import com.ngo.ui.policedetail.view.PoliceIncidentDetailScreen
 import com.ngo.ui.earnings.view.MyEarningsActivity
 import com.ngo.ui.emergency.EmergencyFragment
@@ -330,6 +331,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                     MyEarningsActivity::class.java
                 )
             )
+
+            R.id.nav_contact_us -> {
+                startActivity(Intent(this@HomeActivity, ContactUsActivity::class.java))
+            }
 
             R.id.nav_invite_friends -> {
                 val appUrl = PreferenceHandler.readString(this,PreferenceHandler.APP_URL,"")

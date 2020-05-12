@@ -148,6 +148,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
                 sb_steps_5.visibility = View.GONE
                 tvTitle.visibility = View.GONE
                 ngo_comment_layout.visibility = View.GONE
+
             }
         }
 
@@ -293,8 +294,17 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
 
     fun setPostData(getCrimeDetailsResponse: GetCrimeDetailsResponse) {
         if (!getCrimeDetailsResponse.data?.get(0)?.info.isNullOrEmpty()) {
+            title_layout.visibility = View.VISIBLE
             editTitle.setText(getCrimeDetailsResponse.data?.get(0)?.info)
         }
+
+        if(getCrimeDetailsResponse.data?.get(0)?.media_type!=null){
+            layout_media.visibility= View.VISIBLE
+        }
+        else{
+            layout_media.visibility= View.GONE
+        }
+
     }
 
     override fun handleKeyboard(): View {

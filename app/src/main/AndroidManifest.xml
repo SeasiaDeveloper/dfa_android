@@ -159,6 +159,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity android:name=".ui.mycases.MyCasesActivity" />
         <activity android:name=".ui.comments.CommentsActivity" />
+        <activity android:name=".ui.contactus.ContactUsActivity" />
 
         <service android:name=".firebase.MyFirebaseMessagingService">
             <intent-filter>

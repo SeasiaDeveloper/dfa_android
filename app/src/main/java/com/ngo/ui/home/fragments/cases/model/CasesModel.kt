@@ -132,52 +132,83 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["info"] = toRequestBody(request.info)
-        map["media_type"] = toRequestBody(request.media_type)
+        if (request.post_pics.isEmpty()) {
+            map["media_type"] = toRequestBody(request.media_type)
 
 
-        /*    val file = File(request.post_pics[0])
+            /*    val file = File(request.post_pics[0])
             val post_pics = MultipartBody.Part.createFormData("post_pics", file.name,
                 RequestBody.create(MediaType.parse(imgMediaType), file)
             )*/
 
-        val parts = arrayOfNulls<MultipartBody.Part>(request.post_pics.size)
-        if (request.media_type.equals("photos")) {
-            for (i in 0 until request.post_pics.size) {
-                val file = File(request.post_pics.get(i))
-                val surveyBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
-                parts[i] = MultipartBody.Part.createFormData("post_pics[]", file.name, surveyBody)
-            }
-        } else {
-            for (i in 0 until request.post_pics.size) {
-                val file = File(request.post_pics.get(i))
-                val surveyBody: RequestBody = RequestBody.create(MediaType.parse("video/*"), file)
-                parts[i] = MultipartBody.Part.createFormData("post_pics[]", file.name, surveyBody)
-            }
-        }
-
-        retrofitApi.addPost(token, map, parts).enqueue(object : Callback<CreatePostResponse> {
-            override fun onFailure(call: Call<CreatePostResponse>, t: Throwable) {
-                presenter.showError(t.message + "")
-            }
-
-            override fun onResponse(
-                call: Call<CreatePostResponse>,
-                response: Response<CreatePostResponse>
-            ) {
-                val responseObject = response.body()
-                if (responseObject != null) {
-                    if (responseObject.code == 200) {
-                        presenter.onPostAdded(responseObject)
-                    } else {
-                        presenter.showError(
-                            response.body()?.message ?: Constants.SERVER_ERROR
-                        )
-                    }
-                } else {
-                    presenter.showError(Constants.SERVER_ERROR)
+            val parts = arrayOfNulls<MultipartBody.Part>(request.post_pics.size)
+            if (request.media_type.equals("photos")) {
+                for (i in 0 until request.post_pics.size) {
+                    val file = File(request.post_pics.get(i))
+                    val surveyBody: RequestBody =
+                        RequestBody.create(MediaType.parse("image/*"), file)
+                    parts[i] =
+                        MultipartBody.Part.createFormData("post_pics[]", file.name, surveyBody)
+                }
+            } else {
+                for (i in 0 until request.post_pics.size) {
+                    val file = File(request.post_pics.get(i))
+                    val surveyBody: RequestBody =
+                        RequestBody.create(MediaType.parse("video/*"), file)
+                    parts[i] =
+                        MultipartBody.Part.createFormData("post_pics[]", file.name, surveyBody)
                 }
             }
-        })
+
+            retrofitApi.addPost(token, map, parts).enqueue(object : Callback<CreatePostResponse> {
+                override fun onFailure(call: Call<CreatePostResponse>, t: Throwable) {
+                    presenter.showError(t.message + "")
+                }
+
+                override fun onResponse(
+                    call: Call<CreatePostResponse>,
+                    response: Response<CreatePostResponse>
+                ) {
+                    val responseObject = response.body()
+                    if (responseObject != null) {
+                        if (responseObject.code == 200) {
+                            presenter.onPostAdded(responseObject)
+                        } else {
+                            presenter.showError(
+                                response.body()?.message ?: Constants.SERVER_ERROR
+                            )
+                        }
+                    } else {
+                        presenter.showError(Constants.SERVER_ERROR)
+                    }
+                }
+            })
+        } else {
+            retrofitApi.addPostWithoutMedia(token, map)
+                .enqueue(object : Callback<CreatePostResponse> {
+                    override fun onFailure(call: Call<CreatePostResponse>, t: Throwable) {
+                        presenter.showError(t.message + "")
+                    }
+
+                    override fun onResponse(
+                        call: Call<CreatePostResponse>,
+                        response: Response<CreatePostResponse>
+                    ) {
+                        val responseObject = response.body()
+                        if (responseObject != null) {
+                            if (responseObject.code == 200) {
+                                presenter.onPostAdded(responseObject)
+                            } else {
+                                presenter.showError(
+                                    response.body()?.message ?: Constants.SERVER_ERROR
+                                )
+                            }
+                        } else {
+                            presenter.showError(Constants.SERVER_ERROR)
+                        }
+                    }
+                })
+        }
     }
 
     fun deleteComplaint(token: String, id: String) {

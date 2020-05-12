@@ -28,6 +28,7 @@ import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.pojo.response.UpdateStatusSuccess
 import com.ngo.ui.commentlikelist.CommentLikeUsersList
 import com.ngo.ui.comments.CommentsActivity
+import com.ngo.ui.contactus.ContactUsActivity
 import com.ngo.ui.profile.ProfileActivity
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.item_case.view.*
@@ -484,7 +485,8 @@ class CasesAdapter(
                     Glide.with(context).load(getImage(context,"app_icon")).apply(options).into(itemView.imgCrime)
                     itemView.expandable_username.text = context.resources.getString(R.string.drug_free_arunachal)
                     itemView.expandable_username.setOnClickListener{
-                        Toast.makeText(context,context.resources.getString(R.string.contact_ngo_message),Toast.LENGTH_LONG).show()
+                        context.startActivity(Intent(activity, ContactUsActivity::class.java))
+                      //  Toast.makeText(context,context.resources.getString(R.string.contact_ngo_message),Toast.LENGTH_LONG).show()
                     }
                 }
 
