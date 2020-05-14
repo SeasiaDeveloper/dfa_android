@@ -27,5 +27,5 @@
     <color name="light_grey_text">#6a6a6a</color>
     <color name="light_grey_bg">#e5e5e5</color>
     <color name="silver_background">#F3F1F1</color>
-
+    <color name="grey_navigation">#686868</color>
 </resources>

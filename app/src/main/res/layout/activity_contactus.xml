@@ -70,7 +70,6 @@
                                 android:inputType="number"
                                 android:editable="false"
                                 android:focusable="false"
-                                android:text="6009121346"
                                 android:maxLength="13"
                                 android:padding="@dimen/_10sdp" />
 
@@ -87,7 +86,6 @@
                                 android:maxLength="20"
                                 android:editable="false"
                                 android:focusable="false"
-                                android:text="Drug Free Arunachal"
                                 android:padding="@dimen/_10sdp" />
 
                             <com.ngo.customviews.CustomEditText
@@ -102,7 +100,6 @@
                                 android:maxLength="20"
                                 android:editable="false"
                                 android:focusable="false"
-                                android:text="Yupia Market, Yupia"
                                 android:padding="@dimen/_10sdp" />
 
                             <com.ngo.customviews.CustomEditText
@@ -117,7 +114,6 @@
                                 android:maxLength="20"
                                 android:editable="false"
                                 android:focusable="false"
-                                android:text="Papum Pare"
                                 android:padding="@dimen/_10sdp" />
 
                             <com.ngo.customviews.CustomEditText
@@ -132,7 +128,6 @@
                                 android:maxLength="20"
                                 android:editable="false"
                                 android:focusable="false"
-                                android:text="Arunachal Pradesh"
                                 android:padding="@dimen/_10sdp" />
 
                             <com.ngo.customviews.CustomEditText
@@ -147,7 +142,6 @@
                                 android:maxLength="20"
                                 android:editable="false"
                                 android:focusable="false"
-                                android:text="791112"
                                 android:padding="@dimen/_10sdp" />
 
                             <com.ngo.customviews.CustomEditText
@@ -161,7 +155,6 @@
                                 android:gravity="start"
                                 android:editable="false"
                                 android:focusable="false"
-                                android:text="dfa.contact@gmail.com"
                                 android:padding="@dimen/_10sdp" />
 
                             <com.ngo.customviews.CustomTextViewheading

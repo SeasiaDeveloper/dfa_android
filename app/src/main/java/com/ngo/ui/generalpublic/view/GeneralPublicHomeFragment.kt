@@ -160,6 +160,32 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
         doApiCall()
 
+        dashboardParentLayout.setOnClickListener {
+            if (layoutPost.visibility == View.VISIBLE) {
+                imgPost.visibility = View.GONE
+                path = ""
+                layoutAddPost.visibility = View.VISIBLE
+                layoutPost.visibility = View.GONE
+
+                edtPostInfo.setText("")
+                imgPost.setImageResource(0)
+                try {
+                    Glide.with(this)
+                        .load("")
+                        .apply(
+                            RequestOptions()
+                                .placeholder(R.drawable.camera_placeholder)
+                        )
+                        .into(imgPost)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+
+        }
+
+
+
         txtAddPost.setOnClickListener {
             //show the addPost layout
             layoutAddPost.visibility = View.GONE
@@ -436,8 +462,23 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
             else -> {
                 if (layoutPost.visibility == View.VISIBLE) {
+                    imgPost.visibility = View.GONE
+                    path = ""
                     layoutAddPost.visibility = View.VISIBLE
                     layoutPost.visibility = View.GONE
+                    edtPostInfo.setText("")
+                    imgPost.setImageResource(0)
+                    try {
+                        Glide.with(this)
+                            .load("")
+                            .apply(
+                                RequestOptions()
+                                    .placeholder(R.drawable.camera_placeholder)
+                            )
+                            .into(imgPost)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 } else {
                     change = 0
                     fromIncidentDetailScreen = 0

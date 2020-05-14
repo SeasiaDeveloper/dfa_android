@@ -29,7 +29,7 @@ class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
             onBackPressed()
         }
         Utilities.showProgress(this)
-        var authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
+        val authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         presenter.getTermsConditions(authorizationToken)
     }
 
@@ -39,7 +39,6 @@ class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
 
     override fun onTermsConditionsSuccess(response: GetTermsConditionsResponse) {
         Utilities.dismissProgress()
-        // response.guid
         showWebView(response.post_content)
     }
 
@@ -52,7 +51,7 @@ class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
     }
 
     private fun showWebView(postContent: String?) {
-        var mimeType = "text/html"
+        val mimeType = "text/html"
         val encoding = "UTF-8"
         val html = postContent
         wv_terms.loadDataWithBaseURL("", html, mimeType, encoding, "")

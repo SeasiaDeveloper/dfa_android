@@ -39,6 +39,25 @@ class GetProfileResponse {
         var adhar_number:String? =null
 
         var app_url:String ?= null
+
+        var ngo_phone:String ?= null
+
+        val ngo_name: String? = null
+
+        val ngo_address: String? = null
+
+        val ngo_email: String? = null
+
+        val ngo_dist: String? = null
+
+        val ngo_state: String? = null
+
+        val ngo_pincode: String? = null
+
+        var ngo_latitude:String? =null
+
+        var ngo_longitude:String ?= null
+
     }
 
 }

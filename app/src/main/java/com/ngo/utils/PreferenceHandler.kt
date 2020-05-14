@@ -18,8 +18,18 @@ object PreferenceHandler {
     const val AUTHORIZATION = "authorization"
     const val LATITUDE = "latitude"
     const val LONGITUDE = "longitude"
-    const val DEVICE_TOKEN = "token"
     const val APP_URL = "app_url"
+    const val USER_FULLNAME = "user_fullname"
+
+    const val NGO_CONTACT_NO = "ngo_contactNumber"
+    const val NGO_NAME = "ngo_name"
+    const val NGO_DIST = "ngo_dist"
+    const val NGO_STATE = "ngo_state"
+    const val NGO_PIN = "ngo_pinCode"
+    const val NGO_EMAIL = "ngo_email"
+    const val NGO_ADDRESS = "ngo_addressLine1"
+    const val NGO_LATITUDE = "ngo_latitude"
+    const val NGO_LONGITUDE = "ngo_longitude"
 
     fun writeBoolean(context: Context, key: String, value: Boolean) {
         getEditor(context)

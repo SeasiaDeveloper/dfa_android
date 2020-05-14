@@ -39,7 +39,7 @@
 
         <item
             android:id="@+id/nav_contact_us"
-            android:icon="@drawable/logout"
+            android:icon="@drawable/ic_call_grey"
             app:itemTextAppearance="@style/Style_menu"
             android:title="@string/contact_us" />
 

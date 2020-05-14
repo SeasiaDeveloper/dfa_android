@@ -18,6 +18,8 @@ import com.ngo.pojo.request.PoliceDetailrequest
 import com.ngo.pojo.response.*
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenter
 import com.ngo.ui.crimedetails.presenter.CrimeDetailsPresenterImpl
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
+import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.imagevideo.ImageVideoScreen
 import com.ngo.ui.ngoform.presenter.NGOFormPresenter
 import com.ngo.ui.ngoform.presenter.NGOFormPresenterImpl
@@ -41,6 +43,8 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
         //refresh the back fragment
+        GeneralPublicHomeFragment.change = 1
+        CasesFragment.change = 1
         finish()
     }
 
@@ -162,6 +166,10 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
 
         if (!getCrimeDetailsResponse.data?.get(0)?.info.isNullOrEmpty()) {
             editDescription.setText(getCrimeDetailsResponse.data?.get(0)?.info)
+        }
+        else{
+            tvDescription.visibility = View.GONE
+            editDescription.visibility = View.GONE
         }
 
         tv_reported.setText(getCrimeDetailsResponse.data?.get(0)?.report_time)

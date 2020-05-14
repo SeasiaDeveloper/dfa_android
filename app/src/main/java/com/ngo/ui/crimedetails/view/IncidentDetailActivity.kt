@@ -36,7 +36,6 @@ import com.ngo.utils.algo.DirectionApiAsyncTask
 import kotlinx.android.synthetic.main.activity_incident_detail.*
 import java.lang.Exception
 
-
 class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, AsyncResponse,
     OnCaseItemClickListener {
 
@@ -70,7 +69,6 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         CasesFragment.fromIncidentDetailScreen=1
         MyCasesActivity.change=0
         MyCasesActivity.fromIncidentDetailScreen=1
-        // complaintsData = intent.getSerializableExtra(Constants.PUBLIC_COMPLAINT_DATA) as GetComplaintsResponse.Data
          type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         complaintId = intent.getStringExtra(Constants.PUBLIC_COMPLAINT_DATA)
@@ -105,12 +103,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         }
 
         show_location.setOnClickListener {
-            val latitude1 = PreferenceHandler.readString(this, PreferenceHandler.LATITUDE, "")
-            val longitude1 = PreferenceHandler.readString(this, PreferenceHandler.LONGITUDE, "")
-            //var s="&daddr="
-            //val gmmIntentUri = Uri.parse("http://maps.google.com/maps?saddr="+latitude1+","+longitude1+s+latitude+","+longitude);
             val gmmIntentUri = Uri.parse("google.navigation:q=" + latitude + "," + longitude + "")
-            //  val gmmIntentUri = Uri.parse("google.navigation:q="+30.7106607+","+76.7091493+"")
             val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
             mapIntent.setPackage("com.google.android.apps.maps")
             startActivity(mapIntent)
@@ -182,7 +175,6 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         latitude = getCrimeDetailsResponse.data?.get(0)?.latitude!!
         longitude = getCrimeDetailsResponse.data.get(0).longitude!!
 
-        //getCrimeDetailsResponse.data.get(0).userDetail.username
         if (!(getCrimeDetailsResponse.data.get(0).userDetail?.first_name.isNullOrEmpty() || getCrimeDetailsResponse.data.get(
                 0
             ).userDetail?.first_name.isNullOrEmpty().equals(
@@ -239,22 +231,12 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
             }
         }
 
-
         if (getCrimeDetailsResponse.data.get(0).latitude != null) {
-            //val string = getCrimeDetailsResponse.data?.get(0)?.latitude
-            var numeric = true
-
-            try {
-               // val num = string?.toDouble()
-            } catch (e: NumberFormatException) {
-                numeric = false
-            }
 
             if (type.equals("2") && postOrComplaint.equals("0") || type.equals("1") && postOrComplaint.equals(
                     "0"
                 )
             ) {
-                if (numeric) {
                     val task = DirectionApiAsyncTask(
                         this,
                         getCrimeDetailsResponse.data.get(0).latitude!!,
@@ -262,7 +244,6 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
                         this
                     )
                     task.execute()
-                }
             } else {
                 show_location.visibility = View.GONE
             }
@@ -282,6 +263,10 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
                    startActivity(intent)
                 }
             }
+
+            if(getCrimeDetailsResponse.data.get(0).info.equals("")){
+                desc_layout.visibility =View.GONE
+            }
         }
 
         //in case of police or General Public
@@ -289,7 +274,6 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
             etUserName.setText(resources.getString(R.string.drug_free_arunachal))
             contact_layout.visibility = View.GONE
         }
-
     }
 
     fun setPostData(getCrimeDetailsResponse: GetCrimeDetailsResponse) {
@@ -482,12 +466,4 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         //nothing to do
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        //GeneralPublicHomeFragment.change = 0
-    }
-
 }
-
-
-

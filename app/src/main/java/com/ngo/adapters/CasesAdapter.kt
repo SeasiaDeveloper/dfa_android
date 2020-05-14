@@ -10,12 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
-import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -30,9 +27,9 @@ import com.ngo.ui.commentlikelist.CommentLikeUsersList
 import com.ngo.ui.comments.CommentsActivity
 import com.ngo.ui.contactus.ContactUsActivity
 import com.ngo.ui.profile.ProfileActivity
+import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.item_case.view.*
-
 
 class CasesAdapter(
     var context: Context,
@@ -42,8 +39,6 @@ class CasesAdapter(
     var activity: Activity
 ) :
     RecyclerView.Adapter<CasesAdapter.ViewHolder>() {
-    //private val isLoadingAdded = false
-    private val mCurrentPosition = 0
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = DataBindingUtil.inflate(
@@ -55,11 +50,6 @@ class CasesAdapter(
 
         return ViewHolder(binding.root)
     }
-
-/*    fun updateParticularPosition(position: Int,GetCasesResponse.Data) {
-
-        notifyItemChanged(position)
-    }*/
 
     fun notifyActionData(listItems: Array<UpdateStatusSuccess.Data>) {
         val data = listItems[0]
@@ -89,14 +79,12 @@ class CasesAdapter(
                     }
                 }
                 if (commentCount.equals("")) {
-                    this.mList.get(i).comment_count =
-/* (this.mList.get(i).comment_count?.toInt()!! + 1)*/commentsCounts.toString()
+                    this.mList.get(i).comment_count = commentsCounts.toString()
                 } else {
                     this.mList.get(i).comment_count = commentCount.toString()
                 }
 
                 notifyItemChanged(i)
-                //notifyItemRangeChanged(i, getItemCount())
                 break
             }
         }
@@ -132,7 +120,6 @@ class CasesAdapter(
                 }
 
                 notifyItemChanged(i)
-                //notifyItemRangeChanged(i, getItemCount())
                 break
             }
         }
@@ -142,12 +129,8 @@ class CasesAdapter(
         mLayoutManager: LinearLayoutManager,
         listItems: MutableList<GetCasesResponse.Data>
     ) {
-        var size = this.mList.size
         this.mList.addAll(listItems)
-        //this.mList.addAll(mLayoutManager.getItemCount(),listItems)
-        var sizeNew = this.mList.size
         notifyDataSetChanged()
-        // notifyItemRangeChanged(size, sizeNew)
     }
 
     fun clear() {
@@ -171,18 +154,8 @@ class CasesAdapter(
         notifyDataSetChanged()
     }
 
-    fun String.intOrString(): Any {
-        val v = toIntOrNull()
-        return when (v) {
-            null -> this
-            else -> v
-        }
-    }
-
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var index: Int? = null
-
 
         fun bind(
             context: Context,
@@ -194,6 +167,7 @@ class CasesAdapter(
             this.index = index
 
             val userDetail: GetCasesResponse.Data.UserDetail = item.userDetail!!
+            val username = PreferenceHandler.readString(context, PreferenceHandler.USER_FULLNAME, "")
 
             val options = RequestOptions()
                 .centerCrop()
@@ -203,9 +177,6 @@ class CasesAdapter(
             itemView.layoutListItem.setOnClickListener {
                 listener.onItemClick(item, "full", adapterPosition)
             }
-            /*itemView.location.setOnClickListener {
-                listener.onItemClick(item, "location")
-            }*/
             itemView.view_fir.setOnClickListener {
                 listener.onItemClick(item, "webview", adapterPosition)
             }
@@ -249,7 +220,6 @@ class CasesAdapter(
                     itemView.imgMediaPost.visibility = View.GONE
                 }
 
-
                 //btnDelete visibility
                 if (item.showDelete == 1) {
                     itemView.btnDeletePost.visibility = View.VISIBLE
@@ -265,7 +235,6 @@ class CasesAdapter(
                         item, alertDialogListener, adapterPosition
                     )
                 }
-
 
                 //like:
                 itemView.txtPostLikeNo.text = item.like_count
@@ -306,29 +275,21 @@ class CasesAdapter(
                 }
 
                 itemView.layout_share.setOnClickListener {
-                    Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
                     val sharingIntent = Intent(Intent.ACTION_SEND)
-                    sharingIntent.type = "text/plain" //http://pingnpaark.app.link/U43Z7CV0Q3
-
-                    sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "DFA")
-                    sharingIntent.putExtra(
-                        Intent.EXTRA_TEXT,
-                        "Hi, Your friend " + "Akash" + " " + "Gharu" +
-                                "  sent you a post Click here app\n www.dfa.com/home?id=" + "1" + ""
+                    sharingIntent.type = "text/plain"
+                    sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Drug Free Arunachal")
+                    sharingIntent.putExtra(Intent.EXTRA_TEXT,
+                        "Hi, Your friend $username sent you a complaint Click here app\n www.dfa.com/home?id=" + item.id + ""
                     )
                     context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
 
                 }
                 itemView.layout_share_post.setOnClickListener {
-                    Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
                     val sharingIntent = Intent(Intent.ACTION_SEND)
-                    sharingIntent.type = "text/plain" //http://pingnpaark.app.link/U43Z7CV0Q3
-
-                    sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "DFA")
-                    sharingIntent.putExtra(
-                        Intent.EXTRA_TEXT,
-                        "Hi, Your friend " + "Akash" + " " + "Gharu" +
-                                "  sent you a post. Click here app\n www.dfa.com/home?id=" + "1" + ""
+                    sharingIntent.type = "text/plain"
+                    sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Drug Free Arunachal")
+                    sharingIntent.putExtra(Intent.EXTRA_TEXT,
+                        "Hi, Your friend $username sent you a post. Click here app\n www.dfa.com/home?id=" + item.id + ""
                     )
                     context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
 
@@ -344,21 +305,18 @@ class CasesAdapter(
                     context.startActivity(intent)
                     true
                 }
-
-
-            } else {
+            }
+            else {
                 //in case of complaint:
-
                 itemView.layout_post.visibility = View.GONE
                 itemView.layoutListItem.visibility = View.VISIBLE
 
-                //   itemView.status.text = item.status.toString().toUpperCase()
                 itemView.expandable_Date.text =
                     Utilities.changeDateFormat(item.report_data!!) + " " + Utilities.changeTimeFormat(
                         item.report_time!!
                     )
                 itemView.expandable_Level.text = "Level " + item.urgency
-                //  itemView.expandable_Time.text =
+
                 if (!item.info.toString().isEmpty() && item.info != null) {
                     itemView.layout_info.visibility = View.VISIBLE
                     itemView.expandable_DescriptionNgo.visibility = View.VISIBLE
@@ -414,7 +372,6 @@ class CasesAdapter(
                     itemView.img_like.visibility = View.GONE
                 }
 
-
                 itemView.layout_like.setOnClickListener {
                     if (itemView.img_like_red.visibility == View.GONE) {
                         itemView.img_like_red.visibility = View.VISIBLE
@@ -428,7 +385,6 @@ class CasesAdapter(
 
                     listener.changeLikeStatus(item)
                 }
-
 
                 itemView.layout_like.setOnLongClickListener {
                     val intent = Intent(context, CommentLikeUsersList::class.java)
@@ -452,10 +408,15 @@ class CasesAdapter(
                     true
                 }
 
-
-
                 itemView.layout_share.setOnClickListener {
-                    Toast.makeText(context, "Coming Soon", Toast.LENGTH_SHORT).show()
+                    val sharingIntent = Intent(Intent.ACTION_SEND)
+                    sharingIntent.type = "text/plain"
+
+                    sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Drug Free Arunachal")
+                    sharingIntent.putExtra(Intent.EXTRA_TEXT,
+                        "Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
+                    )
+                    context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
                 }
 
                 //if NGO show profile image
@@ -478,7 +439,6 @@ class CasesAdapter(
                         intent.putExtra("id",item.userDetail.id)
                         context.startActivity(intent)
                     }
-
                 }
                 //in case of General public or police
                 else{
@@ -486,21 +446,14 @@ class CasesAdapter(
                     itemView.expandable_username.text = context.resources.getString(R.string.drug_free_arunachal)
                     itemView.expandable_username.setOnClickListener{
                         context.startActivity(Intent(activity, ContactUsActivity::class.java))
-                      //  Toast.makeText(context,context.resources.getString(R.string.contact_ngo_message),Toast.LENGTH_LONG).show()
                     }
                 }
-
             }
 
             //in case of NGO and police
             if ((type == 1) || (type == 2)) {
-                //itemView.location.visibility = View.VISIBLE
                 itemView.layoutContact.visibility = View.VISIBLE
                 itemView.action_complaint.visibility = View.VISIBLE
-                /* itemView.location.setOnClickListener {
-                     listener.onItemClick(item, "location")
-                 }*/
-
 
                 itemView.layoutCrimeType.visibility = View.VISIBLE
                 itemView.layoutStatus.visibility = View.VISIBLE
@@ -536,17 +489,10 @@ class CasesAdapter(
                         itemView.action_complaint.visibility = View.GONE
                     }
                     itemView.layoutContact.visibility = View.GONE
-                  //  itemView.view_fir.visibility = View.VISIBLE
                     itemView.imgComplaintMedia.visibility = View.GONE
 
-                    /* else {
-                         if (itemView.childExpandable.isVisible) {
-                             itemView.view_fir.visibility = View.GONE
-                             itemView.imgComplaintMedia.visibility = View.VISIBLE
-                         }*/
                 } else {
                     //in case of NGO
-                  //  itemView.view_fir.visibility = View.GONE
                     itemView.imgComplaintMedia.visibility = View.VISIBLE
                     itemView.action_complaint.setText(item.status)
                 }
@@ -554,7 +500,6 @@ class CasesAdapter(
             } else {
                 //in case of general public/general user
                 itemView.imgComplaintMedia.visibility = View.VISIBLE
-                // itemView.location.visibility = View.GONE
                 itemView.layoutContact.visibility = View.GONE
                 itemView.action_complaint.visibility = View.GONE
                 itemView.layoutCrimeType.visibility = View.GONE
@@ -579,11 +524,9 @@ class CasesAdapter(
                 }
             }
 
-
             if(!(item.status.equals("Unassigned"))){
                 itemView.view_fir.visibility = View.VISIBLE
             }
-
         }
 
 
@@ -618,8 +561,5 @@ class CasesAdapter(
             val drawableResourceId = context.getResources().getIdentifier(imageName, "drawable", context.getPackageName())
             return drawableResourceId
         }
-
     }
-
-
 }

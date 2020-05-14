@@ -561,8 +561,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             this,
             android.R.layout.simple_spinner_item, distArray
         )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spTypesOfCrime.setAdapter(adapter);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spTypesOfCrime.setAdapter(adapter)
     }
 
     override fun getCrimeTyepLstFailure(error: String) {

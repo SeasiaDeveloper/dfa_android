@@ -161,9 +161,9 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
         map["district_id"] = toRequestBody(request.district_id)
         map["pin_code"] = toRequestBody(request.pin_code)
 
-        // if (isAdhaarNoAdded) {
+         if (isAdhaarNoAdded) {
         map["adhar_number"] = toRequestBody(request.adhar_number)
-        // }
+         }
 
         if (!request.profile_pic.equals("")) {
             val file = File(request.profile_pic)

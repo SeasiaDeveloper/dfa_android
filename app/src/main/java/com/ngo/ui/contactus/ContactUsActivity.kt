@@ -26,17 +26,22 @@ class ContactUsActivity : BaseActivity(){
             onBackPressed()
         }
 
-            var contactNumber = PreferenceHandler.readString(this, PreferenceHandler.CONTACT_NUMBER, "")
-            var authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
+        etMobile1.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_CONTACT_NO, "6009121346"))
+        etName.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_NAME, "Drug Free Arunachal"))
+        etAddressLine1.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_ADDRESS, "Yupia Market, Yupia"))
+        etDist.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_DIST, "Papum Pare"))
+        etState.setText( PreferenceHandler.readString(this, PreferenceHandler.NGO_STATE, "Arunachal Pradesh"))
+        etPinCode.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_PIN, "791112"))
+        etEmail.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_EMAIL, "dfa.contact@gmail.com"))
+
+        val lat =(PreferenceHandler.readString(this, PreferenceHandler.NGO_LATITUDE, "27.144675"))!!.toDouble()
+        val lng = PreferenceHandler.readString(this, PreferenceHandler.NGO_LONGITUDE, "93.727255")!!.toDouble()
 
         btnLocate.setOnClickListener {
-            val lat = 27.144675 //30.7106607
-            val lng = 93.727255 //76.7091493
             val mTitle  = "DFA"
             val geoUri = "http://maps.google.com/maps?q=loc:$lat,$lng ($mTitle)"
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(geoUri))
             startActivity(intent)
-
         }
     }
 

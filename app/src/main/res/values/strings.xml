@@ -116,7 +116,7 @@
     <string name="search">Search</string>
     <string name="verify_mobileno">Verify Mobile</string>
     <string name="enter_mobileno">"Please enter your Mobile Number "</string>
-    <string name="add_your_post_here">Say Something</string>
+    <string name="add_your_post_here">Say Something...</string>
     <string name="post">Post</string>
     <string name="enter_the_headline">Enter the text here..</string>
 

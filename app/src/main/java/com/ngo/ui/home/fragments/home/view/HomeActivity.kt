@@ -1,6 +1,5 @@
 package com.ngo.ui.home.fragments.home.view
 
-
 import android.app.Dialog
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -11,9 +10,8 @@ import android.graphics.Color
 import android.location.Location
 import android.util.Log
 import android.view.*
-import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -26,7 +24,6 @@ import com.google.gson.GsonBuilder
 import com.ngo.R
 import com.ngo.adapters.TabLayoutAdapter
 import com.ngo.base.BaseActivity
-import com.ngo.customviews.CenteredToolbar
 import com.ngo.customviews.CustomtextView
 import com.ngo.pojo.response.*
 import com.ngo.ui.contactus.ContactUsActivity
@@ -53,11 +50,11 @@ import com.ngo.utils.alert.AlertDialog
 import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.nav_header.*
 import com.ngo.utils.*
+import kotlinx.android.synthetic.main.layout_accept_reject_alert.*
 import kotlinx.android.synthetic.main.nav_action.*
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
     GetLogoutDialogCallbacks, LocationListenerCallback {
-
 
     private var mDrawerLayout: DrawerLayout? = null
     private var mToggle: ActionBarDrawerToggle? = null
@@ -65,10 +62,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private var homePresenter: HomePresenter = HomePresenterImpl(this)
     private var authorizationToken: String? = null
     private lateinit var locationCallBack: LocationListenerCallback
-    private var imageUrl: String = ""
     private var isPermissionDialogRequired = true
-
+    var genPubHomeFrag = GeneralPublicHomeFragment()
     private var isGPS: Boolean = false
+    var isFirstTimeEntry = true
 
     override fun getLayout(): Int {
         return R.layout.home_activity
@@ -76,6 +73,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onResume() {
         super.onResume()
+
+        if (menuItem!=null && menuItem!!.isChecked) menuItem!!.isChecked = false
+
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         homePresenter.hitProfileApi(authorizationToken)
         if (!isGPS && !isPermissionDialogRequired) {
@@ -86,13 +86,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             refreshReceiver,
             IntentFilter("policeJsonReceiver")
         ) //registering the broadcast receiver
-
     }
 
     override fun onPause() {
         super.onPause()
         unregisterReceiver(refreshReceiver) //unregistering the broadcast receiver
-        //  ForegroundService.stopService(applicationContext)
     }
 
     private val refreshReceiver = object : BroadcastReceiver() {
@@ -129,8 +127,13 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             notificationResponse.report_data
         (dialog.findViewById(R.id.txtComplaintTime) as TextView).text =
             notificationResponse.report_time
-        (dialog.findViewById(R.id.txtDescription) as TextView).text =
-            notificationResponse.description
+        if(! notificationResponse.description.equals("") &&  notificationResponse.description!=null)
+        {
+            (dialog.findViewById(R.id.layout_desc) as LinearLayout).visibility = View.VISIBLE
+            (dialog.findViewById(R.id.txtDescription) as TextView).text = notificationResponse.description}
+        else{
+            (dialog.findViewById(R.id.layout_desc) as LinearLayout).visibility = View.GONE
+        }
 
         val acceptButton = dialog.findViewById(R.id.btnAccept) as CustomtextView
         val rejectButton = dialog.findViewById(R.id.btnReject) as CustomtextView
@@ -153,6 +156,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
             //GeneralPublicHomeFragment.change = 1
         }
+
         rejectButton.setOnClickListener {
             //reject = 6
             Utilities.showProgress(this)
@@ -164,20 +168,18 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             )
             dialog.dismiss()
         }
+
         openButton.setOnClickListener {
             val intent = Intent(this, PoliceIncidentDetailScreen::class.java)
             intent.putExtra(
                 Constants.PUBLIC_COMPLAINT_DATA,
                 notificationResponse.complaint_id.toString()
             )
-            //  intent.putExtra(Constants.FROM_WHERE, "nottohit")
-            intent.putExtra(Constants.POST_OR_COMPLAINT, "0") //) is for complaint type
+            intent.putExtra(Constants.POST_OR_COMPLAINT, "0") // 0 is for complaint type
             startActivity(intent)
             dialog.dismiss()
         }
         dialog.show()
-
-
     }
 
     override fun setupUI() {
@@ -228,7 +230,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     }
 
-    var genPubHomeFrag = GeneralPublicHomeFragment()
     fun setTabAdapter() {
 
         val adapter = TabLayoutAdapter(supportFragmentManager)
@@ -286,11 +287,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                         locationCallBack
                     )
                     Utilities.showProgress(this@HomeActivity)
-                    /*  try {
-                          setTabAdapter()
-                      } catch (e: Exception) {
-                          Log.e("Tab Adapter", "Exception----->" + e)
-                      }*/
                 }
             }
         })
@@ -309,8 +305,14 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
+    var menuItem :MenuItem? =null
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        menuItem = item
         when (item.itemId) {
+
+
+
             R.id.nav_edit_profile -> {
                 val intent = Intent(this, ProfileActivity::class.java)
                 startActivity(intent)
@@ -345,12 +347,13 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 startActivity(Intent.createChooser(shareIntent, "send to"))
 
             }
-            R.id.nav_terms_and_conditions -> startActivity(
+            R.id.nav_terms_and_conditions -> Utilities.showMessage(this@HomeActivity,"Coming Soon")
+            /*startActivity(
                 Intent(
                     this@HomeActivity,
                     TermsAndConditionActivity::class.java
                 )
-            )
+            )*/
         }
 
         drawerLayout.closeDrawer(GravityCompat.START)
@@ -371,13 +374,21 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         dismissProgress()
         loadNavHeader(getProfileResponse)
         val gson = getProfileResponse.data
+        PreferenceHandler.writeString(this, PreferenceHandler.USER_FULLNAME, gson?.first_name +" "+ gson?.last_name)
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, gson.toString())
         PreferenceHandler.writeString(this, PreferenceHandler.APP_URL, getProfileResponse.data?.app_url!!)
-        /*try {
-            genPubHomeFrag.setProfilePic()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }*/
+
+        //save NGO details for ContactUs screen
+        PreferenceHandler.writeString(this, PreferenceHandler.NGO_CONTACT_NO, getProfileResponse.data.ngo_phone!!)
+        PreferenceHandler.writeString(this, PreferenceHandler.NGO_NAME, getProfileResponse.data.ngo_name!!)
+        PreferenceHandler.writeString(this, PreferenceHandler.NGO_ADDRESS, getProfileResponse.data.ngo_address!!)
+        PreferenceHandler.writeString(this, PreferenceHandler.NGO_DIST, getProfileResponse.data.ngo_dist!!)
+        PreferenceHandler.writeString(this, PreferenceHandler.NGO_STATE, getProfileResponse.data.ngo_state!!)
+        PreferenceHandler.writeString(this, PreferenceHandler.NGO_PIN, getProfileResponse.data.ngo_pincode!!)
+        PreferenceHandler.writeString(this, PreferenceHandler.NGO_LONGITUDE, getProfileResponse.data.ngo_longitude!!)
+        PreferenceHandler.writeString(this, PreferenceHandler.NGO_LATITUDE, getProfileResponse.data.ngo_latitude!!)
+        PreferenceHandler.writeString(this, PreferenceHandler.NGO_EMAIL, getProfileResponse.data.ngo_email!!)
+
         val jsonString = GsonBuilder().create().toJson(getProfileResponse)
         //Save that String in SharedPreferences
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, jsonString)
@@ -388,7 +399,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.CONTACT_NUMBER,
-            getProfileResponse.data?.username.toString()
+            getProfileResponse.data.username.toString()
         )
         PreferenceHandler.writeString(
             this,
@@ -401,7 +412,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             drawerLayout.closeDrawer(GravityCompat.START)
             startActivity(intent)
         }
-
     }
 
     override fun ongetProfileFailure(error: String) {
@@ -432,7 +442,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         Utilities.showMessage(applicationContext, "failuree");
     }
 
-    var isFirstTimeEntry = true
     override fun updateUi(location: Location) {
         if (isFirstTimeEntry) {
             try {
@@ -444,8 +453,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
             isFirstTimeEntry = false
         }
-
-        //  Utilities.showMessage(applicationContext, "lat lng" + location.latitude);
 
         PreferenceHandler.writeString(
             this,
@@ -471,10 +478,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
-    }
-
-    fun logoutUser(){
-
     }
 
 }

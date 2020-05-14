@@ -7,8 +7,10 @@ import android.util.Log
 import android.view.View
 import com.ngo.R
 import com.ngo.base.BaseActivity
+import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.ui.login.view.LoginActivity
+import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import kotlinx.android.synthetic.main.activity_splash.*
 
@@ -20,25 +22,31 @@ class SplashActivity : BaseActivity() {
     }
 
     override fun setupUI() {
-
-        if (intent != null) {
+        var complaintId =""
+        val auth = PreferenceHandler.readString(this@SplashActivity, PreferenceHandler.AUTHORIZATION, "")
+        //if intent is not null && user is logged in
+        if ((intent != null) && !(auth.equals(""))) {
             val data: Uri? = intent.data
             if (data != null) { //URL scheme...
-                //if logged in
-                val mParkingId = data.getQueryParameter("id")
+                 complaintId = data.getQueryParameter("id")!!
                 Log.i("ID", ">>>>>>>>>>>>>>>>>>>>> ID" + data.getQueryParameter("id"))
-                // helper.save(PreferenceKeys.SCHEME_PARKING_ID, mParkingId)
+                // helper.save(PreferenceKeys.SCHEME_PARKING_ID, complaintId)
             }
         }
 
         Handler().postDelayed({
             run {
-                if (!PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "").equals(
-                        ""
-                    )
-                ) {
-                    startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
-                    finish()
+                if (!(auth.equals(""))) {
+                    if (!complaintId.equals("")) {
+                        val intent = Intent(this@SplashActivity, IncidentDetailActivity::class.java)
+                        intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintId)
+                        intent.putExtra(Constants.FROM_WHERE, "tohit")
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
+                        finish()
+                    }
                 } else {
                     startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
                     finish()

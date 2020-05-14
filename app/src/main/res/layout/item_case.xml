@@ -32,7 +32,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_6sdp"
-                    android:layout_marginEnd="@dimen/_16sdp">
+                    android:layout_marginEnd="@dimen/_11sdp">
 
                     <de.hdodenhof.circleimageview.CircleImageView
                         android:id="@+id/imgCrime"
@@ -50,18 +50,18 @@
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/_4sdp"
-                        android:layout_weight="0.3"
+                        android:layout_weight="0.54"
                         android:gravity="start|center_vertical"
                         android:textColor="@color/grey_text" />
 
                     <com.ngo.customviews.CustomtextView
                         android:id="@+id/btnDelete"
-                        android:layout_width="0dp"
-                        android:layout_height="34dp"
+                        android:layout_width="40dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="end|center_vertical"
                         android:layout_marginTop="@dimen/_2sdp"
                         android:layout_marginBottom="@dimen/_2sdp"
-                        android:layout_weight="0.4"
+                        android:layout_weight="0.20"
                         android:background="@drawable/red_button_bg"
                         android:gravity="center"
                         android:text="@string/delete"
@@ -566,9 +566,10 @@
                         android:src="@drawable/user" />
 
                     <LinearLayout
+                        android:layout_weight="0.55"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginStart="@dimen/_4sdp"
                         android:layout_marginTop="@dimen/_4sdp"
                         android:orientation="vertical">
 
@@ -587,24 +588,29 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_weight="0.4"
+                        android:layout_width="40dp"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_6sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:gravity="end">
 
-                        <androidx.appcompat.widget.AppCompatButton
+                        <com.ngo.customviews.CustomtextView
                             android:id="@+id/btnDeletePost"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="30dp"
-                            android:layout_gravity="end"
+                            android:layout_gravity="end|center_vertical"
+                            android:layout_marginTop="@dimen/_2sdp"
                             android:layout_marginBottom="@dimen/_2sdp"
                             android:background="@drawable/red_button_bg"
+                            android:gravity="center"
                             android:text="@string/delete"
-                            android:textColor="@color/white"
                             android:textAllCaps="false"
+                            android:textColor="@color/white"
                             android:textSize="@dimen/_10ssp"
-                            android:visibility="gone" />
+                            android:visibility="visible" />
+
+
                     </LinearLayout>
                 </LinearLayout>
 

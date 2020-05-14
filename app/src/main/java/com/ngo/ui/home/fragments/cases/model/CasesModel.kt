@@ -132,7 +132,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["info"] = toRequestBody(request.info)
-        if (request.post_pics.isEmpty()) {
+        if (request.post_pics.size > 0 && request.post_pics.get(0).isNotEmpty()) {
             map["media_type"] = toRequestBody(request.media_type)
 
 
