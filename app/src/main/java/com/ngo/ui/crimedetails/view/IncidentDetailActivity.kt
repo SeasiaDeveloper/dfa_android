@@ -260,6 +260,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
                 etUserName.setOnClickListener {
                     val intent = Intent(this@IncidentDetailActivity, ProfileActivity::class.java)
                     intent.putExtra("id",getCrimeDetailsResponse.data.get(0).userDetail?.id)
+                    intent.putExtra("fromWhere","userProfile")
                    startActivity(intent)
                 }
             }
@@ -443,7 +444,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         if (responseObject.data?.size != 0) {
             adapter?.notifyActionData(responseObject.data!!)
         }
-        GeneralPublicHomeFragment.change = 1
+        GeneralPublicHomeFragment.changeThroughIncidentScreen = 1
         CasesFragment.change = 1
     }
 

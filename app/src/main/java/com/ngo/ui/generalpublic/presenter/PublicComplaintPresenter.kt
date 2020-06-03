@@ -1,5 +1,6 @@
 package com.ngo.ui.generalpublic.presenter
 
+import android.content.Context
 import com.ngo.base.presenter.BasePresenter
 import com.ngo.pojo.request.ComplaintRequest
 import com.ngo.pojo.response.ComplaintResponse
@@ -16,5 +17,5 @@ interface PublicComplaintPresenter:BasePresenter {
     fun checkValidations(level:Int,image:ArrayList<String>,description:String)
     fun onSaveDetailsSuccess(response: ComplaintResponse)
     fun onSaveDetailsFailed(error: String)
-    fun saveDetailsRequest(token:String?,request: ComplaintRequest)
+    fun saveDetailsRequest(token:String?,request: ComplaintRequest,context: Context)
 }

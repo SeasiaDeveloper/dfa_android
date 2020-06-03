@@ -1,5 +1,6 @@
 package com.ngo.ui.generalpublic.presenter
 
+import android.content.Context
 import com.ngo.pojo.request.ComplaintRequest
 import com.ngo.pojo.response.ComplaintResponse
 import com.ngo.pojo.response.GetCrimeTypesResponse
@@ -51,8 +52,8 @@ class PublicComplaintPresenterImpl(private var complaintsView: PublicComplaintVi
         complaintsView.showServerError(error)
     }
 
-    override fun saveDetailsRequest(token: String?, request: ComplaintRequest) {
-        complaintsModel.complaintsRequest(token, request)
+    override fun saveDetailsRequest(token: String?, request: ComplaintRequest,context: Context) {
+        complaintsModel.complaintsRequest(token, request,context)
     }
 
     override fun showError(error: String) {

@@ -77,6 +77,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     var deleteItemposition: Int? = null
     var isLike: Boolean = false
     var whenDeleteCall: Boolean = false
+    var setAdapterBoolean: Boolean = true
     var adapterActionPosition: Int? = null
 
     override fun onClick(item: Any, position: Int) {
@@ -103,6 +104,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     companion object {
         var change = 0
+        var changeThroughIncidentScreen = 0
         var commentChange = 0
         var fromIncidentDetailScreen = 0
         var commentsCount = 0
@@ -131,7 +133,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
 
     fun setAdapter() {
-        adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this,activity as Activity)
+        adapter = CasesAdapter(
+            mContext,
+            complaints.toMutableList(),
+            this,
+            type.toInt(),
+            this,
+            activity as Activity
+        )
         horizontalLayoutManager = LinearLayoutManager(
             mContext,
             RecyclerView.VERTICAL, false
@@ -158,7 +167,12 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         imgAdd.setOnClickListener(this)
         // Utilities.showProgress(mContext)
 
-        doApiCall()
+        /*  if (isFirst) {*/
+       // doApiCall()
+        /*  isFirst = false
+      }*/
+
+        //doApiCall()
 
         dashboardParentLayout.setOnClickListener {
             if (layoutPost.visibility == View.VISIBLE) {
@@ -482,11 +496,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 } else {
                     change = 0
                     fromIncidentDetailScreen = 0
-                    val intent = Intent(activity, IncidentDetailActivity::class.java)
+                   /* val intent = Intent(activity, IncidentDetailActivity::class.java) //change
                     intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
                     intent.putExtra(Constants.POST_OR_COMPLAINT, complaintsData.type)
                     intent.putExtra(Constants.FROM_WHERE, "nottohit")
-                    startActivity(intent)
+                    startActivity(intent)*/
                 }
 
             }
@@ -560,22 +574,24 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         Utilities.dismissProgress()
         Utilities.showMessage(mContext, responseObject.message.toString())
 
-        if(responseObject.data?.get(0)?.status!!.equals("Unauthentic") || responseObject.data.get(0).status!!.equals("Reject")){
+        /*if (responseObject.data?.get(0)?.status!!.equals("Unauthentic") || responseObject.data.get(0).status!!.equals(
+                "Reject"
+            )
+        ) {
             //refresh the list
             Utilities.showProgress(mContext)
             doApiCall()
+        } else {*/
+        actionChanged = true
+        if (responseObject.data!!.size != 0) {
+            adapter?.notifyActionData(responseObject.data)
         }
-        else {
-            actionChanged = true
-            if (responseObject.data.size != 0) {
-                adapter?.notifyActionData(responseObject.data)
-            }
-        }
+        // }
     }
 
     override fun showServerError(error: String) {
         Utilities.dismissProgress()
-        if(error.equals(Constants.TOKEN_ERROR)){
+        if (error.equals(Constants.TOKEN_ERROR)) {
             //logout user
             //(activity as GeneralPublicActivity).logoutUser
             ForegroundService.stopService(activity as Context)
@@ -584,25 +600,24 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             val intent = Intent(activity, LoginActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
-        }
-
-        else{
-        Utilities.showMessage(mContext, error)
-        if (edtPostInfo != null) {
-            edtPostInfo.setText("")
-            imgPost.setImageResource(0)
-            try {
-                Glide.with(this)
-                    .load("")
-                    .apply(
-                        RequestOptions()
-                            .placeholder(R.drawable.camera_placeholder)
-                    )
-                    .into(imgPost)
-            } catch (e: Exception) {
-                e.printStackTrace()
+        } else {
+            Utilities.showMessage(mContext, error)
+            if (edtPostInfo != null) {
+                edtPostInfo.setText("")
+                imgPost.setImageResource(0)
+                try {
+                    Glide.with(this)
+                        .load("")
+                        .apply(
+                            RequestOptions()
+                                .placeholder(R.drawable.camera_placeholder)
+                        )
+                        .into(imgPost)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
-        }}
+        }
     }
 
     override fun onClick(p0: View?) {
@@ -634,10 +649,16 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         if (isFirst) {
             doApiCall()
             isFirst = false
-        } else if (!isFirst && change == 1) {
+            setAdapterBoolean = false
+        } else if (changeThroughIncidentScreen == 1) {
+            changeThroughIncidentScreen = 0
             adapter?.clear()
             endlessScrollListener?.resetState()
             doApiCall()
+        } else if (!isFirst && change == 1) {
+            /* adapter?.clear()
+             endlessScrollListener?.resetState()
+             doApiCall()*/
             change = 0
         } else {
             if (fromIncidentDetailScreen == 0) {

@@ -35,6 +35,10 @@ class EmergencyFragment : Fragment() {
         var commentsCount = 0
     }
 
+    override fun onResume() {
+        super.onResume()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

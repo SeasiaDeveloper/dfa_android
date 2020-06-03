@@ -4,11 +4,13 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -30,6 +32,7 @@ import com.ngo.ui.profile.ProfileActivity
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.item_case.view.*
+
 
 class CasesAdapter(
     var context: Context,
@@ -140,7 +143,15 @@ class CasesAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(context, mList.get(position), position, listener, type, alertDialogListener,activity)
+        holder.bind(
+            context,
+            mList.get(position),
+            position,
+            listener,
+            type,
+            alertDialogListener,
+            activity
+        )
 
     }
 
@@ -162,12 +173,13 @@ class CasesAdapter(
             item: GetCasesResponse.Data,
             index: Int,
             listener: OnCaseItemClickListener,
-            type: Int, alertDialogListener: AlertDialogListener,activity :Activity
+            type: Int, alertDialogListener: AlertDialogListener, activity: Activity
         ) {
             this.index = index
 
             val userDetail: GetCasesResponse.Data.UserDetail = item.userDetail!!
-            val username = PreferenceHandler.readString(context, PreferenceHandler.USER_FULLNAME, "")
+            val username =
+                PreferenceHandler.readString(context, PreferenceHandler.USER_FULLNAME, "")
 
             val options = RequestOptions()
                 .centerCrop()
@@ -208,7 +220,7 @@ class CasesAdapter(
                     )
                 itemView.txtPostInfo.text = item.info
 
-                if (item.media_list!=null && item.media_list.isNotEmpty()) {
+                if (item.media_list != null && item.media_list.isNotEmpty()) {
                     itemView.imgMediaPost.visibility = View.VISIBLE
                     val mediaUrl: String = item.media_list[0]
                     try {
@@ -278,7 +290,8 @@ class CasesAdapter(
                     val sharingIntent = Intent(Intent.ACTION_SEND)
                     sharingIntent.type = "text/plain"
                     sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Drug Free Arunachal")
-                    sharingIntent.putExtra(Intent.EXTRA_TEXT,
+                    sharingIntent.putExtra(
+                        Intent.EXTRA_TEXT,
                         "Hi, Your friend $username sent you a complaint Click here app\n www.dfa.com/home?id=" + item.id + ""
                     )
                     context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
@@ -288,7 +301,8 @@ class CasesAdapter(
                     val sharingIntent = Intent(Intent.ACTION_SEND)
                     sharingIntent.type = "text/plain"
                     sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Drug Free Arunachal")
-                    sharingIntent.putExtra(Intent.EXTRA_TEXT,
+                    sharingIntent.putExtra(
+                        Intent.EXTRA_TEXT,
                         "Hi, Your friend $username sent you a post. Click here app\n www.dfa.com/home?id=" + item.id + ""
                     )
                     context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
@@ -305,8 +319,7 @@ class CasesAdapter(
                     context.startActivity(intent)
                     true
                 }
-            }
-            else {
+            } else {
                 //in case of complaint:
                 itemView.layout_post.visibility = View.GONE
                 itemView.layoutListItem.visibility = View.VISIBLE
@@ -317,7 +330,7 @@ class CasesAdapter(
                     )
                 itemView.expandable_Level.text = "Level " + item.urgency
 
-                if (!item.info.toString().isEmpty() && item.info != null) {
+                if (item.status.equals("Unassigned") && !item.info.toString().isEmpty() && item.info != null) {
                     itemView.layout_info.visibility = View.VISIBLE
                     itemView.expandable_DescriptionNgo.visibility = View.VISIBLE
                     itemView.expandable_DescriptionNgo.text = item.info.toString()
@@ -341,8 +354,10 @@ class CasesAdapter(
                 itemView.imgExpandable.setOnClickListener {
                     if (itemView.childExpandable.isVisible) {
                         itemView.childExpandable.visibility = View.GONE
+                        itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
                     } else {
                         itemView.childExpandable.visibility = View.VISIBLE
+                        itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
                     }
                 }
                 if (item.showDelete == 1) {
@@ -413,38 +428,43 @@ class CasesAdapter(
                     sharingIntent.type = "text/plain"
 
                     sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Drug Free Arunachal")
-                    sharingIntent.putExtra(Intent.EXTRA_TEXT,
-                        "Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
+                    sharingIntent.putExtra(
+                        Intent.EXTRA_TEXT,
+                        "Hi, Your friend $username shared you FIR complaint from Drug Free Arunachal app. To see detail, open\n www.drugfreearunachal.org/home?id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
                     )
                     context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
                 }
 
                 //if NGO show profile image
-                if(type == 1)
-                {  if (userDetail.profile_pic != null) {
-                    try {
-                        Glide.with(context).load(userDetail.profile_pic).apply(options)
-                            .into(itemView.imgCrime)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }}
+                if (type == 1) {
+                    if (userDetail.profile_pic != null) {
+                        try {
+                            Glide.with(context).load(userDetail.profile_pic).apply(options)
+                                .into(itemView.imgCrime)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
 
                     itemView.imgCrime.setOnClickListener {
                         //show enlarged image
                         DisplayLargeImage(context, userDetail, options)
                     }
 
-                    itemView.expandable_username.setOnClickListener{
-                        val intent = Intent(activity,ProfileActivity::class.java)
-                        intent.putExtra("id",item.userDetail.id)
+                    itemView.expandable_username.setOnClickListener {
+                        val intent = Intent(activity, ProfileActivity::class.java)
+                        intent.putExtra("id", item.userDetail.id)
+                        intent.putExtra("fromWhere", "userProfile")
                         context.startActivity(intent)
                     }
                 }
                 //in case of General public or police
-                else{
-                    Glide.with(context).load(getImage(context,"app_icon")).apply(options).into(itemView.imgCrime)
-                    itemView.expandable_username.text = context.resources.getString(R.string.drug_free_arunachal)
-                    itemView.expandable_username.setOnClickListener{
+                else {
+                    Glide.with(context).load(getImage(context, "app_icon")).apply(options)
+                        .into(itemView.imgCrime)
+                    itemView.expandable_username.text =
+                        context.resources.getString(R.string.drug_free_arunachal)
+                    itemView.expandable_username.setOnClickListener {
                         context.startActivity(Intent(activity, ContactUsActivity::class.java))
                     }
                 }
@@ -480,6 +500,7 @@ class CasesAdapter(
 
                 //to show action button in case of Police
                 if (type == 2) {
+                    //common in Ngo and Police, action button will appear in the list in case of Ngo also
                     itemView.action_complaint.setOnClickListener {
                         listener.onItemClick(item, "action", adapterPosition)
                     }
@@ -493,8 +514,31 @@ class CasesAdapter(
 
                 } else {
                     //in case of NGO
+                    itemView.action_complaint.setOnClickListener {
+                        listener.onItemClick(item, "action", adapterPosition)
+                    }
+                    itemView.action_complaint.visibility = View.VISIBLE
+
                     itemView.imgComplaintMedia.visibility = View.VISIBLE
-                    itemView.action_complaint.setText(item.status)
+                    //itemView.action_complaint.setText(item.status)
+                }
+
+                itemView.location.visibility = View.VISIBLE
+                var kmInDouble: Double=0.0
+                try {
+                    kmInDouble =
+                        item.fir_km!!.toDouble()
+                } catch (e: NumberFormatException) {
+                }
+
+                val kmValue = String.format("%.2f", kmInDouble)
+                itemView.location.setText("" + kmValue + "KM away").toString()
+                itemView.location.setOnClickListener {
+                    val gmmIntentUri =
+                        Uri.parse("google.navigation:q=" + item.latitude + "," + item.longitude + "")
+                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                    mapIntent.setPackage("com.google.android.apps.maps")
+                    context.startActivity(mapIntent)
                 }
 
             } else {
@@ -524,11 +568,85 @@ class CasesAdapter(
                 }
             }
 
-            if(!(item.status.equals("Unassigned"))){
-                itemView.view_fir.visibility = View.VISIBLE
+
+            itemView.imgFirMedia.setOnClickListener {
+                //show enlarged image
+                displayLargeImageofFir(context, item, options)
+            }
+
+            itemView.imgComplaintMedia.setOnClickListener {
+                //show enlarged image
+                DisplayLargeImageOfMedia(context, item, options)
+            }
+
+            if (!(item.status.equals("Unassigned"))) {  //change
+                //itemView.view_fir.visibility = View.VISIBLE
+                itemView.imgFirMedia.visibility = View.VISIBLE
+
+                if (item.fir_image!!.isNotEmpty()) {
+                    try {
+                        Glide.with(context).load(item.fir_image).into(itemView.imgFirMedia)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
+                }
             }
         }
 
+        fun DisplayLargeImageOfMedia(
+            context: Context,
+            userDetail: GetCasesResponse.Data,
+            options: RequestOptions
+        ) {
+            //show enlarged image
+            val binding =
+                DataBindingUtil.inflate<ViewDataBinding>(
+                    LayoutInflater.from(context),
+                    R.layout.alert_image_view,
+                    null,
+                    false
+                )
+
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(binding.root)
+
+            val imageView = (dialog.findViewById(R.id.imgView) as ImageView)
+            val mediaUrl: String = userDetail.media_list?.get(0)!!
+            try {
+                Glide.with(context).load(mediaUrl).apply(options).into(imageView)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            dialog.show()
+        }
+
+        fun displayLargeImageofFir(
+            context: Context,
+            userDetail: GetCasesResponse.Data,
+            options: RequestOptions
+        ) {
+            //show enlarged image
+            val binding =
+                DataBindingUtil.inflate<ViewDataBinding>(
+                    LayoutInflater.from(context),
+                    R.layout.alert_image_view,
+                    null,
+                    false
+                )
+
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.setContentView(binding.root)
+
+            val imageView = (dialog.findViewById(R.id.imgView) as ImageView)
+            try {
+                Glide.with(context).load(userDetail.fir_image).apply(options).into(imageView)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+            dialog.show()
+        }
 
         fun DisplayLargeImage(
             context: Context,
@@ -557,8 +675,9 @@ class CasesAdapter(
             dialog.show()
         }
 
-       fun getImage(context:Context, imageName: String):Int {
-            val drawableResourceId = context.getResources().getIdentifier(imageName, "drawable", context.getPackageName())
+        fun getImage(context: Context, imageName: String): Int {
+            val drawableResourceId = context.getResources()
+                .getIdentifier(imageName, "drawable", context.getPackageName())
             return drawableResourceId
         }
     }

@@ -8,14 +8,14 @@ import com.ngo.R
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CenteredToolbar
 import com.ngo.utils.PreferenceHandler
+import kotlinx.android.synthetic.main.activity_contact_us.*
 
 import kotlinx.android.synthetic.main.image_video_layout.toolbarLayout
-import kotlinx.android.synthetic.main.activity_contactus.*
 
 class ContactUsActivity : BaseActivity(){
 
     override fun getLayout(): Int {
-        return R.layout.activity_contactus
+        return R.layout.activity_contact_us
     }
 
     override fun setupUI() {
@@ -26,13 +26,13 @@ class ContactUsActivity : BaseActivity(){
             onBackPressed()
         }
 
-        etMobile1.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_CONTACT_NO, "6009121346"))
+        etMobile1.setText("Mob: "+PreferenceHandler.readString(this, PreferenceHandler.NGO_CONTACT_NO, "6009121346"))
         etName.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_NAME, "Drug Free Arunachal"))
         etAddressLine1.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_ADDRESS, "Yupia Market, Yupia"))
-        etDist.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_DIST, "Papum Pare"))
-        etState.setText( PreferenceHandler.readString(this, PreferenceHandler.NGO_STATE, "Arunachal Pradesh"))
-        etPinCode.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_PIN, "791112"))
-        etEmail.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_EMAIL, "dfa.contact@gmail.com"))
+        etDist.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_DIST, "Papum Pare")+",")
+        etState.setText( PreferenceHandler.readString(this, PreferenceHandler.NGO_STATE, "Arunachal Pradesh"+","))
+        etPinCode.setText("Pin-"+PreferenceHandler.readString(this, PreferenceHandler.NGO_PIN, "791112"))
+        etEmail.setText("Email: "+PreferenceHandler.readString(this, PreferenceHandler.NGO_EMAIL, "dfa.contact@gmail.com"))
 
         val lat =(PreferenceHandler.readString(this, PreferenceHandler.NGO_LATITUDE, "27.144675"))!!.toDouble()
         val lng = PreferenceHandler.readString(this, PreferenceHandler.NGO_LONGITUDE, "93.727255")!!.toDouble()
@@ -46,7 +46,7 @@ class ContactUsActivity : BaseActivity(){
     }
 
     override fun handleKeyboard(): View {
-        return contactusLayout
+        return contactuslayout
     }
 
 }

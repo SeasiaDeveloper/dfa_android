@@ -277,6 +277,16 @@
                         </LinearLayout>
 
                         <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imgFirMedia"
+                            android:layout_width="match_parent"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_height="156dp"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/camera_placeholder"
+                            android:visibility="gone"/>
+
+                        <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/imgComplaintMedia"
                             android:layout_width="match_parent"
                             android:layout_gravity="center_horizontal"
@@ -377,6 +387,29 @@
                         android:layout_marginEnd="@dimen/_5sdp">
 
                         <com.ngo.customviews.CustomtextView
+                            android:id="@+id/location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerInParent="true"
+                            android:layout_gravity="center_vertical"
+                            android:layout_margin="@dimen/_10sdp"
+                            android:background="@drawable/shape_round_corner_green"
+                            android:drawableStart="@drawable/ic_location"
+                            android:drawablePadding="@dimen/_2sdp"
+                            android:drawableTint="@color/green"
+                            android:gravity="center_vertical"
+                            android:paddingStart="@dimen/_4ssp"
+                            android:paddingTop="@dimen/_4ssp"
+                            android:paddingEnd="@dimen/_4ssp"
+                            android:paddingBottom="@dimen/_4ssp"
+                            android:textAllCaps="true"
+                            android:textColor="@color/green"
+                            android:textSize="@dimen/_12ssp"
+                            android:visibility="gone"
+                            tools:targetApi="m" />
+
+                        <com.ngo.customviews.CustomtextView
                             android:id="@+id/action_complaint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -397,30 +430,8 @@
                             android:textAllCaps="false"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_12ssp"
+                            android:layout_alignParentRight="true"
                             android:visibility="visible"
-                            tools:targetApi="m" />
-
-                        <com.ngo.customviews.CustomtextView
-                            android:id="@+id/location"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerInParent="true"
-                            android:layout_gravity="center_vertical"
-                            android:layout_margin="@dimen/_10sdp"
-                            android:background="@drawable/shape_round_corner_green"
-                            android:drawableStart="@drawable/ic_location"
-                            android:drawablePadding="@dimen/_2sdp"
-                            android:drawableTint="@color/green"
-                            android:gravity="center_vertical"
-                            android:paddingStart="@dimen/_4ssp"
-                            android:paddingTop="@dimen/_4ssp"
-                            android:paddingEnd="@dimen/_4ssp"
-                            android:paddingBottom="@dimen/_4ssp"
-                            android:textAllCaps="true"
-                            android:textColor="@color/green"
-                            android:textSize="@dimen/_12ssp"
-                            android:visibility="gone"
                             tools:targetApi="m" />
 
                     </RelativeLayout>

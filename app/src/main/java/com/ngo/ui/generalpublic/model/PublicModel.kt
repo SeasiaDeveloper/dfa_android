@@ -1,5 +1,7 @@
 package com.ngo.ui.generalpublic.model
 
+import android.content.Context
+import android.widget.Toast
 import com.ngo.apis.ApiClient
 import com.ngo.apis.CallRetrofitApi
 import com.ngo.pojo.request.ComplaintRequest
@@ -34,10 +36,10 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
             return
         }
 
-       /* if (description.isEmpty()) {
-            complaintsPresenter.onEmptyDescription();
-            return
-        }*/
+        /* if (description.isEmpty()) {
+             complaintsPresenter.onEmptyDescription();
+             return
+         }*/
         complaintsPresenter.onValidationSuccess()
     }
 
@@ -70,56 +72,66 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
     /*
        * hit api to save the complaints
        * */
-    fun complaintsRequest(token: String?, complaintsRequest: ComplaintRequest) {
-        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
-        val map = HashMap<String, RequestBody>()
-        map["crime_type_id"] = toRequestBody(complaintsRequest.crime)
-        map["urgency"] = toRequestBody(complaintsRequest.level.toString())
-        map["info"] = toRequestBody(complaintsRequest.description)
-        // map["device_token"] = toRequestBody(complaintsRequest.device_token)
-        map["latitude"] = toRequestBody(complaintsRequest.lat.toString())
-        map["longitude"] = toRequestBody(complaintsRequest.lng.toString())
-        map["media_type"] = toRequestBody(complaintsRequest.mediaType.toString())
-
-        val parts = arrayOfNulls<MultipartBody.Part>(complaintsRequest.image.size)
-        if (complaintsRequest.mediaType.equals("photos")) {
-            for (i in 0 until complaintsRequest.image.size) {
-                val file = File(complaintsRequest.image.get(i))
-                val surveyBody: RequestBody = RequestBody.create(MediaType.parse("image/*"), file)
-                parts[i] = MultipartBody.Part.createFormData("crime_pics[]", file.name, surveyBody)
-            }
+    fun complaintsRequest(token: String?, complaintsRequest: ComplaintRequest, context: Context) {
+        if (complaintsRequest.lng.toString().equals("") || complaintsRequest.lng.toString().equals("0") || complaintsRequest.lng.toString().equals("0.0")) {
+            Toast.makeText(context, "Not getting longitude value", Toast.LENGTH_SHORT).show();
+        } else if (complaintsRequest.lat.toString().equals("") || complaintsRequest.lat.toString().equals("0") || complaintsRequest.lat.toString().equals("0.0")) {
+            Toast.makeText(context, "Not getting latitude value", Toast.LENGTH_SHORT).show();
         } else {
-            for (i in 0 until complaintsRequest.image.size) {
-                val file = File(complaintsRequest.image.get(i))
-                val surveyBody: RequestBody = RequestBody.create(MediaType.parse("video/*"), file)
-                parts[i] = MultipartBody.Part.createFormData("crime_pics[]", file.name, surveyBody)
-            }
-        }
+            val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+            val map = HashMap<String, RequestBody>()
+            map["crime_type_id"] = toRequestBody(complaintsRequest.crime)
+            map["urgency"] = toRequestBody(complaintsRequest.level.toString())
+            map["info"] = toRequestBody(complaintsRequest.description)
+            // map["device_token"] = toRequestBody(complaintsRequest.device_token)
+            map["latitude"] = toRequestBody(complaintsRequest.lat.toString())
+            map["longitude"] = toRequestBody(complaintsRequest.lng.toString())
+            map["media_type"] = toRequestBody(complaintsRequest.mediaType.toString())
 
-
-        retrofitApi.addComplaint(token, map, parts).enqueue(object :
-            Callback<ComplaintResponse> {
-            override fun onResponse(
-                call: Call<ComplaintResponse>,
-                response: Response<ComplaintResponse>
-            ) {
-                val responseObject = response.body()
-                if (responseObject != null) {
-                    if (responseObject.code == 200) {
-                        complaintsPresenter.onSaveDetailsSuccess(responseObject)
-                    } else {
-                        complaintsPresenter.onSaveDetailsFailed(
-                            response.body()?.message ?: Constants.SERVER_ERROR
-                        )
-                    }
-                } else {
-                    complaintsPresenter.showError(Constants.SERVER_ERROR)
+            val parts = arrayOfNulls<MultipartBody.Part>(complaintsRequest.image.size)
+            if (complaintsRequest.mediaType.equals("photos")) {
+                for (i in 0 until complaintsRequest.image.size) {
+                    val file = File(complaintsRequest.image.get(i))
+                    val surveyBody: RequestBody =
+                        RequestBody.create(MediaType.parse("image/*"), file)
+                    parts[i] =
+                        MultipartBody.Part.createFormData("crime_pics[]", file.name, surveyBody)
+                }
+            } else {
+                for (i in 0 until complaintsRequest.image.size) {
+                    val file = File(complaintsRequest.image.get(i))
+                    val surveyBody: RequestBody =
+                        RequestBody.create(MediaType.parse("video/*"), file)
+                    parts[i] =
+                        MultipartBody.Part.createFormData("crime_pics[]", file.name, surveyBody)
                 }
             }
 
-            override fun onFailure(call: Call<ComplaintResponse>, t: Throwable) {
-                complaintsPresenter.showError(t.message + "")
-            }
-        })
+
+            retrofitApi.addComplaint(token, map, parts).enqueue(object :
+                Callback<ComplaintResponse> {
+                override fun onResponse(
+                    call: Call<ComplaintResponse>,
+                    response: Response<ComplaintResponse>
+                ) {
+                    val responseObject = response.body()
+                    if (responseObject != null) {
+                        if (responseObject.code == 200) {
+                            complaintsPresenter.onSaveDetailsSuccess(responseObject)
+                        } else {
+                            complaintsPresenter.onSaveDetailsFailed(
+                                response.body()?.message ?: Constants.SERVER_ERROR
+                            )
+                        }
+                    } else {
+                        complaintsPresenter.showError(Constants.SERVER_ERROR)
+                    }
+                }
+
+                override fun onFailure(call: Call<ComplaintResponse>, t: Throwable) {
+                    complaintsPresenter.showError(t.message + "")
+                }
+            })
+        }
     }
 }

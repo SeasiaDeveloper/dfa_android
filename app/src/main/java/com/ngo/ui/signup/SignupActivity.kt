@@ -56,10 +56,10 @@ class SignupActivity : BaseActivity(), SignupView {
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
-          /*etMobile1.setText(intent.getStringExtra("phoneNo"))
+          etMobile1.setText(intent.getStringExtra("phoneNo"))
           etMobile1.isFocusable = false
           etMobile1.isEnabled = false
-          etMobile1.isClickable = false*/
+          etMobile1.isClickable = false
     }
 
     private fun getFirebaseToken() {

@@ -60,7 +60,7 @@ class ProfileActivity : BaseActivity(), ProfileView {
     private var userId = ""
 
     override fun fetchDistList(responseObject: DistResponse) {
-      if(userId.equals(""))  dismissProgress()
+        if (userId.equals("")) dismissProgress()
 
         setListeners()
 
@@ -92,31 +92,31 @@ class ProfileActivity : BaseActivity(), ProfileView {
             getUserProfile(userId)
         }
 
-    // Set an on item selected listener for spinner object
-    spDist.onItemSelectedListener =
-    object : AdapterView.OnItemSelectedListener {
-        override fun onItemSelected(
-            parent: AdapterView<*>,
-            view: View,
-            position: Int,
-            id: Long
-        ) {
-            // Display the selected item text on text view
-            "Spinner selected : ${parent.getItemAtPosition(position)}"
+        // Set an on item selected listener for spinner object
+        spDist.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    // Display the selected item text on text view
+                    "Spinner selected : ${parent.getItemAtPosition(position)}"
 
-            for (dist in distList) {
-                if (parent.getItemAtPosition(position).equals(dist.name)) {
-                    distId = (dist.id).toInt()
-                    break
+                    for (dist in distList) {
+                        if (parent.getItemAtPosition(position).equals(dist.name)) {
+                            distId = (dist.id).toInt()
+                            break
+                        }
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Another interface callback
                 }
             }
-        }
-
-        override fun onNothingSelected(parent: AdapterView<*>) {
-            // Another interface callback
-        }
     }
-}
 
     private fun getUserProfile(userId: String) {
         profilePresenter.fetchUserInfo(userId)
@@ -359,7 +359,6 @@ class ProfileActivity : BaseActivity(), ProfileView {
     }
 
     override fun setupUI() {
-        (toolbarLayout as CenteredToolbar).title = getString(R.string.edit_profile)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.BLACK)
         (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_button)
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
@@ -373,159 +372,166 @@ class ProfileActivity : BaseActivity(), ProfileView {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
 
-        if(intent.getStringExtra("id")!=null)
-        userId = intent.getStringExtra("id")
+        if (intent.getStringExtra("id") != null)
+            userId = intent.getStringExtra("id")
+
+        if (intent.getStringExtra("fromWhere") != null) {
+            if (intent.getStringExtra("fromWhere").equals("userProfile")) {
+                (toolbarLayout as CenteredToolbar).title = getString(R.string.user_profile)
+            } else {
+                (toolbarLayout as CenteredToolbar).title = getString(R.string.edit_profile)
+            }
+        }
     }
 
-    override fun handleKeyboard(): View {
-        return profileLayout
+        override fun handleKeyboard(): View {
+            return profileLayout
+        }
+
+        override fun showServerError(error: String) {
+            dismissProgress()
+            Utilities.showMessage(this, error)
+        }
+
+        override fun usernameEmptyValidation() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.fill_mobile))
+        }
+
+        override fun usernameValidationFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.valid_mobile_number))
+        }
+
+        override fun firstNameValidationFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.valid_first_name))
+        }
+
+        override fun lastNameValidationFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.valid_last_name))
+        }
+
+        override fun Address1ValidationFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.valid_address_1))
+        }
+
+        override fun pinCodeValidationFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.valid_pin_code))
+        }
+
+        override fun mobileValidationFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.valid_mobile))
+        }
+
+        override fun adhaarNoValidationFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.valid_adhar))
+        }
+
+        override fun emailValidationFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.valid_email))
+        }
+
+        override fun firstNameAlphabetFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.first_name_alphabet_validation))
+        }
+
+        override fun firstNameLengthFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.fname_length_validation))
+        }
+
+        override fun middleNameAlphabetFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.mid_name_alphabet_validation))
+        }
+
+        override fun middleNameLengthFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.mid_name_length_validation))
+        }
+
+        override fun lastNameAlphabetFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.lastname_alphabets_validation))
+        }
+
+        override fun lastNameLengthFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.last_name_length_validation))
+        }
+
+        override fun addressLine1LengthFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.adress_length_validation))
+        }
+
+        override fun addressLine2LengthFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.adress_two_length_validation))
+        }
+
+        override fun pinCodeLengthFailure() {
+            dismissProgress()
+            Utilities.showMessage(this, getString(R.string.pin_validation))
+        }
+
+        override fun getUserProfileSuccess(responseObject: GetProfileResponse) {
+            dismissProgress()
+            val jsonString = GsonBuilder().create().toJson(responseObject)
+            //Save that String in SharedPreferences
+            setData(jsonString)
+            btnUpdate.visibility = View.GONE
+            btnCancel.visibility = View.GONE
+            layout_profile_image.visibility = View.GONE
+            //set edittexts as non editable
+            etFirstName.isFocusable = false
+            etFirstName.isEnabled = false
+            etFirstName.isClickable = false
+
+            etMiddleName.isFocusable = false
+            etMiddleName.isEnabled = false
+            etMiddleName.isClickable = false
+
+            etLastName.isFocusable = false
+            etLastName.isEnabled = false
+            etLastName.isClickable = false
+
+            spDist.visibility = View.GONE
+            etDist.visibility = View.VISIBLE
+            etDist.setText(responseObject.data?.district)
+            etDist.isFocusable = false
+            etDist.isEnabled = false
+            etDist.isClickable = false
+
+            etAddress1.isFocusable = false
+            etAddress1.isEnabled = false
+            etAddress1.isClickable = false
+
+            etAddress2.isFocusable = false
+            etAddress2.isEnabled = false
+            etAddress2.isClickable = false
+
+            etPinCode.isFocusable = false
+            etPinCode.isEnabled = false
+            etPinCode.isClickable = false
+
+            etMobile2.isFocusable = false
+            etMobile2.isEnabled = false
+            etMobile2.isClickable = false
+
+            etEmail.isFocusable = false
+            etEmail.isEnabled = false
+            etEmail.isClickable = false
+
+        }
+
+
     }
-
-    override fun showServerError(error: String) {
-        dismissProgress()
-        Utilities.showMessage(this, error)
-    }
-
-    override fun usernameEmptyValidation() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.fill_mobile))
-    }
-
-    override fun usernameValidationFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.valid_mobile_number))
-    }
-
-    override fun firstNameValidationFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.valid_first_name))
-    }
-
-    override fun lastNameValidationFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.valid_last_name))
-    }
-
-    override fun Address1ValidationFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.valid_address_1))
-    }
-
-    override fun pinCodeValidationFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.valid_pin_code))
-    }
-
-    override fun mobileValidationFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.valid_mobile))
-    }
-
-    override fun adhaarNoValidationFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.valid_adhar))
-    }
-
-    override fun emailValidationFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.valid_email))
-    }
-
-    override fun firstNameAlphabetFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.first_name_alphabet_validation))
-    }
-
-    override fun firstNameLengthFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.fname_length_validation))
-    }
-
-    override fun middleNameAlphabetFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.mid_name_alphabet_validation))
-    }
-
-    override fun middleNameLengthFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.mid_name_length_validation))
-    }
-
-    override fun lastNameAlphabetFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.lastname_alphabets_validation))
-    }
-
-    override fun lastNameLengthFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.last_name_length_validation))
-    }
-
-    override fun addressLine1LengthFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.adress_length_validation))
-    }
-
-    override fun addressLine2LengthFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.adress_two_length_validation))
-    }
-
-    override fun pinCodeLengthFailure() {
-        dismissProgress()
-        Utilities.showMessage(this, getString(R.string.pin_validation))
-    }
-
-    override fun getUserProfileSuccess(responseObject: GetProfileResponse)
-    {
-        dismissProgress()
-        val jsonString = GsonBuilder().create().toJson(responseObject)
-        //Save that String in SharedPreferences
-       setData(jsonString)
-        btnUpdate.visibility = View.GONE
-        btnCancel.visibility = View.GONE
-        layout_profile_image.visibility = View.GONE
-        //set edittexts as non editable
-        etFirstName.isFocusable = false
-        etFirstName.isEnabled = false
-        etFirstName.isClickable = false
-
-        etMiddleName.isFocusable = false
-        etMiddleName.isEnabled = false
-        etMiddleName.isClickable = false
-
-        etLastName.isFocusable = false
-        etLastName.isEnabled = false
-        etLastName.isClickable = false
-
-        spDist.visibility = View.GONE
-        etDist.visibility = View.VISIBLE
-        etDist.setText(responseObject.data?.district)
-        etDist.isFocusable = false
-        etDist.isEnabled = false
-        etDist.isClickable = false
-
-        etAddress1.isFocusable = false
-        etAddress1.isEnabled = false
-        etAddress1.isClickable = false
-
-        etAddress2.isFocusable = false
-        etAddress2.isEnabled = false
-        etAddress2.isClickable = false
-
-        etPinCode.isFocusable = false
-        etPinCode.isEnabled = false
-        etPinCode.isClickable = false
-
-        etMobile2.isFocusable = false
-        etMobile2.isEnabled = false
-        etMobile2.isClickable = false
-
-        etEmail.isFocusable = false
-        etEmail.isEnabled = false
-        etEmail.isClickable = false
-
-    }
-
-
-}

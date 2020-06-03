@@ -2,8 +2,8 @@ package com.ngo.utils
 
 object Constants {
     //const val BASE_URL="http://stgsp.appsndevs.com:9041/Complaint/api/"
-   // const val BASE_URL = "http://stgsp.appsndevs.com:9041/drugfree/wp-json/"
-    const val BASE_URL = "http://drugfree.appsndevs.com/wp-json/"
+    const val BASE_URL = "http://stgsp.appsndevs.com:9041/drugfree/wp-json/"
+   // const val BASE_URL = "http://drugfree.appsndevs.com/wp-json/"
     const val SERVER_ERROR = "Something went wrong.Please try again"
     const val TOKEN_ERROR = "Token Expired."
     const val PUBLIC_COMPLAINT_DATA = "complaint_data"

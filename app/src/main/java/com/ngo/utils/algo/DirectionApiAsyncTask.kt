@@ -34,7 +34,7 @@ class DirectionApiAsyncTask(
         val latitude1 = PreferenceHandler.readString(context, PreferenceHandler.LATITUDE, "")
         val longitude1 = PreferenceHandler.readString(context, PreferenceHandler.LONGITUDE, "")
         var mUrlConnection: HttpURLConnection? = null
-        var mJsonResults = StringBuilder();
+        var mJsonResults = StringBuilder()
         try {
             var urlFinal =
                 "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins=" + latitude1 + "," + longitude1 + "&destinations=" + latitude + "," + longitude + "&key=AIzaSyDfCcAJOo_cqeIYwKggFlv152B5wVr6iso"

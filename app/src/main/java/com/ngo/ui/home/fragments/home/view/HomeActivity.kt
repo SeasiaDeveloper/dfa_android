@@ -237,7 +237,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             adapter.addFragment(genPubHomeFrag, "Home")
         }
         adapter.addFragment(EmergencyFragment(), "Emergency")
-        adapter.addFragment(CasesFragment(), "Cases")
+        //adapter.addFragment(CasesFragment(), "Cases")
         adapter.addFragment(PhotosFragment(), "Photos")
         adapter.addFragment(VideosFragment(), "Videos")
         viewPager?.adapter = adapter
@@ -315,6 +315,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
             R.id.nav_edit_profile -> {
                 val intent = Intent(this, ProfileActivity::class.java)
+                intent.putExtra("fromWhere","editProfile")
                 startActivity(intent)
             }
             R.id.nav_password -> {
@@ -409,6 +410,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         navigationLayout.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
+            intent.putExtra("fromWhere","editProfile")
             drawerLayout.closeDrawer(GravityCompat.START)
             startActivity(intent)
         }

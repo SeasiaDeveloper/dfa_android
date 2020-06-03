@@ -12,9 +12,6 @@ import com.ngo.fragments.presenter.FragmentPresenter
 import com.ngo.fragments.presenter.FragmentPresenterImpl
 import com.ngo.fragments.view.FragmentView
 import com.ngo.pojo.response.GetPoliceFormResponse
-import com.ngo.pojo.response.PoliceStatusResponse
-import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
-import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_image_dialog_view.*
 import java.lang.Exception

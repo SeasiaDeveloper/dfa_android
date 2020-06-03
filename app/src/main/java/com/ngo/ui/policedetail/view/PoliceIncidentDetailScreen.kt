@@ -43,7 +43,8 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
         //refresh the back fragment
-        GeneralPublicHomeFragment.change = 1
+        GeneralPublicHomeFragment.changeThroughIncidentScreen = 1
+
         CasesFragment.change = 1
         finish()
     }
@@ -124,7 +125,7 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
         // setUiVisibilityOfdata()
 
         if (isInternetAvailable()) {
-            showProgress()
+            Utilities.showProgress(this@PoliceIncidentDetailScreen)
             val crimeDetailsRequest = PoliceDetailrequest(complaintId, "1")
             crimePresenter.hitCrimeDetailsApi(crimeDetailsRequest, authorizationToken)
         } else {
@@ -180,7 +181,7 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
     }
 
     override fun getCrimeDetailsSuccess(getCrimeDetailsResponse: GetCrimeDetailsResponse) {
-        dismissProgress()
+        Utilities.dismissProgress()
         this.getCrimeDetailsResponse = getCrimeDetailsResponse
         /* if (isKnowPostOrComplaint.equals("tohit")) {
              postOrComplaint = getCrimeDetailsResponse.data?.get(0)?.type!!
@@ -231,7 +232,7 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
     }
 
     override fun showServerError(error: String) {
-        dismissProgress()
+        Utilities.dismissProgress()
         Utilities.showMessage(this, error)
     }
 }

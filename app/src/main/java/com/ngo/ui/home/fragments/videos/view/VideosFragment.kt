@@ -39,7 +39,7 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
     private var videos: List<GetPhotosResponse.Data> = mutableListOf()
     lateinit var request: GetPhotosRequest
     private var presenter: VideoPresenter = VideosPresenterImpl(this)
-    private var authorizationToken: String? = null
+    private var authorizationToken: String? = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,15 +49,20 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
         return inflater.inflate(R.layout.fragment_videos, container, false)!!
     }
 
+    override fun onResume() {
+        super.onResume()
+        request = GetPhotosRequest("videos")
+        Utilities.showProgress(activity!!)
+        authorizationToken =
+            PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+        presenter.getVideos(authorizationToken, request)
+    }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setAdapter()
-        request = GetPhotosRequest("videos")
-        Utilities.showProgress(activity!!)
-        val authorizationToken =
-            PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
-        presenter.getVideos(authorizationToken, request)
+
         itemsswipetorefresh.setProgressBackgroundColorSchemeColor(
             ContextCompat.getColor(
                 activity!!,

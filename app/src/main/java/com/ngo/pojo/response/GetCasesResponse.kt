@@ -10,7 +10,11 @@ class GetCasesResponse : Serializable {
 
     inner class Data : Serializable {
         val is_assigned: String? = null
+        val fir_image: String?= null
         val fir_url:String?=null
+        val fir_mile: String?=null
+        val fir_km: String?=null
+        val fir_distance:String?=null
         val id: String? = null
         val user_id: String? = null
         val showDelete: Int? = null

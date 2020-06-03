@@ -51,6 +51,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     var whenDeleteCall: Boolean = false
     var deleteItemposition: Int? = null
     lateinit var horizontalLayoutManager: LinearLayoutManager
+    var actionChanged: Boolean = false
 
     override fun onStatusClick(statusId: String) {
         this.statusId = statusId
@@ -304,8 +305,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             "0", "1", "10"
         ) //all = 0 for only my cases;type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
-        GeneralPublicHomeFragment.change =
-            1 // so that list on Home gets refreshed after change in status
+        GeneralPublicHomeFragment.changeThroughIncidentScreen = 1 // so that list on Home gets refreshed after change in status
     }
 
     //to delete my case
@@ -321,8 +321,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             "0", "", "0", "1", "10"
         ) //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
-        GeneralPublicHomeFragment.change =
-            1 // so that list on Home gets refreshed after change in status
+        GeneralPublicHomeFragment.changeThroughIncidentScreen = 1 // so that list on Home gets refreshed after change in status
     }
 
     //displays the detail of my case
@@ -363,11 +362,11 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             }
 
             else -> {
-                val intent = Intent(this, IncidentDetailActivity::class.java)
+                /*val intent = Intent(this, IncidentDetailActivity::class.java)
                 intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
                 intent.putExtra(Constants.POST_OR_COMPLAINT, "0")
                 intent.putExtra(Constants.FROM_WHERE, "nottohit")
-                startActivity(intent)
+                startActivity(intent)*/
             }
         }
     }
@@ -402,9 +401,21 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
         //refresh the list
-        if (responseObject.data?.size != 0) {
+       /* if (responseObject.data?.size != 0) {
             adapter?.notifyActionData(responseObject.data!!)
+        }*/
+
+     /*   if(responseObject.data?.get(0)?.status!!.equals("Unauthentic") || responseObject.data.get(0).status!!.equals("Reject")){
+            //refresh the list
+            Utilities.showProgress(this@MyCasesActivity)
+            doApiCall()
         }
+        else {*/
+            actionChanged = true
+            if (responseObject.data!!.size != 0) {
+                adapter?.notifyActionData(responseObject.data)
+            }
+       // }
     }
 
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {

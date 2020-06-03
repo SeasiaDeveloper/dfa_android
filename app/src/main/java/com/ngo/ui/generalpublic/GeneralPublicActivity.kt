@@ -87,9 +87,11 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
         Utilities.requestPermissions(this)
         //GeneralPublicHomeFragment.fromIncidentDetailScreen=1
-        GeneralPublicHomeFragment.change = 0
-    }
 
+       // GeneralPublicHomeFragment.change = 0
+        GeneralPublicHomeFragment.changeThroughIncidentScreen = 0
+    }
+//
     private fun setListeners() {
         tvSelectPhoto.setOnClickListener(this)
         tvTakePhoto.setOnClickListener(this)
@@ -472,7 +474,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
                 path = cursor.getString(idx)
                 pathOfImages = ArrayList()
-                pathOfImages.add(path)
+                pathOfImages.add(patha
                 cursor.close()
             }
         }
@@ -503,8 +505,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     override fun showComplaintsResponse(complaintsResponse: ComplaintResponse) {
         dismissProgress()
         Utilities.showMessage(this, complaintsResponse.message!!)
-        GeneralPublicHomeFragment.change = 1
-
+        //GeneralPublicHomeFragment.change = 1
+        GeneralPublicHomeFragment.changeThroughIncidentScreen = 1
         finish()
     }
 
@@ -533,7 +535,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 longitude,
                 mediaType!!
             )
-            complaintsPresenter.saveDetailsRequest(authorizationToken, request)
+            complaintsPresenter.saveDetailsRequest(authorizationToken, request,this@GeneralPublicActivity)
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
