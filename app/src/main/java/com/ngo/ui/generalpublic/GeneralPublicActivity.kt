@@ -474,7 +474,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
                 path = cursor.getString(idx)
                 pathOfImages = ArrayList()
-                pathOfImages.add(patha
+                pathOfImages.add(path)
                 cursor.close()
             }
         }
