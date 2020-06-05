@@ -73,11 +73,6 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
        * hit api to save the complaints
        * */
     fun complaintsRequest(token: String?, complaintsRequest: ComplaintRequest, context: Context) {
-        if (complaintsRequest.lng.toString().equals("") || complaintsRequest.lng.toString().equals("0") || complaintsRequest.lng.toString().equals("0.0")) {
-            Toast.makeText(context, "Not getting longitude value", Toast.LENGTH_SHORT).show();
-        } else if (complaintsRequest.lat.toString().equals("") || complaintsRequest.lat.toString().equals("0") || complaintsRequest.lat.toString().equals("0.0")) {
-            Toast.makeText(context, "Not getting latitude value", Toast.LENGTH_SHORT).show();
-        } else {
             val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
             val map = HashMap<String, RequestBody>()
             map["crime_type_id"] = toRequestBody(complaintsRequest.crime)
@@ -132,6 +127,5 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
                     complaintsPresenter.showError(t.message + "")
                 }
             })
-        }
     }
 }

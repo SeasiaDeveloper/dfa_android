@@ -21,6 +21,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.MediaController
+import android.widget.Toast
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.ngo.R
@@ -88,10 +89,11 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         Utilities.requestPermissions(this)
         //GeneralPublicHomeFragment.fromIncidentDetailScreen=1
 
-       // GeneralPublicHomeFragment.change = 0
+        // GeneralPublicHomeFragment.change = 0
         GeneralPublicHomeFragment.changeThroughIncidentScreen = 0
     }
-//
+
+    //
     private fun setListeners() {
         tvSelectPhoto.setOnClickListener(this)
         tvTakePhoto.setOnClickListener(this)
@@ -524,6 +526,16 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         if (getCrimeTypesResponse != null) {
             id = getCrimeTypesResponse.data?.get(spTypesOfCrime.selectedItemPosition)?.id
         }
+
+        if (lattitude.equals("") || longitude.equals("")) {
+            Toast.makeText(
+                this@GeneralPublicActivity,
+                "Please turn on your Device GPS",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
         if (isInternetAvailable()) {
             showProgress()
             val request = ComplaintRequest(
@@ -535,7 +547,11 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 longitude,
                 mediaType!!
             )
-            complaintsPresenter.saveDetailsRequest(authorizationToken, request,this@GeneralPublicActivity)
+            complaintsPresenter.saveDetailsRequest(
+                authorizationToken,
+                request,
+                this@GeneralPublicActivity
+            )
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
@@ -581,9 +597,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             val intent = Intent(this, LoginActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
+        } else {
+            Utilities.showMessage(this, error)
         }
-        else{
-        Utilities.showMessage(this, error)}
     }
 
 

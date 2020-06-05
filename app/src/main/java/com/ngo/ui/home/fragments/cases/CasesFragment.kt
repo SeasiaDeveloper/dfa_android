@@ -103,7 +103,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         casesRequest = CasesRequest(
             "1",
             "",
-            "0", "1", "10"
+            "0", "1", "5"
         ) //all = "1" for fetching all the cases whose type = 0
         Utilities.showProgress(mContext)
         //hit api with search variable
@@ -187,7 +187,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
                         casesRequest = CasesRequest(
                             "1",
                             etSearch.text.toString(),
-                            "0", "1", "10"
+                            "0", "1", "5"
                         ) //all = "1" for fetching all the cases whose type = 0
 
                     } else {
@@ -347,7 +347,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         Utilities.showMessage(mContext, responseObject.message!!)
         whenDeleteCall = true
         val casesRequest =
-            CasesRequest("1", "", "0", "1", "10") //type = -1 for fetching all the data
+            CasesRequest("1", "", "0", "1", "5") //type = -1 for fetching all the data
         //  Utilities.showProgress(activity!!)
         presenter.getComplaints(casesRequest, token, type)
         change = 1
@@ -373,7 +373,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         if (!search) {
             pageCount = page
             val casesRequest =
-                CasesRequest("1", "", "0", page.toString(), "10")//*totalItemsCount.toString()*//*)
+                CasesRequest("1", "", "0", page.toString(), "5")//*totalItemsCount.toString()*//*)
             presenter.getComplaints(casesRequest, token, type)
             progressBar.visibility = View.VISIBLE
         }
@@ -393,7 +393,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         // Utilities.showMessage(mContext, responseObject.message!!)
         isLike = true
         val casesRequest =
-            CasesRequest("1", "", "0", "1", "10") //type = -1 for fetching all the data
+            CasesRequest("1", "", "0", "1", "5") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
         change = 1
         GeneralPublicHomeFragment.change = 1

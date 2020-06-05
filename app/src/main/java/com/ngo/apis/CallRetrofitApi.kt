@@ -99,7 +99,7 @@ interface CallRetrofitApi {
     fun getCases(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<GetCasesResponse>
 
     @Multipart
-    @POST("jwt-auth/v1/crime_list_police")
+    @POST("jwt-auth/v1/crime_list_police_copy")
     fun getCasesForPolice(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<GetCasesResponse>
 
     //get my cases for police user

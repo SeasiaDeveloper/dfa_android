@@ -246,7 +246,7 @@
                         android:layout_height="wrap_content"
                         android:animateLayoutChanges="true"
                         android:orientation="vertical"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <LinearLayout
                             android:id="@+id/layoutContact"
@@ -284,7 +284,7 @@
                             android:layout_marginTop="@dimen/_4sdp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/camera_placeholder"
-                            android:visibility="gone"/>
+                            android:visibility="visible"/>
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/imgComplaintMedia"
