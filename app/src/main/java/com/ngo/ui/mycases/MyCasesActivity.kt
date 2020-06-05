@@ -96,6 +96,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     override fun onResume() {
         super.onResume()
         if (change == 1 || commentChange != 0) {
+            pageCount = 1
             myCasesApiCall()
         }
     }
@@ -464,5 +465,4 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         dialog = builder.create()
         dialog.show()
     }
-
 }

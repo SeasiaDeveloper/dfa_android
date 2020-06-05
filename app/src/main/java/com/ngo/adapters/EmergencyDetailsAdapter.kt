@@ -10,10 +10,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.ngo.R
 import com.ngo.pojo.response.GetEmergencyDetailsResponse
+import kotlin.random.Random
 
 
 class EmergencyDetailsAdapter(
@@ -65,6 +65,10 @@ class EmergencyDetailsAdapter(
             this.index = index
             txtName.setText(item.name)
             txtNumber.setText(item.contact_number)
+            val min = 20
+            val max = 30
+            val random: Int = Random.nextInt(max - min + 1) + min
+            txtDistance.text = random.toString()+" "+context.getString(R.string.km_away)
 
             txtCall.setOnClickListener {
 

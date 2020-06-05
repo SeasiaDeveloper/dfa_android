@@ -328,7 +328,7 @@ class CasesAdapter(
                     Utilities.changeDateFormat(item.report_data!!) + " " + Utilities.changeTimeFormat(
                         item.report_time!!
                     )
-                itemView.expandable_Level.text = "Level " + item.urgency
+                itemView.expandable_Level.text = /*"Level " + */item.urgency
 
                 if (item.status.equals("Unassigned") && !item.info.toString().isEmpty() && item.info != null) {
                     itemView.layout_info.visibility = View.VISIBLE
@@ -479,7 +479,7 @@ class CasesAdapter(
                 itemView.layoutStatus.visibility = View.VISIBLE
                 itemView.txtCrimeType.text = item.crime_type
                 itemView.txtStatus.text = item.status
-                itemView.txtUrgencyTitle.text = context.getString(R.string.urgency)
+                itemView.txtUrgencyTitle.text = context.getString(R.string.urgency_level)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     itemView.txtUrgencyTitle.setTextColor(
                         context.resources.getColor(
@@ -548,7 +548,7 @@ class CasesAdapter(
                 itemView.action_complaint.visibility = View.GONE
                 itemView.layoutCrimeType.visibility = View.GONE
                 itemView.layoutStatus.visibility = View.GONE
-                itemView.txtUrgencyTitle.text = context.getString(R.string.urgency_level_title)
+                itemView.txtUrgencyTitle.text = context.getString(R.string.urgency_level)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     itemView.txtUrgencyTitle.setTextColor(
                         context.resources.getColor(
@@ -567,7 +567,6 @@ class CasesAdapter(
                     itemView.expandable_Level.setTextColor(context.resources.getColor(R.color.green))
                 }
             }
-
 
             itemView.imgFirMedia.setOnClickListener {
                 //show enlarged image
