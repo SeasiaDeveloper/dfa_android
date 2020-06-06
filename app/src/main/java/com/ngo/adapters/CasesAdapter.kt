@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -64,7 +63,25 @@ class CasesAdapter(
             }
         }
         this.mList.get(position!!).status = data.status
+
         notifyItemChanged(position)
+    }
+
+    fun notifyPublicHomeActionData(listItems: Array<UpdateStatusSuccess.Data>, statusId: String) {
+        val data = listItems[0]
+        var position: Int? = null
+        for (i in 0..this.mList.size - 1) {
+            if (listItems[0].id.equals(this.mList.get(i).id)) {
+                position = i
+                break
+            }
+        }
+        this.mList.get(position!!).status = data.status
+
+        if (statusId == "6")
+            notifyItemRemoved(position)
+        else
+            notifyItemChanged(position)
     }
 
     //to add comment
@@ -330,7 +347,9 @@ class CasesAdapter(
                     )
                 itemView.expandable_Level.text = /*"Level " + */item.urgency
 
-                if (item.status.equals("Unassigned") && !item.info.toString().isEmpty() && item.info != null) {
+                if (item.status.equals("Unassigned") && !item.info.toString()
+                        .isEmpty() && item.info != null
+                ) {
                     itemView.layout_info.visibility = View.VISIBLE
                     itemView.expandable_DescriptionNgo.visibility = View.VISIBLE
                     itemView.expandable_DescriptionNgo.text = item.info.toString()
@@ -524,7 +543,7 @@ class CasesAdapter(
                 }
 
                 itemView.location.visibility = View.VISIBLE
-                var kmInDouble: Double=0.0
+                var kmInDouble: Double = 0.0
                 try {
                     kmInDouble =
                         item.fir_km!!.toDouble()
@@ -582,6 +601,7 @@ class CasesAdapter(
                 //itemView.view_fir.visibility = View.VISIBLE
                 itemView.imgFirMedia.visibility = View.VISIBLE
 
+/*
                 if (item.fir_image!!.isNotEmpty()) {
                     try {
                         Glide.with(context).load(item.fir_image).into(itemView.imgFirMedia)
@@ -589,6 +609,7 @@ class CasesAdapter(
                         e.printStackTrace()
                     }
                 }
+*/
             }
         }
 
