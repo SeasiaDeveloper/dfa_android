@@ -116,11 +116,19 @@ class CasesAdapter(
         }
     }
 
-    fun notifyFirImageData(position: Int?, response: FirImageResponse) {
+    fun notifyFirImageData(position: Int?, response: FirImageResponse, complaintId: String) {
         //GeneralPublicHomeFragment.isApiHit = true
+        var requiredPosition: Int? = null
         if (response.image!!.isNotEmpty()) {
-            this.mList.get(position!!).fir_image = response.image
-            notifyItemChanged(position)
+            for (i in 0..this.mList.size - 1) {
+                if (this.mList.get(i).id.equals(complaintId)) {
+                    requiredPosition = i
+                    break
+                }
+            }
+            this.mList.get(requiredPosition!!).fir_image = response.image
+            notifyDataSetChanged()
+            //notifyItemChanged(0)
         }
 
 
@@ -192,7 +200,8 @@ class CasesAdapter(
             type,
             alertDialogListener,
             activity,
-            fragment
+            fragment,
+            position
         )
 
     }
@@ -216,7 +225,8 @@ class CasesAdapter(
             index: Int,
             listener: OnCaseItemClickListener,
             type: Int, alertDialogListener: AlertDialogListener, activity: Activity,
-            fragment: Fragment
+            fragment: Fragment,
+            position: Int
         ) {
 
             this.index = index
@@ -408,13 +418,18 @@ class CasesAdapter(
                                 GeneralPublicHomeFragment.isApiHit = true
                                 val callMethod = fragment as GeneralPublicHomeFragment
                                 callMethod.callFirImageApi(item.id!!, adapterPosition)
+                            }else{
+
                             }
                         }
                     }
                 } else {
-                    itemView.childExpandable.visibility = View.VISIBLE
-                    itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
-                    GeneralPublicHomeFragment.isApiHit = false
+                    if(index==position)
+                    {
+                        itemView.childExpandable.visibility = View.VISIBLE
+                        itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
+                        GeneralPublicHomeFragment.isApiHit = false
+                    }
                 }
                 if (item.showDelete == 1) {
                     itemView.btnDelete.visibility = View.VISIBLE
@@ -638,7 +653,7 @@ class CasesAdapter(
             }*/
 
             if (!(item.status.equals("Unassigned"))) {  //change
-                //itemView.view_fir.visibility = View.VISIBLE
+               // itemView.view_fir.visibility = View.VISIBLE
                 itemView.imgFirMedia.visibility = View.VISIBLE
 
                 if (item.fir_image != null) {
@@ -648,7 +663,11 @@ class CasesAdapter(
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
+                }else{
+
                 }
+            } else {
+                itemView.imgFirMedia.visibility = View.GONE
             }
         }
 

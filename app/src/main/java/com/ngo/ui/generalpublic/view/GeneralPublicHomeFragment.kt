@@ -62,6 +62,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     private var token: String = ""
     var isFirst = true
     var type = ""
+    var firComplaintId:String=""
     var horizontalLayoutManager: LinearLayoutManager? = null
 
     //pagination
@@ -97,6 +98,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     //call fir image api
     fun callFirImageApi(complaintId: String, position: Int) {
         Utilities.showProgress(mContext)
+        firComplaintId=complaintId
         positionOfFir = position
         var firImageRequest = CrimeDetailsRequest(complaintId)
         presenter.callFirIamageApi(token, firImageRequest)
@@ -105,7 +107,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun getFirImageData(response: FirImageResponse) {
         Utilities.dismissProgress()
         if (positionOfFir != null) {
-        adapter?.notifyFirImageData(positionOfFir,response)
+        adapter?.notifyFirImageData(positionOfFir,response,firComplaintId)
         }
     }
 

@@ -299,7 +299,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         fragment=this
-        adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this,activity as Activity,fragment as CasesFragment)
+        adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this,activity as Activity,fragment as CasesFragment,0)
         horizontalLayoutManager = LinearLayoutManager(
             mContext,
             RecyclerView.VERTICAL, false

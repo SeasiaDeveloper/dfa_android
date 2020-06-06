@@ -23,6 +23,7 @@ import com.ngo.customviews.CenteredToolbar
 import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
+import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.response.*
 import com.ngo.ui.comments.CommentsActivity
 import com.ngo.ui.generalpublic.pagination.EndlessRecyclerViewScrollListenerImplementation
@@ -47,6 +48,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     lateinit var horizontalLayoutManager: LinearLayoutManager
     var actionChanged: Boolean = false
     var fragment: Fragment?=null
+    var positionOfFir: Int? = null
 
     override fun onStatusClick(statusId: String) {
         this.statusId = statusId
@@ -80,6 +82,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     var type = ""
     private var adapter: CasesAdapter? = null
     private var search: Boolean = false
+    var firComplaintId:String=""
 
     companion object {
         var change = 0
@@ -126,7 +129,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
-        //adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this, this,)
+        adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this, this,fragment!!)
         horizontalLayoutManager = LinearLayoutManager(
             this, RecyclerView.VERTICAL, false
         )
@@ -163,6 +166,15 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             swipeView.isRefreshing = false
         }
 
+    }
+
+    //call fir image api
+    fun callFirImageApi(complaintId: String, position: Int) {
+        Utilities.showProgress(this)
+        firComplaintId=complaintId
+        positionOfFir = position
+        var firImageRequest = CrimeDetailsRequest(complaintId)
+        presenter.callFirIamageApi(token, firImageRequest)
     }
 
     fun doApiCall() {
@@ -463,7 +475,10 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     }
 
     override fun getFirImageData(response: FirImageResponse) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        Utilities.dismissProgress()
+        if (positionOfFir != null) {
+            adapter?.notifyFirImageData(positionOfFir,response,firComplaintId)
+        }
     }
 
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {
