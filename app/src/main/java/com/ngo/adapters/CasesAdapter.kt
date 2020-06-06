@@ -100,7 +100,7 @@ class CasesAdapter(
     }
 
     fun notifyFirImageData(position: Int?, response: FirImageResponse) {
-        GeneralPublicHomeFragment.isApiHit = true
+        //GeneralPublicHomeFragment.isApiHit = true
         if (response.image!!.isNotEmpty()) {
             this.mList.get(position!!).fir_image = response.image
             notifyItemChanged(position)
@@ -388,8 +388,9 @@ class CasesAdapter(
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
                         } else {
                             if (item.fir_image == null) {
+                                GeneralPublicHomeFragment.isApiHit = true
                                 val callMethod = fragment as GeneralPublicHomeFragment
-                                callMethod.callFirImageApi(item.id!!, index)
+                                callMethod.callFirImageApi(item.id!!, adapterPosition)
                             }
                         }
                     }
