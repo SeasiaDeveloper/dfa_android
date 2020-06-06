@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
-import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
@@ -70,7 +69,25 @@ class CasesAdapter(
             }
         }
         this.mList.get(position!!).status = data.status
+
         notifyItemChanged(position)
+    }
+
+    fun notifyPublicHomeActionData(listItems: Array<UpdateStatusSuccess.Data>, statusId: String) {
+        val data = listItems[0]
+        var position: Int? = null
+        for (i in 0..this.mList.size - 1) {
+            if (listItems[0].id.equals(this.mList.get(i).id)) {
+                position = i
+                break
+            }
+        }
+        this.mList.get(position!!).status = data.status
+
+        if (statusId == "6")
+            notifyItemRemoved(position)
+        else
+            notifyItemChanged(position)
     }
 
     //to add comment

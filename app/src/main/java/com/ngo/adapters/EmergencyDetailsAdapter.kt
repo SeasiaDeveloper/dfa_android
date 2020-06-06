@@ -41,7 +41,6 @@ class EmergencyDetailsAdapter(
         return mList.size
     }
 
-
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var index: Int? = null
         var txtName: TextView

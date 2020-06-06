@@ -6,18 +6,15 @@ import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.view.drawToBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -39,7 +36,6 @@ import com.ngo.pojo.request.CreatePostRequest
 import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.response.*
 import com.ngo.ui.comments.CommentsActivity
-import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.generalpublic.GeneralPublicActivity
 import com.ngo.ui.generalpublic.pagination.EndlessRecyclerViewScrollListenerImplementation
 import com.ngo.ui.home.fragments.cases.CasesFragment
@@ -50,10 +46,6 @@ import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.ui.login.view.LoginActivity
 import com.ngo.utils.*
 import kotlinx.android.synthetic.main.fragment_public_home.*
-import kotlinx.android.synthetic.main.fragment_public_home.progressBar
-import kotlinx.android.synthetic.main.fragment_public_home.rvPublic
-import kotlinx.android.synthetic.main.fragment_public_home.toolbarLayout
-import kotlinx.android.synthetic.main.fragment_public_home.tvRecord
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     OnCaseItemClickListener, AlertDialogListener,
@@ -71,6 +63,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     var isFirst = true
     var type = ""
     var horizontalLayoutManager: LinearLayoutManager? = null
+
     //pagination
     var page: String = "0"
     var perPage: String = "0"
@@ -607,7 +600,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         } else {*/
         actionChanged = true
         if (responseObject.data!!.size != 0) {
-            adapter?.notifyActionData(responseObject.data)
+            /*updated by Navjeet for remove rejected item from list*/
+            adapter?.notifyPublicHomeActionData(responseObject.data, statusId)
+            //   adapter?.notifyActionData(responseObject.data)
         }
         // }
     }
