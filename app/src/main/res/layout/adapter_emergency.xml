@@ -48,7 +48,7 @@
                 android:paddingTop="@dimen/_5sdp"
                 android:paddingRight="@dimen/_10sdp"
                 android:paddingBottom="@dimen/_5sdp"
-                android:text="25 KM Away"
+                android:text="21 KM Away"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp" />
 

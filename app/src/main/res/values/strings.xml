@@ -166,6 +166,7 @@
     <string name="crime_type">Crime Type:</string>
     <string name="state">State:</string>
     <string name="urgency">Urgency:</string>
+    <string name="urgency_level">Urgency Level:  </string>
     <string name="urgency_level_title">Urgency:</string>
 
     <string name="launch_activity">Launch activity</string>
@@ -215,4 +216,5 @@
     <string name="contact_ngo_message">Please contact NGO</string>
     <string name="contact_us">Contact Us</string>
     <string name="locate_us">Locate us</string>
+    <string name="km_away">KM Away</string>
 </resources>
