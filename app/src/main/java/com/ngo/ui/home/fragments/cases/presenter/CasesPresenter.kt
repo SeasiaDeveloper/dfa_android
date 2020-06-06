@@ -3,6 +3,7 @@ package com.ngo.ui.home.fragments.cases.presenter
 import com.ngo.base.presenter.BasePresenter
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CreatePostRequest
+import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.response.*
 
 interface CasesPresenter:BasePresenter {
@@ -20,4 +21,6 @@ interface CasesPresenter:BasePresenter {
     fun onListFetchedSuccess(responseObject: GetStatusResponse)
     fun updateStatus(token: String, complaintId: String, statusId: String,comment:String)
     fun statusUpdationSuccess(responseObject: UpdateStatusSuccess)
+    fun callFirIamageApi(token: String, complaintId: CrimeDetailsRequest)
+    fun getfirImageResponse(response:FirImageResponse)
 }

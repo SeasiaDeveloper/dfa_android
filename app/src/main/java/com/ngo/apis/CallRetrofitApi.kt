@@ -152,4 +152,7 @@ interface CallRetrofitApi {
     @POST("jwt-auth/v1/status_update")
     fun updateStatus(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<UpdateStatusSuccess>
 
+    @POST("jwt-auth/v1/fir_imageapi")
+    fun getFirImage(@Header("Authorization") authorization: String?, @Query("complaint_id") id: Int): Call<FirImageResponse>
+
 }

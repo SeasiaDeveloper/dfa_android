@@ -31,7 +31,21 @@ import com.google.firebase.iid.FirebaseInstanceId
 import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.ui.login.view.LoginActivity
 import com.ngo.utils.PreferenceHandler
+import kotlinx.android.synthetic.main.activity_profile.*
+import kotlinx.android.synthetic.main.activity_signup.btnCancel
 import kotlinx.android.synthetic.main.activity_signup.btnSubmit
+import kotlinx.android.synthetic.main.activity_signup.etAddress1
+import kotlinx.android.synthetic.main.activity_signup.etAddress2
+import kotlinx.android.synthetic.main.activity_signup.etAdharNo
+import kotlinx.android.synthetic.main.activity_signup.etEmail
+import kotlinx.android.synthetic.main.activity_signup.etFirstName
+import kotlinx.android.synthetic.main.activity_signup.etLastName
+import kotlinx.android.synthetic.main.activity_signup.etMiddleName
+import kotlinx.android.synthetic.main.activity_signup.etMobile1
+import kotlinx.android.synthetic.main.activity_signup.etMobile2
+import kotlinx.android.synthetic.main.activity_signup.etPinCode
+import kotlinx.android.synthetic.main.activity_signup.imgProfile
+import kotlinx.android.synthetic.main.activity_signup.spDist
 
 class SignupActivity : BaseActivity(), SignupView {
 
@@ -121,7 +135,17 @@ class SignupActivity : BaseActivity(), SignupView {
 
         }
 
-        imgProfile.setOnClickListener {
+       /* imgProfile.setOnClickListener {
+            val resultGallery = getMarshmallowPermission(
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
+            )
+            if (resultGallery)
+                galleryIntent()
+        }*/
+
+
+        edit_profile_image.setOnClickListener {
             val resultGallery = getMarshmallowPermission(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
@@ -206,6 +230,7 @@ class SignupActivity : BaseActivity(), SignupView {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_REQ_CODE && resultCode == Activity.RESULT_OK && null != data) {
             if (data.data != null) {
+                edit_profile_image.visibility = View.GONE
                 val imageUri = data.data
                 if (imageUri != null) {
                     try {

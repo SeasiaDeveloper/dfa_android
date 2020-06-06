@@ -60,6 +60,7 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
     private var statusId = "-1"
     private var complaintId = "-1"
     private var currentStatus = ""
+    var fragment:Fragment?=null
     var complaintIdTobeLiked: String? = null
     private var adapter: CasesAdapter? = null
     var deleteItemposition: Int? = null
@@ -294,9 +295,11 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         return inflater.inflate(R.layout.fragment_cases, container, false)!!
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this,activity as Activity)
+        fragment=this
+        adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this,activity as Activity,fragment as CasesFragment)
         horizontalLayoutManager = LinearLayoutManager(
             mContext,
             RecyclerView.VERTICAL, false
@@ -411,6 +414,10 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         if (responseObject.data?.size != 0) {
             adapter?.notifyActionData(responseObject.data!!)
         }
+    }
+
+    override fun getFirImageData(response: FirImageResponse) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {

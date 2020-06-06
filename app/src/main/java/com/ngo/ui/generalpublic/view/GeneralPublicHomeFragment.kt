@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.google.gson.GsonBuilder
 import com.ngo.R
@@ -35,6 +36,7 @@ import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CreatePostRequest
+import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.response.*
 import com.ngo.ui.comments.CommentsActivity
 import com.ngo.ui.crimedetails.view.IncidentDetailActivity
@@ -79,6 +81,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     var whenDeleteCall: Boolean = false
     var setAdapterBoolean: Boolean = true
     var adapterActionPosition: Int? = null
+    var fragment:Fragment?=null
+    var positionOfFir: Int? = null
 
     override fun onClick(item: Any, position: Int) {
         Utilities.showProgress(mContext)
@@ -97,6 +101,21 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         return binding.root
     }
 
+    //call fir image api
+    fun callFirImageApi(complaintId: String, position: Int) {
+        Utilities.showProgress(mContext)
+        positionOfFir = position
+        var firImageRequest = CrimeDetailsRequest(complaintId)
+        presenter.callFirIamageApi(token, firImageRequest)
+    }
+
+    override fun getFirImageData(response: FirImageResponse) {
+        Utilities.dismissProgress()
+        if (positionOfFir != null) {
+        adapter?.notifyFirImageData(positionOfFir,response)
+        }
+    }
+
     override fun showDescError() {
         Utilities.dismissProgress()
         Utilities.showMessage(mContext, getString(R.string.please_select_image))
@@ -108,6 +127,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         var commentChange = 0
         var fromIncidentDetailScreen = 0
         var commentsCount = 0
+        var isApiHit : Boolean = false
     }
 
     fun refreshList() {
@@ -139,7 +159,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             this,
             type.toInt(),
             this,
-            activity as Activity
+            activity as Activity,
+            fragment as GeneralPublicHomeFragment
         )
         horizontalLayoutManager = LinearLayoutManager(
             mContext,
@@ -154,6 +175,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
         //swipeRefresh.setOnRefreshListener(this)
+        fragment=this
         setAdapter()
         if (endlessScrollListener == null)
             endlessScrollListener =
@@ -168,7 +190,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         // Utilities.showProgress(mContext)
 
         /*  if (isFirst) {*/
-       // doApiCall()
+        // doApiCall()
         /*  isFirst = false
       }*/
 
@@ -188,6 +210,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                         .load("")
                         .apply(
                             RequestOptions()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .placeholder(R.drawable.camera_placeholder)
                         )
                         .into(imgPost)
@@ -496,11 +519,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 } else {
                     change = 0
                     fromIncidentDetailScreen = 0
-                   /* val intent = Intent(activity, IncidentDetailActivity::class.java) //change
-                    intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
-                    intent.putExtra(Constants.POST_OR_COMPLAINT, complaintsData.type)
-                    intent.putExtra(Constants.FROM_WHERE, "nottohit")
-                    startActivity(intent)*/
+                    /* val intent = Intent(activity, IncidentDetailActivity::class.java) //change
+                     intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
+                     intent.putExtra(Constants.POST_OR_COMPLAINT, complaintsData.type)
+                     intent.putExtra(Constants.FROM_WHERE, "nottohit")
+                     startActivity(intent)*/
                 }
 
             }
@@ -735,11 +758,12 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     //refresh the list after deletion
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
-        Utilities.showMessage(mContext, responseObject.message!!)
-        whenDeleteCall = true
-        val casesRequest =
-            CasesRequest("1", "", "-1", "1", "5") //type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token, type)
+        Utilities.dismissProgress()
+        adapter?.removeAt(deleteItemposition!!)
+        /* whenDeleteCall = true
+         val casesRequest =
+             CasesRequest("1", "", "-1", "1", "5") //type = -1 for fetching all the data
+         presenter.getComplaints(casesRequest, token, type)*/
     }
 
 /*    override fun setUserVisibleHint(isVisibleToUser: Boolean) {

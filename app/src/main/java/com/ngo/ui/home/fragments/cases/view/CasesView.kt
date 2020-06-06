@@ -12,4 +12,5 @@ interface CasesView : BaseView {
     fun adhaarSavedSuccess(responseObject: SignupResponse)
     fun onListFetchedSuccess(responseObject: GetStatusResponse)
     fun statusUpdationSuccess(responseObject: UpdateStatusSuccess)
+    fun getFirImageData(response:FirImageResponse)
 }

@@ -4,6 +4,7 @@ import com.ngo.apis.ApiClient
 import com.ngo.apis.CallRetrofitApi
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CreatePostRequest
+import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.response.*
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.utils.Constants
@@ -351,6 +352,37 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                     if (responseObject != null) {
                         if (responseObject.code == 200) {
                             presenter.statusUpdationSuccess(responseObject)
+                        } else {
+                            presenter.showError(
+                                response.body()?.message ?: Constants.SERVER_ERROR
+                            )
+                        }
+                    } else {
+                        presenter.showError(Constants.SERVER_ERROR)
+                    }
+                }
+            })
+    }
+
+    fun callFirImageApi(token: String, request: CrimeDetailsRequest) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        val map = HashMap<String, RequestBody>()
+        //map["complaint_id"] = toRequestBody(request.complaintId)
+        val complaintId = Integer.parseInt(request.complaintId)
+        retrofitApi.getFirImage(token,complaintId)
+            .enqueue(object : Callback<FirImageResponse> {
+                override fun onFailure(call: Call<FirImageResponse>, t: Throwable) {
+                    presenter.showError(t.message + "")
+                }
+
+                override fun onResponse(
+                    call: Call<FirImageResponse>,
+                    response: Response<FirImageResponse>
+                ) {
+                    val responseObject = response.body()
+                    if (responseObject != null) {
+                        if (responseObject.code == 200) {
+                            presenter.getfirImageResponse(responseObject)
                         } else {
                             presenter.showError(
                                 response.body()?.message ?: Constants.SERVER_ERROR

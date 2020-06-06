@@ -22,6 +22,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.MediaController
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.ngo.R
@@ -71,6 +72,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private var SELECT_VIDEOS_KITKAT: Int = 2
     private var CAMERA_REQUEST_CODE_VEDIO: Int = 3
     private lateinit var mediaControls: MediaController
+    private var provider: String = ""
 
     private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
     override fun getLayout(): Int {
@@ -86,6 +88,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
         setListeners()
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        provider = LocationManager.GPS_PROVIDER
+
         Utilities.requestPermissions(this)
         //GeneralPublicHomeFragment.fromIncidentDetailScreen=1
 
@@ -528,12 +532,43 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
 
         if (lattitude.equals("") || longitude.equals("")) {
-            Toast.makeText(
-                this@GeneralPublicActivity,
-                "Please turn on your Device GPS",
-                Toast.LENGTH_SHORT
-            ).show()
-            return
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            var location = locationManager.getLastKnownLocation(provider);
+
+            // Initialize the location fields
+            if (location != null) {
+                //System.out.println("Provider " + provider + " has been selected.");
+                val latti = location.latitude
+                val longi = location.longitude
+                lattitude = (latti).toString()
+                longitude = (longi).toString()
+                PreferenceHandler.writeString(
+                    this@GeneralPublicActivity,
+                    PreferenceHandler.LAT,
+                    lattitude
+                )
+                PreferenceHandler.writeString(
+                    this@GeneralPublicActivity,
+                    PreferenceHandler.LNG,
+                    longitude
+                )
+            }
         }
 
         if (isInternetAvailable()) {

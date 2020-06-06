@@ -2,6 +2,7 @@ package com.ngo.ui.home.fragments.cases.presenter
 
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.request.CreatePostRequest
+import com.ngo.pojo.request.CrimeDetailsRequest
 import com.ngo.pojo.response.*
 import com.ngo.ui.home.fragments.cases.model.CasesModel
 import com.ngo.ui.home.fragments.cases.view.CasesView
@@ -75,5 +76,13 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
 
     override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         view.statusUpdationSuccess(responseObject)
+    }
+
+    override fun callFirIamageApi(token: String, complaintId: CrimeDetailsRequest) {
+        model.callFirImageApi(token,complaintId)
+    }
+
+    override fun getfirImageResponse(response:FirImageResponse) {
+        view.getFirImageData(response)
     }
 }

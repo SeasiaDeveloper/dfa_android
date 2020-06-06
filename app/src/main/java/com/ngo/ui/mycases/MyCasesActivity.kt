@@ -7,9 +7,12 @@ import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ngo.R
@@ -22,23 +25,14 @@ import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.request.CasesRequest
 import com.ngo.pojo.response.*
 import com.ngo.ui.comments.CommentsActivity
-import com.ngo.ui.crimedetails.view.IncidentDetailActivity
 import com.ngo.ui.generalpublic.pagination.EndlessRecyclerViewScrollListenerImplementation
-import com.ngo.ui.generalpublic.pagination.PaginationScrollListener
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
-import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
-import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_my_cases.*
-import kotlinx.android.synthetic.main.activity_my_cases.progressBar
-import kotlinx.android.synthetic.main.activity_my_cases.rvPublic
-import kotlinx.android.synthetic.main.activity_my_cases.toolbarLayout
-import kotlinx.android.synthetic.main.activity_my_cases.tvRecord
-import kotlinx.android.synthetic.main.fragment_public_home.*
 
 
 class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener,
@@ -52,6 +46,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     var deleteItemposition: Int? = null
     lateinit var horizontalLayoutManager: LinearLayoutManager
     var actionChanged: Boolean = false
+    var fragment: Fragment?=null
 
     override fun onStatusClick(statusId: String) {
         this.statusId = statusId
@@ -61,7 +56,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         if (!search) {
             pageCount = page
             val casesRequest =
-                CasesRequest("0", "", "0", page.toString(), "10")//*totalItemsCount.toString()*//*)
+                CasesRequest("0", "", "0", page.toString(), "5")//*totalItemsCount.toString()*//*)
             presenter.getComplaints(casesRequest, token, type)
             progressBar.visibility = View.VISIBLE
         }
@@ -104,7 +99,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         casesRequest = CasesRequest(
             "0",
             etSearch.text.toString(),
-            "0", "1", "10"
+            "0", "1", "5"
 
         ) //all = "1" for fetching all the cases whose type = 0
 
@@ -130,7 +125,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
-        adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this, this)
+        //adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this, this,)
         horizontalLayoutManager = LinearLayoutManager(
             this, RecyclerView.VERTICAL, false
         )
@@ -173,7 +168,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         casesRequest = CasesRequest(
             "0",
             etSearch.text.toString(),
-            "0", "1", "10"
+            "0", "1", "5"
         ) //all = "0"  my cases and for fetching all the cases which are of type = 0
         Utilities.showProgress(this)
         presenter.getComplaints(casesRequest, token, type)
@@ -240,33 +235,80 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         }
 
         //add click listener after adding the list on the view
-        etSearch.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {
-                if (s.length >= 3 || s.length == 0) {
+        etSearch.setOnTouchListener(OnTouchListener { v, event ->
+            val DRAWABLE_LEFT = 0
+            val DRAWABLE_TOP = 1
+            val DRAWABLE_RIGHT = 2
+            val DRAWABLE_BOTTOM = 3
+            if (event.action == MotionEvent.ACTION_UP) {
+                if (event.rawX >= etSearch.getRight() - etSearch.getCompoundDrawables().get(
+                        DRAWABLE_RIGHT
+                    ).getBounds().width()
+                ) { // your action here
                     endlessScrollListener?.resetState()
-                    if (s.length == 0) {
-                        search = false
+                    //adapter!!.clearAdapter()
+                    if (etSearch.text.toString().length == 0) {
+                       /* search = false
                         pageCount = 1
                         casesRequest = CasesRequest(
                             "0",
                             etSearch.text.toString(),
-                            "0", "1", "10"
+                            "0", "1", "5"
                         ) //all = "1" for fetching all the cases whose type = 0
-
-                    } else {
+*/
+                    }
+                    else {
                         search = true
                         casesRequest = CasesRequest(
                             "0",
                             etSearch.text.toString(),
                             "0", "1", "30"
                         ) //all = "1" for fetching all the cases whose type = 0
+
+                        // endlessScrollListener?.resetState()
+                        Utilities.showProgress(this@MyCasesActivity)
+                        //hit api with search variable
+                        presenter.getComplaints(casesRequest, token, type)
                     }
+                    return@OnTouchListener true
+                }
+            }
+            false
+        })
+
+        etSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {
+                if (/*s.length >= 3 ||*/ s.length == 0) {
+                   // endlessScrollListener?.resetState()
+                    if (s.length == 0) {
+                        pageCount = 1
+                        adapter?.clear()
+                        endlessScrollListener?.resetState()
+                        search = false
+                        myCasesApiCall()
+
+                       /* search = false
+                        pageCount = 1
+                        casesRequest = CasesRequest(
+                            "0",
+                            etSearch.text.toString(),
+                            "0", "1", "5"
+                        ) //all = "1" for fetching all the cases whose type = 0*/
+
+                    }
+                   /* else {
+                        search = true
+                        casesRequest = CasesRequest(
+                            "0",
+                            etSearch.text.toString(),
+                            "0", "1", "30"
+                        ) //all = "1" for fetching all the cases whose type = 0
+                    }*/
 
 
-                    // endlessScrollListener?.resetState()
-                    Utilities.showProgress(this@MyCasesActivity)
+                   /* Utilities.showProgress(this@MyCasesActivity)
                     //hit api with search variable
-                    presenter.getComplaints(casesRequest, token, type)
+                    presenter.getComplaints(casesRequest, token, type)*/
                 }
 
             }
@@ -302,7 +344,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         val casesRequest = CasesRequest(
             "0",
             "",
-            "0", "1", "10"
+            "0", "1", "5"
         ) //all = 0 for only my cases;type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
         GeneralPublicHomeFragment.changeThroughIncidentScreen = 1 // so that list on Home gets refreshed after change in status
@@ -315,12 +357,13 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
     //refreshing the list after deletion
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
-        Utilities.showMessage(this@MyCasesActivity, responseObject.message!!)
-        whenDeleteCall = true
+        Utilities.dismissProgress()
+        adapter?.removeAt(deleteItemposition!!)
+      /*  whenDeleteCall = true
         val casesRequest = CasesRequest(
-            "0", "", "0", "1", "10"
+            "0", "", "0", "1", "5"
         ) //type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token, type)
+        presenter.getComplaints(casesRequest, token, type)*/
         GeneralPublicHomeFragment.changeThroughIncidentScreen = 1 // so that list on Home gets refreshed after change in status
     }
 
@@ -416,6 +459,10 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                 adapter?.notifyActionData(responseObject.data)
             }
        // }
+    }
+
+    override fun getFirImageData(response: FirImageResponse) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {

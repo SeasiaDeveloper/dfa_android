@@ -103,7 +103,7 @@ class EmergencyFragment : Fragment() {
             mContext,
             android.R.layout.simple_spinner_item, list_of_items
         )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spDistrict.setAdapter(adapter);
     }
 

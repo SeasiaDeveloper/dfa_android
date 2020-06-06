@@ -15,19 +15,23 @@ import android.widget.ImageView
 import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.ngo.R
 import com.ngo.databinding.ItemCaseBinding
 import com.ngo.listeners.AlertDialogListener
 import com.ngo.listeners.OnCaseItemClickListener
+import com.ngo.pojo.response.FirImageResponse
 import com.ngo.pojo.response.GetCasesResponse
 import com.ngo.pojo.response.UpdateStatusSuccess
 import com.ngo.ui.commentlikelist.CommentLikeUsersList
 import com.ngo.ui.comments.CommentsActivity
 import com.ngo.ui.contactus.ContactUsActivity
+import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.profile.ProfileActivity
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
@@ -39,8 +43,10 @@ class CasesAdapter(
     var mList: MutableList<GetCasesResponse.Data>,
     private var listener: OnCaseItemClickListener,
     private var type: Int, private var alertDialogListener: AlertDialogListener,
-    var activity: Activity
+    var activity: Activity,
+    var fragment: Fragment
 ) :
+
     RecyclerView.Adapter<CasesAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -91,6 +97,24 @@ class CasesAdapter(
                 break
             }
         }
+    }
+
+    fun notifyFirImageData(position: Int?, response: FirImageResponse) {
+        GeneralPublicHomeFragment.isApiHit = true
+        if (response.image!!.isNotEmpty()) {
+            this.mList.get(position!!).fir_image = response.image
+            notifyItemChanged(position)
+        }
+
+
+        /* if (item.fir_image!!.isNotEmpty()) {
+             try {
+                 Glide.with(context).asBitmap().load(item.fir_image).apply(options)
+                     .into(itemView.imgFirMedia)
+             } catch (e: Exception) {
+                 e.printStackTrace()
+             }
+         }*/
     }
 
     //for delete
@@ -150,7 +174,8 @@ class CasesAdapter(
             listener,
             type,
             alertDialogListener,
-            activity
+            activity,
+            fragment
         )
 
     }
@@ -173,8 +198,10 @@ class CasesAdapter(
             item: GetCasesResponse.Data,
             index: Int,
             listener: OnCaseItemClickListener,
-            type: Int, alertDialogListener: AlertDialogListener, activity: Activity
+            type: Int, alertDialogListener: AlertDialogListener, activity: Activity,
+            fragment: Fragment
         ) {
+
             this.index = index
 
             val userDetail: GetCasesResponse.Data.UserDetail = item.userDetail!!
@@ -182,7 +209,8 @@ class CasesAdapter(
                 PreferenceHandler.readString(context, PreferenceHandler.USER_FULLNAME, "")
 
             val options = RequestOptions()
-                .centerCrop()
+                /* .centerCrop()*/
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.noimage)
 
@@ -196,7 +224,7 @@ class CasesAdapter(
             //in case of post:
             if (userDetail.profile_pic != null) {
                 try {
-                    Glide.with(context).load(userDetail.profile_pic).apply(options)
+                    Glide.with(context).asBitmap().load(userDetail.profile_pic).apply(options)
                         .into(itemView.imgPostProfile)
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -224,7 +252,8 @@ class CasesAdapter(
                     itemView.imgMediaPost.visibility = View.VISIBLE
                     val mediaUrl: String = item.media_list[0]
                     try {
-                        Glide.with(context).load(mediaUrl).into(itemView.imgMediaPost)
+                        Glide.with(context).asBitmap().load(mediaUrl).apply(options)
+                            .into(itemView.imgMediaPost)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -345,21 +374,31 @@ class CasesAdapter(
                 if (item.media_list!!.isNotEmpty()) {
                     val mediaUrl: String = item.media_list[0]
                     try {
-                        Glide.with(context).load(mediaUrl).into(itemView.imgComplaintMedia)
+                        Glide.with(context).asBitmap().load(mediaUrl).apply(options)
+                            .into(itemView.imgComplaintMedia)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
                 }
 
-                itemView.imgExpandable.setOnClickListener {
-                    if (itemView.childExpandable.isVisible) {
-                        itemView.childExpandable.visibility = View.GONE
-                        itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
-                    } else {
-                        itemView.childExpandable.visibility = View.VISIBLE
-                        itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
+                if (GeneralPublicHomeFragment.isApiHit == false) {
+                    itemView.imgExpandable.setOnClickListener {
+                        if (itemView.childExpandable.isVisible) {
+                            itemView.childExpandable.visibility = View.GONE
+                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                        } else {
+                            if (item.fir_image == null) {
+                                val callMethod = fragment as GeneralPublicHomeFragment
+                                callMethod.callFirImageApi(item.id!!, index)
+                            }
+                        }
                     }
+                } else {
+                    itemView.childExpandable.visibility = View.VISIBLE
+                    itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
+                    GeneralPublicHomeFragment.isApiHit = false
                 }
+
                 if (item.showDelete == 1) {
                     itemView.btnDelete.visibility = View.VISIBLE
                 } else {
@@ -439,7 +478,8 @@ class CasesAdapter(
                 if (type == 1) {
                     if (userDetail.profile_pic != null) {
                         try {
-                            Glide.with(context).load(userDetail.profile_pic).apply(options)
+                            Glide.with(context).asBitmap().load(userDetail.profile_pic)
+                                .apply(options)
                                 .into(itemView.imgCrime)
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -460,7 +500,8 @@ class CasesAdapter(
                 }
                 //in case of General public or police
                 else {
-                    Glide.with(context).load(getImage(context, "app_icon")).apply(options)
+                    Glide.with(context).asBitmap().load(getImage(context, "app_icon"))
+                        .apply(options)
                         .into(itemView.imgCrime)
                     itemView.expandable_username.text =
                         context.resources.getString(R.string.drug_free_arunachal)
@@ -510,7 +551,7 @@ class CasesAdapter(
                         itemView.action_complaint.visibility = View.GONE
                     }
                     itemView.layoutContact.visibility = View.GONE
-                    itemView.imgComplaintMedia.visibility = View.GONE
+                    itemView.imgComplaintMedia.visibility = View.VISIBLE
 
                 } else {
                     //in case of NGO
@@ -524,7 +565,7 @@ class CasesAdapter(
                 }
 
                 itemView.location.visibility = View.VISIBLE
-                var kmInDouble: Double=0.0
+                var kmInDouble: Double = 0.0
                 try {
                     kmInDouble =
                         item.fir_km!!.toDouble()
@@ -569,7 +610,7 @@ class CasesAdapter(
             }
 
 
-            itemView.imgFirMedia.setOnClickListener {
+            /*itemView.imgFirMedia.setOnClickListener {
                 //show enlarged image
                 displayLargeImageofFir(context, item, options)
             }
@@ -577,15 +618,16 @@ class CasesAdapter(
             itemView.imgComplaintMedia.setOnClickListener {
                 //show enlarged image
                 DisplayLargeImageOfMedia(context, item, options)
-            }
+            }*/
 
             if (!(item.status.equals("Unassigned"))) {  //change
                 //itemView.view_fir.visibility = View.VISIBLE
                 itemView.imgFirMedia.visibility = View.VISIBLE
 
-                if (item.fir_image!!.isNotEmpty()) {
+                if (item.fir_image != null) {
                     try {
-                        Glide.with(context).load(item.fir_image).into(itemView.imgFirMedia)
+                        Glide.with(context).asBitmap().load(item.fir_image).apply(options)
+                            .into(itemView.imgFirMedia)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -614,7 +656,7 @@ class CasesAdapter(
             val imageView = (dialog.findViewById(R.id.imgView) as ImageView)
             val mediaUrl: String = userDetail.media_list?.get(0)!!
             try {
-                Glide.with(context).load(mediaUrl).apply(options).into(imageView)
+                Glide.with(context).asBitmap().load(mediaUrl).apply(options).into(imageView)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -641,7 +683,8 @@ class CasesAdapter(
 
             val imageView = (dialog.findViewById(R.id.imgView) as ImageView)
             try {
-                Glide.with(context).load(userDetail.fir_image).apply(options).into(imageView)
+                Glide.with(context).asBitmap().load(userDetail.fir_image).apply(options)
+                    .into(imageView)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -668,7 +711,8 @@ class CasesAdapter(
 
             val imageView = (dialog.findViewById(R.id.imgView) as ImageView)
             try {
-                Glide.with(context).load(userDetail.profile_pic).apply(options).into(imageView)
+                Glide.with(context).asBitmap().load(userDetail.profile_pic).apply(options)
+                    .into(imageView)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
