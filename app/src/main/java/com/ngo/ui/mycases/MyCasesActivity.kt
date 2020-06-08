@@ -47,7 +47,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     var deleteItemposition: Int? = null
     lateinit var horizontalLayoutManager: LinearLayoutManager
     var actionChanged: Boolean = false
-    var fragment: Fragment?=null
+    lateinit var fragment: Fragment
     var positionOfFir: Int? = null
 
     override fun onStatusClick(statusId: String) {
@@ -129,7 +129,8 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
-        adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this, this,fragment!!)
+        fragment=Fragment()
+        adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this, this,fragment,false)
         horizontalLayoutManager = LinearLayoutManager(
             this, RecyclerView.VERTICAL, false
         )

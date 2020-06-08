@@ -155,7 +155,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             type.toInt(),
             this,
             activity as Activity,
-            fragment as GeneralPublicHomeFragment
+            fragment as GeneralPublicHomeFragment,
+            true
         )
         horizontalLayoutManager = LinearLayoutManager(
             mContext,

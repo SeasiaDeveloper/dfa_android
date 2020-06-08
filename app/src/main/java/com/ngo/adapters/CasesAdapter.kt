@@ -31,6 +31,7 @@ import com.ngo.ui.commentlikelist.CommentLikeUsersList
 import com.ngo.ui.comments.CommentsActivity
 import com.ngo.ui.contactus.ContactUsActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
+import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.ui.profile.ProfileActivity
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
@@ -43,7 +44,8 @@ class CasesAdapter(
     private var listener: OnCaseItemClickListener,
     private var type: Int, private var alertDialogListener: AlertDialogListener,
     var activity: Activity,
-    var fragment: Fragment
+    var fragment: Fragment,
+    var isGeneralPublicFragment: Boolean
 ) :
 
     RecyclerView.Adapter<CasesAdapter.ViewHolder>() {
@@ -127,8 +129,8 @@ class CasesAdapter(
                 }
             }
             this.mList.get(requiredPosition!!).fir_image = response.image
-            notifyDataSetChanged()
-            //notifyItemChanged(0)
+            this.mList.get(requiredPosition).isApiHit = true
+            notifyItemChanged(requiredPosition)
         }
 
 
@@ -201,7 +203,8 @@ class CasesAdapter(
             alertDialogListener,
             activity,
             fragment,
-            position
+            position,
+            isGeneralPublicFragment
         )
 
     }
@@ -226,7 +229,8 @@ class CasesAdapter(
             listener: OnCaseItemClickListener,
             type: Int, alertDialogListener: AlertDialogListener, activity: Activity,
             fragment: Fragment,
-            position: Int
+            position: Int,
+            isGeneralPublicFragment: Boolean
         ) {
 
             this.index = index
@@ -408,29 +412,6 @@ class CasesAdapter(
                     }
                 }
 
-                if (GeneralPublicHomeFragment.isApiHit == false) {
-                    itemView.imgExpandable.setOnClickListener {
-                        if (itemView.childExpandable.isVisible) {
-                            itemView.childExpandable.visibility = View.GONE
-                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
-                        } else {
-                            if (item.fir_image == null) {
-                                GeneralPublicHomeFragment.isApiHit = true
-                                val callMethod = fragment as GeneralPublicHomeFragment
-                                callMethod.callFirImageApi(item.id!!, adapterPosition)
-                            }else{
-
-                            }
-                        }
-                    }
-                } else {
-                    if(index==position)
-                    {
-                        itemView.childExpandable.visibility = View.VISIBLE
-                        itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
-                        GeneralPublicHomeFragment.isApiHit = false
-                    }
-                }
                 if (item.showDelete == 1) {
                     itemView.btnDelete.visibility = View.VISIBLE
                 } else {
@@ -597,15 +578,17 @@ class CasesAdapter(
                 }
 
                 itemView.location.visibility = View.VISIBLE
-                var kmInDouble: Double = 0.0
-                try {
-                    kmInDouble =
-                        item.fir_km!!.toDouble()
-                } catch (e: NumberFormatException) {
-                }
 
-                val kmValue = String.format("%.2f", kmInDouble)
-                itemView.location.setText("" + kmValue + "KM away").toString()
+                /* var kmInDouble: Double = 0.0
+                 try {
+                     kmInDouble =
+                         item.fir_km!!.toDouble()
+                 } catch (e: NumberFormatException) {
+                 }
+
+                 val kmValue = String.format("%.2f", kmInDouble)*/
+                var distance = Utilities.calculateDistance(item.latitude, item.longitude, context)
+                itemView.location.setText("" + distance + "KM away").toString()
                 itemView.location.setOnClickListener {
                     val gmmIntentUri =
                         Uri.parse("google.navigation:q=" + item.latitude + "," + item.longitude + "")
@@ -653,21 +636,61 @@ class CasesAdapter(
             }*/
 
             if (!(item.status.equals("Unassigned"))) {  //change
-               // itemView.view_fir.visibility = View.VISIBLE
-                itemView.imgFirMedia.visibility = View.VISIBLE
-
+                // itemView.view_fir.visibility = View.VISIBLE
                 if (item.fir_image != null) {
+                    itemView.imgFirMedia.visibility = View.VISIBLE
                     try {
                         Glide.with(context).asBitmap().load(item.fir_image).apply(options)
                             .into(itemView.imgFirMedia)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
-                }else{
-
+                } else {
+                    itemView.imgFirMedia.visibility = View.GONE
                 }
             } else {
                 itemView.imgFirMedia.visibility = View.GONE
+            }
+
+            if (!item.status.equals("Unassigned")) {
+                if (item.isApiHit) {
+                    itemView.childExpandable.visibility = View.VISIBLE
+                    itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
+                } else {
+                    itemView.childExpandable.visibility = View.GONE
+                    itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                }
+
+                itemView.imgExpandable.setOnClickListener {
+                    //1st entry
+                    if (!item.isApiHit) {
+                        //call api:
+                        if (isGeneralPublicFragment) {
+                            val callMethod = fragment as GeneralPublicHomeFragment
+                            callMethod.callFirImageApi(item.id!!, adapterPosition)
+                        } else {
+                            val myCasesActivity = activity as MyCasesActivity
+                            myCasesActivity.callFirImageApi(item.id!!, adapterPosition)
+                        }
+
+                    } else {
+                        if (itemView.childExpandable.visibility == View.VISIBLE) {
+                            itemView.childExpandable.visibility = View.GONE
+                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                            item.isApiHit = false
+                        }
+                    }
+                }
+            } else {
+                itemView.imgExpandable.setOnClickListener {
+                    if (itemView.childExpandable.visibility == View.VISIBLE) {
+                        itemView.childExpandable.visibility = View.GONE
+                        itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                    } else {
+                        itemView.childExpandable.visibility = View.VISIBLE
+                        itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
+                    }
+                }
             }
         }
 

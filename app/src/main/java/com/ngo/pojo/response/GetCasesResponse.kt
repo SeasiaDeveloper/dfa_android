@@ -9,6 +9,7 @@ class GetCasesResponse : Serializable {
     val code: Int? = null
 
     inner class Data : Serializable {
+        var isApiHit :Boolean = false
         val is_assigned: String? = null
         var fir_image: String?= null
         val fir_url:String?=null
