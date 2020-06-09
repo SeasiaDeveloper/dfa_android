@@ -17,6 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.net.SocketTimeoutException
 
 
 class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
@@ -48,7 +49,11 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
         retrofitApi.getCrimeTypesList(token).enqueue(object :
             Callback<GetCrimeTypesResponse> {
             override fun onFailure(call: Call<GetCrimeTypesResponse>, t: Throwable) {
-                complaintsPresenter.showError(t.message + "")
+                if(t is SocketTimeoutException){
+                    complaintsPresenter.showError("Socket Time error")
+                }else{
+                    complaintsPresenter.showError(t.message + "")
+                }
             }
 
             override fun onResponse(
@@ -124,7 +129,11 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
                 }
 
                 override fun onFailure(call: Call<ComplaintResponse>, t: Throwable) {
-                    complaintsPresenter.showError(t.message + "")
+                    if(t is SocketTimeoutException){
+                        complaintsPresenter.showError("Socket Time error")
+                    }else{
+                        complaintsPresenter.showError(t.message + "")
+                    }
                 }
             })
     }

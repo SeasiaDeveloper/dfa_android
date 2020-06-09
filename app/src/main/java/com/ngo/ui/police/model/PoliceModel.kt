@@ -12,6 +12,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.SocketTimeoutException
 
 class PoliceModel(private var policePresenter:PolicePresenter) {
 
@@ -39,7 +40,11 @@ class PoliceModel(private var policePresenter:PolicePresenter) {
                 }
             }
             override fun onFailure(call: Call<GetPoliceFormData>, t: Throwable) {
-                policePresenter.showError(t.message+"")
+                if(t is SocketTimeoutException){
+                    policePresenter.showError("Socket Time error")
+                }else{
+                    policePresenter.showError(t.message + "")
+                }
             }
         })
     }
@@ -75,7 +80,11 @@ class PoliceModel(private var policePresenter:PolicePresenter) {
                 }
             }
             override fun onFailure(call: Call<PoliceStatusResponse>, t: Throwable) {
-                policePresenter.showError(t.message+"")
+                if(t is SocketTimeoutException){
+                    policePresenter.showError("Socket Time error")
+                }else{
+                    policePresenter.showError(t.message + "")
+                }
             }
         })
     }

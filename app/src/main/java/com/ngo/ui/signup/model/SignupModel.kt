@@ -15,6 +15,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Response
 import java.io.File
+import java.net.SocketTimeoutException
 
 class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
 
@@ -165,7 +166,11 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
             retrofitApi.registerUser(map, profileImg, token)
                 .enqueue(object : Callback<SignupResponse> {
                     override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
-                        signupPresenterImplClass.showError(t.message + "")
+                        if(t is SocketTimeoutException){
+                            signupPresenterImplClass.showError("Socket Time error")
+                        }else{
+                            signupPresenterImplClass.showError(t.message + "")
+                        }
                     }
 
                     override fun onResponse(
@@ -191,7 +196,11 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
             retrofitApi.registerUserWithoutProfile(map, token)
                 .enqueue(object : Callback<SignupResponse> {
                     override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
-                        signupPresenterImplClass.showError(t.message + "")
+                        if(t is SocketTimeoutException){
+                            signupPresenterImplClass.showError("Socket Time error")
+                        }else{
+                            signupPresenterImplClass.showError(t.message + "")
+                        }
                     }
 
                     override fun onResponse(
@@ -220,7 +229,11 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         retrofitApi.getDist().enqueue(object : Callback<DistResponse> {
             override fun onFailure(call: Call<DistResponse>, t: Throwable) {
-                signupPresenterImplClass.showError(t.message + "")
+                if(t is SocketTimeoutException){
+                    signupPresenterImplClass.showError("Socket Time error")
+                }else{
+                    signupPresenterImplClass.showError(t.message + "")
+                }
             }
 
             override fun onResponse(call: Call<DistResponse>, response: Response<DistResponse>) {

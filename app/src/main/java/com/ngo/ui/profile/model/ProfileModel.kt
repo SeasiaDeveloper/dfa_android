@@ -16,6 +16,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.net.SocketTimeoutException
 
 class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplClass) {
 
@@ -29,7 +30,11 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         retrofitApi.getDist().enqueue(object : Callback<DistResponse> {
             override fun onFailure(call: Call<DistResponse>, t: Throwable) {
-                profilePresenterImplClass.showError(t.message + "")
+                if(t is SocketTimeoutException){
+                    profilePresenterImplClass.showError("Socket Time error")
+                }else{
+                    profilePresenterImplClass.showError(t.message + "")
+                }
             }
 
             override fun onResponse(call: Call<DistResponse>, response: Response<DistResponse>) {
@@ -175,7 +180,11 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
             retrofitApi.updateProfile(map, profileImg, token)
                 .enqueue(object : Callback<SignupResponse> {
                     override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
-                        profilePresenterImplClass.showError(t.message + "")
+                        if(t is SocketTimeoutException){
+                            profilePresenterImplClass.showError("Socket Time error")
+                        }else{
+                            profilePresenterImplClass.showError(t.message + "")
+                        }
                     }
 
                     override fun onResponse(
@@ -201,7 +210,11 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
             retrofitApi.updateProfileWithoutImage(map, token)
                 .enqueue(object : Callback<SignupResponse> {
                     override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
-                        profilePresenterImplClass.showError(t.message + "")
+                        if(t is SocketTimeoutException){
+                            profilePresenterImplClass.showError("Socket Time error")
+                        }else{
+                            profilePresenterImplClass.showError(t.message + "")
+                        }
                     }
 
                     override fun onResponse(
@@ -232,7 +245,11 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
         retrofitApi.getUserProfileData(map).enqueue(object :
             Callback<GetProfileResponse> {
             override fun onFailure(call: Call<GetProfileResponse>, t: Throwable) {
-                profilePresenterImplClass.showError(t.message + "")
+                if(t is SocketTimeoutException){
+                    profilePresenterImplClass.showError("Socket Time error")
+                }else{
+                    profilePresenterImplClass.showError(t.message + "")
+                }
             }
 
             override fun onResponse(

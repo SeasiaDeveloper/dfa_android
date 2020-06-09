@@ -9,6 +9,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
 import android.net.ParseException
 import android.net.Uri
@@ -330,7 +332,6 @@ object Utilities {
             }
         }
 
-
         try {
             var jsonObject = JSONObject(mJsonResults.toString())
             var array = jsonObject.getJSONArray("routes");
@@ -340,9 +341,7 @@ object Utilities {
             var distance = steps.getJSONObject("distance");
             Log.i("Distance", distance.toString());
             // dist = Double.parseDouble(distance.getString("text").replaceAll("[^\\.0123456789]", ""));
-
         } catch (e: JSONException) {
-
             e.printStackTrace();
         }
         return mJsonResults;
@@ -437,7 +436,7 @@ object Utilities {
         message: String?,
         item: Any,
         alertDialogListener: AlertDialogListener,
-        position:Int
+        position: Int
     ) {
 
         val dialogBuilder = android.app.AlertDialog.Builder(context)
@@ -445,7 +444,7 @@ object Utilities {
         dialogBuilder.setMessage(message)
             .setCancelable(false)
             .setPositiveButton("Ok", { dialog, id ->
-                alertDialogListener.onClick(item,position)
+                alertDialogListener.onClick(item, position)
 
             })
             .setNegativeButton("Cancel", { dialog, id ->
@@ -494,6 +493,7 @@ object Utilities {
         listener: OnCaseItemClickListener,
         statusListener: StatusListener
     ) {
+
         lateinit var dialog: android.app.AlertDialog
         val builder = android.app.AlertDialog.Builder(context)
         val binding = DataBindingUtil.inflate(
@@ -536,12 +536,31 @@ object Utilities {
         return matcher.matches()
     }
 
-    fun dateTime():String{
+    fun dateTime(): String {
         val current = LocalDateTime.now()
 
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS")
         val formatted = current.format(formatter)
         return formatted
+    }
+
+    fun getAddressFromLatLong(latitude:Double,longitude:Double,context: Context):String {
+        var geocoder: Geocoder
+        var addresses: List<Address>
+        geocoder = Geocoder (context, Locale.getDefault())
+
+        addresses = geocoder.getFromLocation(
+            latitude,
+            longitude,
+            1
+        ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+        var address = addresses . get (0).getAddressLine(0)// If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+        var city = addresses . get (0).getLocality()
+        var state = addresses . get (0).getAdminArea()
+        var country = addresses . get (0).getCountryName()
+        var postalCode = addresses . get (0).getPostalCode()
+        var knownName = addresses . get (0).getFeatureName()
+        return address;
     }
 
 }

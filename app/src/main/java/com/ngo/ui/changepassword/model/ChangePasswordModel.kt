@@ -11,6 +11,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.SocketTimeoutException
 
 class ChangePasswordModel(private var changePasswordPresenter: ChangePasswordPresenter) {
     private fun toRequestBody(value: String): RequestBody {
@@ -22,7 +23,11 @@ class ChangePasswordModel(private var changePasswordPresenter: ChangePasswordPre
         retrofitApi.changePassword(changePasswordRequest).enqueue(object :
             Callback<ChangePasswordResponse> {
             override fun onFailure(call: Call<ChangePasswordResponse>, t: Throwable) {
-                changePasswordPresenter.showError(t.message + "")
+                if(t is SocketTimeoutException){
+                    changePasswordPresenter.showError("Socket Time error")
+                }else{
+                    changePasswordPresenter.showError(t.message + "")
+                }
             }
 
             override fun onResponse(

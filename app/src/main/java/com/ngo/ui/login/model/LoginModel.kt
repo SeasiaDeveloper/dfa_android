@@ -13,6 +13,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.SocketTimeoutException
 
 class LoginModel(private var loginPresenter: LoginPresenter) {
     private fun toRequestBody(value: String): RequestBody {
@@ -29,7 +30,11 @@ class LoginModel(private var loginPresenter: LoginPresenter) {
         retrofitApi.login(map).enqueue(object :
             Callback<LoginResponse> {
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                loginPresenter.showError(t.message + "")
+                if(t is SocketTimeoutException){
+                    loginPresenter.showError("Socket Time error")
+                }else{
+                    loginPresenter.showError(t.message + "")
+                }
             }
 
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {

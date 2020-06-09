@@ -14,6 +14,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.SocketTimeoutException
 
 class CrimeDetailsModel(private var crimeDetailsPresenter: CrimeDetailsPresenter) {
     private fun toRequestBody(value: String): RequestBody {
@@ -28,7 +29,11 @@ class CrimeDetailsModel(private var crimeDetailsPresenter: CrimeDetailsPresenter
             map).enqueue(object :
             Callback<GetCrimeDetailsResponse> {
             override fun onFailure(call: Call<GetCrimeDetailsResponse>, t: Throwable) {
-                crimeDetailsPresenter.showError(t.message + "")
+                if(t is SocketTimeoutException){
+                    crimeDetailsPresenter.showError("Socket Time error")
+                }else{
+                    crimeDetailsPresenter.showError(t.message + "")
+                }
             }
 
             override fun onResponse(
@@ -57,7 +62,11 @@ class CrimeDetailsModel(private var crimeDetailsPresenter: CrimeDetailsPresenter
         retrofitApi.getStatus(token, userRole.toInt())
             .enqueue(object : Callback<GetStatusResponse> {
                 override fun onFailure(call: Call<GetStatusResponse>, t: Throwable) {
-                    crimeDetailsPresenter.showError(t.message + "")
+                    if(t is SocketTimeoutException){
+                        crimeDetailsPresenter.showError("Socket Time error")
+                    }else{
+                        crimeDetailsPresenter.showError(t.message + "")
+                    }
                 }
 
                 override fun onResponse(
@@ -89,7 +98,11 @@ class CrimeDetailsModel(private var crimeDetailsPresenter: CrimeDetailsPresenter
         retrofitApi.updateStatus(token, map)
             .enqueue(object : Callback<UpdateStatusSuccess> {
                 override fun onFailure(call: Call<UpdateStatusSuccess>, t: Throwable) {
-                    crimeDetailsPresenter.showError(t.message + "")
+                    if(t is SocketTimeoutException){
+                        crimeDetailsPresenter.showError("Socket Time error")
+                    }else{
+                        crimeDetailsPresenter.showError(t.message + "")
+                    }
                 }
 
                 override fun onResponse(

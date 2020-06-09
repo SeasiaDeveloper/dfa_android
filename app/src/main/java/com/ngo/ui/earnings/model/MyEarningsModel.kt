@@ -12,6 +12,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.SocketTimeoutException
 
 class MyEarningsModel(private var myEarningsPresenter: MyEarningsPresenter) {
     private fun toRequestBody(value: String): RequestBody {
@@ -23,7 +24,11 @@ class MyEarningsModel(private var myEarningsPresenter: MyEarningsPresenter) {
         retrofitApi.getMyEarningsData(token,contactNumber?.toLong()!!).enqueue(object :
             Callback<MyEarningsResponse> {
             override fun onFailure(call: Call<MyEarningsResponse>, t: Throwable) {
-                myEarningsPresenter.showError(Constants.SERVER_ERROR)
+                if(t is SocketTimeoutException){
+                    myEarningsPresenter.showError("Socket Time error")
+                }else{
+                    myEarningsPresenter.showError(t.message + "")
+                }
             }
 
             override fun onResponse(

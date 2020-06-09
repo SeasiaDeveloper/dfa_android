@@ -11,6 +11,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.SocketTimeoutException
 
 class CommentsModel(private var presenter: CommentsPresenterImplClass) {
 
@@ -26,7 +27,11 @@ class CommentsModel(private var presenter: CommentsPresenterImplClass) {
 
         retrofitApi.addComment(token, map).enqueue(object : Callback<DeleteComplaintResponse> {
             override fun onFailure(call: Call<DeleteComplaintResponse>, t: Throwable) {
-                presenter.showError(t.message + "")
+                if(t is SocketTimeoutException){
+                    presenter.showError("Socket Time error")
+                }else{
+                    presenter.showError(t.message + "")
+                }
             }
 
             override fun onResponse(
@@ -74,7 +79,11 @@ class CommentsModel(private var presenter: CommentsPresenterImplClass) {
             }
 
             override fun onFailure(call: Call<GetCommentsResponse>, t: Throwable) {
-                presenter.showError(t.message + "")
+                if(t is SocketTimeoutException){
+                    presenter.showError("Socket Time error")
+                }else{
+                    presenter.showError(t.message + "")
+                }
             }
         })
     }

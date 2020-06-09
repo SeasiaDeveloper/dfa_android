@@ -73,6 +73,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private var CAMERA_REQUEST_CODE_VEDIO: Int = 3
     private lateinit var mediaControls: MediaController
     private var provider: String = ""
+    private var address:String =""
 
     private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
     override fun getLayout(): Int {
@@ -345,6 +346,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     PreferenceHandler.LNG,
                     longitude
                 )
+                address= Utilities.getAddressFromLatLong(lattitude.toDouble(),longitude.toDouble(),this@GeneralPublicActivity)
             }
         }
     }

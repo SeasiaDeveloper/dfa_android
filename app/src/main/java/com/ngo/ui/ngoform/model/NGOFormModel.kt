@@ -11,6 +11,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.SocketTimeoutException
 
 class NGOFormModel(private var ngoPresenter: NGOFormPresenter) {
     private fun toRequestBody(value: String): RequestBody {
@@ -42,7 +43,11 @@ class NGOFormModel(private var ngoPresenter: NGOFormPresenter) {
                 }
             }
             override fun onFailure(call: Call<NGOResponse>, t: Throwable) {
-                ngoPresenter.showError(t.message+"")
+                if(t is SocketTimeoutException){
+                    ngoPresenter.showError("Socket Time error")
+                }else{
+                    ngoPresenter.showError(t.message + "")
+                }
             }
         })
     }

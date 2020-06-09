@@ -10,6 +10,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.SocketTimeoutException
 
 class CommentLikeUsersModel(var presenter: CommentLikeUsersPresImpl) {
 
@@ -44,7 +45,11 @@ class CommentLikeUsersModel(var presenter: CommentLikeUsersPresImpl) {
             }
 
             override fun onFailure(call: Call<GetCommentsResponse>, t: Throwable) {
-                presenter.showError(t.message + "")
+                if(t is SocketTimeoutException){
+                    presenter.showError("Socket Time error")
+                }else{
+                    presenter.showError(t.message + "")
+                }
             }
         })
     }
@@ -74,7 +79,11 @@ class CommentLikeUsersModel(var presenter: CommentLikeUsersPresImpl) {
             }
 
             override fun onFailure(call: Call<GetCommentsResponse>, t: Throwable) {
-                presenter.showError(t.message + "")
+                if(t is SocketTimeoutException){
+                    presenter.showError("Socket Time error")
+                }else{
+                    presenter.showError(t.message + "")
+                }
             }
         })
     }

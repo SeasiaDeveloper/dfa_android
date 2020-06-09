@@ -15,6 +15,8 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+import java.lang.Exception
+import java.net.SocketTimeoutException
 
 class CasesModel(private var presenter: CasesPresenterImplClass) {
 
@@ -58,7 +60,11 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                         }
 
                         override fun onFailure(call: Call<GetCasesResponse>, t: Throwable) {
-                            presenter.showError(t.message + "")
+                            if (t is SocketTimeoutException) {
+                                presenter.showError("Socket Time error")
+                            } else {
+                                presenter.showError(t.message + "")
+                            }
                         }
                     })
 
@@ -91,7 +97,11 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                         }
 
                         override fun onFailure(call: Call<GetCasesResponse>, t: Throwable) {
-                            presenter.showError(t.message + "")
+                            if (t is SocketTimeoutException) {
+                                presenter.showError("Socket Time error")
+                            } else {
+                                presenter.showError(t.message + "")
+                            }
                         }
                     })
             }
@@ -123,7 +133,11 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                 }
 
                 override fun onFailure(call: Call<GetCasesResponse>, t: Throwable) {
-                    presenter.showError(t.message + "")
+                    if (t is SocketTimeoutException) {
+                        presenter.showError("Socket Time error")
+                    } else {
+                        presenter.showError(t.message + "")
+                    }
                 }
             })
         }
@@ -163,7 +177,11 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
 
             retrofitApi.addPost(token, map, parts).enqueue(object : Callback<CreatePostResponse> {
                 override fun onFailure(call: Call<CreatePostResponse>, t: Throwable) {
-                    presenter.showError(t.message + "")
+                    if (t is SocketTimeoutException) {
+                        presenter.showError("Socket Time error")
+                    } else {
+                        presenter.showError(t.message + "")
+                    }
                 }
 
                 override fun onResponse(
@@ -188,7 +206,11 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
             retrofitApi.addPostWithoutMedia(token, map)
                 .enqueue(object : Callback<CreatePostResponse> {
                     override fun onFailure(call: Call<CreatePostResponse>, t: Throwable) {
-                        presenter.showError(t.message + "")
+                        if (t is SocketTimeoutException) {
+                            presenter.showError("Socket Time error")
+                        } else {
+                            presenter.showError(t.message + "")
+                        }
                     }
 
                     override fun onResponse(
@@ -219,7 +241,11 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         retrofitApi.deleteComplaintOrPost(token, map)
             .enqueue(object : Callback<DeleteComplaintResponse> {
                 override fun onFailure(call: Call<DeleteComplaintResponse>, t: Throwable) {
-                    presenter.showError(t.message + "")
+                    if (t is SocketTimeoutException) {
+                        presenter.showError("Socket Time error")
+                    } else {
+                        presenter.showError(t.message + "")
+                    }
                 }
 
                 override fun onResponse(
@@ -249,7 +275,11 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         retrofitApi.changeLikeStatus(token, map)
             .enqueue(object : Callback<DeleteComplaintResponse> {
                 override fun onFailure(call: Call<DeleteComplaintResponse>, t: Throwable) {
-                    presenter.showError(t.message + "")
+                    if (t is SocketTimeoutException) {
+                        presenter.showError("Socket Time error")
+                    } else {
+                        presenter.showError(t.message + "")
+                    }
                 }
 
                 override fun onResponse(
@@ -280,7 +310,11 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         retrofitApi.updateProfileWithoutImage(map, token)
             .enqueue(object : Callback<SignupResponse> {
                 override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
-                    presenter.showError(t.message + "")
+                    if (t is SocketTimeoutException) {
+                        presenter.showError("Socket Time error")
+                    } else {
+                        presenter.showError(t.message + "")
+                    }
                 }
 
                 override fun onResponse(
@@ -309,7 +343,11 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         retrofitApi.getStatus(token, userRole.toInt())
             .enqueue(object : Callback<GetStatusResponse> {
                 override fun onFailure(call: Call<GetStatusResponse>, t: Throwable) {
-                    presenter.showError(t.message + "")
+                    if (t is SocketTimeoutException) {
+                        presenter.showError("Socket Time error")
+                    } else {
+                        presenter.showError(t.message + "")
+                    }
                 }
 
                 override fun onResponse(
@@ -341,7 +379,11 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         retrofitApi.updateStatus(token, map)
             .enqueue(object : Callback<UpdateStatusSuccess> {
                 override fun onFailure(call: Call<UpdateStatusSuccess>, t: Throwable) {
-                    presenter.showError(t.message + "")
+                    if (t is SocketTimeoutException) {
+                        presenter.showError("Socket Time error")
+                    } else {
+                        presenter.showError(t.message + "")
+                    }
                 }
 
                 override fun onResponse(
@@ -369,10 +411,14 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         val map = HashMap<String, RequestBody>()
         //map["complaint_id"] = toRequestBody(request.complaintId)
         val complaintId = Integer.parseInt(request.complaintId)
-        retrofitApi.getFirImage(token,complaintId)
+        retrofitApi.getFirImage(token, complaintId)
             .enqueue(object : Callback<FirImageResponse> {
                 override fun onFailure(call: Call<FirImageResponse>, t: Throwable) {
-                    presenter.showError(t.message + "")
+                    if (t is SocketTimeoutException) {
+                        presenter.showError("Socket Time error")
+                    } else {
+                        presenter.showError(t.message + "")
+                    }
                 }
 
                 override fun onResponse(

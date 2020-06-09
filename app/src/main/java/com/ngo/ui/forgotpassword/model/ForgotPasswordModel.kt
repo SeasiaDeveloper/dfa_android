@@ -14,6 +14,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.SocketTimeoutException
 
 class ForgotPasswordModel(private var forgotPassworPresenter: ForgotPassworPresenter) {
     private fun toRequestBody(value: String): RequestBody {
@@ -27,7 +28,11 @@ class ForgotPasswordModel(private var forgotPassworPresenter: ForgotPassworPrese
         retrofitApi.verifyUser(map).enqueue(object :
             Callback<VerifyUserResponse> {
             override fun onFailure(call: Call<VerifyUserResponse>, t: Throwable) {
-                forgotPassworPresenter.showError(t.message + "")
+                if(t is SocketTimeoutException){
+                    forgotPassworPresenter.showError("Socket Time error")
+                }else{
+                    forgotPassworPresenter.showError(t.message + "")
+                }
             }
 
             override fun onResponse(

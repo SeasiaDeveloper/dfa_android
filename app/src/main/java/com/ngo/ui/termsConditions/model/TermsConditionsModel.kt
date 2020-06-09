@@ -8,6 +8,7 @@ import com.ngo.utils.Constants
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.SocketTimeoutException
 
 class TermsConditionsModel(private var presenter: TermsConditionsPresenter) {
 
@@ -29,7 +30,11 @@ class TermsConditionsModel(private var presenter: TermsConditionsPresenter) {
             }
 
             override fun onFailure(call: Call<GetTermsConditionsResponse>, t: Throwable) {
-                presenter.showError(t.message + "")
+                if(t is SocketTimeoutException){
+                    presenter.showError("Socket Time error")
+                }else{
+                    presenter.showError(t.message + "")
+                }
             }
         })
     }
