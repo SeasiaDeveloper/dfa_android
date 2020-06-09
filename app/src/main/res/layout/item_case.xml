@@ -51,6 +51,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginStart="@dimen/_4sdp"
                         android:layout_weight="0.54"
+                        android:textStyle="bold"
                         android:gravity="start|center_vertical"
                         android:textColor="@color/grey_text" />
 
@@ -402,6 +403,7 @@
                             android:paddingEnd="@dimen/_4ssp"
                             android:paddingBottom="@dimen/_4ssp"
                             android:textAllCaps="true"
+                            android:textStyle="bold"
                             android:textColor="@color/green"
                             android:textSize="@dimen/_12ssp"
                             android:visibility="gone"
@@ -411,6 +413,7 @@
                             android:id="@+id/action_complaint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textStyle="bold"
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_10sdp"

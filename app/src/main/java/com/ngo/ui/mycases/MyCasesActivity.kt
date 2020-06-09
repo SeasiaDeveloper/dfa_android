@@ -58,7 +58,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         if (!search) {
             pageCount = page
             val casesRequest =
-                CasesRequest("0", "", "0", page.toString(), "5")//*totalItemsCount.toString()*//*)
+                CasesRequest("0", "", "0", page.toString(), "10")//*totalItemsCount.toString()*//*)
             presenter.getComplaints(casesRequest, token, type)
             progressBar.visibility = View.VISIBLE
         }
@@ -103,7 +103,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         casesRequest = CasesRequest(
             "0",
             etSearch.text.toString(),
-            "0", "1", "5"
+            "0", "1", "10"
 
         ) //all = "1" for fetching all the cases whose type = 0
 
@@ -182,7 +182,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         casesRequest = CasesRequest(
             "0",
             etSearch.text.toString(),
-            "0", "1", "5"
+            "0", "1", "10"
         ) //all = "0"  my cases and for fetching all the cases which are of type = 0
         Utilities.showProgress(this)
         presenter.getComplaints(casesRequest, token, type)
@@ -358,7 +358,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         val casesRequest = CasesRequest(
             "0",
             "",
-            "0", "1", "5"
+            "0", "1", "10"
         ) //all = 0 for only my cases;type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
         GeneralPublicHomeFragment.changeThroughIncidentScreen = 1 // so that list on Home gets refreshed after change in status

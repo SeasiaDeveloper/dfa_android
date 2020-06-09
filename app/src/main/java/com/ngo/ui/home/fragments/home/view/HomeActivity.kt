@@ -74,7 +74,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onResume() {
         super.onResume()
 
-        if (menuItem!=null && menuItem!!.isChecked) menuItem!!.isChecked = false
+        if (menuItem != null && menuItem!!.isChecked) menuItem!!.isChecked = false
 
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         homePresenter.hitProfileApi(authorizationToken)
@@ -127,11 +127,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             notificationResponse.report_data
         (dialog.findViewById(R.id.txtComplaintTime) as TextView).text =
             notificationResponse.report_time
-        if(! notificationResponse.description.equals("") &&  notificationResponse.description!=null)
-        {
+        if (!notificationResponse.description.equals("") && notificationResponse.description != null) {
             (dialog.findViewById(R.id.layout_desc) as LinearLayout).visibility = View.VISIBLE
-            (dialog.findViewById(R.id.txtDescription) as TextView).text = notificationResponse.description}
-        else{
+            (dialog.findViewById(R.id.txtDescription) as TextView).text =
+                notificationResponse.description
+        } else {
             (dialog.findViewById(R.id.layout_desc) as LinearLayout).visibility = View.GONE
         }
 
@@ -295,6 +295,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
         textName.setText(getProfileResponse.data?.first_name + " " + getProfileResponse.data?.middle_name + " " + getProfileResponse.data?.last_name)
         textAddress.setText(getProfileResponse.data?.address_1)
+        userInfo.setText("")
         if (getProfileResponse.data?.profile_pic != null) {
             try {
                 Glide.with(this).load(getProfileResponse.data.profile_pic)
@@ -305,17 +306,16 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
-    var menuItem :MenuItem? =null
+    var menuItem: MenuItem? = null
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         menuItem = item
         when (item.itemId) {
 
 
-
             R.id.nav_edit_profile -> {
                 val intent = Intent(this, ProfileActivity::class.java)
-                intent.putExtra("fromWhere","editProfile")
+                intent.putExtra("fromWhere", "editProfile")
                 startActivity(intent)
             }
             R.id.nav_password -> {
@@ -340,7 +340,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
 
             R.id.nav_invite_friends -> {
-                val appUrl = PreferenceHandler.readString(this,PreferenceHandler.APP_URL,"")
+                val appUrl = PreferenceHandler.readString(this, PreferenceHandler.APP_URL, "")
                 val shareIntent = Intent()
                 shareIntent.action = Intent.ACTION_SEND
                 shareIntent.putExtra(Intent.EXTRA_TEXT, appUrl)
@@ -348,7 +348,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 startActivity(Intent.createChooser(shareIntent, "send to"))
 
             }
-            R.id.nav_terms_and_conditions -> Utilities.showMessage(this@HomeActivity,"Coming Soon")
+            R.id.nav_terms_and_conditions -> Utilities.showMessage(this@HomeActivity, "Coming Soon")
             /*startActivity(
                 Intent(
                     this@HomeActivity,
@@ -375,20 +375,64 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         dismissProgress()
         loadNavHeader(getProfileResponse)
         val gson = getProfileResponse.data
-        PreferenceHandler.writeString(this, PreferenceHandler.USER_FULLNAME, gson?.first_name +" "+ gson?.last_name)
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.USER_FULLNAME,
+            gson?.first_name + " " + gson?.last_name
+        )
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, gson.toString())
-        PreferenceHandler.writeString(this, PreferenceHandler.APP_URL, getProfileResponse.data?.app_url!!)
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.APP_URL,
+            getProfileResponse.data?.app_url!!
+        )
 
         //save NGO details for ContactUs screen
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_CONTACT_NO, getProfileResponse.data.ngo_phone!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_NAME, getProfileResponse.data.ngo_name!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_ADDRESS, getProfileResponse.data.ngo_address!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_DIST, getProfileResponse.data.ngo_dist!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_STATE, getProfileResponse.data.ngo_state!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_PIN, getProfileResponse.data.ngo_pincode!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_LONGITUDE, getProfileResponse.data.ngo_longitude!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_LATITUDE, getProfileResponse.data.ngo_latitude!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_EMAIL, getProfileResponse.data.ngo_email!!)
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_CONTACT_NO,
+            getProfileResponse.data.ngo_phone!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_NAME,
+            getProfileResponse.data.ngo_name!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_ADDRESS,
+            getProfileResponse.data.ngo_address!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_DIST,
+            getProfileResponse.data.ngo_dist!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_STATE,
+            getProfileResponse.data.ngo_state!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_PIN,
+            getProfileResponse.data.ngo_pincode!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_LONGITUDE,
+            getProfileResponse.data.ngo_longitude!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_LATITUDE,
+            getProfileResponse.data.ngo_latitude!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_EMAIL,
+            getProfileResponse.data.ngo_email!!
+        )
 
         val jsonString = GsonBuilder().create().toJson(getProfileResponse)
         //Save that String in SharedPreferences
@@ -410,7 +454,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         navigationLayout.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
-            intent.putExtra("fromWhere","editProfile")
+            intent.putExtra("fromWhere", "editProfile")
             drawerLayout.closeDrawer(GravityCompat.START)
             startActivity(intent)
         }

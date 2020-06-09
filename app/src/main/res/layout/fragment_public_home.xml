@@ -211,10 +211,22 @@
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content">-->
 
+            <com.ngo.customviews.CustomtextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/incident_heading"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:textSize="@dimen/_16sdp"
+                android:textColor="@color/grey_text"
+                />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="@dimen/_5sdp">
+                android:paddingTop="@dimen/_10sdp">
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/itemsswipetorefresh"

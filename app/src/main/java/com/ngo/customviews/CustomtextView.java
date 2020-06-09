@@ -18,7 +18,7 @@ public class CustomtextView extends AppCompatTextView {
 
     private void init() {
         Typeface font = FontCache.getTypeface(FontCache.REGULAR_FONT, context);
-        setTypeface(font, Typeface.BOLD);
+       // setTypeface(font, Typeface.BOLD);
     }
 
 }

@@ -11,5 +11,6 @@ data class ComplaintRequest(
     //val device_token: String,
     val lat: String,
     var lng: String,
-    val mediaType: String
+    val mediaType: String,
+    val address:String
 )
