@@ -40,6 +40,7 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
     lateinit var request: GetPhotosRequest
     private var presenter: VideoPresenter = VideosPresenterImpl(this)
     private var authorizationToken: String? = ""
+    private var isFirst: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,11 +52,14 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
 
     override fun onResume() {
         super.onResume()
-        request = GetPhotosRequest("videos")
-        Utilities.showProgress(activity!!)
-        authorizationToken =
-            PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
-        presenter.getVideos(authorizationToken, request)
+        if (isFirst) {
+            request = GetPhotosRequest("videos")
+            Utilities.showProgress(activity!!)
+            authorizationToken =
+                PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+            presenter.getVideos(authorizationToken, request)
+            isFirst=false
+        }
     }
 
 

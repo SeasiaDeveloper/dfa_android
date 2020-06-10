@@ -107,6 +107,7 @@ class CasesAdapter(
                 for (j in 0..data.size - 1) {
                     if (complaintId.equals(data.get(j).id)) {
                         commentCount = data.get(j).comment_count!!.toString()
+                        break
                     }
                 }
                 if (commentCount.equals("")) {
@@ -162,8 +163,36 @@ class CasesAdapter(
                 for (j in 0..data.size - 1) {
                     if (complaintId.equals(data.get(j).id)) {
                         likeCount = data.get(j).like_count!!.toString()
+                        break
                     }
                 }
+                if (likeCount.equals("")) {
+                    if (this.mList.get(i).is_liked!!.equals(0)) {
+                        this.mList.get(i).like_count =
+                            (this.mList.get(i).like_count?.toInt()!! - 1).toString()
+                    } else {
+                        this.mList.get(i).like_count =
+                            (this.mList.get(i).like_count?.toInt()!! + 1).toString()
+                    }
+                } else {
+                    this.mList.get(i).like_count = likeCount.toString()
+                }
+
+                notifyItemChanged(i)
+                break
+            }
+        }
+    }
+    fun notifyParticularItem(complaintId: String) {
+        var likeCount: String? = ""
+        for (i in 0..this.mList.size - 1) {
+            if (complaintId.equals(this.mList.get(i).id)) {
+             /*   for (j in 0..data.size - 1) {
+                    if (complaintId.equals(data.get(j).id)) {
+                        likeCount = data.get(j).like_count!!.toString()
+                        break
+                    }
+                }*/
                 if (likeCount.equals("")) {
                     if (this.mList.get(i).is_liked!!.equals(0)) {
                         this.mList.get(i).like_count =

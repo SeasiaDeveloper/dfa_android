@@ -318,6 +318,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
         textName.setText(getProfileResponse.data?.first_name + " " + getProfileResponse.data?.middle_name + " " + getProfileResponse.data?.last_name)
         textAddress.setText(getProfileResponse.data?.address_1)
+        userInfo.setText("")
         if (getProfileResponse.data?.profile_pic != null) {
             try {
                 Glide.with(this).load(getProfileResponse.data.profile_pic)

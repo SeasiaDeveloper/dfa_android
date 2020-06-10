@@ -582,7 +582,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 etDescription.text.toString().trim(),
                 lattitude,
                 longitude,
-                mediaType!!
+                mediaType!!,
+                address
             )
             complaintsPresenter.saveDetailsRequest(
                 authorizationToken,

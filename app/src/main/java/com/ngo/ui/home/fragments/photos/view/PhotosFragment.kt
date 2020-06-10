@@ -42,7 +42,8 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
     private var photos: List<GetPhotosResponse.Data> = mutableListOf()
     lateinit var request: GetPhotosRequest
     private var presenter: PhotosPresenter = PhotosPresenterImpl(this)
-    private var authorizationToken :String? =""
+    private var authorizationToken: String? = ""
+    private var isFirst: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,11 +55,14 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
 
     override fun onResume() {
         super.onResume()
-        request = GetPhotosRequest("photos")
-        showProgress(activity!!)
-        authorizationToken =
-            PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
-        presenter.getPhotos(authorizationToken, request)
+        if (isFirst) {
+            request = GetPhotosRequest("photos")
+            showProgress(activity!!)
+            authorizationToken =
+                PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+            presenter.getPhotos(authorizationToken, request)
+            isFirst = false
+        }
     }
 
 

@@ -27,6 +27,7 @@
             android:padding="@dimen/_5sdp"
             android:text="@string/emergency_contact_nearest_to_you"
             android:textColor="@color/black"
+            android:textStyle="bold"
             android:textSize="@dimen/_12ssp" />
 
         <androidx.recyclerview.widget.RecyclerView

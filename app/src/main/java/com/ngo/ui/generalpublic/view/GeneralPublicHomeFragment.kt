@@ -130,7 +130,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     fun refreshList() {
         val casesRequest =
-            CasesRequest("1", "", "-1", "1", "5") //type = -1 for fetching all the data
+            CasesRequest("1", "", "-1", "1", "10") //type = -1 for fetching all the data
         Utilities.showProgress(mContext)
         presenter.getComplaints(casesRequest, token, type)
     }
@@ -439,9 +439,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                         }
                     }
                 } else {
-                    //when to change like status
+                  /*  //when to change like status
                     adapter?.notifyParticularItem(complaintIdTobeLiked!!, response.data)
-                    isLike = false
+                    isLike = false*/
                 }
                 //change = 1
             }
@@ -720,7 +720,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     fun doApiCall() {
         val casesRequest =
-            CasesRequest("1", "", "-1", "1", "5")  //type = -1 for fetching both cases and posts
+            CasesRequest("1", "", "-1", "1", "10")  //type = -1 for fetching both cases and posts
         Utilities.showProgress(mContext)
         presenter.getComplaints(casesRequest, token, type)
 
@@ -758,7 +758,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         path = ""
         Utilities.showMessage(mContext, responseObject.message!!)
         val casesRequest =
-            CasesRequest("1", "", "-1", "1", "5") //type = -1 for fetching all the data
+            CasesRequest("1", "", "-1", "1", "10") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
     }
 
@@ -791,8 +791,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     //changes the like status
     override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
-        Utilities.showProgress(mContext)
+       // Utilities.showProgress(mContext)
         complaintIdTobeLiked = complaintsData.id
+
+        //when to change like status
+        adapter?.notifyParticularItem(complaintIdTobeLiked!!)
+        isLike = false
+
         val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
 
         if (token!!.isEmpty()) {
@@ -808,7 +813,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         //Utilities.showMessage(mContext, responseObject.message!!)
         isLike = true
         val casesRequest =
-            CasesRequest("1", "", "-1", "1", "5") //type = -1 for fetching all the data
+            CasesRequest("1", "", "-1", "1", "10") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
     }
 
@@ -836,7 +841,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
         pageCount = page
         val casesRequest =
-            CasesRequest("1", "", "-1", page.toString(), "5" /*totalItemsCount.toString()*/)
+            CasesRequest("1", "", "-1", page.toString(), "10" /*totalItemsCount.toString()*/)
         presenter.getComplaints(casesRequest, token, type)
         progressBar.visibility = View.VISIBLE
     }
