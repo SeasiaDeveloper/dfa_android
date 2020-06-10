@@ -62,7 +62,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     private var token: String = ""
     var isFirst = true
     var type = ""
-    var firComplaintId:String=""
+    var firComplaintId: String = ""
     var horizontalLayoutManager: LinearLayoutManager? = null
 
     //pagination
@@ -75,7 +75,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     var whenDeleteCall: Boolean = false
     var setAdapterBoolean: Boolean = true
     var adapterActionPosition: Int? = null
-    var fragment:Fragment?=null
+    var fragment: Fragment? = null
     var positionOfFir: Int? = null
 
     override fun onClick(item: Any, position: Int) {
@@ -98,7 +98,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     //call fir image api
     fun callFirImageApi(complaintId: String, position: Int) {
         Utilities.showProgress(mContext)
-        firComplaintId=complaintId
+        firComplaintId = complaintId
         positionOfFir = position
         var firImageRequest = CrimeDetailsRequest(complaintId)
         presenter.callFirIamageApi(token, firImageRequest)
@@ -107,7 +107,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun getFirImageData(response: FirImageResponse) {
         Utilities.dismissProgress()
         if (positionOfFir != null) {
-        adapter?.notifyFirImageData(positionOfFir,response,firComplaintId)
+            adapter?.notifyFirImageData(positionOfFir, response, firComplaintId)
         }
     }
 
@@ -122,7 +122,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         var commentChange = 0
         var fromIncidentDetailScreen = 0
         var commentsCount = 0
-        var isApiHit : Boolean = false
+        var isApiHit: Boolean = false
     }
 
     fun refreshList() {
@@ -171,7 +171,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
         //swipeRefresh.setOnRefreshListener(this)
-        fragment=this
+        fragment = this
         setAdapter()
         if (endlessScrollListener == null)
             endlessScrollListener =
@@ -436,9 +436,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                         }
                     }
                 } else {
-                  /*  //when to change like status
-                    adapter?.notifyParticularItem(complaintIdTobeLiked!!, response.data)
-                    isLike = false*/
+                    /*  //when to change like status
+                      adapter?.notifyParticularItem(complaintIdTobeLiked!!, response.data)
+                      isLike = false*/
                 }
                 //change = 1
             }
@@ -474,8 +474,54 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 complaintId = complaintsData.id!!
                 if (complaintsData.status != null) currentStatus = complaintsData.status!!
                 //hit api based on role
-                Utilities.showProgress(mContext)
-                presenter.fetchStatusList(token, type)
+                /*Utilities.showProgress(mContext) //remove
+                presenter.fetchStatusList(token, type)*/
+                var list: ArrayList<GetStatusDataBean> = ArrayList()
+                var item1: GetStatusDataBean
+                if (type == "1") {
+                    if (currentStatus.equals("Approved")) {
+                        item1 = GetStatusDataBean("1", "Approved", true)
+                    } else {
+                        item1 = GetStatusDataBean("1", "Approved", false)
+                    }
+                    list.add(item1)
+                } else {
+                    if (currentStatus.equals("Accept")) {
+                        item1 = GetStatusDataBean("4", "Accept", true)
+                    } else {
+                        item1 = GetStatusDataBean("4", "Accept", false)
+                    }
+                    list.add(item1)
+                    if (currentStatus.equals("Reject")) {
+                        item1 = GetStatusDataBean("6", "Reject", true)
+                    } else {
+                        item1 = GetStatusDataBean("6", "Reject", false)
+                    }
+                    list.add(item1)
+                    if (currentStatus.equals("Resolved")) {
+                        item1 = GetStatusDataBean("7", "Resolved", true)
+                    } else {
+                        item1 = GetStatusDataBean("7", "Resolved", false)
+                    }
+                    list.add(item1)
+                    if (currentStatus.equals("Unauthentic")) {
+                        item1 = GetStatusDataBean("8", "Unauthentic", true)
+                    } else {
+                        item1 = GetStatusDataBean("8", "Unauthentic", false)
+                    }
+                    list.add(item1)
+                }
+
+
+                for (element in list) {
+                    if (element.name.equals(currentStatus)) {
+                        element.isChecked = true
+                    } else {
+                        element.isChecked = false
+                    }
+                }
+                var data = GetStatusResponse("", 0, list)
+                showStatusDialog("", data)
             }
 
             "webview" -> {
@@ -591,6 +637,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         Utilities.dismissProgress()
+        statusId = "-1"
         Utilities.showMessage(mContext, responseObject.message.toString())
 
         /*if (responseObject.data?.get(0)?.status!!.equals("Unauthentic") || responseObject.data.get(0).status!!.equals(
@@ -612,6 +659,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun showServerError(error: String) {
         Utilities.dismissProgress()
+        statusId = "-1"
         if (error.equals(Constants.TOKEN_ERROR)) {
             //logout user
             //(activity as GeneralPublicActivity).logoutUser
@@ -778,7 +826,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     //changes the like status
     override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
-       // Utilities.showProgress(mContext)
+        // Utilities.showProgress(mContext)
         complaintIdTobeLiked = complaintsData.id
 
         //when to change like status

@@ -218,4 +218,6 @@
     <string name="locate_us">Locate us</string>
     <string name="km_away">KM Away</string>
     <string name="incident_heading">Recent Reported Incidents</string>
+    <string name="more">More</string>
+    <string name="less">Less</string>
 </resources>

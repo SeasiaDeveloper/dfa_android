@@ -15,6 +15,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.common.data.DataHolder
 import com.ngo.R
 import com.ngo.adapters.CasesAdapter
 import com.ngo.adapters.StatusAdapter
@@ -82,13 +83,16 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     var type = ""
     private var adapter: CasesAdapter? = null
     private var search: Boolean = false
-    var firComplaintId:String=""
+    private var isFirst: Boolean = true
+    var firComplaintId: String = ""
+
 
     companion object {
         var change = 0
         var commentChange = 0
         var fromIncidentDetailScreen = 1
         var commentsCount = 0
+        var firstSavedList: MutableList<GetCasesResponse.Data> = mutableListOf()
     }
 
     override fun onResume() {
@@ -112,7 +116,6 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         presenter.getComplaints(casesRequest, token, type)
     }
 
-
     override fun onPause() {
         super.onPause()
         change = 1
@@ -129,8 +132,17 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
-        fragment=Fragment()
-        adapter = CasesAdapter(this, complaints.toMutableList(), this, type.toInt(), this, this,fragment,false)
+        fragment = Fragment()
+        adapter = CasesAdapter(
+            this,
+            complaints.toMutableList(),
+            this,
+            type.toInt(),
+            this,
+            this,
+            fragment,
+            false
+        )
         horizontalLayoutManager = LinearLayoutManager(
             this, RecyclerView.VERTICAL, false
         )
@@ -172,7 +184,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     //call fir image api
     fun callFirImageApi(complaintId: String, position: Int) {
         Utilities.showProgress(this)
-        firComplaintId=complaintId
+        firComplaintId = complaintId
         positionOfFir = position
         var firImageRequest = CrimeDetailsRequest(complaintId)
         presenter.callFirIamageApi(token, firImageRequest)
@@ -191,6 +203,11 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     //displays my cases list on the view
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
         Utilities.dismissProgress()
+        if (isFirst) {
+            firstSavedList = response.data!!
+            isFirst = false
+        }
+
         complaints = response.data!!
         if (complaints.isNotEmpty()) {
             tvRecord.visibility = View.GONE
@@ -250,10 +267,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
         //add click listener after adding the list on the view
         etSearch.setOnTouchListener(OnTouchListener { v, event ->
-            val DRAWABLE_LEFT = 0
-            val DRAWABLE_TOP = 1
             val DRAWABLE_RIGHT = 2
-            val DRAWABLE_BOTTOM = 3
             if (event.action == MotionEvent.ACTION_UP) {
                 if (event.rawX >= etSearch.getRight() - etSearch.getCompoundDrawables().get(
                         DRAWABLE_RIGHT
@@ -261,25 +275,15 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                 ) { // your action here
                     endlessScrollListener?.resetState()
                     //adapter!!.clearAdapter()
-                    if (etSearch.text.toString().length == 0) {
-                       /* search = false
-                        pageCount = 1
-                        casesRequest = CasesRequest(
-                            "0",
-                            etSearch.text.toString(),
-                            "0", "1", "5"
-                        ) //all = "1" for fetching all the cases whose type = 0
-*/
-                    }
-                    else {
+                    if (etSearch.text.toString().length != 0) {
                         search = true
+                        //adapter?.performSearch(etSearch.text.toString())
                         casesRequest = CasesRequest(
                             "0",
                             etSearch.text.toString(),
                             "0", "1", "30"
                         ) //all = "1" for fetching all the cases whose type = 0
 
-                        // endlessScrollListener?.resetState()
                         Utilities.showProgress(this@MyCasesActivity)
                         //hit api with search variable
                         presenter.getComplaints(casesRequest, token, type)
@@ -293,36 +297,27 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 if (/*s.length >= 3 ||*/ s.length == 0) {
-                   // endlessScrollListener?.resetState()
-                    if (s.length == 0) {
+                  /*  if (s.length == 0) {
                         pageCount = 1
                         adapter?.clear()
                         endlessScrollListener?.resetState()
                         search = false
-                        myCasesApiCall()
-
-                       /* search = false
-                        pageCount = 1
-                        casesRequest = CasesRequest(
-                            "0",
-                            etSearch.text.toString(),
-                            "0", "1", "5"
-                        ) //all = "1" for fetching all the cases whose type = 0*/
-
-                    }
-                   /* else {
-                        search = true
-                        casesRequest = CasesRequest(
-                            "0",
-                            etSearch.text.toString(),
-                            "0", "1", "30"
-                        ) //all = "1" for fetching all the cases whose type = 0
+                        adapter?.setList(firstSavedList)
+                        //myCasesApiCall()
                     }*/
+                    /* else {
+                         search = true
+                         casesRequest = CasesRequest(
+                             "0",
+                             etSearch.text.toString(),
+                             "0", "1", "30"
+                         ) //all = "1" for fetching all the cases whose type = 0
+                     }*/
 
 
-                   /* Utilities.showProgress(this@MyCasesActivity)
-                    //hit api with search variable
-                    presenter.getComplaints(casesRequest, token, type)*/
+                    /* Utilities.showProgress(this@MyCasesActivity)
+                     //hit api with search variable
+                     presenter.getComplaints(casesRequest, token, type)*/
                 }
 
             }
@@ -337,6 +332,13 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                 s: CharSequence, start: Int,
                 before: Int, count: Int
             ) {
+                if (s.length == 0) {
+                    if (s.length == 0) {
+                        search = false
+                        //isFirst=true
+                        adapter?.setList(firstSavedList)
+                    }
+                }
             }
         })
     }
@@ -353,7 +355,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
     //refreshing the list after changing the like status
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
-       // Utilities.showMessage(this, responseObject.message!!)
+        // Utilities.showMessage(this, responseObject.message!!)
         isLike = true
         val casesRequest = CasesRequest(
             "0",
@@ -361,7 +363,8 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             "0", "1", "10"
         ) //all = 0 for only my cases;type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
-        GeneralPublicHomeFragment.changeThroughIncidentScreen = 1 // so that list on Home gets refreshed after change in status
+        GeneralPublicHomeFragment.changeThroughIncidentScreen =
+            1 // so that list on Home gets refreshed after change in status
     }
 
     //to delete my case
@@ -373,12 +376,13 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.dismissProgress()
         adapter?.removeAt(deleteItemposition!!)
-      /*  whenDeleteCall = true
-        val casesRequest = CasesRequest(
-            "0", "", "0", "1", "5"
-        ) //type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token, type)*/
-        GeneralPublicHomeFragment.changeThroughIncidentScreen = 1 // so that list on Home gets refreshed after change in status
+        /*  whenDeleteCall = true
+          val casesRequest = CasesRequest(
+              "0", "", "0", "1", "5"
+          ) //type = -1 for fetching all the data
+          presenter.getComplaints(casesRequest, token, type)*/
+        GeneralPublicHomeFragment.changeThroughIncidentScreen =
+            1 // so that list on Home gets refreshed after change in status
     }
 
     //displays the detail of my case
@@ -400,9 +404,55 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             "action" -> {
                 complaintId = complaintsData.id!!
                 if (complaintsData.status != null) currentStatus = complaintsData.status!!
-                Utilities.showProgress(this@MyCasesActivity)
+                //Utilities.showProgress(this@MyCasesActivity)
                 //hit api based on role
-                presenter.fetchStatusList(token, type)
+                //presenter.fetchStatusList(token, type)
+                var list: ArrayList<GetStatusDataBean> = ArrayList()
+                var item1: GetStatusDataBean
+                if (type == "1") {
+                    if (currentStatus.equals("Approved")) {
+                        item1 = GetStatusDataBean("1", "Approved", true)
+                    } else {
+                        item1 = GetStatusDataBean("1", "Approved", false)
+                    }
+                    list.add(item1)
+                } else {
+                    if (currentStatus.equals("Accept")) {
+                        item1 = GetStatusDataBean("4", "Accept", true)
+                    } else {
+                        item1 = GetStatusDataBean("4", "Accept", false)
+                    }
+                    list.add(item1)
+                    if (currentStatus.equals("Reject")) {
+                        item1 = GetStatusDataBean("6", "Reject", true)
+                    } else {
+                        item1 = GetStatusDataBean("6", "Reject", false)
+                    }
+                    list.add(item1)
+                    if (currentStatus.equals("Resolved")) {
+                        item1 = GetStatusDataBean("7", "Resolved", true)
+                    } else {
+                        item1 = GetStatusDataBean("7", "Resolved", false)
+                    }
+                    list.add(item1)
+                    if (currentStatus.equals("Unauthentic")) {
+                        item1 = GetStatusDataBean("8", "Unauthentic", true)
+                    } else {
+                        item1 = GetStatusDataBean("8", "Unauthentic", false)
+                    }
+                    list.add(item1)
+                }
+
+
+                for (element in list) {
+                    if (element.name.equals(currentStatus)) {
+                        element.isChecked = true
+                    } else {
+                        element.isChecked = false
+                    }
+                }
+                var data = GetStatusResponse("", 0, list)
+                showStatusDialog("", data)
             }
 
             "webview" -> {
@@ -435,6 +485,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
     override fun showServerError(error: String) {
         Utilities.dismissProgress()
+        statusId = "-1"
         Utilities.showMessage(this, error)
     }
 
@@ -456,29 +507,30 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
     override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         Utilities.dismissProgress()
+        statusId = "-1"
         Utilities.showMessage(this, responseObject.message.toString())
         //refresh the list
-       /* if (responseObject.data?.size != 0) {
-            adapter?.notifyActionData(responseObject.data!!)
-        }*/
+        /* if (responseObject.data?.size != 0) {
+             adapter?.notifyActionData(responseObject.data!!)
+         }*/
 
-     /*   if(responseObject.data?.get(0)?.status!!.equals("Unauthentic") || responseObject.data.get(0).status!!.equals("Reject")){
-            //refresh the list
-            Utilities.showProgress(this@MyCasesActivity)
-            doApiCall()
+        /*   if(responseObject.data?.get(0)?.status!!.equals("Unauthentic") || responseObject.data.get(0).status!!.equals("Reject")){
+               //refresh the list
+               Utilities.showProgress(this@MyCasesActivity)
+               doApiCall()
+           }
+           else {*/
+        actionChanged = true
+        if (responseObject.data!!.size != 0) {
+            adapter?.notifyActionData(responseObject.data)
         }
-        else {*/
-            actionChanged = true
-            if (responseObject.data!!.size != 0) {
-                adapter?.notifyActionData(responseObject.data)
-            }
-       // }
+        // }
     }
 
     override fun getFirImageData(response: FirImageResponse) {
         Utilities.dismissProgress()
         if (positionOfFir != null) {
-            adapter?.notifyFirImageData(positionOfFir,response,firComplaintId)
+            adapter?.notifyFirImageData(positionOfFir, response, firComplaintId)
         }
     }
 
@@ -507,21 +559,35 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             description
         )
 
+        val mStatusList = responseObject.data.toMutableList()
+        for (status in mStatusList) {
+            if (status.isChecked) {
+                statusId = status.id
+            }
+        }
+
         //display the list on the screen
         val statusAdapter = StatusAdapter(this, responseObject.data.toMutableList(), this)
         val horizontalLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
         binding.rvStatus?.layoutManager = horizontalLayoutManager
         binding.rvStatus?.adapter = statusAdapter
         binding.btnDone.setOnClickListener {
-            Utilities.showProgress(this@MyCasesActivity)
-            //hit status update api
-            presenter.updateStatus(
-                token,
-                complaintId,
-                statusId,
-                binding.etDescription.text.toString()
-            )
-            dialog.dismiss()
+            if (statusId == "-1") {
+                Utilities.showMessage(
+                    this@MyCasesActivity,
+                    getString(R.string.select_option_validation)
+                )
+            } else {
+                Utilities.showProgress(this@MyCasesActivity)
+                //hit status update api
+                presenter.updateStatus(
+                    token,
+                    complaintId,
+                    statusId,
+                    binding.etDescription.text.toString()
+                )
+                dialog.dismiss()
+            }
         }
 
         builder.setView(binding.root)

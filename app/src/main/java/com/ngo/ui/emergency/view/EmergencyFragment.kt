@@ -1,10 +1,12 @@
-package com.ngo.ui.emergency
+package com.ngo.ui.emergency.view
 
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,17 +18,27 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ngo.R
 import com.ngo.adapters.EmergencyDetailsAdapter
+import com.ngo.base.BaseActivity
+import com.ngo.pojo.request.EmergencyDataRequest
+import com.ngo.pojo.response.EmergencyDataResponse
 import com.ngo.pojo.response.GetEmergencyDetailsResponse.Details
+import com.ngo.pojo.response.MyEarningsResponse
+import com.ngo.ui.emergency.presenter.EmegencyFragmentPresenterImpl
+import com.ngo.ui.emergency.presenter.EmergencyFragmentPresenter
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.utils.PreferenceHandler
+import com.ngo.utils.Utilities
+import com.ngo.utils.Utilities.dismissProgress
+import com.ngo.utils.Utilities.showProgress
 import kotlinx.android.synthetic.main.fragment_emergency.*
 
-class EmergencyFragment : Fragment() {
-
+class EmergencyFragment : Fragment(), EmergencyFragmentView {
+    private var presenter: EmergencyFragmentPresenter = EmegencyFragmentPresenterImpl(this)
     private lateinit var adapter: EmergencyDetailsAdapter
-    private var emergencyDetailList = ArrayList<Details>()
+    private var emergencyDetailList = ArrayList<EmergencyDataResponse.Data>()
     lateinit var mContext: Context
     private val RECORD_REQUEST_CODE = 101
+    private var isFirst: Boolean = true
 
     companion object {
         var change = 0
@@ -37,6 +49,18 @@ class EmergencyFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
+        if (isFirst) {
+            if (isInternetAvailable(mContext)) {
+                showProgress(mContext)
+                var authorizationToken =
+                    PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
+                var request = EmergencyDataRequest("2")
+                presenter.hitEmergencyApi(request, authorizationToken)
+                isFirst = false
+            } else {
+                Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
+            }
+        }
     }
 
     override fun onCreateView(
@@ -49,31 +73,27 @@ class EmergencyFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        emergencyDetailList.clear()
-        var details = Details()
-        details.contact_number = "9485230836"
-        details.name = "Fire Station"
-        emergencyDetailList.add(details)
-        details = Details()
-        details.contact_number = "03602257220"
-        details.name = "Police Station"
-        emergencyDetailList.add(details)
-        details = Details()
-        details.contact_number = "03602257220"
-        details.name = "Women Police Station"
-        emergencyDetailList.add(details)
-        details = Details()
-        details.contact_number = "9436682337"
-        details.name = "Child Helpline"
-        emergencyDetailList.add(details)
-        details = Details()
-        details.contact_number = "7005698992"
-        details.name = "Women Helpline"
-        emergencyDetailList.add(details)
-       /* details = Details()
-        details.contact_number = "9530606006"
-        details.name = "Akash"
-        emergencyDetailList.add(details)*/
+        /*   emergencyDetailList.clear()
+           var details = Details()
+           details.contact_number = "9485230836"
+           details.name = "Fire Station"
+           emergencyDetailList.add(details)
+           details = Details()
+           details.contact_number = "03602257220"
+           details.name = "Police Station"
+           emergencyDetailList.add(details)
+           details = Details()
+           details.contact_number = "03602257220"
+           details.name = "Women Police Station"
+           emergencyDetailList.add(details)
+           details = Details()
+           details.contact_number = "9436682337"
+           details.name = "Child Helpline"
+           emergencyDetailList.add(details)
+           details = Details()
+           details.contact_number = "7005698992"
+           details.name = "Women Helpline"
+           emergencyDetailList.add(details)*/
 
         val permission = ContextCompat.checkSelfPermission(
             activity!!,
@@ -104,7 +124,7 @@ class EmergencyFragment : Fragment() {
             android.R.layout.simple_spinner_item, list_of_items
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spDistrict.setAdapter(adapter);
+        spDistrict.setAdapter(adapter)
     }
 
     override fun onAttach(context: Context) {
@@ -123,9 +143,7 @@ class EmergencyFragment : Fragment() {
         )
         rvEmergencies?.layoutManager = horizontalLayoutManager
         rvEmergencies?.adapter = adapter
-
         // rvEmergencies.adapter = adapter
-
     }
 
     override fun onPause() {
@@ -146,10 +164,8 @@ class EmergencyFragment : Fragment() {
                  } else {
                      Log.i("", "Permission has been granted by user")
                  }
-
              }
          }
-
      }﻿*/
 
     // Receive the permissions request result
@@ -169,6 +185,42 @@ class EmergencyFragment : Fragment() {
                 }
                 return
             }
+        }
+    }
+
+    override fun getEmergencyDataSuccess(myEarningsResponse: EmergencyDataResponse) {
+        dismissProgress()
+        adapter.changeList(myEarningsResponse.data!!)
+    }
+
+
+    override fun getEmergencyDataFailure(error: String) {
+        dismissProgress()
+        Utilities.showMessage(mContext, error)
+    }
+
+    override fun showServerError(error: String) {
+        dismissProgress()
+        Utilities.showMessage(mContext, error)
+    }
+
+    /*
+ * method to check internet connection
+ * */
+    fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val nw = connectivityManager.activeNetwork ?: return false
+            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
+            return when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                else -> false
+            }
+        } else {
+            val nwInfo = connectivityManager.activeNetworkInfo ?: return false
+            return nwInfo.isConnected
         }
     }
 

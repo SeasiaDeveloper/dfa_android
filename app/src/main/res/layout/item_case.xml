@@ -235,9 +235,20 @@
                                 android:id="@+id/imgExpandable"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="end"
-                                android:layout_marginEnd="@dimen/_14sdp"
                                 android:src="@drawable/ic_expand_more_black_24dp" />
+
+                            <com.ngo.customviews.CustomtextView
+                                android:id="@+id/moreLess"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_1sdp"
+                                android:layout_gravity="center_vertical|end"
+                                android:text="@string/more"
+                                android:textSize="@dimen/_10sdp"
+                                android:layout_marginEnd="@dimen/_10sdp"
+                                android:textColor="@color/grey_text"
+                                android:textStyle="bold" />
+
                         </LinearLayout>
                     </LinearLayout>
 

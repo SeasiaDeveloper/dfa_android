@@ -11,7 +11,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -20,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.gms.common.data.DataHolder
 import com.ngo.R
 import com.ngo.databinding.ItemCaseBinding
 import com.ngo.listeners.AlertDialogListener
@@ -46,6 +46,7 @@ class CasesAdapter(
     var activity: Activity,
     var fragment: Fragment,
     var isGeneralPublicFragment: Boolean
+
 ) :
 
     RecyclerView.Adapter<CasesAdapter.ViewHolder>() {
@@ -73,6 +74,23 @@ class CasesAdapter(
         this.mList.get(position!!).status = data.status
 
         notifyItemChanged(position)
+    }
+
+    fun updateList(list: MutableList<GetCasesResponse.Data>) {
+        this.mList = list
+        notifyDataSetChanged()
+    }
+
+    fun performSearch(searchedText: String) {
+        var searchedList = mutableListOf<GetCasesResponse.Data>()
+        for (i in 0..this.mList.size - 1) {
+            if (this.mList.get(i).id!!.contains(searchedText)) {
+                searchedList.add(this.mList.get(i))
+            }
+        }
+        this.mList = ArrayList()
+        this.mList.addAll(searchedList)
+        notifyDataSetChanged()
     }
 
     fun notifyPublicHomeActionData(listItems: Array<UpdateStatusSuccess.Data>, statusId: String) {
@@ -180,16 +198,17 @@ class CasesAdapter(
             }
         }
     }
+
     fun notifyParticularItem(complaintId: String) {
         var likeCount: String? = ""
         for (i in 0..this.mList.size - 1) {
             if (complaintId.equals(this.mList.get(i).id)) {
-             /*   for (j in 0..data.size - 1) {
-                    if (complaintId.equals(data.get(j).id)) {
-                        likeCount = data.get(j).like_count!!.toString()
-                        break
-                    }
-                }*/
+                /*   for (j in 0..data.size - 1) {
+                       if (complaintId.equals(data.get(j).id)) {
+                           likeCount = data.get(j).like_count!!.toString()
+                           break
+                       }
+                   }*/
                 if (likeCount.equals("")) {
                     if (this.mList.get(i).is_liked!!.equals(0)) {
                         this.mList.get(i).like_count =
@@ -685,9 +704,11 @@ class CasesAdapter(
                 if (item.isApiHit) {
                     itemView.childExpandable.visibility = View.VISIBLE
                     itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
+                    itemView.moreLess.setText(R.string.less)
                 } else {
                     itemView.childExpandable.visibility = View.GONE
                     itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                    itemView.moreLess.setText(R.string.more)
                 }
 
                 itemView.imgExpandable.setOnClickListener {
@@ -707,6 +728,7 @@ class CasesAdapter(
                             itemView.childExpandable.visibility = View.GONE
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
                             item.isApiHit = false
+                            itemView.moreLess.setText(R.string.more)
                         }
                     }
                 }
@@ -715,9 +737,11 @@ class CasesAdapter(
                     if (itemView.childExpandable.visibility == View.VISIBLE) {
                         itemView.childExpandable.visibility = View.GONE
                         itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                        itemView.moreLess.setText(R.string.more)
                     } else {
                         itemView.childExpandable.visibility = View.VISIBLE
                         itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
+                        itemView.moreLess.setText(R.string.less)
                     }
                 }
             }

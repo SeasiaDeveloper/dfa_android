@@ -8,17 +8,23 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ngo.R
+import com.ngo.pojo.response.EmergencyDataResponse
 import com.ngo.pojo.response.GetEmergencyDetailsResponse
+import kotlinx.android.synthetic.main.activity_signup.*
+import java.sql.Array
 import kotlin.random.Random
 
 
 class EmergencyDetailsAdapter(
     var context: Activity,
-    var mList: ArrayList<GetEmergencyDetailsResponse.Details>
+    var mList: ArrayList<EmergencyDataResponse.Data>
 ) :
     RecyclerView.Adapter<EmergencyDetailsAdapter.ViewHolder>() {
 
@@ -28,7 +34,7 @@ class EmergencyDetailsAdapter(
         return ViewHolder(v)
     }
 
-    fun changeList(newList: ArrayList<GetEmergencyDetailsResponse.Details>) {
+    fun changeList(newList: ArrayList<EmergencyDataResponse.Data>) {
         mList = newList
         notifyDataSetChanged()
     }
@@ -47,31 +53,76 @@ class EmergencyDetailsAdapter(
         var txtCall: TextView
         var txtNumber: TextView
         var txtDistance: TextView
+        var contactsSpinner: Spinner
 
         init {
             txtName = itemView.findViewById<View>(R.id.txtName) as TextView
             txtCall = itemView.findViewById<View>(R.id.txtCall) as TextView
             txtNumber = itemView.findViewById<View>(R.id.txtNumber) as TextView
             txtDistance = itemView.findViewById<View>(R.id.txtDistance) as TextView
-
+            contactsSpinner=itemView.findViewById<View>(R.id.phoneNumberDropDown) as Spinner
         }
 
         fun bind(
             context: Activity,
-            item: GetEmergencyDetailsResponse.Details,
+            item: EmergencyDataResponse.Data,
             index: Int
         ) {
             this.index = index
             txtName.setText(item.name)
-            txtNumber.setText(item.contact_number)
+            txtNumber.setText(item.mobile)
             val min = 20
             val max = 30
             val random: Int = Random.nextInt(max - min + 1) + min
             txtDistance.text = random.toString()+" "+context.getString(R.string.km_away)
 
+            // Initializing an ArrayAdapter
+            val contactsList = ArrayList<String>()
+            contactsList.add("0")
+            contactsList.add("1")
+            val contactArray = contactsList.toArray(arrayOfNulls<String>(contactsList.size))
+            val adapter = ArrayAdapter(
+                context,
+                android.R.layout.simple_spinner_item, // Layout
+                contactArray // Array
+            )
+
+            // Set the drop down view resource
+            adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+
+            // Finally, data bind the spinner object with dapter
+            contactsSpinner.adapter = adapter
+
+            // Set an on item selected listener for spinner object
+            contactsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    // Display the selected item text on text view
+                    "Spinner selected : ${parent.getItemAtPosition(position)}"
+                   /* if (position == 0) {
+                        distId = -1
+                    } else {
+                        for (dist in contactsList) {
+                            if (parent.getItemAtPosition(position).equals(dist)) {
+                                distId = (dist.id).toInt()
+                                break
+                            }
+                        }
+                    }*/
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Another interface callback
+                }
+            }
+
             txtCall.setOnClickListener {
 
-                val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + item.contact_number))
+                val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + item.mobile))
                 if (ActivityCompat.checkSelfPermission(
                         context,
                         Manifest.permission.CALL_PHONE
