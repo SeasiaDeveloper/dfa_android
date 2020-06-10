@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:background="@drawable/white_round_corner"
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_80sdp">
+
+        <ImageView
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/app_icon"
+            android:layout_width="80dp"
+            android:id="@+id/iv_delete"
+            android:layout_height="80dp"/>
+
+        <TextView
+            android:text="@string/app_name"
+            android:textStyle="bold"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/black"
+            android:id="@+id/std_name"
+
+            android:textSize="@dimen/_16sdp"
+            android:layout_toRightOf="@+id/iv_delete"
+            android:layout_marginLeft="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="If you want to do action you should login"
+            android:layout_below="@+id/std_name"
+            android:textSize="@dimen/_14sdp"
+
+            android:layout_toRightOf="@+id/iv_delete"
+            android:layout_marginLeft="@dimen/_6sdp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </RelativeLayout>
+    <View
+        android:layout_centerInParent="true"
+        android:background="#EDE7E7"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+    <RelativeLayout
+        android:layout_below="@+id/relative_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_80sdp">
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="40dp"
+            android:layout_marginTop="5dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/delete_shape"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:text="Cancel"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="@dimen/_90sdp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/rectangle_blue"
+            android:gravity="center"
+            android:id="@+id/tv_delete"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:text="@string/login"
+
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

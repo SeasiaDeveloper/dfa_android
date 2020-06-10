@@ -1,5 +1,6 @@
 package com.ngo.ui.home.fragments.home.view
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -9,7 +10,10 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.Window
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -25,13 +29,14 @@ import com.ngo.R
 import com.ngo.adapters.TabLayoutAdapter
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CustomtextView
-import com.ngo.pojo.response.*
+import com.ngo.pojo.response.GetProfileResponse
+import com.ngo.pojo.response.NotificationResponse
+import com.ngo.pojo.response.PostLocationResponse
+import com.ngo.pojo.response.UpdateStatusSuccess
 import com.ngo.ui.contactus.ContactUsActivity
-import com.ngo.ui.policedetail.view.PoliceIncidentDetailScreen
 import com.ngo.ui.earnings.view.MyEarningsActivity
 import com.ngo.ui.emergency.EmergencyFragment
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
-import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.home.fragments.cases.view.LocationListenerCallback
 import com.ngo.ui.home.fragments.home.presenter.HomePresenter
 import com.ngo.ui.home.fragments.home.presenter.HomePresenterImpl
@@ -39,19 +44,15 @@ import com.ngo.ui.home.fragments.photos.view.PhotosFragment
 import com.ngo.ui.home.fragments.videos.view.VideosFragment
 import com.ngo.ui.login.view.LoginActivity
 import com.ngo.ui.mycases.MyCasesActivity
+import com.ngo.ui.policedetail.view.PoliceIncidentDetailScreen
 import com.ngo.ui.profile.ProfileActivity
-import com.ngo.ui.termsConditions.view.TermsAndConditionActivity
 import com.ngo.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.ngo.ui.updatepassword.view.UpdatePasswordActivity
-import com.ngo.utils.ForegroundService
-import com.ngo.utils.PreferenceHandler
-import com.ngo.utils.Utilities
+import com.ngo.utils.*
 import com.ngo.utils.alert.AlertDialog
 import kotlinx.android.synthetic.main.home_activity.*
-import kotlinx.android.synthetic.main.nav_header.*
-import com.ngo.utils.*
-import kotlinx.android.synthetic.main.layout_accept_reject_alert.*
 import kotlinx.android.synthetic.main.nav_action.*
+import kotlinx.android.synthetic.main.nav_header.*
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
     GetLogoutDialogCallbacks, LocationListenerCallback {
@@ -74,10 +75,13 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun onResume() {
         super.onResume()
 
-        if (menuItem!=null && menuItem!!.isChecked) menuItem!!.isChecked = false
+        if (menuItem != null && menuItem!!.isChecked) menuItem!!.isChecked = false
 
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
-        homePresenter.hitProfileApi(authorizationToken)
+
+        if (!authorizationToken!!.isEmpty()) {
+            homePresenter.hitProfileApi(authorizationToken)
+        }
         if (!isGPS && !isPermissionDialogRequired) {
             askForGPS()
         }
@@ -127,11 +131,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             notificationResponse.report_data
         (dialog.findViewById(R.id.txtComplaintTime) as TextView).text =
             notificationResponse.report_time
-        if(! notificationResponse.description.equals("") &&  notificationResponse.description!=null)
-        {
+        if (!notificationResponse.description.equals("") && notificationResponse.description != null) {
             (dialog.findViewById(R.id.layout_desc) as LinearLayout).visibility = View.VISIBLE
-            (dialog.findViewById(R.id.txtDescription) as TextView).text = notificationResponse.description}
-        else{
+            (dialog.findViewById(R.id.txtDescription) as TextView).text =
+                notificationResponse.description
+        } else {
             (dialog.findViewById(R.id.layout_desc) as LinearLayout).visibility = View.GONE
         }
 
@@ -185,7 +189,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun setupUI() {
         mToolbar = findViewById<View>(R.id.nav_action) as Toolbar
         setSupportActionBar(mToolbar)
-
         mDrawerLayout = findViewById<View>(R.id.drawerLayout) as DrawerLayout
         mToggle = ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close)
         mDrawerLayout!!.addDrawerListener(mToggle!!)
@@ -194,7 +197,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         getSupportActionBar()?.setHomeButtonEnabled(true)
         getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
         getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.burger_icon)
-
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         if (supportActionBar != null) {
             supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -213,9 +215,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         getLocation()
 
         //dialog
-        if (getIntent() != null && getIntent().getExtras() != null && (getIntent().getExtras()?.getString(
-                "complaint_id"
-            ) != null) && getIntent().getExtras()?.getString("report_time") != "" &&
+        if (getIntent() != null && getIntent().getExtras() != null && (getIntent().getExtras()
+                ?.getString(
+                    "complaint_id"
+                ) != null) && getIntent().getExtras()?.getString("report_time") != "" &&
             PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "") == "2"
         ) {
             val notificationResponse = NotificationResponse()
@@ -230,6 +233,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     }
 
+    @SuppressLint("SetTextI18n")
     fun setTabAdapter() {
 
         val adapter = TabLayoutAdapter(supportFragmentManager)
@@ -243,6 +247,25 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         viewPager?.adapter = adapter
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)
+
+        var menu = nav_view.menu
+
+
+        if (authorizationToken!!.isEmpty()) {
+            menu.findItem(R.id.nav_edit_profile).setVisible(false)
+            menu.findItem(R.id.nav_password).setVisible(false)
+            menu.findItem(R.id.nav_logout).setVisible(false)
+            menu.findItem(R.id.nav_cases).setVisible(false)
+            textName.setText(getString(R.string.guest_user))
+
+        } else {
+            menu.findItem(R.id.nav_edit_profile).setVisible(true)
+            menu.findItem(R.id.nav_password).setVisible(true)
+            menu.findItem(R.id.nav_logout).setVisible(true)
+            menu.findItem(R.id.nav_cases).setVisible(true)
+        }
+
+
     }
 
     //checking location
@@ -305,17 +328,16 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
-    var menuItem :MenuItem? =null
+    var menuItem: MenuItem? = null
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         menuItem = item
         when (item.itemId) {
 
 
-
             R.id.nav_edit_profile -> {
                 val intent = Intent(this, ProfileActivity::class.java)
-                intent.putExtra("fromWhere","editProfile")
+                intent.putExtra("fromWhere", "editProfile")
                 startActivity(intent)
             }
             R.id.nav_password -> {
@@ -328,19 +350,23 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.nav_cases -> {
                 startActivity(Intent(this@HomeActivity, MyCasesActivity::class.java))
             }
-            R.id.nav_my_earning -> startActivity(
-                Intent(
-                    this@HomeActivity,
-                    MyEarningsActivity::class.java
-                )
-            )
+            R.id.nav_my_earning ->
+                if (!authorizationToken!!.isEmpty()) {
+
+                    startActivity(Intent(this@HomeActivity, MyEarningsActivity::class.java))
+
+                } else {
+                    com.ngo.utils.alert.AlertDialog.guesDialog(this)
+
+                }
+
 
             R.id.nav_contact_us -> {
                 startActivity(Intent(this@HomeActivity, ContactUsActivity::class.java))
             }
 
             R.id.nav_invite_friends -> {
-                val appUrl = PreferenceHandler.readString(this,PreferenceHandler.APP_URL,"")
+                val appUrl = PreferenceHandler.readString(this, PreferenceHandler.APP_URL, "")
                 val shareIntent = Intent()
                 shareIntent.action = Intent.ACTION_SEND
                 shareIntent.putExtra(Intent.EXTRA_TEXT, appUrl)
@@ -348,7 +374,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 startActivity(Intent.createChooser(shareIntent, "send to"))
 
             }
-            R.id.nav_terms_and_conditions -> Utilities.showMessage(this@HomeActivity,"Coming Soon")
+            R.id.nav_terms_and_conditions -> Utilities.showMessage(this@HomeActivity, "Coming Soon")
             /*startActivity(
                 Intent(
                     this@HomeActivity,
@@ -375,20 +401,64 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         dismissProgress()
         loadNavHeader(getProfileResponse)
         val gson = getProfileResponse.data
-        PreferenceHandler.writeString(this, PreferenceHandler.USER_FULLNAME, gson?.first_name +" "+ gson?.last_name)
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.USER_FULLNAME,
+            gson?.first_name + " " + gson?.last_name
+        )
         PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, gson.toString())
-        PreferenceHandler.writeString(this, PreferenceHandler.APP_URL, getProfileResponse.data?.app_url!!)
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.APP_URL,
+            getProfileResponse.data?.app_url!!
+        )
 
         //save NGO details for ContactUs screen
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_CONTACT_NO, getProfileResponse.data.ngo_phone!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_NAME, getProfileResponse.data.ngo_name!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_ADDRESS, getProfileResponse.data.ngo_address!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_DIST, getProfileResponse.data.ngo_dist!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_STATE, getProfileResponse.data.ngo_state!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_PIN, getProfileResponse.data.ngo_pincode!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_LONGITUDE, getProfileResponse.data.ngo_longitude!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_LATITUDE, getProfileResponse.data.ngo_latitude!!)
-        PreferenceHandler.writeString(this, PreferenceHandler.NGO_EMAIL, getProfileResponse.data.ngo_email!!)
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_CONTACT_NO,
+            getProfileResponse.data.ngo_phone!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_NAME,
+            getProfileResponse.data.ngo_name!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_ADDRESS,
+            getProfileResponse.data.ngo_address!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_DIST,
+            getProfileResponse.data.ngo_dist!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_STATE,
+            getProfileResponse.data.ngo_state!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_PIN,
+            getProfileResponse.data.ngo_pincode!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_LONGITUDE,
+            getProfileResponse.data.ngo_longitude!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_LATITUDE,
+            getProfileResponse.data.ngo_latitude!!
+        )
+        PreferenceHandler.writeString(
+            this,
+            PreferenceHandler.NGO_EMAIL,
+            getProfileResponse.data.ngo_email!!
+        )
 
         val jsonString = GsonBuilder().create().toJson(getProfileResponse)
         //Save that String in SharedPreferences
@@ -410,7 +480,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         navigationLayout.setOnClickListener {
             val intent = Intent(this, ProfileActivity::class.java)
-            intent.putExtra("fromWhere","editProfile")
+            intent.putExtra("fromWhere", "editProfile")
             drawerLayout.closeDrawer(GravityCompat.START)
             startActivity(intent)
         }

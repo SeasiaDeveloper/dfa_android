@@ -3,10 +3,12 @@ package com.ngo.utils.alert
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
+import android.content.Intent
 import android.view.Window
 import android.widget.Button
 import android.widget.TextView
 import com.ngo.R
+import com.ngo.ui.login.view.LoginActivity
 import com.ngo.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.ngo.utils.PoliceDialogCallback
 
@@ -65,6 +67,35 @@ class AlertDialog {
             dialog.getWindow()!!.setLayout(width, height)
 
         }
+
+
+
+
+        fun guesDialog(context:Context) {
+            var dialog = Dialog(context!!)
+            dialog.setContentView(R.layout.guest_dialog);
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.getWindow()!!.setBackgroundDrawableResource(android.R.color.transparent);
+            var btnLogout = dialog.findViewById<TextView>(R.id.tv_delete)
+            var btnCancel = dialog.findViewById<TextView>(R.id.tv_cancel)
+            btnLogout.setOnClickListener {
+                dialog.dismiss()
+                var intent = Intent(context, LoginActivity::class.java)
+                intent.addFlags(
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP or
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK or
+                            Intent.FLAG_ACTIVITY_NEW_TASK
+                )
+                context.startActivity(intent)
+
+            }
+            btnCancel.setOnClickListener {
+                dialog.dismiss()
+            }
+            dialog.show()
+        }
+
+
     }
 
 

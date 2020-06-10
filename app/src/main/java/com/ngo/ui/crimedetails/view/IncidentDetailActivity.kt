@@ -1,11 +1,13 @@
 package com.ngo.ui.crimedetails.view
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,6 +28,7 @@ import com.ngo.ui.generalpublic.view.AsyncResponse
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.imagevideo.ImageVideoScreen
+import com.ngo.ui.login.view.LoginActivity
 import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.ui.ngoform.view.NGOFormView
 import com.ngo.ui.profile.ProfileActivity
@@ -466,5 +469,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
     override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
         //nothing to do
     }
+
+
 
 }

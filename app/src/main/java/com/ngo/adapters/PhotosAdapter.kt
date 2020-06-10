@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -12,6 +13,7 @@ import com.ngo.R
 import com.ngo.listeners.OnCaseItemClickListener
 import com.ngo.pojo.response.GetPhotosResponse
 import com.ngo.ui.home.fragments.photos.view.OnClickOfVideoAndPhoto
+import com.ngo.utils.PreferenceHandler
 import kotlinx.android.synthetic.main.adapter_photos.view.*
 
 class PhotosAdapter(
@@ -45,6 +47,7 @@ class PhotosAdapter(
         var index: Int? = null
         var ivPhoto: ImageView
 
+
         init {
             ivPhoto = itemView.findViewById<View>(R.id.ivPhoto) as ImageView
 
@@ -57,17 +60,24 @@ class PhotosAdapter(
             listener: OnClickOfVideoAndPhoto
         ) {
             this.index = index
-
+            var authorizationToken =
+                PreferenceHandler.readString(context, PreferenceHandler.AUTHORIZATION, "")
             val options = RequestOptions()
                 .centerCrop()
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.noimage)
-            try{Glide.with(context).load(item.url).apply(options).into(itemView.ivPhoto)}catch (e:Exception){
+            try {
+                Glide.with(context).load(item.url).apply(options).into(itemView.ivPhoto)
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
 
             ivPhoto.setOnClickListener {
-                listener.getComplaintId(item.complaint_id)
+                if (!authorizationToken!!.isEmpty()) {
+                    listener.getComplaintId(item.complaint_id)
+                } else {
+                    com.ngo.utils.alert.AlertDialog.guesDialog(context)
+                }
             }
         }
     }

@@ -1,5 +1,6 @@
 package com.ngo.ui.home.fragments.photos.view
 
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
@@ -10,6 +11,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
@@ -24,6 +26,7 @@ import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.CasesFragment
 import com.ngo.ui.home.fragments.photos.presenter.PhotosPresenter
 import com.ngo.ui.home.fragments.photos.presenter.PhotosPresenterImpl
+import com.ngo.ui.login.view.LoginActivity
 import com.ngo.utils.Constants
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
@@ -190,4 +193,7 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
             return nwInfo.isConnected
         }
     }
+
+
+
 }
