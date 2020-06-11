@@ -39,6 +39,9 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
     override fun deleteComplaint(token: String , id: String) {
       model.deleteComplaint(token , id)
     }
+  override fun hideComplaint(token: String , id: String) {
+      model.hideComplaint(token , id)
+    }
 
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         view.onComplaintDeleted(responseObject)

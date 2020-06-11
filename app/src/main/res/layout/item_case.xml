@@ -55,6 +55,20 @@
                         android:gravity="start|center_vertical"
                         android:textColor="@color/grey_text" />
 
+
+                    <ImageView
+                        android:id="@+id/iv_menu"
+                        android:paddingLeft="5dp"
+                        android:paddingTop="@dimen/_5sdp"
+                        android:paddingBottom="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/iv_userprofile"
+                        app:srcCompat="@drawable/ic_more_vert_black_18dp" />
+
+
+
                     <com.ngo.customviews.CustomtextView
                         android:id="@+id/btnDelete"
                         android:layout_width="40dp"
@@ -69,7 +83,7 @@
                         android:textAllCaps="false"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_10ssp"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
                 </LinearLayout>
 
                 <View

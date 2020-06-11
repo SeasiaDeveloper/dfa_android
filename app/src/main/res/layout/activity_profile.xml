@@ -71,6 +71,7 @@
                         <com.ngo.customviews.CustomEditText
                             android:id="@+id/etMobile1"
                             android:layout_width="match_parent"
+                            android:textSize="@dimen/_12sdp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_12sdp"
                             android:layout_marginTop="@dimen/_6sdp"
@@ -91,6 +92,8 @@
                             <com.ngo.customviews.CustomEditText
                                 android:id="@+id/etFirstName"
                                 android:layout_width="0dp"
+                                android:textSize="@dimen/_12sdp"
+
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_12sdp"
                                 android:layout_marginTop="@dimen/_6sdp"
@@ -105,6 +108,8 @@
                             <com.ngo.customviews.CustomEditText
                                 android:id="@+id/etMiddleName"
                                 android:layout_width="0dp"
+                                android:textSize="@dimen/_12sdp"
+
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_5sdp"
                                 android:layout_marginTop="@dimen/_6sdp"
@@ -128,6 +133,8 @@
                             android:layout_marginEnd="@dimen/_12sdp"
                             android:background="@drawable/squarebg"
                             android:gravity="start"
+                            android:textSize="@dimen/_12sdp"
+
                             android:hint="@string/enter_last_name"
                             android:maxLength="20"
                             android:padding="@dimen/_10sdp" />
@@ -168,6 +175,8 @@
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:background="@drawable/squarebg"
                     android:gravity="start"
+                    android:textSize="@dimen/_12sdp"
+
                     android:hint="@string/address_1"
                     android:imeOptions="actionDone"
                     android:maxLength="50"
@@ -179,6 +188,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
+                    android:textSize="@dimen/_12sdp"
+
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:background="@drawable/squarebg"
                     android:gravity="start"
@@ -197,6 +208,8 @@
                     android:background="@drawable/squarebg"
                     android:gravity="start"
                     android:hint="@string/pin_code"
+                    android:textSize="@dimen/_12sdp"
+
                     android:imeOptions="actionDone"
                     android:inputType="number"
                     android:maxLength="20"
@@ -211,6 +224,8 @@
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:background="@drawable/squarebg"
                     android:gravity="start"
+                    android:textSize="@dimen/_12sdp"
+
                     android:hint="@string/mobile_2"
                     android:imeOptions="actionDone"
                     android:inputType="number"
@@ -227,6 +242,8 @@
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:background="@drawable/squarebg"
                     android:gravity="start"
+                    android:textSize="@dimen/_12sdp"
+
                     android:hint="@string/enter_adhar_no_here"
                     android:imeOptions="actionDone"
                     android:inputType="number"
@@ -243,6 +260,8 @@
                     android:background="@drawable/squarebg"
                     android:gravity="start"
                     android:hint="@string/enter_email"
+                    android:textSize="@dimen/_12sdp"
+
                     android:imeOptions="actionDone"
                     android:inputType="textEmailAddress"
                     android:maxLength="50"
@@ -280,10 +299,11 @@
                         android:layout_weight="0.3"
                         android:background="@drawable/button_green_bg"
                         android:gravity="center"
-                        android:padding="@dimen/_12sdp"
+
+                        android:padding="@dimen/_10sdp"
                         android:text="@string/update"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_14ssp" />
+                        android:textSize="@dimen/_12ssp" />
 
                     <com.ngo.customviews.CustomTextViewheading
                         android:id="@+id/btnCancel"
@@ -296,10 +316,10 @@
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_weight="0.3"
                         android:background="@drawable/button_red_bg"
-                        android:padding="@dimen/_12sdp"
+                        android:padding="@dimen/_10sdp"
                         android:text="@string/cancel"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_14ssp" />
+                        android:textSize="@dimen/_12ssp" />
 
                 </LinearLayout>
 

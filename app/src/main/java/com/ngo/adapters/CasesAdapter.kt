@@ -6,11 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
 import android.widget.ImageView
+import android.widget.PopupMenu
 
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -293,6 +291,46 @@ class CasesAdapter(
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.noimage)
 
+
+
+            var popup1 = PopupMenu(activity, itemView.iv_menu)
+            popup1.inflate(R.menu.news_feed_menu)
+
+            itemView.iv_menu!!.setOnClickListener {
+                popup1.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
+                    override fun onMenuItemClick(item1: MenuItem): Boolean {
+
+                        when (item1.getItemId()) {
+                            R.id.delete -> {
+
+                                Utilities.displayDialog(
+                                    context,
+                                    context.getString(R.string.delete_post_title),
+                                    context.getString(R.string.delete_post_heading),
+                                    item, alertDialogListener, adapterPosition
+                                )
+
+                            }
+                            R.id.hide -> {
+                                Utilities.displayDialog(
+                                    context,
+                                    context.getString(R.string.hide_case_heading),
+                                    context.getString(R.string.hide_case_message),
+                                    item, alertDialogListener, adapterPosition
+                                )
+
+                            }
+                        }
+                        return false
+                    }
+                })
+                popup1.show()
+            }
+
+
+
+
+
             itemView.layoutListItem.setOnClickListener {
                 listener.onItemClick(item, "full", adapterPosition)
             }
@@ -341,10 +379,14 @@ class CasesAdapter(
                 }
 
                 //btnDelete visibility
+
+
                 if (item.showDelete == 1) {
                     itemView.btnDeletePost.visibility = View.VISIBLE
+                  //  itemView.iv_menu.visibility=View.
                 } else {
                     itemView.btnDeletePost.visibility = View.GONE
+                   // itemView.iv_menu.visibility=View.GONE
                 }
 
                 itemView.btnDeletePost.setOnClickListener {
@@ -461,9 +503,11 @@ class CasesAdapter(
                 }
 
                 if (item.showDelete == 1) {
-                    itemView.btnDelete.visibility = View.VISIBLE
+                    itemView.btnDelete.visibility = View.GONE
+                    itemView.iv_menu.visibility=View.VISIBLE
                 } else {
-                    itemView.btnDelete.visibility = View.INVISIBLE
+                    itemView.btnDelete.visibility = View.GONE
+                    itemView.iv_menu.visibility=View.GONE
                 }
 
                 itemView.btnDelete.setOnClickListener {

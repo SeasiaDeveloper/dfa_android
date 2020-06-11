@@ -89,6 +89,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         presenter.deleteComplaint(token, complaintsData.id!!)
     }
 
+    override fun onHide(item: Any, position: Int) {
+        Utilities.showProgress(mContext)
+        deleteItemposition = position
+        val complaintsData = item as GetCasesResponse.Data
+        //delete the item based on id
+        presenter.hideComplaint(token, complaintsData.id!!)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
