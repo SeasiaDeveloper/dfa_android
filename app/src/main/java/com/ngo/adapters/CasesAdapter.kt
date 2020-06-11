@@ -11,9 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.core.view.isVisible
+
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -22,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.gms.common.data.DataHolder
+
 import com.ngo.R
 import com.ngo.databinding.ItemCaseBinding
 import com.ngo.listeners.AlertDialogListener
@@ -34,7 +32,6 @@ import com.ngo.ui.commentlikelist.CommentLikeUsersList
 import com.ngo.ui.comments.CommentsActivity
 import com.ngo.ui.contactus.ContactUsActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
-import com.ngo.ui.login.view.LoginActivity
 import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.ui.profile.ProfileActivity
 import com.ngo.utils.PreferenceHandler
