@@ -14,7 +14,7 @@ import java.io.Serializable
         val type_id: String? = null
         val latitude: String? = null
         val name: String? = null
-        val mobile: String? = null
+        val mobile: ArrayList<String>? = null
         val created_at: String? = null
         val id: String? = null
         val district_id: String? = null

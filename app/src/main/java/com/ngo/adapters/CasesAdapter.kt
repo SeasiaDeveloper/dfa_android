@@ -198,6 +198,7 @@ class CasesAdapter(
             }
         }
     }
+
     fun notifyParticularItem(complaintId: String) {
         var likeCount: String? = ""
         for (i in 0..this.mList.size - 1) {
@@ -595,7 +596,12 @@ class CasesAdapter(
 
             //in case of NGO and police
             if ((type == 1) || (type == 2)) {
-                itemView.layoutContact.visibility = View.VISIBLE
+                if (type == 2) {
+                    itemView.layoutContact.visibility = View.GONE
+                } else {
+                    itemView.layoutContact.visibility = View.VISIBLE
+                }
+
                 itemView.action_complaint.visibility = View.VISIBLE
 
                 itemView.layoutCrimeType.visibility = View.VISIBLE
@@ -753,7 +759,7 @@ class CasesAdapter(
                                 itemView.moreLess.setText(R.string.more)
                             }
                         }
-                    } else{
+                    } else {
                         com.ngo.utils.alert.AlertDialog.guesDialog(context)
                     }
                 }
@@ -769,7 +775,7 @@ class CasesAdapter(
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
                             itemView.moreLess.setText(R.string.less)
                         }
-                    } else{
+                    } else {
                         com.ngo.utils.alert.AlertDialog.guesDialog(context)
                     }
                 }

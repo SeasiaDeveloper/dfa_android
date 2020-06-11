@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ngo.R
 import com.ngo.pojo.response.EmergencyDataResponse
 import com.ngo.pojo.response.GetEmergencyDetailsResponse
+import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_signup.*
 import java.sql.Array
 import kotlin.random.Random
@@ -70,16 +71,18 @@ class EmergencyDetailsAdapter(
         ) {
             this.index = index
             txtName.setText(item.name)
-            txtNumber.setText(item.mobile)
+           // txtNumber.setText(item.mobile)
             val min = 20
             val max = 30
             val random: Int = Random.nextInt(max - min + 1) + min
-            txtDistance.text = random.toString()+" "+context.getString(R.string.km_away)
+            var distance =Utilities.calculateDistance(item.latitude,item.longitude,context)
+            txtDistance.text = distance.toString()+" "+context.getString(R.string.km_away)
 
             // Initializing an ArrayAdapter
             val contactsList = ArrayList<String>()
-            contactsList.add("0")
-            contactsList.add("1")
+            for (i in 0..item.mobile!!.size-1) {
+                contactsList.add(item.mobile.get(i))
+            }
             val contactArray = contactsList.toArray(arrayOfNulls<String>(contactsList.size))
             val adapter = ArrayAdapter(
                 context,
@@ -94,6 +97,7 @@ class EmergencyDetailsAdapter(
             contactsSpinner.adapter = adapter
 
             // Set an on item selected listener for spinner object
+            var selectedData:String=""
             contactsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>,
@@ -103,16 +107,7 @@ class EmergencyDetailsAdapter(
                 ) {
                     // Display the selected item text on text view
                     "Spinner selected : ${parent.getItemAtPosition(position)}"
-                   /* if (position == 0) {
-                        distId = -1
-                    } else {
-                        for (dist in contactsList) {
-                            if (parent.getItemAtPosition(position).equals(dist)) {
-                                distId = (dist.id).toInt()
-                                break
-                            }
-                        }
-                    }*/
+                    selectedData=contactsList.get(position)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -121,8 +116,7 @@ class EmergencyDetailsAdapter(
             }
 
             txtCall.setOnClickListener {
-
-                val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + item.mobile))
+                val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + selectedData))
                 if (ActivityCompat.checkSelfPermission(
                         context,
                         Manifest.permission.CALL_PHONE
@@ -142,7 +136,7 @@ class EmergencyDetailsAdapter(
             txtDistance.setOnClickListener {
                 //val gmmIntentUri = Uri.parse("geo:27.0846389,93.6042366")
                 val gmmIntentUri =
-                    Uri.parse("http://maps.google.com/maps?&daddr=27.0846389,93.6042366")
+                    Uri.parse("http://maps.google.com/maps?&daddr="+item.latitude+","+item.longitude)
                 //
                 val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
                 mapIntent.setPackage("com.google.android.apps.maps")

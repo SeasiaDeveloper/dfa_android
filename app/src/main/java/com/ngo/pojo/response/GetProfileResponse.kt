@@ -58,6 +58,8 @@ class GetProfileResponse {
 
         var ngo_longitude:String ?= null
 
+        var ur_user_user_status:String ?= null
+
     }
 
 }
