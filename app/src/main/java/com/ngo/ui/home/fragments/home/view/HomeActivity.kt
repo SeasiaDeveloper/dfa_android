@@ -74,6 +74,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         return R.layout.home_activity
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
 
@@ -252,12 +253,28 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         var menu = nav_view.menu
 
 
+        val role = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")
+
+
+        if(role.equals("0")){
+            userType.setText(getString(R.string.gpu))
+
+        } else if(role.equals("1")){
+            userType.setText(getString(R.string.ngo_user))
+
+        }else if(role.equals("2")){
+            userType.setText(getString(R.string.police_user))
+
+        }
+
+
+
         if (authorizationToken!!.isEmpty()) {
             menu.findItem(R.id.nav_edit_profile).setVisible(false)
             menu.findItem(R.id.nav_password).setVisible(false)
             menu.findItem(R.id.nav_logout).setVisible(false)
             menu.findItem(R.id.nav_cases).setVisible(false)
-            textName.setText(getString(R.string.guest_user))
+            userType.setText(getString(R.string.guest_user))
 
         } else {
             menu.findItem(R.id.nav_edit_profile).setVisible(true)

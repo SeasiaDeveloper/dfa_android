@@ -44,6 +44,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
 
     private fun setListeners() {
         btnLogin.setOnClickListener(this)
+        btnGuestUser.setOnClickListener(this)
         forgot_password.setOnClickListener(this)
 
         btnSignUp.setOnClickListener(this)
@@ -60,6 +61,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
                     email_mobile_number.text.toString(),
                     editPassword.text.toString()
                 )
+            }
+
+            R.id.btnGuestUser -> {
+                val intent = Intent(this, HomeActivity::class.java) //GeneralPublicActivity
+                startActivity(intent)
+                finish()
             }
             R.id.btnSignUp -> {
                 val intent = Intent(this, ForgotPasswordActivity::class.java) //

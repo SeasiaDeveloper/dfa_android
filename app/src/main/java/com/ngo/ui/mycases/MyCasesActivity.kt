@@ -7,6 +7,7 @@ import android.graphics.Color
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -92,10 +93,10 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     private var complaintId = "-1"
     private var currentStatus = ""
     var type = ""
-    private var adapter: CasesAdapter? = null
     private var search: Boolean = false
     private var isFirst: Boolean = true
     var firComplaintId: String = ""
+    var adapter: CasesAdapter? = null
 
 
     companion object {
@@ -144,22 +145,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             onBackPressed()
         }
         fragment = Fragment()
-        adapter = CasesAdapter(
-            this,
-            complaints.toMutableList(),
-            this,
-            type.toInt(),
-            this,
-            this,
-            fragment,
-            false
-        )
-        horizontalLayoutManager = LinearLayoutManager(
-            this, RecyclerView.VERTICAL, false
-        )
-        rvPublic?.layoutManager = horizontalLayoutManager
-        rvPublic?.adapter = adapter
-
+        setAdapter()
         if (endlessScrollListener == null)
             endlessScrollListener =
                 EndlessRecyclerViewScrollListenerImplementation(horizontalLayoutManager, this)
@@ -180,7 +166,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
         swipeView.setOnRefreshListener {
             pageCount = 1
-            adapter?.clear()
+           // adapter?.clear()
             endlessScrollListener?.resetState()
             myCasesApiCall()
             // itemsCells.clear()
@@ -189,6 +175,26 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             //  itemsrv.adapter = adapter
             swipeView.isRefreshing = false
         }
+
+    }
+
+
+    fun setAdapter(){
+        adapter = CasesAdapter(
+            this,
+            complaints.toMutableList(),
+            this,
+            type.toInt(),
+            this,
+            this,
+            fragment,
+            false
+        )
+        horizontalLayoutManager = LinearLayoutManager(
+            this, RecyclerView.VERTICAL, false
+        )
+        rvPublic?.layoutManager = horizontalLayoutManager
+        rvPublic?.adapter = adapter
 
     }
 
@@ -227,11 +233,11 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             if (!isLike) {
                 if (commentChange == 0 && !whenDeleteCall) {
                     if (pageCount == 1) {
-                        adapter?.clear()
+                     //   adapter?.clear()
                         adapter?.setList(response.data.toMutableList()) //now
                     } else {
                         if (search /*&& pageCount==1*/) {
-                            adapter?.clear()
+                       //     adapter?.clear()
                             adapter?.setList(response.data.toMutableList()) //now
                         } else {
                             adapter?.addDataInMyCases(
@@ -277,33 +283,57 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         }
 
         //add click listener after adding the list on the view
-        etSearch.setOnTouchListener(OnTouchListener { v, event ->
-            val DRAWABLE_RIGHT = 2
-            if (event.action == MotionEvent.ACTION_UP) {
-                if (event.rawX >= etSearch.getRight() - etSearch.getCompoundDrawables().get(
-                        DRAWABLE_RIGHT
-                    ).getBounds().width()
-                ) { // your action here
-                    endlessScrollListener?.resetState()
-                    //adapter!!.clearAdapter()
-                    if (etSearch.text.toString().length != 0) {
-                        search = true
-                        //adapter?.performSearch(etSearch.text.toString())
-                        casesRequest = CasesRequest(
-                            "0",
-                            etSearch.text.toString(),
-                            "0", "1", "30"
-                        ) //all = "1" for fetching all the cases whose type = 0
+//        etSearch.setOnTouchListener(OnTouchListener { v, event ->
+//            val DRAWABLE_RIGHT = 2
+//            if (event.action == MotionEvent.ACTION_UP) {
+//                if (event.rawX >= etSearch.getRight() - etSearch.getCompoundDrawables().get(
+//                        DRAWABLE_RIGHT
+//                    ).getBounds().width()
+//                ) { // your action here
+//                    endlessScrollListener?.resetState()
+//                    //adapter!!.clearAdapter()
+//                    if (etSearch.text.toString().length != 0) {
+//                        search = true
+//                        //adapter?.performSearch(etSearch.text.toString())
+//                        casesRequest = CasesRequest(
+//                            "0",
+//                            etSearch.text.toString(),
+//                            "0", "1", "30"
+//                        ) //all = "1" for fetching all the cases whose type = 0
+//
+//                        Utilities.showProgress(this@MyCasesActivity)
+//                        //hit api with search variable
+//                        presenter.getComplaints(casesRequest, token, type)
+//                    }
+//                    return@OnTouchListener true
+//                }
+//            }
+//            false
+//        })
 
-                        Utilities.showProgress(this@MyCasesActivity)
-                        //hit api with search variable
-                        presenter.getComplaints(casesRequest, token, type)
-                    }
-                    return@OnTouchListener true
+
+        etSearch.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+            override fun onEditorAction(p0: TextView?, p1: Int, p2: KeyEvent?): Boolean {
+                endlessScrollListener?.resetState()
+                //adapter!!.clearAdapter()
+                if (etSearch.text.toString().length != 0) {
+                    search = true
+                    //adapter?.performSearch(etSearch.text.toString())
+                    casesRequest = CasesRequest(
+                        "0",
+                        etSearch.text.toString(),
+                        "0", "1", "30"
+                    ) //all = "1" for fetching all the cases whose type = 0
+
+                    Utilities.showProgress(this@MyCasesActivity)
+                    //hit api with search variable
+                    presenter.getComplaints(casesRequest, token, type)
                 }
+                return true
             }
-            false
         })
+
+
 
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
@@ -347,7 +377,20 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                     if (s.length == 0) {
                         search = false
                         //isFirst=true
+
+
+
+                        if(firstSavedList.size>0){
+                            tvRecord.visibility = View.GONE
+                            rvPublic.visibility = View.VISIBLE
+                            swipeView.visibility = View.VISIBLE
+                        } else{
+                            tvRecord.visibility = View.VISIBLE
+                            rvPublic.visibility = View.GONE
+                            swipeView.visibility = View.GONE
+                        }
                         adapter?.setList(firstSavedList)
+
                     }
                 }
             }

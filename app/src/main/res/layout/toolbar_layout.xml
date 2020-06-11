@@ -3,7 +3,7 @@
         android:id="@+id/centeredToolbar"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
-    android:background="@color/white"
+    android:background="@drawable/shadow_tooolbar"
     app:titleTextColor="@color/black"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintStart_toStartOf="parent"

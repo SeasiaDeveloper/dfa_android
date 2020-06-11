@@ -52,6 +52,7 @@
                         android:background="@null"
                         android:editable="false"
                         android:ems="10"
+                        android:textSize="@dimen/_13ssp"
                         android:focusable="false"
                         android:imeOptions="actionNext"
                         android:inputType="textPersonName"
@@ -123,6 +124,7 @@
                         android:background="@null"
                         android:editable="false"
                         android:ems="10"
+                        android:textSize="@dimen/_13ssp"
                         android:focusable="false"
                         android:imeOptions="actionNext"
                         android:inputType="textPersonName"
@@ -160,6 +162,7 @@
                         android:background="@null"
                         android:editable="false"
                         android:ems="10"
+                        android:textSize="@dimen/_13ssp"
                         android:focusable="false"
                         android:imeOptions="actionNext"
                         android:inputType="number"
@@ -226,7 +229,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_5sdp"
-                        android:layout_marginTop="@dimen/_2sdp"
                         android:layout_marginEnd="@dimen/_12sdp"
                         android:background="@null"
                         android:padding="@dimen/_3sdp"
@@ -307,12 +309,12 @@
                             android:layout_marginStart="@dimen/_10sdp"
                             android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_10sdp"
-                            android:layout_marginBottom="@dimen/_10sdp"
+                            android:layout_marginBottom="@dimen/_12sdp"
                             android:background="@drawable/button_green_bg"
                             android:drawablePadding="@dimen/_2sdp"
                             android:drawableTint="@color/white"
                             android:gravity="center"
-                            android:padding="@dimen/_10sdp"
+                            android:padding="@dimen/_6sdp"
                             android:paddingStart="@dimen/_24ssp"
                             android:paddingTop="10sp"
                             android:paddingEnd="@dimen/_24ssp"
@@ -457,6 +459,8 @@
                         android:background="@null"
                         android:editable="false"
                         android:ems="10"
+                        android:textSize="@dimen/_12ssp"
+
                         android:focusable="false"
                         android:gravity="start"
                         android:imeOptions="actionDone"
@@ -464,9 +468,7 @@
                         android:maxLength="500"
                         android:padding="@dimen/_3sdp"
                         android:textColor="@color/grey" />
-
                 </LinearLayout>
-
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
