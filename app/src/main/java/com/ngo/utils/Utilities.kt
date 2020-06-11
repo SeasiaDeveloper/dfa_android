@@ -444,7 +444,12 @@ object Utilities {
         dialogBuilder.setMessage(message)
             .setCancelable(false)
             .setPositiveButton("Ok", { dialog, id ->
-                alertDialogListener.onClick(item, position)
+
+                if(title.equals("DELETE POST")){
+                    alertDialogListener.onClick(item, position)
+                } else{
+                    alertDialogListener.onHide(item, position)
+                }
 
             })
             .setNegativeButton("Cancel", { dialog, id ->

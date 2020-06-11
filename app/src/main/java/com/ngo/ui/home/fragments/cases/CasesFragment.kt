@@ -52,6 +52,13 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
         presenter.deleteComplaint(token, complaintsData.id!!)
     }
 
+    override fun onHide(item: Any, position: Int) {
+        Utilities.showProgress(mContext)
+        val complaintsData = item as GetCasesResponse.Data
+        //delete the item based on id
+        deleteItemposition = position
+        presenter.hideComplaint(token, complaintsData.id!!)    }
+
     private lateinit var mContext: Context
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
     private var complaints: List<GetCasesResponse.Data> = mutableListOf()

@@ -40,7 +40,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
             //my cases case for police
             if (casesRequest.all.equals("0")) {
 
-                if(token.isEmpty()){
+                if (token.isEmpty()) {
                     map["guest_user"] = toRequestBody("1")
                 }
 
@@ -115,41 +115,41 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
 
         //in case of NGO and normal user
         else {
-            if(token.isEmpty()){
+            if (token.isEmpty()) {
                 map["guest_user"] = toRequestBody("1")
             }
 
-                retrofitApi.getCases(token, map).enqueue(object : Callback<GetCasesResponse> {
-                    override fun onResponse(
-                        call: Call<GetCasesResponse>,
-                        response: Response<GetCasesResponse>
-                    ) {
-                        val responseObject = response.body()
-                        if (responseObject != null) {
-                            if (responseObject.code == 200) {
-                                presenter.onGetCompaintsSuccess(responseObject)
-                            } else {
-                                presenter.onGetCompaintsFailed(
-                                    response.body()?.message ?: Constants.SERVER_ERROR
-                                )
-                            }
+            retrofitApi.getCases(token, map).enqueue(object : Callback<GetCasesResponse> {
+                override fun onResponse(
+                    call: Call<GetCasesResponse>,
+                    response: Response<GetCasesResponse>
+                ) {
+                    val responseObject = response.body()
+                    if (responseObject != null) {
+                        if (responseObject.code == 200) {
+                            presenter.onGetCompaintsSuccess(responseObject)
                         } else {
-                            if (response.raw().code() == 403) {
-                                presenter.showError(Constants.TOKEN_ERROR)
-                            } else {
-                                presenter.showError(Constants.SERVER_ERROR)
-                            }
+                            presenter.onGetCompaintsFailed(
+                                response.body()?.message ?: Constants.SERVER_ERROR
+                            )
+                        }
+                    } else {
+                        if (response.raw().code() == 403) {
+                            presenter.showError(Constants.TOKEN_ERROR)
+                        } else {
+                            presenter.showError(Constants.SERVER_ERROR)
                         }
                     }
+                }
 
-                    override fun onFailure(call: Call<GetCasesResponse>, t: Throwable) {
-                        if (t is SocketTimeoutException) {
-                            presenter.showError("Socket Time error")
-                        } else {
-                            presenter.showError(t.message + "")
-                        }
+                override fun onFailure(call: Call<GetCasesResponse>, t: Throwable) {
+                    if (t is SocketTimeoutException) {
+                        presenter.showError("Socket Time error")
+                    } else {
+                        presenter.showError(t.message + "")
                     }
-                })
+                }
+            })
 
         }
     }
@@ -250,6 +250,40 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         val map = HashMap<String, RequestBody>()
         map["complaint_id"] = toRequestBody(id)
         retrofitApi.deleteComplaintOrPost(token, map)
+            .enqueue(object : Callback<DeleteComplaintResponse> {
+                override fun onFailure(call: Call<DeleteComplaintResponse>, t: Throwable) {
+                    if (t is SocketTimeoutException) {
+                        presenter.showError("Socket Time error")
+                    } else {
+                        presenter.showError(t.message + "")
+                    }
+                }
+
+                override fun onResponse(
+                    call: Call<DeleteComplaintResponse>,
+                    response: Response<DeleteComplaintResponse>
+                ) {
+                    val responseObject = response.body()
+                    if (responseObject != null) {
+                        if (responseObject.code == 200) {
+                            presenter.onComplaintDeleted(responseObject)
+                        } else {
+                            presenter.showError(
+                                response.body()?.message ?: Constants.SERVER_ERROR
+                            )
+                        }
+                    } else {
+                        presenter.showError(Constants.SERVER_ERROR)
+                    }
+                }
+            })
+    }
+
+    fun hideComplaint(token: String, id: String) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        val map = HashMap<String, RequestBody>()
+        map["complaint_id"] = toRequestBody(id)
+        retrofitApi.hideComplaintOrPost(token, map)
             .enqueue(object : Callback<DeleteComplaintResponse> {
                 override fun onFailure(call: Call<DeleteComplaintResponse>, t: Throwable) {
                     if (t is SocketTimeoutException) {

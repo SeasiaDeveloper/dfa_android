@@ -265,8 +265,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             menu.findItem(R.id.nav_logout).setVisible(true)
             menu.findItem(R.id.nav_cases).setVisible(true)
         }
-
-
     }
 
     //checking location

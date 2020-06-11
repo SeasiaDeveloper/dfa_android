@@ -76,6 +76,14 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         presenter.deleteComplaint(token, complaintsData.id!!)
     }
 
+    override fun onHide(item: Any, position: Int) {
+        Utilities.showProgress(this@MyCasesActivity)
+        val complaintsData = item as GetCasesResponse.Data
+        //delete the item based on id
+        deleteItemposition = position
+        presenter.hideComplaint(token, complaintsData.id!!)
+    }
+
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
     private var complaints: List<GetCasesResponse.Data> = mutableListOf()
     lateinit var casesRequest: CasesRequest

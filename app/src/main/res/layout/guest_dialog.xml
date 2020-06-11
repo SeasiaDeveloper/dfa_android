@@ -16,7 +16,7 @@
             android:id="@+id/iv_delete"
             android:layout_height="80dp"/>
 
-        <TextView
+        <com.ngo.customviews.CustomTextViewheading
             android:text="@string/app_name"
             android:textStyle="bold"
             android:layout_alignParentRight="true"
@@ -29,8 +29,8 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        <TextView
-            android:text="If you want to do action you should login"
+        <com.ngo.customviews.CustomTextViewheading
+            android:text="@string/if_you_want_to_do_action_you_should_login"
             android:layout_below="@+id/std_name"
             android:textSize="@dimen/_14sdp"
 
