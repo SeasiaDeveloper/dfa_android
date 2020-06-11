@@ -25,6 +25,9 @@ class VideosModel(private var presenter: VideoPresenter) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
         map["type"] = toRequestBody(request.type)
+        if(token!!.isEmpty()){
+            map["guest_user"] = toRequestBody("1")
+        }
 
         retrofitApi.getcrime_media(token, map).enqueue(object : Callback<GetPhotosResponse> {
             override fun onResponse(

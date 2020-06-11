@@ -11,6 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -31,6 +34,7 @@ import com.ngo.ui.commentlikelist.CommentLikeUsersList
 import com.ngo.ui.comments.CommentsActivity
 import com.ngo.ui.contactus.ContactUsActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
+import com.ngo.ui.login.view.LoginActivity
 import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.ui.profile.ProfileActivity
 import com.ngo.utils.PreferenceHandler
@@ -50,7 +54,6 @@ class CasesAdapter(
 ) :
 
     RecyclerView.Adapter<CasesAdapter.ViewHolder>() {
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
@@ -198,7 +201,6 @@ class CasesAdapter(
             }
         }
     }
-
     fun notifyParticularItem(complaintId: String) {
         var likeCount: String? = ""
         for (i in 0..this.mList.size - 1) {
@@ -286,7 +288,7 @@ class CasesAdapter(
             val userDetail: GetCasesResponse.Data.UserDetail = item.userDetail!!
             val username =
                 PreferenceHandler.readString(context, PreferenceHandler.USER_FULLNAME, "")
-
+            val token = PreferenceHandler.readString(context, PreferenceHandler.AUTHORIZATION, "")
             val options = RequestOptions()
                 /* .centerCrop()*/
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -488,38 +490,60 @@ class CasesAdapter(
                 }
 
                 itemView.layout_like.setOnClickListener {
-                    if (itemView.img_like_red.visibility == View.GONE) {
-                        itemView.img_like_red.visibility = View.VISIBLE
-                        itemView.img_like.visibility = View.GONE
-                        item.is_liked = 1 //the post is liked
+                    if (!token!!.isEmpty()) {
+                        if (itemView.img_like_red.visibility == View.GONE) {
+                            itemView.img_like_red.visibility = View.VISIBLE
+                            itemView.img_like.visibility = View.GONE
+                            item.is_liked = 1 //the post is liked
+                        } else {
+                            itemView.img_like.visibility = View.VISIBLE
+                            itemView.img_like_red.visibility = View.GONE
+                            item.is_liked = 0 //the post is disliked
+                        }
+
+                        listener.changeLikeStatus(item)
                     } else {
-                        itemView.img_like.visibility = View.VISIBLE
-                        itemView.img_like_red.visibility = View.GONE
-                        item.is_liked = 0 //the post is disliked
+                        com.ngo.utils.alert.AlertDialog.guesDialog(context)
                     }
 
-                    listener.changeLikeStatus(item)
+
                 }
 
                 itemView.layout_like.setOnLongClickListener {
-                    val intent = Intent(context, CommentLikeUsersList::class.java)
-                    intent.putExtra("for", "liked")
-                    intent.putExtra("id", item.id)
-                    context.startActivity(intent)
+                    if (!token!!.isEmpty()) {
+                        val intent = Intent(context, CommentLikeUsersList::class.java)
+                        intent.putExtra("for", "liked")
+                        intent.putExtra("id", item.id)
+                        context.startActivity(intent)
+                    } else {
+                        com.ngo.utils.alert.AlertDialog.guesDialog(context)
+                    }
+
                     true
                 }
 
                 itemView.layoutComment.setOnClickListener {
-                    val intent = Intent(context, CommentsActivity::class.java)
-                    intent.putExtra("id", item.id)
-                    context.startActivity(intent)
+                    if (!token!!.isEmpty()) {
+                        val intent = Intent(context, CommentsActivity::class.java)
+                        intent.putExtra("id", item.id)
+                        context.startActivity(intent)
+                    } else {
+                        com.ngo.utils.alert.AlertDialog.guesDialog(context)
+                    }
+
                 }
 
                 itemView.layoutComment.setOnLongClickListener {
-                    val intent = Intent(context, CommentLikeUsersList::class.java)
-                    intent.putExtra("for", "commented")
-                    intent.putExtra("id", item.id)
-                    context.startActivity(intent)
+                    if (!token!!.isEmpty()) {
+                        val intent = Intent(context, CommentLikeUsersList::class.java)
+                        intent.putExtra("for", "commented")
+                        intent.putExtra("id", item.id)
+                        context.startActivity(intent)
+                    } else {
+
+                        com.ngo.utils.alert.AlertDialog.guesDialog(context)
+                    }
+
                     true
                 }
 
@@ -712,36 +736,44 @@ class CasesAdapter(
                 }
 
                 itemView.imgExpandable.setOnClickListener {
-                    //1st entry
-                    if (!item.isApiHit) {
-                        //call api:
-                        if (isGeneralPublicFragment) {
-                            val callMethod = fragment as GeneralPublicHomeFragment
-                            callMethod.callFirImageApi(item.id!!, adapterPosition)
-                        } else {
-                            val myCasesActivity = activity as MyCasesActivity
-                            myCasesActivity.callFirImageApi(item.id!!, adapterPosition)
-                        }
+                    if (!token!!.isEmpty()) {
+                        //1st entry
+                        if (!item.isApiHit) {
+                            //call api:
+                            if (isGeneralPublicFragment) {
+                                val callMethod = fragment as GeneralPublicHomeFragment
+                                callMethod.callFirImageApi(item.id!!, adapterPosition)
+                            } else {
+                                val myCasesActivity = activity as MyCasesActivity
+                                myCasesActivity.callFirImageApi(item.id!!, adapterPosition)
+                            }
 
-                    } else {
-                        if (itemView.childExpandable.visibility == View.VISIBLE) {
-                            itemView.childExpandable.visibility = View.GONE
-                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
-                            item.isApiHit = false
-                            itemView.moreLess.setText(R.string.more)
+                        } else {
+                            if (itemView.childExpandable.visibility == View.VISIBLE) {
+                                itemView.childExpandable.visibility = View.GONE
+                                itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                                item.isApiHit = false
+                                itemView.moreLess.setText(R.string.more)
+                            }
                         }
+                    } else{
+                        com.ngo.utils.alert.AlertDialog.guesDialog(context)
                     }
                 }
             } else {
                 itemView.imgExpandable.setOnClickListener {
-                    if (itemView.childExpandable.visibility == View.VISIBLE) {
-                        itemView.childExpandable.visibility = View.GONE
-                        itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
-                        itemView.moreLess.setText(R.string.more)
-                    } else {
-                        itemView.childExpandable.visibility = View.VISIBLE
-                        itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
-                        itemView.moreLess.setText(R.string.less)
+                    if (!token!!.isEmpty()) {
+                        if (itemView.childExpandable.visibility == View.VISIBLE) {
+                            itemView.childExpandable.visibility = View.GONE
+                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                            itemView.moreLess.setText(R.string.more)
+                        } else {
+                            itemView.childExpandable.visibility = View.VISIBLE
+                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
+                            itemView.moreLess.setText(R.string.less)
+                        }
+                    } else{
+                        com.ngo.utils.alert.AlertDialog.guesDialog(context)
                     }
                 }
             }

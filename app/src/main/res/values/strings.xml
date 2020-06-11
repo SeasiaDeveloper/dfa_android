@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DFA</string>
+    <string name="app_name">DFA APP</string>
     <string name="ngo_app">DFA APP</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="general_public">General Public</string>
@@ -217,6 +217,7 @@
     <string name="contact_us">Contact Us</string>
     <string name="locate_us">Locate us</string>
     <string name="km_away">KM Away</string>
+    <string name="guest_user">Guest User</string>
     <string name="incident_heading">Recent Reported Incidents</string>
     <string name="more">More</string>
     <string name="less">Less</string>

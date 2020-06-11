@@ -48,7 +48,7 @@ class SplashActivity : BaseActivity() {
                         finish()
                     }
                 } else {
-                    startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
+                    startActivity(Intent(this@SplashActivity, HomeActivity::class.java))
                     finish()
                 }
             }

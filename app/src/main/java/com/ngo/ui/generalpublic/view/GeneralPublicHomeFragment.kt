@@ -3,6 +3,7 @@ package com.ngo.ui.generalpublic.view
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,6 +14,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -61,6 +63,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     private var media_type: String? = ""
     private var token: String = ""
     var isFirst = true
+    var guestUser = ""
     var type = ""
     var firComplaintId: String = ""
     var horizontalLayoutManager: LinearLayoutManager? = null
@@ -186,7 +189,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         // Utilities.showProgress(mContext)
 
         /*  if (isFirst) {*/
-        // doApiCall()
+        // doApiCall()F
         /*  isFirst = false
       }*/
 
@@ -692,20 +695,30 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onClick(p0: View?) {
         when (p0?.id) {
             R.id.imgAdd -> {
-                val value =
-                    PreferenceHandler.readString(mContext, PreferenceHandler.PROFILE_JSON, "")
-                val jsondata =
-                    GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
-                if (jsondata != null) {
-                    //check if user is partial/fully verified
-                    if (jsondata.data?.adhar_number != null && !(jsondata.data.adhar_number.equals(""))) {
-                        val intent = Intent(mContext, GeneralPublicActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        //make the user partially verified:
-                        Utilities.displayInputDialog(mContext, this)
+
+                if (!token.isEmpty()) {
+                    val value =
+                        PreferenceHandler.readString(mContext, PreferenceHandler.PROFILE_JSON, "")
+                    val jsondata =
+                        GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
+                    if (jsondata != null) {
+                        //check if user is partial/fully verified
+                        if (jsondata.data?.adhar_number != null && !(jsondata.data.adhar_number.equals(
+                                ""
+                            ))
+                        ) {
+                            val intent = Intent(mContext, GeneralPublicActivity::class.java)
+                            startActivity(intent)
+                        } else {
+                            //make the user partially verified:
+                            Utilities.displayInputDialog(mContext, this)
+                        }
                     }
                 }
+                else {
+                    com.ngo.utils.alert.AlertDialog.guesDialog(mContext)
+                }
+
             }
         }
     }
@@ -765,7 +778,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         super.onAttach(context)
         mContext = context
         token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
-        type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "")!!
+        type = PreferenceHandler.readString(mContext, PreferenceHandler.USER_ROLE, "0")!!
     }
 
     override fun onPause() {
@@ -834,6 +847,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         isLike = false
 
         val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
+
+        if (token!!.isEmpty()) {
+            guestUser = "true"
+        }
+
         //change the staus of the item based on id
         presenter.changeLikeStatus(token!!, complaintsData.id!!)
     }
@@ -875,4 +893,5 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         presenter.getComplaints(casesRequest, token, type)
         progressBar.visibility = View.VISIBLE
     }
+
 }

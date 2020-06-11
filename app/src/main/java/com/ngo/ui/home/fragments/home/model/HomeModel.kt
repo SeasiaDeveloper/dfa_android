@@ -70,10 +70,10 @@ class HomeModel(private var homePresenter: HomePresenter) {
                     if (responseObject.code == 200) {
                         homePresenter.postLocationSuccess(responseObject)
                     } else {
-                        //homePresenter.postLocationFailure( response.body()?.message ?: Constants.SERVER_ERROR )
+                      //  homePresenter.postLocationFailure( response.body()?.message ?: Constants.SERVER_ERROR )
                     }
                 } else {
-                   // homePresenter.showError(Constants.SERVER_ERROR)
+                 //   homePresenter.showError(Constants.SERVER_ERROR)
                 }
             }
         })

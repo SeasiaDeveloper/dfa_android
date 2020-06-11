@@ -1,5 +1,6 @@
 package com.ngo.ui.home.fragments.home.view
 
+import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -9,7 +10,10 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
 import android.util.Log
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.Window
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -25,9 +29,11 @@ import com.ngo.R
 import com.ngo.adapters.TabLayoutAdapter
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CustomtextView
-import com.ngo.pojo.response.*
+import com.ngo.pojo.response.GetProfileResponse
+import com.ngo.pojo.response.NotificationResponse
+import com.ngo.pojo.response.PostLocationResponse
+import com.ngo.pojo.response.UpdateStatusSuccess
 import com.ngo.ui.contactus.ContactUsActivity
-import com.ngo.ui.policedetail.view.PoliceIncidentDetailScreen
 import com.ngo.ui.earnings.view.MyEarningsActivity
 import com.ngo.ui.emergency.view.EmergencyFragment
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
@@ -38,14 +44,14 @@ import com.ngo.ui.home.fragments.photos.view.PhotosFragment
 import com.ngo.ui.home.fragments.videos.view.VideosFragment
 import com.ngo.ui.login.view.LoginActivity
 import com.ngo.ui.mycases.MyCasesActivity
+import com.ngo.ui.policedetail.view.PoliceIncidentDetailScreen
 import com.ngo.ui.profile.ProfileActivity
 import com.ngo.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.ngo.ui.updatepassword.view.UpdatePasswordActivity
-import com.ngo.utils.ForegroundService
-import com.ngo.utils.PreferenceHandler
-import com.ngo.utils.Utilities
+import com.ngo.utils.*
 import com.ngo.utils.alert.AlertDialog
 import kotlinx.android.synthetic.main.home_activity.*
+import kotlinx.android.synthetic.main.nav_action.*
 import kotlinx.android.synthetic.main.nav_header.*
 import com.ngo.utils.*
 import kotlinx.android.synthetic.main.nav_action.*
@@ -74,7 +80,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (menuItem != null && menuItem!!.isChecked) menuItem!!.isChecked = false
 
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
-        homePresenter.hitProfileApi(authorizationToken)
+
+        if (!authorizationToken!!.isEmpty()) {
+            homePresenter.hitProfileApi(authorizationToken)
+        }
         if (!isGPS && !isPermissionDialogRequired) {
             askForGPS()
         }
@@ -182,7 +191,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun setupUI() {
         mToolbar = findViewById<View>(R.id.nav_action) as Toolbar
         setSupportActionBar(mToolbar)
-
         mDrawerLayout = findViewById<View>(R.id.drawerLayout) as DrawerLayout
         mToggle = ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close)
         mDrawerLayout!!.addDrawerListener(mToggle!!)
@@ -191,7 +199,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         getSupportActionBar()?.setHomeButtonEnabled(true)
         getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)
         getSupportActionBar()?.setHomeAsUpIndicator(R.drawable.burger_icon)
-
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         if (supportActionBar != null) {
             supportActionBar?.setDisplayShowTitleEnabled(false)
@@ -227,6 +234,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     }
 
+    @SuppressLint("SetTextI18n")
     fun setTabAdapter() {
 
         val adapter = TabLayoutAdapter(supportFragmentManager)
@@ -240,6 +248,25 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         viewPager?.adapter = adapter
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)
+
+        var menu = nav_view.menu
+
+
+        if (authorizationToken!!.isEmpty()) {
+            menu.findItem(R.id.nav_edit_profile).setVisible(false)
+            menu.findItem(R.id.nav_password).setVisible(false)
+            menu.findItem(R.id.nav_logout).setVisible(false)
+            menu.findItem(R.id.nav_cases).setVisible(false)
+            textName.setText(getString(R.string.guest_user))
+
+        } else {
+            menu.findItem(R.id.nav_edit_profile).setVisible(true)
+            menu.findItem(R.id.nav_password).setVisible(true)
+            menu.findItem(R.id.nav_logout).setVisible(true)
+            menu.findItem(R.id.nav_cases).setVisible(true)
+        }
+
+
     }
 
     //checking location
@@ -325,12 +352,16 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             R.id.nav_cases -> {
                 startActivity(Intent(this@HomeActivity, MyCasesActivity::class.java))
             }
-            R.id.nav_my_earning -> startActivity(
-                Intent(
-                    this@HomeActivity,
-                    MyEarningsActivity::class.java
-                )
-            )
+            R.id.nav_my_earning ->
+                if (!authorizationToken!!.isEmpty()) {
+
+                    startActivity(Intent(this@HomeActivity, MyEarningsActivity::class.java))
+
+                } else {
+                    com.ngo.utils.alert.AlertDialog.guesDialog(this)
+
+                }
+
 
             R.id.nav_contact_us -> {
                 startActivity(Intent(this@HomeActivity, ContactUsActivity::class.java))

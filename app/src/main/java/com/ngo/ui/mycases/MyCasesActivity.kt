@@ -1,6 +1,7 @@
 package com.ngo.ui.mycases
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.View.OnTouchListener
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -32,6 +34,7 @@ import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
+import com.ngo.ui.login.view.LoginActivity
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_my_cases.*
@@ -124,7 +127,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
     override fun setupUI() {
         token = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")!!
-        type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
+        type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")!!
 
         (toolbarLayout as CenteredToolbar).title = getString(R.string.my_cases)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
@@ -594,4 +597,5 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         dialog = builder.create()
         dialog.show()
     }
+
 }

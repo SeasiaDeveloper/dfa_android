@@ -13,6 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.ngo.R
 import com.ngo.pojo.response.GetPhotosResponse
 import com.ngo.ui.home.fragments.photos.view.OnClickOfVideoAndPhoto
+import com.ngo.utils.PreferenceHandler
 import kotlinx.android.synthetic.main.adapter_photos.view.*
 
 
@@ -61,7 +62,7 @@ class VideosAdapter(
         ) {
             ivVideo.visibility = View.VISIBLE
             this.index = index
-
+          var  authorizationToken = PreferenceHandler.readString(context!!, PreferenceHandler.AUTHORIZATION, "")
             val requestOptions = RequestOptions()
             requestOptions.isMemoryCacheable
            try{ Glide.with(context).setDefaultRequestOptions(requestOptions).load(item.url.toString())
@@ -70,7 +71,12 @@ class VideosAdapter(
            }
 
             ivPhoto.setOnClickListener {
-                listener.getComplaintId(item.complaint_id)
+
+                if(!authorizationToken!!.isEmpty()){
+                    listener.getComplaintId(item.complaint_id)
+                }else{
+                    com.ngo.utils.alert.AlertDialog.guesDialog(context)
+                }
             }
         }
     }

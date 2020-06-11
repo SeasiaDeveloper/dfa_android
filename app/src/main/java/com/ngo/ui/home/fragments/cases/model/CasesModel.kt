@@ -39,6 +39,12 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
         if (userRole.equals("2")) {
             //my cases case for police
             if (casesRequest.all.equals("0")) {
+
+                if(token.isEmpty()){
+                    map["guest_user"] = toRequestBody("1")
+                }
+
+
                 retrofitApi.getMyCasesForPolice(token, map)
                     .enqueue(object : Callback<GetCasesResponse> {
                         override fun onResponse(
@@ -109,37 +115,42 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
 
         //in case of NGO and normal user
         else {
-            retrofitApi.getCases(token, map).enqueue(object : Callback<GetCasesResponse> {
-                override fun onResponse(
-                    call: Call<GetCasesResponse>,
-                    response: Response<GetCasesResponse>
-                ) {
-                    val responseObject = response.body()
-                    if (responseObject != null) {
-                        if (responseObject.code == 200) {
-                            presenter.onGetCompaintsSuccess(responseObject)
-                        } else {
-                            presenter.onGetCompaintsFailed(
-                                response.body()?.message ?: Constants.SERVER_ERROR
-                            )
-                        }
-                    } else {
-                        if (response.raw().code() == 403) {
-                            presenter.showError(Constants.TOKEN_ERROR)
-                        } else {
-                            presenter.showError(Constants.SERVER_ERROR)
-                        }
-                    }
-                }
+            if(token.isEmpty()){
+                map["guest_user"] = toRequestBody("1")
+            }
 
-                override fun onFailure(call: Call<GetCasesResponse>, t: Throwable) {
-                    if (t is SocketTimeoutException) {
-                        presenter.showError("Socket Time error")
-                    } else {
-                        presenter.showError(t.message + "")
+                retrofitApi.getCases(token, map).enqueue(object : Callback<GetCasesResponse> {
+                    override fun onResponse(
+                        call: Call<GetCasesResponse>,
+                        response: Response<GetCasesResponse>
+                    ) {
+                        val responseObject = response.body()
+                        if (responseObject != null) {
+                            if (responseObject.code == 200) {
+                                presenter.onGetCompaintsSuccess(responseObject)
+                            } else {
+                                presenter.onGetCompaintsFailed(
+                                    response.body()?.message ?: Constants.SERVER_ERROR
+                                )
+                            }
+                        } else {
+                            if (response.raw().code() == 403) {
+                                presenter.showError(Constants.TOKEN_ERROR)
+                            } else {
+                                presenter.showError(Constants.SERVER_ERROR)
+                            }
+                        }
                     }
-                }
-            })
+
+                    override fun onFailure(call: Call<GetCasesResponse>, t: Throwable) {
+                        if (t is SocketTimeoutException) {
+                            presenter.showError("Socket Time error")
+                        } else {
+                            presenter.showError(t.message + "")
+                        }
+                    }
+                })
+
         }
     }
 
