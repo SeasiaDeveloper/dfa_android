@@ -62,7 +62,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
                 )
             }
             R.id.btnSignUp -> {
-                val intent = Intent(this, ForgotPasswordActivity::class.java) //
+                val intent = Intent(this, SignupActivity::class.java) //
                 intent.putExtra("clicked_from", "signup")
                 startActivity(intent)
             }

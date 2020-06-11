@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -18,11 +19,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ngo.R
 import com.ngo.adapters.EmergencyDetailsAdapter
-import com.ngo.base.BaseActivity
 import com.ngo.pojo.request.EmergencyDataRequest
+import com.ngo.pojo.response.DataBean
+import com.ngo.pojo.response.DistResponse
 import com.ngo.pojo.response.EmergencyDataResponse
-import com.ngo.pojo.response.GetEmergencyDetailsResponse.Details
-import com.ngo.pojo.response.MyEarningsResponse
 import com.ngo.ui.emergency.presenter.EmegencyFragmentPresenterImpl
 import com.ngo.ui.emergency.presenter.EmergencyFragmentPresenter
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
@@ -30,6 +30,7 @@ import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import com.ngo.utils.Utilities.dismissProgress
 import com.ngo.utils.Utilities.showProgress
+import kotlinx.android.synthetic.main.activity_signup.*
 import kotlinx.android.synthetic.main.fragment_emergency.*
 
 class EmergencyFragment : Fragment(), EmergencyFragmentView {
@@ -52,10 +53,7 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
         if (isFirst) {
             if (isInternetAvailable(mContext)) {
                 showProgress(mContext)
-                var authorizationToken =
-                    PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
-                var request = EmergencyDataRequest("2")
-                presenter.hitEmergencyApi(request, authorizationToken)
+                presenter.hitDistricApi()
                 isFirst = false
             } else {
                 Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
@@ -110,21 +108,46 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
             )
         }
         setEmergencyAdapter()
-        getDistrictDropDown()
     }
 
-    fun getDistrictDropDown() {
+    fun getDistrictDropDown(response: DistResponse) {
 
         val distValueList = ArrayList<String>()
-        //  distValueList.add("Itanagar")
-        var list_of_items = arrayOf("Itanagar")
-        val distArray = distValueList.toArray(arrayOfNulls<String>(distValueList.size))
+        for (i in 0..response.data.size-1) {
+            distValueList.add(response.data.get(i).name)
+        }
+       // var list_of_items = arrayOf(distValueList)
+        // val distArray = distValueList.toArray(arrayOfNulls<String>(distValueList.size))
         val adapter = ArrayAdapter(
             mContext,
-            android.R.layout.simple_spinner_item, list_of_items
+            android.R.layout.simple_spinner_item, distValueList
         )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spDistrict.setAdapter(adapter)
+        spDistrict.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                // Display the selected item text on text view
+                "Spinner selected : ${parent.getItemAtPosition(position)}"
+                if (isInternetAvailable(mContext)) {
+                    showProgress(mContext)
+                    var authorizationToken =
+                        PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
+                    var request = EmergencyDataRequest(response.data.get(position).id)
+                    presenter.hitEmergencyApi(request, authorizationToken)
+                } else {
+                    Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Another interface callback
+            }
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -197,6 +220,11 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     override fun getEmergencyDataFailure(error: String) {
         dismissProgress()
         Utilities.showMessage(mContext, error)
+    }
+
+    override fun getDistrictsSuccess(response: DistResponse) {
+        dismissProgress()
+        getDistrictDropDown(response)
     }
 
     override fun showServerError(error: String) {
