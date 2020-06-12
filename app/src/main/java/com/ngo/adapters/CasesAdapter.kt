@@ -386,10 +386,10 @@ class CasesAdapter(
 
                 if (item.showDelete == 1) {
                     itemView.btnDeletePost.visibility = View.VISIBLE
-                  //  itemView.iv_menu.visibility=View.
+                    itemView.iv_menu.visibility=View.VISIBLE
                 } else {
                     itemView.btnDeletePost.visibility = View.GONE
-                   // itemView.iv_menu.visibility=View.GONE
+                    itemView.iv_menu.visibility=View.GONE
                 }
 
                 itemView.btnDeletePost.setOnClickListener {

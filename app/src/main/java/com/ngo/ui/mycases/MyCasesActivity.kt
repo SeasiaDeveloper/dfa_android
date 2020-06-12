@@ -39,6 +39,11 @@ import com.ngo.ui.login.view.LoginActivity
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_my_cases.*
+import kotlinx.android.synthetic.main.activity_my_cases.progressBar
+import kotlinx.android.synthetic.main.activity_my_cases.rvPublic
+import kotlinx.android.synthetic.main.activity_my_cases.toolbarLayout
+import kotlinx.android.synthetic.main.activity_my_cases.tvRecord
+import kotlinx.android.synthetic.main.fragment_public_home.*
 
 
 class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener,
@@ -163,7 +168,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             )
         )
         swipeView.setColorSchemeColors(Color.WHITE)
-
+        swipeView.setDistanceToTriggerSync(500)
         swipeView.setOnRefreshListener {
             pageCount = 1
            // adapter?.clear()

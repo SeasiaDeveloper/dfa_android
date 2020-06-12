@@ -31,19 +31,19 @@ public class CustomEditText extends androidx.appcompat.widget.AppCompatEditText 
     }
 
     private void init() {
-        Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/ROBOTO-REGULAR_0.TTF");
+        Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/Montserrat-Regular_0.ttf");
         this.setTypeface(font);
     }
 
     @Override
     public void setTypeface(Typeface tf, int style) {
-        tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/ROBOTO-REGULAR_0.TTF");
+        tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/Montserrat-Regular_0.ttf");
         super.setTypeface(tf, style);
     }
 
     @Override
     public void setTypeface(Typeface tf) {
-        tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/ROBOTO-REGULAR_0.TTF");
+        tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/Montserrat-Regular_0.ttf");
         super.setTypeface(tf);
     }
 }
