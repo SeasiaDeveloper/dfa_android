@@ -84,7 +84,7 @@
                         android:textStyle="bold"
                         android:visibility="gone"/>
 
-                    <TextView
+                    <com.ngo.customviews.CustomtextView
                         android:textSize="@dimen/_16sdp"
                         android:id="@+id/editTitle"
                         android:layout_width="match_parent"

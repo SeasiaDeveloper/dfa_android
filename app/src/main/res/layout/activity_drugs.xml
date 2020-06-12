@@ -17,7 +17,7 @@
         android:layout_height="wrap_content"
         android:visibility="visible" />
 
-    <TextView
+    <com.ngo.customviews.CustomtextView
         android:id="@+id/tvRecord"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
