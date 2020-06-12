@@ -224,4 +224,7 @@
     <string name="more">More</string>
     <string name="less">Less</string>
     <string name="if_you_want_to_do_action_you_should_login">If you want to do action you should login</string>
+    <string name="gpu">GPU</string>
+    <string name="ngo_user">NGO</string>
+    <string name="police_user">Police</string>
 </resources>

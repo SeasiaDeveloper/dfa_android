@@ -20,25 +20,54 @@
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_gravity="center_vertical"
-            android:background="@color/light_grey_bg">
+            >
+
+<!--            <com.ngo.customviews.CustomEditText-->
+<!--                android:id="@+id/etSearch"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="@dimen/_18sdp"-->
+<!--                android:layout_marginTop="@dimen/_18sdp"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:drawablePadding="30dp"-->
+<!--                android:visibility="gone"-->
+<!--                android:drawableEnd="@drawable/ic_search_grey"-->
+<!--                android:layout_marginEnd="@dimen/_18sdp"-->
+<!--                android:layout_marginBottom="@dimen/_14sdp"-->
+<!--                android:background="@drawable/shape_round_corner_grey"-->
+<!--                android:gravity="start|center_vertical"-->
+<!--                android:hint="@string/search"-->
+<!--                android:imeOptions="actionDone"-->
+<!--                android:maxLength="13"-->
+<!--                android:padding="@dimen/_7sdp" />-->
 
             <com.ngo.customviews.CustomEditText
                 android:id="@+id/etSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_18sdp"
-                android:layout_marginTop="@dimen/_18sdp"
-                android:layout_gravity="center_vertical"
-                android:drawablePadding="30dp"
-                android:drawableEnd="@drawable/ic_search_grey"
-                android:layout_marginEnd="@dimen/_18sdp"
-                android:layout_marginBottom="@dimen/_14sdp"
-                android:background="@drawable/shape_round_corner_grey"
-                android:gravity="start|center_vertical"
+                android:layout_below="@+id/includeView"
+                android:layout_marginLeft="@dimen/_15sdp"
+                android:layout_marginTop="@dimen/_10ssp"
+                android:layout_marginRight="15dp"
+                android:paddingTop="14dp"
+                android:paddingBottom="14dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:background="@drawable/search_shape"
+                android:drawableRight="@drawable/ic_search"
+                android:drawableTint="@color/grey"
+                android:drawablePadding="5dp"
                 android:hint="@string/search"
-                android:imeOptions="actionDone"
-                android:maxLength="13"
-                android:padding="@dimen/_7sdp" />
+                android:imeOptions="actionSearch"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textColorHint="@android:color/darker_gray"
+                android:textSize="17dp" />
+
+
+
         </LinearLayout>
 
         <RelativeLayout

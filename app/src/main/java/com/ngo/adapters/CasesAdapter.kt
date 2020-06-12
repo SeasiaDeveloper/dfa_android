@@ -9,6 +9,7 @@ import android.os.Build
 import android.view.*
 import android.widget.ImageView
 import android.widget.PopupMenu
+import androidx.core.view.MenuCompat
 
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -296,6 +297,7 @@ class CasesAdapter(
 
             var popup1 = PopupMenu(activity, itemView.iv_menu)
             popup1.inflate(R.menu.news_feed_menu)
+            MenuCompat.setGroupDividerEnabled(popup1.menu, true);
 
             itemView.iv_menu!!.setOnClickListener {
                 popup1.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
