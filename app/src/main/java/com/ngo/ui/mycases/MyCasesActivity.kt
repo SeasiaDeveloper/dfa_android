@@ -356,10 +356,16 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
     //changing the like status
     override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
-        Utilities.showProgress(this)
-        val token = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
-        //delete the item based on id
+        // Utilities.showProgress(mContext)
         complaintIdTobeLiked = complaintsData.id
+
+        //when to change like status
+        adapter?.notifyParticularItem(complaintIdTobeLiked!!)
+        isLike = false
+
+        val token = PreferenceHandler.readString(this@MyCasesActivity, PreferenceHandler.AUTHORIZATION, "")
+
+        //change the staus of the item based on id
         presenter.changeLikeStatus(token!!, complaintsData.id!!)
 
     }
@@ -368,12 +374,12 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         // Utilities.showMessage(this, responseObject.message!!)
         isLike = true
-        val casesRequest = CasesRequest(
+        /*val casesRequest = CasesRequest(
             "0",
             "",
             "0", "1", "10"
         ) //all = 0 for only my cases;type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token, type)
+        presenter.getComplaints(casesRequest, token, type)*/
         GeneralPublicHomeFragment.changeThroughIncidentScreen =
             1 // so that list on Home gets refreshed after change in status
     }

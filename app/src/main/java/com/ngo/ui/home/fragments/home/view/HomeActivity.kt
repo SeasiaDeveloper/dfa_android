@@ -16,6 +16,7 @@ import android.view.View
 import android.view.Window
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
@@ -29,13 +30,12 @@ import com.ngo.R
 import com.ngo.adapters.TabLayoutAdapter
 import com.ngo.base.BaseActivity
 import com.ngo.customviews.CustomtextView
-import com.ngo.pojo.response.GetProfileResponse
-import com.ngo.pojo.response.NotificationResponse
-import com.ngo.pojo.response.PostLocationResponse
-import com.ngo.pojo.response.UpdateStatusSuccess
+import com.ngo.listeners.AdharNoListener
+import com.ngo.pojo.response.*
 import com.ngo.ui.contactus.ContactUsActivity
 import com.ngo.ui.earnings.view.MyEarningsActivity
 import com.ngo.ui.emergency.view.EmergencyFragment
+import com.ngo.ui.generalpublic.GeneralPublicActivity
 import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.view.LocationListenerCallback
 import com.ngo.ui.home.fragments.home.presenter.HomePresenter
@@ -57,7 +57,7 @@ import com.ngo.utils.*
 import kotlinx.android.synthetic.main.nav_action.*
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
-    GetLogoutDialogCallbacks, LocationListenerCallback {
+    GetLogoutDialogCallbacks, LocationListenerCallback, AdharNoListener {
 
     private var mDrawerLayout: DrawerLayout? = null
     private var mToggle: ActionBarDrawerToggle? = null
@@ -72,6 +72,17 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun getLayout(): Int {
         return R.layout.home_activity
+    }
+
+    override fun adharNoListener(adhaarNo: String) {
+        // check is Adhar no valid
+        if (!(Utilities.validateAadharNumber(adhaarNo))) {
+            Toast.makeText(this, getString(R.string.adhar_not_valid), Toast.LENGTH_SHORT).show()
+        } else {
+            Utilities.showProgress(this)
+            //hit Api to save the adhar no in backend
+            homePresenter.saveAdhaarNo(authorizationToken!!, adhaarNo)
+        }
     }
 
     override fun onResume() {
@@ -317,7 +328,43 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
         textName.setText(getProfileResponse.data?.first_name + " " + getProfileResponse.data?.middle_name + " " + getProfileResponse.data?.last_name)
         textAddress.setText(getProfileResponse.data?.address_1)
-        userInfo.setText("")
+        if (authorizationToken!!.isEmpty()) {
+            userInfo.visibility=View.GONE
+        } else {
+            userInfo.visibility=View.VISIBLE
+            if (getProfileResponse.data?.isVerified!!.equals("1")) {
+                userInfo.setText("Verified")
+                verified_icon.visibility = View.GONE
+            } else {
+                userInfo.setText("Unverified")
+                verified_icon.visibility = View.GONE
+            }
+        }
+
+        userInfo.setOnClickListener {
+            if (!authorizationToken!!.isEmpty()) {
+                val value =
+                    PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
+                val jsondata =
+                    GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
+                if (jsondata != null) {
+                    //check if user is partial/fully verified
+                    if (jsondata.data?.adhar_number != null && !(jsondata.data.adhar_number.equals(
+                            ""
+                        ))
+                    ) {
+                        /* val intent = Intent(this, GeneralPublicActivity::class.java)
+                         startActivity(intent)*/
+                    } else {
+                        //make the user partially verified:
+                        Utilities.displayInputDialog(this, this)
+                    }
+                }
+            } else {
+                com.ngo.utils.alert.AlertDialog.guesDialog(this)
+            }
+        }
+
         if (getProfileResponse.data?.profile_pic != null) {
             try {
                 Glide.with(this).load(getProfileResponse.data.profile_pic)
@@ -550,6 +597,16 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
+    }
+
+    override fun adhaarSavedSuccess(responseObject: SignupResponse) {
+        Utilities.showMessage(this, responseObject.message)
+        val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
+        val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
+        jsondata.data?.adhar_number = responseObject.data.adhar_number //add adhar no
+        Utilities.dismissProgress()
+        val intent = Intent(this, GeneralPublicActivity::class.java)
+        startActivity(intent)
     }
 
 }

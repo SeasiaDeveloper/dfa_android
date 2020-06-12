@@ -1,18 +1,18 @@
 package com.ngo.ui.home.fragments.home.presenter
 
-import com.ngo.pojo.response.DeleteComplaintResponse
-import com.ngo.pojo.response.GetProfileResponse
-import com.ngo.pojo.response.PostLocationResponse
-import com.ngo.pojo.response.UpdateStatusSuccess
+import com.ngo.pojo.response.*
 import com.ngo.ui.home.fragments.home.model.HomeModel
 import com.ngo.ui.home.fragments.home.view.HomeView
 
 class HomePresenterImpl(private var homeView: HomeView) :
     HomePresenter {
 
-
     override fun hitLocationApi(token: String?, latitude: String, longitude: String) {
         homeModel.getPostLocationData(token, latitude, longitude)
+    }
+
+    override fun saveAdhaarNo(token: String, adhaarNo: String) {
+        homeModel.saveAdhaarNo(token,adhaarNo)
     }
 
     override fun postLocationSuccess(postLocation: PostLocationResponse) {
@@ -32,7 +32,6 @@ class HomePresenterImpl(private var homeView: HomeView) :
         homeView.ongetProfileFailure(error)
     }
 
-
     override fun hitProfileApi(token: String?) {
         homeModel.getProfileData(token)
     }
@@ -48,5 +47,9 @@ class HomePresenterImpl(private var homeView: HomeView) :
 
     override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         homeView.statusUpdationSuccess(responseObject)
+    }
+
+    override fun adhaarSavedSuccess(responseObject: SignupResponse) {
+        homeView.adhaarSavedSuccess(responseObject)
     }
 }

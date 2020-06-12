@@ -215,9 +215,10 @@ class CasesAdapter(
                         this.mList.get(i).like_count =
                             (this.mList.get(i).like_count?.toInt()!! + 1).toString()
                     }
-                } else {
-                    this.mList.get(i).like_count = likeCount.toString()
                 }
+               /* else {
+                    this.mList.get(i).like_count = likeCount.toString()
+                }*/
 
                 notifyItemChanged(i)
                 break
