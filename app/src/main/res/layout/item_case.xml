@@ -45,7 +45,7 @@
                         app:civ_border_color="@color/black"
                         app:civ_border_width="0.4dp" />
 
-                    <com.ngo.customviews.CustomtextView
+                    <com.ngo.customviews.CustomTextViewheading
                         android:id="@+id/expandable_username"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -141,7 +141,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
 
-                                <com.ngo.customviews.CustomtextView
+                                <com.ngo.customviews.CustomTextViewheading
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/_6sdp"
@@ -166,7 +166,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
-                                <com.ngo.customviews.CustomtextView
+                                <com.ngo.customviews.CustomTextViewheading
                                     android:layout_width="wrap_content"
                                     android:layout_height="27dp"
                                     android:layout_marginStart="@dimen/_6sdp"
@@ -190,7 +190,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
-                                <com.ngo.customviews.CustomtextView
+                                <com.ngo.customviews.CustomTextViewheading
                                     android:id="@+id/txtUrgencyTitle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -221,7 +221,7 @@
                         android:layout_gravity="center"
                         android:orientation="horizontal">
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.ngo.customviews.CustomTextViewheading
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_6sdp"
@@ -283,7 +283,7 @@
                             android:orientation="horizontal"
                             android:visibility="visible">
 
-                            <com.ngo.customviews.CustomtextView
+                            <com.ngo.customviews.CustomTextViewheading
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_6sdp"
@@ -352,7 +352,7 @@
                             android:layout_gravity="center"
                             android:orientation="vertical">
 
-                            <com.ngo.customviews.CustomtextView
+                            <com.ngo.customviews.CustomTextViewheading
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_6sdp"
@@ -383,7 +383,7 @@
                             android:orientation="vertical"
                             android:visibility="gone">
 
-                            <com.ngo.customviews.CustomtextView
+                            <com.ngo.customviews.CustomTextViewheading
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_6sdp"
@@ -411,7 +411,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="@dimen/_5sdp">
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.ngo.customviews.CustomTextViewheading
                             android:id="@+id/location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -435,7 +435,7 @@
                             android:visibility="gone"
                             tools:targetApi="m" />
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.ngo.customviews.CustomTextViewheading
                             android:id="@+id/action_complaint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

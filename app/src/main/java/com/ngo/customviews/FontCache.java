@@ -9,8 +9,8 @@ import android.util.Log;
 import java.util.HashMap;
 
 public class FontCache {
-    public static final String REGULAR_FONT ="roboto_regular.ttf";
-    public static final String HEADING_REGULAR_FONT="roboto_medium.ttf";
+    public static final String REGULAR_FONT ="Montserrat-Regular_0.ttf";
+    public static final String HEADING_REGULAR_FONT="Montserrat-SemiBold_0.ttf";
 
 
     private static final HashMap<String, Typeface> fontCache = new HashMap<>();

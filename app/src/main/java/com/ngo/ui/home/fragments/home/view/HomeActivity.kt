@@ -350,7 +350,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             userInfo.visibility=View.VISIBLE
             if (getProfileResponse.data?.isVerified!!.equals("1")) {
                 userInfo.setText("Verified")
-                verified_icon.visibility = View.GONE
+                verified_icon.visibility = View.VISIBLE
             } else {
                 userInfo.setText("Unverified")
                 verified_icon.visibility = View.GONE
@@ -372,6 +372,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                         /* val intent = Intent(this, GeneralPublicActivity::class.java)
                          startActivity(intent)*/
                     } else {
+                        drawerLayout.closeDrawer(GravityCompat.START)
                         //make the user partially verified:
                         Utilities.displayInputDialog(this, this)
                     }

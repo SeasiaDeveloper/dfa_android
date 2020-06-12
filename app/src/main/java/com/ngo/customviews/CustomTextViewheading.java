@@ -17,7 +17,9 @@ public class CustomTextViewheading extends AppCompatTextView {
     }
 
     private void init() {
-        Typeface font = FontCache.getTypeface(FontCache.HEADING_REGULAR_FONT, context);
+        Typeface font = Typeface.createFromAsset(context.getAssets(),
+                "fonts/Montserrat-SemiBold_0.ttf");
+        //Typeface font = FontCache.getTypeface(FontCache.HEADING_REGULAR_FONT, context);
         setTypeface(font, Typeface.BOLD);
     }
 
