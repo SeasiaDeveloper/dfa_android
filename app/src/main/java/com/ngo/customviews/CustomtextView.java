@@ -17,7 +17,10 @@ public class CustomtextView extends AppCompatTextView {
     }
 
     private void init() {
-        Typeface font = FontCache.getTypeface(FontCache.REGULAR_FONT, context);
+        Typeface font = Typeface.createFromAsset(context.getAssets(),
+                "fonts/Montserrat-Regular_0.ttf");
+        //Typeface font = FontCache.getTypeface(FontCache.REGULAR_FONT, context);
+        setTypeface(font);
        // setTypeface(font, Typeface.BOLD);
     }
 

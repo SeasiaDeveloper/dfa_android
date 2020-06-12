@@ -166,7 +166,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
         swipeView.setOnRefreshListener {
             pageCount = 1
-           // adapter?.clear()
+            // adapter?.clear()
             endlessScrollListener?.resetState()
             myCasesApiCall()
             // itemsCells.clear()
@@ -179,7 +179,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     }
 
 
-    fun setAdapter(){
+    fun setAdapter() {
         adapter = CasesAdapter(
             this,
             complaints.toMutableList(),
@@ -233,11 +233,11 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             if (!isLike) {
                 if (commentChange == 0 && !whenDeleteCall) {
                     if (pageCount == 1) {
-                     //   adapter?.clear()
+                        //   adapter?.clear()
                         adapter?.setList(response.data.toMutableList()) //now
                     } else {
                         if (search /*&& pageCount==1*/) {
-                       //     adapter?.clear()
+                            //     adapter?.clear()
                             adapter?.setList(response.data.toMutableList()) //now
                         } else {
                             adapter?.addDataInMyCases(
@@ -338,14 +338,14 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         etSearch.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 if (/*s.length >= 3 ||*/ s.length == 0) {
-                  /*  if (s.length == 0) {
-                        pageCount = 1
-                        adapter?.clear()
-                        endlessScrollListener?.resetState()
-                        search = false
-                        adapter?.setList(firstSavedList)
-                        //myCasesApiCall()
-                    }*/
+                    /*  if (s.length == 0) {
+                          pageCount = 1
+                          adapter?.clear()
+                          endlessScrollListener?.resetState()
+                          search = false
+                          adapter?.setList(firstSavedList)
+                          //myCasesApiCall()
+                      }*/
                     /* else {
                          search = true
                          casesRequest = CasesRequest(
@@ -379,12 +379,11 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                         //isFirst=true
 
 
-
-                        if(firstSavedList.size>0){
+                        if (firstSavedList.size > 0) {
                             tvRecord.visibility = View.GONE
                             rvPublic.visibility = View.VISIBLE
                             swipeView.visibility = View.VISIBLE
-                        } else{
+                        } else {
                             tvRecord.visibility = View.VISIBLE
                             rvPublic.visibility = View.GONE
                             swipeView.visibility = View.GONE
@@ -406,7 +405,8 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         adapter?.notifyParticularItem(complaintIdTobeLiked!!)
         isLike = false
 
-        val token = PreferenceHandler.readString(this@MyCasesActivity, PreferenceHandler.AUTHORIZATION, "")
+        val token =
+            PreferenceHandler.readString(this@MyCasesActivity, PreferenceHandler.AUTHORIZATION, "")
 
         //change the staus of the item based on id
         presenter.changeLikeStatus(token!!, complaintsData.id!!)
@@ -416,7 +416,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     //refreshing the list after changing the like status
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         // Utilities.showMessage(this, responseObject.message!!)
-        isLike = true
+       // isLike = true
         /*val casesRequest = CasesRequest(
             "0",
             "",
@@ -474,6 +474,13 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                         item1 = GetStatusDataBean("1", "Approved", true)
                     } else {
                         item1 = GetStatusDataBean("1", "Approved", false)
+                    }
+                    list.add(item1)
+
+                    if (currentStatus.equals("Reject")) {
+                        item1 = GetStatusDataBean("6", "Reject", true)
+                    } else {
+                        item1 = GetStatusDataBean("6", "Reject", false)
                     }
                     list.add(item1)
                 } else {

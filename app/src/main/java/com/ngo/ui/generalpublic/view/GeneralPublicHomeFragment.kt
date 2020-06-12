@@ -872,7 +872,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     //refresh the list after like status is changed
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         //Utilities.showMessage(mContext, responseObject.message!!)
-        isLike = true
+        //isLike = true
         /*val casesRequest =
             CasesRequest("1", "", "-1", "1", "10") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)*/

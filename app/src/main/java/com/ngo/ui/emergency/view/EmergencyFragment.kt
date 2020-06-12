@@ -113,10 +113,11 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     fun getDistrictDropDown(response: DistResponse) {
 
         val distValueList = ArrayList<String>()
-        for (i in 0..response.data.size-1) {
+        distValueList.add("Please select district")
+        for (i in 0..response.data.size - 1) {
             distValueList.add(response.data.get(i).name)
         }
-       // var list_of_items = arrayOf(distValueList)
+        // var list_of_items = arrayOf(distValueList)
         // val distArray = distValueList.toArray(arrayOfNulls<String>(distValueList.size))
         val adapter = ArrayAdapter(
             mContext,
@@ -133,14 +134,20 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
             ) {
                 // Display the selected item text on text view
                 "Spinner selected : ${parent.getItemAtPosition(position)}"
-                if (isInternetAvailable(mContext)) {
-                    showProgress(mContext)
-                    var authorizationToken =
-                        PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
-                    var request = EmergencyDataRequest(response.data.get(position).id)
-                    presenter.hitEmergencyApi(request, authorizationToken)
-                } else {
-                    Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
+                if (position != 0) {
+                    if (isInternetAvailable(mContext)) {
+                        showProgress(mContext)
+                        var authorizationToken =
+                            PreferenceHandler.readString(
+                                mContext,
+                                PreferenceHandler.AUTHORIZATION,
+                                ""
+                            )
+                        var request = EmergencyDataRequest(response.data.get(position).id)
+                        presenter.hitEmergencyApi(request, authorizationToken)
+                    } else {
+                        Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
+                    }
                 }
             }
 
@@ -213,7 +220,12 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
 
     override fun getEmergencyDataSuccess(myEarningsResponse: EmergencyDataResponse) {
         dismissProgress()
-        adapter.changeList(myEarningsResponse.data!!)
+        if (myEarningsResponse.data!!.size > 0) {
+            adapter.changeList(myEarningsResponse.data!!)
+        } else {
+            Utilities.showMessage(mContext, "No data found corresponding to the selected District.")
+        }
+
     }
 
 
