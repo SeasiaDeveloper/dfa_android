@@ -86,7 +86,7 @@ class EmergencyDetailsAdapter(
             val contactArray = contactsList.toArray(arrayOfNulls<String>(contactsList.size))
             val adapter = ArrayAdapter(
                 context,
-                R.layout.view_spinner_item, // Layout
+                R.layout.spinner_layout, // Layout
                 contactArray // Array
             )
 
