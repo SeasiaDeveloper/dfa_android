@@ -496,6 +496,12 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                         item1 = GetStatusDataBean("1", "Approved", false)
                     }
                     list.add(item1)
+                    if (currentStatus.equals("Reject")) {
+                        item1 = GetStatusDataBean("6", "Reject", true)
+                    } else {
+                        item1 = GetStatusDataBean("6", "Reject", false)
+                    }
+                    list.add(item1)
                 } else {
                     if (currentStatus.equals("Accept")) {
                         item1 = GetStatusDataBean("4", "Accept", true)
@@ -849,7 +855,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
         // Utilities.showProgress(mContext)
         complaintIdTobeLiked = complaintsData.id
-
         //when to change like status
         adapter?.notifyParticularItem(complaintIdTobeLiked!!)
         isLike = false
@@ -861,16 +866,16 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
 
         //change the staus of the item based on id
-        presenter.changeLikeStatus(token!!, complaintsData.id!!)
+         presenter.changeLikeStatus(token!!, complaintsData.id!!)
     }
 
     //refresh the list after like status is changed
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         //Utilities.showMessage(mContext, responseObject.message!!)
         isLike = true
-        val casesRequest =
+        /*val casesRequest =
             CasesRequest("1", "", "-1", "1", "10") //type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token, type)
+        presenter.getComplaints(casesRequest, token, type)*/
     }
 
     override fun adharNoListener(adhaarNo: String) {

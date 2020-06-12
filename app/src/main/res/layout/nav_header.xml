@@ -4,7 +4,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/navigationLayout"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="260dp"
         android:background="@color/green"
         android:orientation="vertical">
         <RelativeLayout
@@ -68,26 +68,45 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_4sdp"
+                android:gravity="center"
                 android:maxLines="2"
                 android:paddingLeft="@dimen/_5sdp"
                 android:paddingRight="@dimen/_5sdp"
-                android:gravity="center"
                 android:textColor="#ffffff"
                 android:textSize="15dp"
                 android:textStyle="bold" />
 
-            <com.ngo.customviews.CustomTextViewheading
-                android:id="@+id/userInfo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_4sdp"
-                android:maxLines="2"
-                android:paddingLeft="@dimen/_5sdp"
-                android:paddingRight="@dimen/_5sdp"
-                android:gravity="center"
-                android:textColor="#ffffff"
-                android:textSize="15dp"
-                android:textStyle="bold" />
+            <RelativeLayout
+                android:layout_width="@dimen/_80sdp"
+                android:layout_height="@dimen/_30sdp"
+                android:layout_gravity="center">
+
+                <com.ngo.customviews.CustomTextViewheading
+                    android:id="@+id/userInfo"
+                    android:layout_width="@dimen/_80sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginTop="@dimen/_4sdp"
+                    android:background="@drawable/black_round_outer_background"
+                    android:gravity="center"
+                    android:maxLines="2"
+                    android:paddingLeft="@dimen/_5sdp"
+                    android:paddingRight="@dimen/_5sdp"
+                    android:textColor="#ffffff"
+                    android:textSize="15dp"
+                    android:visibility="gone"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/verified_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
+                    android:visibility="gone"
+                    android:src="@drawable/check" />
+
+            </RelativeLayout>
+
         </LinearLayout>
 
     </LinearLayout>

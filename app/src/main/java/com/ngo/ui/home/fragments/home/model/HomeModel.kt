@@ -2,10 +2,7 @@ package com.ngo.ui.home.fragments.home.model
 
 import com.ngo.apis.ApiClient
 import com.ngo.apis.CallRetrofitApi
-import com.ngo.pojo.response.DeleteComplaintResponse
-import com.ngo.pojo.response.GetProfileResponse
-import com.ngo.pojo.response.PostLocationResponse
-import com.ngo.pojo.response.UpdateStatusSuccess
+import com.ngo.pojo.response.*
 import com.ngo.ui.home.fragments.home.presenter.HomePresenter
 import com.ngo.utils.Constants
 import okhttp3.MediaType
@@ -13,6 +10,7 @@ import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.net.SocketTimeoutException
 
 class HomeModel(private var homePresenter: HomePresenter) {
     private lateinit var getProfileResponse: GetProfileResponse
@@ -99,6 +97,41 @@ class HomeModel(private var homePresenter: HomePresenter) {
                     if (responseObject != null) {
                         if (responseObject.code == 200) {
                             homePresenter.statusUpdationSuccess(responseObject)
+                        } else {
+                            homePresenter.showError(
+                                response.body()?.message ?: Constants.SERVER_ERROR
+                            )
+                        }
+                    } else {
+                        homePresenter.showError(Constants.SERVER_ERROR)
+                    }
+                }
+            })
+    }
+
+    fun saveAdhaarNo(token: String, adhaarNo: String) {
+        //hit api
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        val map = HashMap<String, RequestBody>()
+        map["adhar_number"] = toRequestBody(adhaarNo)
+        retrofitApi.updateProfileWithoutImage(map, token)
+            .enqueue(object : Callback<SignupResponse> {
+                override fun onFailure(call: Call<SignupResponse>, t: Throwable) {
+                    if (t is SocketTimeoutException) {
+                        homePresenter.showError("Socket Time error")
+                    } else {
+                        homePresenter.showError(t.message + "")
+                    }
+                }
+
+                override fun onResponse(
+                    call: Call<SignupResponse>,
+                    response: Response<SignupResponse>
+                ) {
+                    val responseObject = response.body()
+                    if (responseObject != null) {
+                        if (responseObject.code == 200) {
+                            homePresenter.adhaarSavedSuccess(responseObject)
                         } else {
                             homePresenter.showError(
                                 response.body()?.message ?: Constants.SERVER_ERROR
