@@ -86,12 +86,12 @@ class EmergencyDetailsAdapter(
             val contactArray = contactsList.toArray(arrayOfNulls<String>(contactsList.size))
             val adapter = ArrayAdapter(
                 context,
-                android.R.layout.simple_spinner_item, // Layout
+                R.layout.view_spinner_item, // Layout
                 contactArray // Array
             )
 
             // Set the drop down view resource
-            adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+            adapter.setDropDownViewResource(R.layout.view_spinner_item)
 
             // Finally, data bind the spinner object with dapter
             contactsSpinner.adapter = adapter

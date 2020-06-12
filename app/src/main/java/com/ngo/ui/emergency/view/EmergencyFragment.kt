@@ -121,9 +121,10 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
         // val distArray = distValueList.toArray(arrayOfNulls<String>(distValueList.size))
         val adapter = ArrayAdapter(
             mContext,
-            android.R.layout.simple_spinner_item, distValueList
+            R.layout.view_spinner_item, distValueList
         )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+
+        adapter.setDropDownViewResource(R.layout.view_spinner_item)
         spDistrict.setAdapter(adapter)
         spDistrict.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(

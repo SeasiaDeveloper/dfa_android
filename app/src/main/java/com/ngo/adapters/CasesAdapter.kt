@@ -217,9 +217,9 @@ class CasesAdapter(
                             (this.mList.get(i).like_count?.toInt()!! + 1).toString()
                     }
                 }
-               /* else {
-                    this.mList.get(i).like_count = likeCount.toString()
-                }*/
+                /* else {
+                     this.mList.get(i).like_count = likeCount.toString()
+                 }*/
 
                 notifyItemChanged(i)
                 break
@@ -293,10 +293,13 @@ class CasesAdapter(
                 .placeholder(R.drawable.noimage)
                 .error(R.drawable.noimage)
 
-
-
             var popup1 = PopupMenu(activity, itemView.iv_menu)
-            popup1.inflate(R.menu.news_feed_menu)
+            if (isGeneralPublicFragment) {
+                popup1.inflate(R.menu.delete_menu)
+            } else {
+                popup1.inflate(R.menu.news_feed_menu)
+            }
+
             MenuCompat.setGroupDividerEnabled(popup1.menu, true);
 
             itemView.iv_menu!!.setOnClickListener {
@@ -386,10 +389,10 @@ class CasesAdapter(
 
                 if (item.showDelete == 1) {
                     itemView.btnDeletePost.visibility = View.VISIBLE
-                  //  itemView.iv_menu.visibility=View.
+                    //  itemView.iv_menu.visibility=View.
                 } else {
                     itemView.btnDeletePost.visibility = View.GONE
-                   // itemView.iv_menu.visibility=View.GONE
+                    // itemView.iv_menu.visibility=View.GONE
                 }
 
                 itemView.btnDeletePost.setOnClickListener {
@@ -507,10 +510,10 @@ class CasesAdapter(
 
                 if (item.showDelete == 1) {
                     itemView.btnDelete.visibility = View.GONE
-                    itemView.iv_menu.visibility=View.VISIBLE
+                    itemView.iv_menu.visibility = View.VISIBLE
                 } else {
                     itemView.btnDelete.visibility = View.GONE
-                    itemView.iv_menu.visibility=View.GONE
+                    itemView.iv_menu.visibility = View.GONE
                 }
 
                 itemView.btnDelete.setOnClickListener {
