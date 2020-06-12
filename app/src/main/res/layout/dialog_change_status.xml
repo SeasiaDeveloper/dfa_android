@@ -71,7 +71,7 @@
         </RadioGroup>
 
 
-        <EditText
+        <com.ngo.customviews.CustomEditText
             android:id="@+id/etDescription"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_100sdp"

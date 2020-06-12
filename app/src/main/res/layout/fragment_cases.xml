@@ -61,7 +61,7 @@
                 android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
+            <com.ngo.customviews.CustomtextView
                 android:id="@+id/tvRecord"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

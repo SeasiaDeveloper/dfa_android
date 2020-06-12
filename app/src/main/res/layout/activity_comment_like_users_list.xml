@@ -22,7 +22,7 @@
             android:layout_above="@+id/view"
             android:layout_below="@+id/toolbarLayout" />
 
-        <TextView
+        <com.ngo.customviews.CustomtextView
             android:id="@+id/tvRecord"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

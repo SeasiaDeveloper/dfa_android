@@ -322,7 +322,6 @@ class ProfileActivity : BaseActivity(), ProfileView {
 
     }
 
-
     override fun onSuccessfulUpdation(responseObject: SignupResponse) {
         dismissProgress()
         Utilities.showMessage(this, responseObject.message)

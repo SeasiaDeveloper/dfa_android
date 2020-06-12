@@ -34,12 +34,12 @@
                 android:visibility="gone"
                 android:orientation="horizontal">
 
-                <TextView
+                <com.ngo.customviews.CustomtextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/complainer_contact" />
 
-                <TextView
+                <com.ngo.customviews.CustomtextView
                     android:id="@+id/txtComplainerContact"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -52,12 +52,12 @@
                 android:orientation="horizontal"
                 android:visibility="gone">
 
-                <TextView
+                <com.ngo.customviews.CustomtextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/complaint_date" />
 
-                <TextView
+                <com.ngo.customviews.CustomtextView
                     android:id="@+id/txtComplaintDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -69,12 +69,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
+                <com.ngo.customviews.CustomtextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/complaint_time" />
 
-                <TextView
+                <com.ngo.customviews.CustomtextView
                     android:id="@+id/txtComplaintTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -87,12 +87,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <TextView
+                <com.ngo.customviews.CustomtextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/description" />
 
-                <TextView
+                <com.ngo.customviews.CustomtextView
                     android:id="@+id/txtDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

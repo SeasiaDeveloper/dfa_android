@@ -18,7 +18,7 @@ class CenteredToolbar : Toolbar {
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init()
-        val custom_font = Typeface.createFromAsset(context.assets, "fonts/ROBOTO-MEDIUM_0.TTF")
+        val custom_font = Typeface.createFromAsset(context.assets, "fonts/Montserrat-Medium_0.ttf")
         titleView?.setTypeface(custom_font)
     }
 

@@ -293,6 +293,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             )
         )
         itemsswipetorefresh.setColorSchemeColors(Color.WHITE)
+        itemsswipetorefresh.setDistanceToTriggerSync(500)
 
         itemsswipetorefresh.setOnRefreshListener {
             pageCount = 1

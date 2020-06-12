@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_80sdp">
 
-        <TextView
+        <com.ngo.customviews.CustomTextViewheading
             android:id="@+id/tv_cancel"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="40dp"
@@ -63,7 +63,7 @@
             android:textColor="@color/white"
             android:textSize="16sp" />
 
-        <TextView
+        <com.ngo.customviews.CustomTextViewheading
             android:layout_width="@dimen/_90sdp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
