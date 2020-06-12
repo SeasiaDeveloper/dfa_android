@@ -234,7 +234,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
 
     }
-t
     @SuppressLint("SetTextI18n")
     fun setTabAdapter() {
 
