@@ -82,7 +82,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         }
 
         if (isInternetAvailable()) {
-            showProgress()
+            Utilities.showProgress(this@IncidentDetailActivity)
             val crimeDetailsRequest = CrimeDetailsRequest(complaintId)
             crimePresenter.hiCrimeDetailsApi(crimeDetailsRequest, authorizationToken)
         } else {
@@ -255,10 +255,62 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
             if(type.equals("1")){
                 layout_action.visibility = View.VISIBLE
                 action_complaint.setOnClickListener {
-                    if (getCrimeDetailsResponse.data.get(0).status != null) currentStatus = getCrimeDetailsResponse.data.get(0).status!!
+                  /*  if (getCrimeDetailsResponse.data.get(0).status != null) currentStatus = getCrimeDetailsResponse.data.get(0).status!!
                     //hit api based on role
                     Utilities.showProgress(this@IncidentDetailActivity)
-                    crimePresenter.fetchStatusList(authorizationToken!!, type)
+                    crimePresenter.fetchStatusList(authorizationToken!!, type)*/
+                    var list: ArrayList<GetStatusDataBean> = ArrayList()
+                    var item1: GetStatusDataBean
+                    if (type == "1") {
+                        if (currentStatus.equals("Approved")) {
+                            item1 = GetStatusDataBean("1", "Approved", true)
+                        } else {
+                            item1 = GetStatusDataBean("1", "Approved", false)
+                        }
+                        list.add(item1)
+                        if (currentStatus.equals("Reject")) {
+                            item1 = GetStatusDataBean("6", "Reject", true)
+                        } else {
+                            item1 = GetStatusDataBean("6", "Reject", false)
+                        }
+                        list.add(item1)
+                    } else {
+                        if (currentStatus.equals("Accept")) {
+                            item1 = GetStatusDataBean("4", "Accept", true)
+                        } else {
+                            item1 = GetStatusDataBean("4", "Accept", false)
+                        }
+                        list.add(item1)
+                        if (currentStatus.equals("Reject")) {
+                            item1 = GetStatusDataBean("6", "Reject", true)
+                        } else {
+                            item1 = GetStatusDataBean("6", "Reject", false)
+                        }
+                        list.add(item1)
+                        if (currentStatus.equals("Resolved")) {
+                            item1 = GetStatusDataBean("7", "Resolved", true)
+                        } else {
+                            item1 = GetStatusDataBean("7", "Resolved", false)
+                        }
+                        list.add(item1)
+                        if (currentStatus.equals("Unauthentic")) {
+                            item1 = GetStatusDataBean("8", "Unauthentic", true)
+                        } else {
+                            item1 = GetStatusDataBean("8", "Unauthentic", false)
+                        }
+                        list.add(item1)
+                    }
+
+                    for (element in list) {
+                        if (element.name.equals(currentStatus)) {
+                            element.isChecked = true
+                        } else {
+                            element.isChecked = false
+                        }
+                    }
+                    var data = GetStatusResponse("", 0, list)
+                    showStatusDialog("", data)
+
                 }
                 etUserName.setOnClickListener {
                     val intent = Intent(this@IncidentDetailActivity, ProfileActivity::class.java)
@@ -300,12 +352,12 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
     }
 
     override fun showNGOResponse(response: NGOResponse) {
-        dismissProgress()
+        Utilities.dismissProgress()
         Utilities.showMessage(this, response.message)
     }
 
     override fun getCrimeDetailsSuccess(getCrimeDetailsResponse: GetCrimeDetailsResponse) {
-        dismissProgress()
+        Utilities.dismissProgress()
         this.getCrimeDetailsResponse = getCrimeDetailsResponse
         if (isKnowPostOrComplaint.equals("tohit")) {
             postOrComplaint = getCrimeDetailsResponse.data?.get(0)?.type!!
@@ -351,7 +403,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
     }
 
     override fun showServerError(error: String) {
-        dismissProgress()
+        Utilities.dismissProgress()
         Utilities.showMessage(this, error)
     }
 

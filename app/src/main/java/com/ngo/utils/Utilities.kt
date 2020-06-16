@@ -482,7 +482,7 @@ object Utilities {
         // if button is clicked, close the custom dialog
         dialogButton.setOnClickListener {
             if (edt.text.toString().equals("")) {
-                Toast.makeText(activity, "Adhaar no cannot be empty", Toast.LENGTH_SHORT).show()
+                Toast.makeText(activity, "Aadhaar no cannot be empty", Toast.LENGTH_SHORT).show()
             } else {
                 listener.adharNoListener(edt.text.toString())
                 dialog.dismiss()

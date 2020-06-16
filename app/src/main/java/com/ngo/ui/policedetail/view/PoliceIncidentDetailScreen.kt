@@ -163,7 +163,7 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
 
         spTypesOfCrime.text = getCrimeDetailsResponse.data?.get(0)?.crime_type
         spStatusOfCrime.text = getCrimeDetailsResponse.data?.get(0)?.status
-        level.text = "Level " + getCrimeDetailsResponse.data?.get(0)?.urgency
+        level.text = getCrimeDetailsResponse.data?.get(0)?.urgency
 
         if (!getCrimeDetailsResponse.data?.get(0)?.info.isNullOrEmpty()) {
             editDescription.setText(getCrimeDetailsResponse.data?.get(0)?.info)

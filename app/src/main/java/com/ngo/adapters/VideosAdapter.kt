@@ -65,10 +65,16 @@ class VideosAdapter(
           var  authorizationToken = PreferenceHandler.readString(context!!, PreferenceHandler.AUTHORIZATION, "")
             val requestOptions = RequestOptions()
             requestOptions.isMemoryCacheable
-           try{ Glide.with(context).setDefaultRequestOptions(requestOptions).load(item.url.toString())
-                .into(itemView.ivPhoto)}catch (e:Exception){
-               e.printStackTrace()
-           }
+
+            val options = RequestOptions()
+                .centerCrop()
+                .placeholder(R.drawable.noimage)
+                .error(R.drawable.noimage)
+            try {
+                Glide.with(context).load(item.url.toString()).apply(options).into(itemView.ivPhoto)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
 
             ivPhoto.setOnClickListener {
 

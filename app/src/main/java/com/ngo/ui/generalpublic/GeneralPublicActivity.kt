@@ -2,6 +2,7 @@ package com.ngo.ui.generalpublic
 
 import android.Manifest
 import android.app.Activity
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -14,6 +15,7 @@ import android.location.LocationManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
@@ -23,6 +25,11 @@ import android.widget.ArrayAdapter
 import android.widget.MediaController
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
+import androidx.core.content.FileProvider
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.installations.BuildConfig
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.ngo.R
@@ -46,9 +53,14 @@ import kotlinx.android.synthetic.main.activity_public.imgView
 import kotlinx.android.synthetic.main.activity_public.sb_steps_5
 import kotlinx.android.synthetic.main.activity_public.spTypesOfCrime
 import kotlinx.android.synthetic.main.activity_public.toolbarLayout
+import kotlinx.android.synthetic.main.activity_public.videoView
+import kotlinx.android.synthetic.main.image_video_layout.*
 import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.IOException
 import java.lang.Exception
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.collections.ArrayList
 
 class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChangedListener,
@@ -73,7 +85,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private var CAMERA_REQUEST_CODE_VEDIO: Int = 3
     private lateinit var mediaControls: MediaController
     private var provider: String = ""
-    private var address:String =""
+    private var address: String = ""
+    var mPhotoFile: File? = null
+    var mCompressor: FileCompressor? = null
 
     private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
     override fun getLayout(): Int {
@@ -96,6 +110,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
         // GeneralPublicHomeFragment.change = 0
         GeneralPublicHomeFragment.changeThroughIncidentScreen = 0
+        clear_image.setOnClickListener(this)
     }
 
     //
@@ -181,6 +196,20 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             R.id.btnSubmit -> {
                 complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
             }
+            R.id.clear_image -> {
+                pathOfImages = ArrayList()
+                imageview_layout.visibility = View.GONE
+                val options = RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.noimage)
+                    .error(R.drawable.noimage)
+                try {
+                    Glide.with(this).asBitmap().load(R.drawable.noimage).apply(options)
+                        .into(imgView)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
         }
     }
 
@@ -257,10 +286,64 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         )
     }
 
-    private fun cameraIntent() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, REQUEST_CAMERA)
+    /**
+     * Capture image from camera
+     */
+    private fun dispatchTakePictureIntent() {
+        var takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            var photoFile: File? = null
+            try {
+                photoFile = createImageFile();
+            } catch (ex: IOException) {
+                ex.printStackTrace();
+                // Error occurred while creating the File
+            }
+            if (photoFile != null) {
+                var photoURI = FileProvider.getUriForFile(
+                    this,
+                    BuildConfig.APPLICATION_ID + ".provider",
+                    photoFile
+                )
+                mPhotoFile = photoFile
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                startActivityForResult(takePictureIntent, REQUEST_CAMERA)
+            }
+        }
     }
+
+    private fun createImageFile(): File {
+        // Create an image file name
+        var timeStamp = SimpleDateFormat("yyyyMMddHHmmss").format(Date());
+        var mFileName = "JPEG_" + timeStamp + "_";
+        var storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        var mFile = File.createTempFile(mFileName, ".jpg", storageDir);
+        return mFile;
+    }
+
+
+    private fun cameraIntent() {
+        /* val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+         startActivityForResult(intent, REQUEST_CAMERA)*/
+
+        var m_intent =  Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+      /*  var destPath = this.getExternalFilesDir(null)?.getAbsolutePath()
+        var file =  File(destPath, "MyPhoto.jpg")
+        var uri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", file)
+        m_intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri)*/
+        startActivityForResult(m_intent, REQUEST_CAMERA)
+    }
+
+    private fun getCaptureImageOutputUri(): Uri {
+        var outputFileUri: Uri? = null
+        var getImage = getExternalCacheDir();
+        if (getImage != null) {
+            outputFileUri = Uri.fromFile(File(getImage.getPath(), "profile.png"))
+        }
+        return outputFileUri!!
+    }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -346,7 +429,11 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     PreferenceHandler.LNG,
                     longitude
                 )
-                address= Utilities.getAddressFromLatLong(lattitude.toDouble(),longitude.toDouble(),this@GeneralPublicActivity)
+                address = Utilities.getAddressFromLatLong(
+                    lattitude.toDouble(),
+                    longitude.toDouble(),
+                    this@GeneralPublicActivity
+                )
             }
         }
     }
@@ -363,7 +450,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri!!))
                         imgView.visibility = View.VISIBLE
                         videoView.visibility = View.GONE
-
+                        imageview_layout.visibility = View.VISIBLE
                         imgView.setImageURI(imageUri)
                         //  path = getRealPathFromURI(imageUri!!)
 
@@ -411,26 +498,35 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
         } else if (requestCode == REQUEST_CAMERA) {
             mediaType = "photos"
+           // var file =  File(this.getExternalFilesDir(null)?.getAbsolutePath(), "MyPhoto.jpg");
+           // var uri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", file);
             if (intent != null && intent.getExtras() != null && intent.getExtras()!!.get("data") != null) {
                 val photo = intent.getExtras()!!.get("data") as Bitmap
-                imgView.setImageBitmap(photo)
+                imageview_layout.visibility = View.VISIBLE
                 imgView.visibility = View.VISIBLE
                 videoView.visibility = View.GONE
-                val tempUri = getImageUri(applicationContext, photo)
+                val tempUri = getImageUriWhenTakePhoto(applicationContext, photo)
+                imgView.setImageURI(tempUri)
                 file = File(getRealPathFromURI(tempUri))
 
                 //compression
-                val compClass = CompressImageUtilities()
+              /*  val compClass = CompressImageUtilities()
                 val newPathString =
-                    compClass.compressImage(this@GeneralPublicActivity, getRealPathFromURI(tempUri))
-                path = newPathString
-            }
+                    compClass.compressImage(
+                        this@GeneralPublicActivity,
+                        getRealPathFromURI(tempUri)
+                    )
+                path = newPathString*/
+                path= getRealPathFromURI(tempUri)
+
+           }
         } else if (requestCode == GPS_REQUEST) {
             isGPS = true
             getLocation()
         } else if (requestCode == SELECT_VIDEOS && resultCode == Activity.RESULT_OK || requestCode == SELECT_VIDEOS_KITKAT && resultCode == Activity.RESULT_OK) {
             mediaType = "videos"
             imgView.visibility = View.GONE
+            imageview_layout.visibility = View.GONE
             videoView.visibility = View.VISIBLE
             if (intent?.data != null) {
                 val imagePath = intent.getData()?.getPath()
@@ -447,6 +543,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         } else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
             mediaType = "videos"
             imgView.visibility = View.GONE
+            imageview_layout.visibility = View.GONE
             videoView.visibility = View.VISIBLE
             val videoUri = intent?.getData()
             path = getRealPathFromURI(videoUri!!)
@@ -466,11 +563,37 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         videoView.seekTo(100) // displays thumbnail of the video
     }
 
+    private fun getPickImageResultUri(data: Intent): Uri {
+        var isCamera = true
+        var uri: Uri
+        if (data != null) {
+            var action = data.getAction()
+            isCamera = action != null /*&& action.equals(MediaStore.ACTION_IMAGE_CAPTURE)*/
+        }
+        if (isCamera) {
+            uri = getCaptureImageOutputUri()
+        } else {
+            uri = intent?.getExtras()!!.get("data") as Uri
+        }
+        return uri
+    }
+
+    fun getImageUriWhenTakePhoto( inContext:Context, inImage:Bitmap):Uri{
+    var OutImage = Bitmap.createScaledBitmap(inImage, 1200, 1200,true)
+    var path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), OutImage, "Title", null)
+    return Uri.parse(path)
+}
+
     private fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
         val path =
-            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+            MediaStore.Images.Media.insertImage(
+                inContext.contentResolver,
+                inImage,
+                "Title",
+                null
+            )
         return Uri.parse(path)
     }
 
@@ -569,6 +692,11 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     this@GeneralPublicActivity,
                     PreferenceHandler.LNG,
                     longitude
+                )
+                address = Utilities.getAddressFromLatLong(
+                    lattitude.toDouble(),
+                    longitude.toDouble(),
+                    this@GeneralPublicActivity
                 )
             }
         }

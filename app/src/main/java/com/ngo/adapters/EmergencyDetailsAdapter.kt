@@ -1,27 +1,19 @@
 package com.ngo.adapters
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Spinner
 import android.widget.TextView
-import androidx.core.app.ActivityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ngo.R
 import com.ngo.pojo.response.EmergencyDataResponse
-import com.ngo.pojo.response.GetEmergencyDetailsResponse
 import com.ngo.utils.Utilities
-import kotlinx.android.synthetic.main.activity_signup.*
-import java.sql.Array
 import kotlin.random.Random
-
 
 class EmergencyDetailsAdapter(
     var context: Activity,
@@ -51,17 +43,19 @@ class EmergencyDetailsAdapter(
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var index: Int? = null
         var txtName: TextView
-        var txtCall: TextView
-        var txtNumber: TextView
+        //var txtCall: TextView
+        //var txtNumber: TextView
         var txtDistance: TextView
-        var contactsSpinner: Spinner
+        var emergencyRecyler: RecyclerView
+       // var contactsSpinner: Spinner
 
         init {
             txtName = itemView.findViewById<View>(R.id.txtName) as TextView
-            txtCall = itemView.findViewById<View>(R.id.txtCall) as TextView
-            txtNumber = itemView.findViewById<View>(R.id.txtNumber) as TextView
+            //txtCall = itemView.findViewById<View>(R.id.txtCall) as TextView
+            //txtNumber = itemView.findViewById<View>(R.id.txtNumber) as TextView
             txtDistance = itemView.findViewById<View>(R.id.txtDistance) as TextView
-            contactsSpinner=itemView.findViewById<View>(R.id.phoneNumberDropDown) as Spinner
+            emergencyRecyler=itemView.findViewById<View>(R.id.emergency_numbers_recycl) as RecyclerView
+           // contactsSpinner=itemView.findViewById<View>(R.id.phoneNumberDropDown) as Spinner
         }
 
         fun bind(
@@ -94,11 +88,11 @@ class EmergencyDetailsAdapter(
             adapter.setDropDownViewResource(R.layout.view_spinner_item)
 
             // Finally, data bind the spinner object with dapter
-            contactsSpinner.adapter = adapter
+//            contactsSpinner.adapter = adapter
 
             // Set an on item selected listener for spinner object
             var selectedData:String=""
-            contactsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+           /* contactsSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>,
                     view: View,
@@ -113,9 +107,17 @@ class EmergencyDetailsAdapter(
                 override fun onNothingSelected(parent: AdapterView<*>) {
                     // Another interface callback
                 }
-            }
+            }*/
 
-            txtCall.setOnClickListener {
+            var phoneNumberAdapter = PhoneNumberAdapter(context,contactsList)
+            val horizontalLayoutManager = LinearLayoutManager(
+                context,
+                RecyclerView.VERTICAL, false
+            )
+            emergencyRecyler.layoutManager = horizontalLayoutManager
+            emergencyRecyler.adapter = phoneNumberAdapter
+
+          /*  txtCall.setOnClickListener {
                 val intent = Intent(Intent.ACTION_CALL, Uri.parse("tel:" + selectedData))
                 if (ActivityCompat.checkSelfPermission(
                         context,
@@ -132,7 +134,7 @@ class EmergencyDetailsAdapter(
                     return@setOnClickListener
                 }
                 context.startActivity(intent)
-            }
+            }*/
             txtDistance.setOnClickListener {
                 //val gmmIntentUri = Uri.parse("geo:27.0846389,93.6042366")
                 val gmmIntentUri =

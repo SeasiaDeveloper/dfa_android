@@ -448,9 +448,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                         }
                     }
                 } else {
-                    /*  //when to change like status
-                      adapter?.notifyParticularItem(complaintIdTobeLiked!!, response.data)
-                      isLike = false*/
+                    //when to change like status
+                    adapter?.notifyParticularItem(complaintIdTobeLiked!!, response.data)
+                    isLike = false
                 }
                 //change = 1
             }
@@ -729,8 +729,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                             Utilities.displayInputDialog(mContext, this)
                         }
                     }
-                }
-                else {
+                } else {
                     com.ngo.utils.alert.AlertDialog.guesDialog(mContext)
                 }
 
@@ -857,26 +856,25 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         // Utilities.showProgress(mContext)
         complaintIdTobeLiked = complaintsData.id
         //when to change like status
-        adapter?.notifyParticularItem(complaintIdTobeLiked!!)
-        isLike = false
+     /*   adapter?.notifyParticularItem(complaintIdTobeLiked!!,)
+        isLike = true*/
 
         val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
-
         if (token!!.isEmpty()) {
             guestUser = "true"
         }
 
         //change the staus of the item based on id
-         presenter.changeLikeStatus(token!!, complaintsData.id!!)
+        presenter.changeLikeStatus(token!!, complaintsData.id!!)
     }
 
     //refresh the list after like status is changed
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
-        //Utilities.showMessage(mContext, responseObject.message!!)
-        //isLike = true
-        /*val casesRequest =
+       // Utilities.showMessage(mContext, responseObject.message!!)
+        isLike = true
+        val casesRequest =
             CasesRequest("1", "", "-1", "1", "10") //type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token, type)*/
+        presenter.getComplaints(casesRequest, token, type)
     }
 
     override fun adharNoListener(adhaarNo: String) {

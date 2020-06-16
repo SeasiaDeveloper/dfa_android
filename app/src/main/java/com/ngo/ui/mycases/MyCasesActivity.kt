@@ -1,7 +1,6 @@
 package com.ngo.ui.mycases
 
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
@@ -18,7 +17,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.common.data.DataHolder
 import com.ngo.R
 import com.ngo.adapters.CasesAdapter
 import com.ngo.adapters.StatusAdapter
@@ -35,15 +33,9 @@ import com.ngo.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenter
 import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
-import com.ngo.ui.login.view.LoginActivity
 import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import kotlinx.android.synthetic.main.activity_my_cases.*
-import kotlinx.android.synthetic.main.activity_my_cases.progressBar
-import kotlinx.android.synthetic.main.activity_my_cases.rvPublic
-import kotlinx.android.synthetic.main.activity_my_cases.toolbarLayout
-import kotlinx.android.synthetic.main.activity_my_cases.tvRecord
-import kotlinx.android.synthetic.main.fragment_public_home.*
 
 
 class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener,
@@ -102,7 +94,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     private var isFirst: Boolean = true
     var firComplaintId: String = ""
     var adapter: CasesAdapter? = null
-
+    private var isfirst: Boolean = false
 
     companion object {
         var change = 0
@@ -114,6 +106,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
     override fun onResume() {
         super.onResume()
+        change = 1
         if (change == 1 || commentChange != 0) {
             pageCount = 1
             myCasesApiCall()
@@ -159,7 +152,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         rvPublic.addOnScrollListener(endlessScrollListener!!)
         endlessScrollListener?.resetState()
 
-        doApiCall()
+        //doApiCall()
 
         swipeView.setProgressBackgroundColorSchemeColor(
             ContextCompat.getColor(
@@ -287,384 +280,377 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             progressBar.visibility = View.GONE
         }
 
-        //add click listener after adding the list on the view
-//        etSearch.setOnTouchListener(OnTouchListener { v, event ->
-//            val DRAWABLE_RIGHT = 2
-//            if (event.action == MotionEvent.ACTION_UP) {
-//                if (event.rawX >= etSearch.getRight() - etSearch.getCompoundDrawables().get(
-//                        DRAWABLE_RIGHT
-//                    ).getBounds().width()
-//                ) { // your action here
-//                    endlessScrollListener?.resetState()
-//                    //adapter!!.clearAdapter()
-//                    if (etSearch.text.toString().length != 0) {
-//                        search = true
-//                        //adapter?.performSearch(etSearch.text.toString())
-//                        casesRequest = CasesRequest(
-//                            "0",
-//                            etSearch.text.toString(),
-//                            "0", "1", "30"
-//                        ) //all = "1" for fetching all the cases whose type = 0
-//
-//                        Utilities.showProgress(this@MyCasesActivity)
-//                        //hit api with search variable
-//                        presenter.getComplaints(casesRequest, token, type)
-//                    }
-//                    return@OnTouchListener true
-//                }
-//            }
-//            false
-//        })
+        click_search_icon.setOnClickListener {
+            // your action here
+            endlessScrollListener?.resetState()
+            //adapter!!.clearAdapter()
+            if (etSearch.text.toString().length != 0) {
+                search = true
+                //adapter?.performSearch(etSearch.text.toString())
+                casesRequest = CasesRequest(
+                    "0",
+                    etSearch.text.toString(),
+                    "0", "1", "30"
+                ) //all = "1" for fetching all the cases whose type = 0
 
-
-        etSearch.setOnEditorActionListener(object : TextView.OnEditorActionListener {
-            override fun onEditorAction(p0: TextView?, p1: Int, p2: KeyEvent?): Boolean {
-                endlessScrollListener?.resetState()
-                //adapter!!.clearAdapter()
-                if (etSearch.text.toString().length != 0) {
-                    search = true
-                    //adapter?.performSearch(etSearch.text.toString())
-                    casesRequest = CasesRequest(
-                        "0",
-                        etSearch.text.toString(),
-                        "0", "1", "30"
-                    ) //all = "1" for fetching all the cases whose type = 0
-
-                    Utilities.showProgress(this@MyCasesActivity)
-                    //hit api with search variable
-                    presenter.getComplaints(casesRequest, token, type)
-                }
-                return true
-            }
-        })
-
-
-
-        etSearch.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {
-                if (/*s.length >= 3 ||*/ s.length == 0) {
-                    /*  if (s.length == 0) {
-                          pageCount = 1
-                          adapter?.clear()
-                          endlessScrollListener?.resetState()
-                          search = false
-                          adapter?.setList(firstSavedList)
-                          //myCasesApiCall()
-                      }*/
-                    /* else {
-                         search = true
-                         casesRequest = CasesRequest(
-                             "0",
-                             etSearch.text.toString(),
-                             "0", "1", "30"
-                         ) //all = "1" for fetching all the cases whose type = 0
-                     }*/
-
-
-                    /* Utilities.showProgress(this@MyCasesActivity)
-                     //hit api with search variable
-                     presenter.getComplaints(casesRequest, token, type)*/
-                }
-
-            }
-
-            override fun beforeTextChanged(
-                s: CharSequence, start: Int,
-                count: Int, after: Int
-            ) {
-            }
-
-            override fun onTextChanged(
-                s: CharSequence, start: Int,
-                before: Int, count: Int
-            ) {
-                if (s.length == 0) {
-                    if (s.length == 0) {
-                        search = false
-                        //isFirst=true
-
-
-                        if (firstSavedList.size > 0) {
-                            tvRecord.visibility = View.GONE
-                            rvPublic.visibility = View.VISIBLE
-                            swipeView.visibility = View.VISIBLE
-                        } else {
-                            tvRecord.visibility = View.VISIBLE
-                            rvPublic.visibility = View.GONE
-                            swipeView.visibility = View.GONE
-                        }
-                        adapter?.setList(firstSavedList)
-
-                    }
-                }
-            }
-        })
-    }
-
-    //changing the like status
-    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
-        // Utilities.showProgress(mContext)
-        complaintIdTobeLiked = complaintsData.id
-
-        //when to change like status
-        adapter?.notifyParticularItem(complaintIdTobeLiked!!)
-        isLike = false
-
-        val token =
-            PreferenceHandler.readString(this@MyCasesActivity, PreferenceHandler.AUTHORIZATION, "")
-
-        //change the staus of the item based on id
-        presenter.changeLikeStatus(token!!, complaintsData.id!!)
-
-    }
-
-    //refreshing the list after changing the like status
-    override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
-        // Utilities.showMessage(this, responseObject.message!!)
-       // isLike = true
-        /*val casesRequest = CasesRequest(
-            "0",
-            "",
-            "0", "1", "10"
-        ) //all = 0 for only my cases;type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token, type)*/
-        GeneralPublicHomeFragment.changeThroughIncidentScreen =
-            1 // so that list on Home gets refreshed after change in status
-    }
-
-    //to delete my case
-    override fun onDeleteItem(complaintsData: GetCasesResponse.Data) {
-
-    }
-
-    //refreshing the list after deletion
-    override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
-        Utilities.dismissProgress()
-        adapter?.removeAt(deleteItemposition!!)
-        /*  whenDeleteCall = true
-          val casesRequest = CasesRequest(
-              "0", "", "0", "1", "5"
-          ) //type = -1 for fetching all the data
-          presenter.getComplaints(casesRequest, token, type)*/
-        GeneralPublicHomeFragment.changeThroughIncidentScreen =
-            1 // so that list on Home gets refreshed after change in status
-    }
-
-    //displays the detail of my case
-    override fun onItemClick(
-        complaintsData: GetCasesResponse.Data,
-        actionType: String,
-        position: Int
-    ) {
-        when (actionType) {
-            "location" -> {
-                val gmmIntentUri =
-                    Uri.parse("google.navigation:q=" + complaintsData.latitude + "," + complaintsData.longitude + "")
-                //  val gmmIntentUri = Uri.parse("google.navigation:q="+30.7106607+","+76.7091493+"")
-                val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-                mapIntent.setPackage("com.google.android.apps.maps")
-                startActivity(mapIntent)
-            }
-
-            "action" -> {
-                complaintId = complaintsData.id!!
-                if (complaintsData.status != null) currentStatus = complaintsData.status!!
-                //Utilities.showProgress(this@MyCasesActivity)
-                //hit api based on role
-                //presenter.fetchStatusList(token, type)
-                var list: ArrayList<GetStatusDataBean> = ArrayList()
-                var item1: GetStatusDataBean
-                if (type == "1") {
-                    if (currentStatus.equals("Approved")) {
-                        item1 = GetStatusDataBean("1", "Approved", true)
-                    } else {
-                        item1 = GetStatusDataBean("1", "Approved", false)
-                    }
-                    list.add(item1)
-
-                    if (currentStatus.equals("Reject")) {
-                        item1 = GetStatusDataBean("6", "Reject", true)
-                    } else {
-                        item1 = GetStatusDataBean("6", "Reject", false)
-                    }
-                    list.add(item1)
-                } else {
-                    if (currentStatus.equals("Accept")) {
-                        item1 = GetStatusDataBean("4", "Accept", true)
-                    } else {
-                        item1 = GetStatusDataBean("4", "Accept", false)
-                    }
-                    list.add(item1)
-                    if (currentStatus.equals("Reject")) {
-                        item1 = GetStatusDataBean("6", "Reject", true)
-                    } else {
-                        item1 = GetStatusDataBean("6", "Reject", false)
-                    }
-                    list.add(item1)
-                    if (currentStatus.equals("Resolved")) {
-                        item1 = GetStatusDataBean("7", "Resolved", true)
-                    } else {
-                        item1 = GetStatusDataBean("7", "Resolved", false)
-                    }
-                    list.add(item1)
-                    if (currentStatus.equals("Unauthentic")) {
-                        item1 = GetStatusDataBean("8", "Unauthentic", true)
-                    } else {
-                        item1 = GetStatusDataBean("8", "Unauthentic", false)
-                    }
-                    list.add(item1)
-                }
-
-
-                for (element in list) {
-                    if (element.name.equals(currentStatus)) {
-                        element.isChecked = true
-                    } else {
-                        element.isChecked = false
-                    }
-                }
-                var data = GetStatusResponse("", 0, list)
-                showStatusDialog("", data)
-            }
-
-            "webview" -> {
-                val url = complaintsData.fir_url
-                val i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse(url)
-                startActivity(i)
-            }
-
-            "comment" -> {
-                val intent = Intent(this, CommentsActivity::class.java)
-                intent.putExtra("id", complaintsData.id!!)
-                startActivity(intent)
-            }
-
-            else -> {
-                /*val intent = Intent(this, IncidentDetailActivity::class.java)
-                intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
-                intent.putExtra(Constants.POST_OR_COMPLAINT, "0")
-                intent.putExtra(Constants.FROM_WHERE, "nottohit")
-                startActivity(intent)*/
-            }
-        }
-    }
-
-    override fun showDescError() {
-        Utilities.dismissProgress()
-        Utilities.showMessage(this, getString(R.string.please_select_image))
-    }
-
-    override fun showServerError(error: String) {
-        Utilities.dismissProgress()
-        statusId = "-1"
-        Utilities.showMessage(this, error)
-    }
-
-    override fun onPostAdded(responseObject: CreatePostResponse) {
-        //nothing to do
-    }
-
-    override fun getLayout(): Int {
-        return R.layout.activity_my_cases
-    }
-
-    override fun handleKeyboard(): View {
-        return myCasesLayout
-    }
-
-    override fun adhaarSavedSuccess(responseObject: SignupResponse) {
-        //do nothing
-    }
-
-    override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
-        Utilities.dismissProgress()
-        statusId = "-1"
-        Utilities.showMessage(this, responseObject.message.toString())
-        //refresh the list
-        /* if (responseObject.data?.size != 0) {
-             adapter?.notifyActionData(responseObject.data!!)
-         }*/
-
-        /*   if(responseObject.data?.get(0)?.status!!.equals("Unauthentic") || responseObject.data.get(0).status!!.equals("Reject")){
-               //refresh the list
-               Utilities.showProgress(this@MyCasesActivity)
-               doApiCall()
-           }
-           else {*/
-        actionChanged = true
-        if (responseObject.data!!.size != 0) {
-            adapter?.notifyActionData(responseObject.data)
-        }
-        // }
-    }
-
-    override fun getFirImageData(response: FirImageResponse) {
-        Utilities.dismissProgress()
-        if (positionOfFir != null) {
-            adapter?.notifyFirImageData(positionOfFir, response, firComplaintId)
-        }
-    }
-
-    override fun onListFetchedSuccess(responseObject: GetStatusResponse) {
-        Utilities.dismissProgress()
-        for (element in responseObject.data) {
-            if (element.name.equals(currentStatus)) {
-                element.isChecked = true
-                break
-            }
-        }
-        showStatusDialog("", responseObject)
-    }
-
-    private fun showStatusDialog(description: String, responseObject: GetStatusResponse) {
-        lateinit var dialog: AlertDialog
-        val builder = AlertDialog.Builder(this)
-        val binding = DataBindingUtil.inflate(
-            LayoutInflater.from(this),
-            R.layout.dialog_change_status,
-            null,
-            false
-        ) as com.ngo.databinding.DialogChangeStatusBinding
-        // Inflate and set the layout for the dialog
-        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(
-            description
-        )
-
-        val mStatusList = responseObject.data.toMutableList()
-        for (status in mStatusList) {
-            if (status.isChecked) {
-                statusId = status.id
-            }
-        }
-
-        //display the list on the screen
-        val statusAdapter = StatusAdapter(this, responseObject.data.toMutableList(), this)
-        val horizontalLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
-        binding.rvStatus?.layoutManager = horizontalLayoutManager
-        binding.rvStatus?.adapter = statusAdapter
-        binding.btnDone.setOnClickListener {
-            if (statusId == "-1") {
-                Utilities.showMessage(
-                    this@MyCasesActivity,
-                    getString(R.string.select_option_validation)
-                )
-            } else {
                 Utilities.showProgress(this@MyCasesActivity)
-                //hit status update api
-                presenter.updateStatus(
-                    token,
-                    complaintId,
-                    statusId,
-                    binding.etDescription.text.toString()
-                )
-                dialog.dismiss()
+                //hit api with search variable
+                presenter.getComplaints(casesRequest, token, type)
             }
         }
 
-        builder.setView(binding.root)
-        dialog = builder.create()
-        dialog.show()
-    }
+            etSearch.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+                override fun onEditorAction(p0: TextView?, p1: Int, p2: KeyEvent?): Boolean {
+                    endlessScrollListener?.resetState()
+                    //adapter!!.clearAdapter()
+                    if (etSearch.text.toString().length != 0) {
+                        search = true
+                        //adapter?.performSearch(etSearch.text.toString())
+                        casesRequest = CasesRequest(
+                            "0",
+                            etSearch.text.toString(),
+                            "0", "1", "30"
+                        ) //all = "1" for fetching all the cases whose type = 0
 
-}
+                        Utilities.showProgress(this@MyCasesActivity)
+                        //hit api with search variable
+                        presenter.getComplaints(casesRequest, token, type)
+                    }
+                    return true
+                }
+            })
+
+
+
+            etSearch.addTextChangedListener(object : TextWatcher {
+                override fun afterTextChanged(s: Editable) {
+                    if (/*s.length >= 3 ||*/ s.length == 0) {
+                        /*  if (s.length == 0) {
+                              pageCount = 1
+                              adapter?.clear()
+                              endlessScrollListener?.resetState()
+                              search = false
+                              adapter?.setList(firstSavedList)
+                              //myCasesApiCall()
+                          }*/
+                        /* else {
+                             search = true
+                             casesRequest = CasesRequest(
+                                 "0",
+                                 etSearch.text.toString(),
+                                 "0", "1", "30"
+                             ) //all = "1" for fetching all the cases whose type = 0
+                         }*/
+
+
+                        /* Utilities.showProgress(this@MyCasesActivity)
+                         //hit api with search variable
+                         presenter.getComplaints(casesRequest, token, type)*/
+                    }
+
+                }
+
+                override fun beforeTextChanged(
+                    s: CharSequence, start: Int,
+                    count: Int, after: Int
+                ) {
+                }
+
+                override fun onTextChanged(
+                    s: CharSequence, start: Int,
+                    before: Int, count: Int
+                ) {
+                    if (s.length == 0) {
+                        if (s.length == 0) {
+                            search = false
+                            //isFirst=true
+
+
+                            if (firstSavedList.size > 0) {
+                                tvRecord.visibility = View.GONE
+                                rvPublic.visibility = View.VISIBLE
+                                swipeView.visibility = View.VISIBLE
+                            } else {
+                                tvRecord.visibility = View.VISIBLE
+                                rvPublic.visibility = View.GONE
+                                swipeView.visibility = View.GONE
+                            }
+                            adapter?.setList(firstSavedList)
+
+                        }
+                    }
+                }
+            })
+        }
+
+        //changing the like status
+        override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
+            // Utilities.showProgress(mContext)
+            complaintIdTobeLiked = complaintsData.id
+
+            //when to change like status
+            /*adapter?.notifyParticularItem(complaintIdTobeLiked!!)
+            isLike = false*/
+
+            val token =
+                PreferenceHandler.readString(
+                    this@MyCasesActivity,
+                    PreferenceHandler.AUTHORIZATION,
+                    ""
+                )
+
+            //change the staus of the item based on id
+            presenter.changeLikeStatus(token!!, complaintsData.id!!)
+
+        }
+
+        //refreshing the list after changing the like status
+        override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
+            // Utilities.showMessage(this, responseObject.message!!)
+             isLike = true
+            val casesRequest = CasesRequest(
+                "0",
+                "",
+                "0", "1", "10"
+            ) //all = 0 for only my cases;type = -1 for fetching all the data
+            presenter.getComplaints(casesRequest, token, type)
+            GeneralPublicHomeFragment.changeThroughIncidentScreen =
+                1 // so that list on Home gets refreshed after change in status
+        }
+
+        //to delete my case
+        override fun onDeleteItem(complaintsData: GetCasesResponse.Data) {
+
+        }
+
+        //refreshing the list after deletion
+        override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
+            Utilities.dismissProgress()
+            adapter?.removeAt(deleteItemposition!!)
+            /*  whenDeleteCall = true
+              val casesRequest = CasesRequest(
+                  "0", "", "0", "1", "5"
+              ) //type = -1 for fetching all the data
+              presenter.getComplaints(casesRequest, token, type)*/
+            GeneralPublicHomeFragment.changeThroughIncidentScreen =
+                1 // so that list on Home gets refreshed after change in status
+        }
+
+        //displays the detail of my case
+        override fun onItemClick(
+            complaintsData: GetCasesResponse.Data,
+            actionType: String,
+            position: Int
+        ) {
+            when (actionType) {
+                "location" -> {
+                    val gmmIntentUri =
+                        Uri.parse("google.navigation:q=" + complaintsData.latitude + "," + complaintsData.longitude + "")
+                    //  val gmmIntentUri = Uri.parse("google.navigation:q="+30.7106607+","+76.7091493+"")
+                    val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+                    mapIntent.setPackage("com.google.android.apps.maps")
+                    startActivity(mapIntent)
+                }
+
+                "action" -> {
+                    complaintId = complaintsData.id!!
+                    if (complaintsData.status != null) currentStatus = complaintsData.status!!
+                    //Utilities.showProgress(this@MyCasesActivity)
+                    //hit api based on role
+                    //presenter.fetchStatusList(token, type)
+                    var list: ArrayList<GetStatusDataBean> = ArrayList()
+                    var item1: GetStatusDataBean
+                    if (type == "1") {
+                        if (currentStatus.equals("Approved")) {
+                            item1 = GetStatusDataBean("1", "Approved", true)
+                        } else {
+                            item1 = GetStatusDataBean("1", "Approved", false)
+                        }
+                        list.add(item1)
+
+                        if (currentStatus.equals("Reject")) {
+                            item1 = GetStatusDataBean("6", "Reject", true)
+                        } else {
+                            item1 = GetStatusDataBean("6", "Reject", false)
+                        }
+                        list.add(item1)
+                    } else {
+                        if (currentStatus.equals("Accept")) {
+                            item1 = GetStatusDataBean("4", "Accept", true)
+                        } else {
+                            item1 = GetStatusDataBean("4", "Accept", false)
+                        }
+                        list.add(item1)
+                        if (currentStatus.equals("Reject")) {
+                            item1 = GetStatusDataBean("6", "Reject", true)
+                        } else {
+                            item1 = GetStatusDataBean("6", "Reject", false)
+                        }
+                        list.add(item1)
+                        if (currentStatus.equals("Resolved")) {
+                            item1 = GetStatusDataBean("7", "Resolved", true)
+                        } else {
+                            item1 = GetStatusDataBean("7", "Resolved", false)
+                        }
+                        list.add(item1)
+                        if (currentStatus.equals("Unauthentic")) {
+                            item1 = GetStatusDataBean("8", "Unauthentic", true)
+                        } else {
+                            item1 = GetStatusDataBean("8", "Unauthentic", false)
+                        }
+                        list.add(item1)
+                    }
+
+
+                    for (element in list) {
+                        if (element.name.equals(currentStatus)) {
+                            element.isChecked = true
+                        } else {
+                            element.isChecked = false
+                        }
+                    }
+                    var data = GetStatusResponse("", 0, list)
+                    showStatusDialog("", data)
+                }
+
+                "webview" -> {
+                    val url = complaintsData.fir_url
+                    val i = Intent(Intent.ACTION_VIEW)
+                    i.data = Uri.parse(url)
+                    startActivity(i)
+                }
+
+                "comment" -> {
+                    val intent = Intent(this, CommentsActivity::class.java)
+                    intent.putExtra("id", complaintsData.id!!)
+                    startActivity(intent)
+                }
+
+                else -> {
+                    /*val intent = Intent(this, IncidentDetailActivity::class.java)
+                    intent.putExtra(Constants.PUBLIC_COMPLAINT_DATA, complaintsData.id)
+                    intent.putExtra(Constants.POST_OR_COMPLAINT, "0")
+                    intent.putExtra(Constants.FROM_WHERE, "nottohit")
+                    startActivity(intent)*/
+                }
+            }
+        }
+
+        override fun showDescError() {
+            Utilities.dismissProgress()
+            Utilities.showMessage(this, getString(R.string.please_select_image))
+        }
+
+        override fun showServerError(error: String) {
+            Utilities.dismissProgress()
+            statusId = "-1"
+            Utilities.showMessage(this, error)
+        }
+
+        override fun onPostAdded(responseObject: CreatePostResponse) {
+            //nothing to do
+        }
+
+        override fun getLayout(): Int {
+            return R.layout.activity_my_cases
+        }
+
+        override fun handleKeyboard(): View {
+            return myCasesLayout
+        }
+
+        override fun adhaarSavedSuccess(responseObject: SignupResponse) {
+            //do nothing
+        }
+
+        override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
+            Utilities.dismissProgress()
+            statusId = "-1"
+            Utilities.showMessage(this, responseObject.message.toString())
+            //refresh the list
+            /* if (responseObject.data?.size != 0) {
+                 adapter?.notifyActionData(responseObject.data!!)
+             }*/
+
+            /*   if(responseObject.data?.get(0)?.status!!.equals("Unauthentic") || responseObject.data.get(0).status!!.equals("Reject")){
+                   //refresh the list
+                   Utilities.showProgress(this@MyCasesActivity)
+                   doApiCall()
+               }
+               else {*/
+            actionChanged = true
+            if (responseObject.data!!.size != 0) {
+                adapter?.notifyActionData(responseObject.data)
+            }
+            // }
+        }
+
+        override fun getFirImageData(response: FirImageResponse) {
+            Utilities.dismissProgress()
+            if (positionOfFir != null) {
+                adapter?.notifyFirImageData(positionOfFir, response, firComplaintId)
+            }
+        }
+
+        override fun onListFetchedSuccess(responseObject: GetStatusResponse) {
+            Utilities.dismissProgress()
+            for (element in responseObject.data) {
+                if (element.name.equals(currentStatus)) {
+                    element.isChecked = true
+                    break
+                }
+            }
+            showStatusDialog("", responseObject)
+        }
+
+        private fun showStatusDialog(description: String, responseObject: GetStatusResponse) {
+            lateinit var dialog: AlertDialog
+            val builder = AlertDialog.Builder(this)
+            val binding = DataBindingUtil.inflate(
+                LayoutInflater.from(this),
+                R.layout.dialog_change_status,
+                null,
+                false
+            ) as com.ngo.databinding.DialogChangeStatusBinding
+            // Inflate and set the layout for the dialog
+            if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(
+                description
+            )
+
+            val mStatusList = responseObject.data.toMutableList()
+            for (status in mStatusList) {
+                if (status.isChecked) {
+                    statusId = status.id
+                }
+            }
+
+            //display the list on the screen
+            val statusAdapter = StatusAdapter(this, responseObject.data.toMutableList(), this)
+            val horizontalLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+            binding.rvStatus?.layoutManager = horizontalLayoutManager
+            binding.rvStatus?.adapter = statusAdapter
+            binding.btnDone.setOnClickListener {
+                if (statusId == "-1") {
+                    Utilities.showMessage(
+                        this@MyCasesActivity,
+                        getString(R.string.select_option_validation)
+                    )
+                } else {
+                    Utilities.showProgress(this@MyCasesActivity)
+                    //hit status update api
+                    presenter.updateStatus(
+                        token,
+                        complaintId,
+                        statusId,
+                        binding.etDescription.text.toString()
+                    )
+                    dialog.dismiss()
+                }
+            }
+
+            builder.setView(binding.root)
+            dialog = builder.create()
+            dialog.show()
+        }
+
+    }

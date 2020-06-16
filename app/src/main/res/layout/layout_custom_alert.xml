@@ -42,7 +42,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:textColor="@color/white"
-                android:background="@drawable/button_red_bg"
+                android:background="@drawable/button_green_bg"
                 android:layout_marginRight="5dp"
                 android:layout_marginBottom="@dimen/_10sdp"
                 app:font="@{`bold`}"

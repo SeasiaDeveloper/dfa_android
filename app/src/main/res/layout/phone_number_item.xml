@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="@dimen/_3ssp"
+    android:weightSum="1">
+
+    <com.ngo.customviews.CustomtextView
+        android:id="@+id/text_number"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"
+        android:layout_weight="0.7"/>
+
+    <com.ngo.customviews.CustomtextView
+        android:id="@+id/txtCall"
+        android:layout_width="0dp"
+        android:layout_weight="0.3"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_below="@+id/emergency_numbers_recycl"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:background="@drawable/round_corner_green"
+        android:drawableLeft="@drawable/ic_call"
+        android:drawablePadding="@dimen/_5ssp"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingTop="@dimen/_5sdp"
+        android:paddingRight="@dimen/_10sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:text="@string/call"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12ssp" />
+
+</LinearLayout>

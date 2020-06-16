@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ngo.R
 import com.ngo.adapters.EmergencyDetailsAdapter
+import com.ngo.adapters.PhoneNumberAdapter
 import com.ngo.pojo.request.EmergencyDataRequest
 import com.ngo.pojo.response.DataBean
 import com.ngo.pojo.response.DistResponse
@@ -30,12 +31,12 @@ import com.ngo.utils.PreferenceHandler
 import com.ngo.utils.Utilities
 import com.ngo.utils.Utilities.dismissProgress
 import com.ngo.utils.Utilities.showProgress
-import kotlinx.android.synthetic.main.activity_signup.*
 import kotlinx.android.synthetic.main.fragment_emergency.*
 
 class EmergencyFragment : Fragment(), EmergencyFragmentView {
     private var presenter: EmergencyFragmentPresenter = EmegencyFragmentPresenterImpl(this)
     private lateinit var adapter: EmergencyDetailsAdapter
+    private lateinit var phoneNumberAdapter: PhoneNumberAdapter
     private var emergencyDetailList = ArrayList<EmergencyDataResponse.Data>()
     lateinit var mContext: Context
     private val RECORD_REQUEST_CODE = 101
@@ -144,7 +145,7 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
                                 PreferenceHandler.AUTHORIZATION,
                                 ""
                             )
-                        var request = EmergencyDataRequest(response.data.get(position).id)
+                        var request = EmergencyDataRequest(response.data.get(position-1).id)
                         presenter.hitEmergencyApi(request, authorizationToken)
                     } else {
                         Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
@@ -166,7 +167,6 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     }
 
     private fun setEmergencyAdapter() {
-        //val layoutManager = GridLayoutManager(activity!!, 4)
         adapter = EmergencyDetailsAdapter(activity!!, emergencyDetailList)
         val horizontalLayoutManager = LinearLayoutManager(
             mContext,
@@ -224,6 +224,7 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
         if (myEarningsResponse.data!!.size > 0) {
             adapter.changeList(myEarningsResponse.data!!)
         } else {
+            adapter.changeList(myEarningsResponse.data!!)
             Utilities.showMessage(mContext, "No data found corresponding to the selected District.")
         }
 

@@ -54,7 +54,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.mipmap.ic_launcher)
+            .setSmallIcon(R.drawable.app_icon)
             .setContentTitle("DFA ")
             .setContentText("New Complaint")
             .setAutoCancel(true)

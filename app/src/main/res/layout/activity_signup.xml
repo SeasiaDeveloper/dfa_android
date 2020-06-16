@@ -114,6 +114,7 @@
                             android:hint="@string/mobile_1"
                             android:inputType="number"
                             android:maxLength="13"
+                            android:textSize="@dimen/_12ssp"
                             android:padding="@dimen/_10sdp" />
 
                         <LinearLayout
@@ -133,6 +134,7 @@
                                 android:layout_weight=".5"
                                 android:background="@drawable/squarebg"
                                 android:hint="@string/enter_first_name"
+                                android:textSize="@dimen/_12ssp"
                                 android:maxLength="20"
                                 android:padding="@dimen/_10sdp"
                                 android:inputType="text"/>
@@ -148,6 +150,7 @@
                                 android:layout_weight=".5"
                                 android:background="@drawable/squarebg"
                                 android:hint="@string/enter_middle_name"
+                                android:textSize="@dimen/_12ssp"
                                 android:maxLength="20"
                                 android:padding="@dimen/_10sdp" />
 
@@ -164,6 +167,7 @@
                             android:background="@drawable/squarebg"
                             android:gravity="start"
                             android:hint="@string/enter_last_name"
+                            android:textSize="@dimen/_12ssp"
                             android:maxLength="20"
                             android:padding="@dimen/_10sdp" />
 
@@ -205,6 +209,7 @@
                     android:gravity="start"
                     android:hint="@string/address_1"
                     android:maxLength="500"
+                    android:textSize="@dimen/_12ssp"
                     android:padding="@dimen/_10sdp" />
 
                 <com.ngo.customviews.CustomEditText
@@ -219,6 +224,7 @@
                     android:hint="@string/address_2"
                     android:imeOptions="actionDone"
                     android:maxLength="500"
+                    android:textSize="@dimen/_12ssp"
                     android:padding="@dimen/_10sdp"/>
 
                 <com.ngo.customviews.CustomEditText
@@ -233,6 +239,7 @@
                     android:hint="@string/pin_code"
                     android:inputType="number"
                     android:maxLength="6"
+                    android:textSize="@dimen/_12ssp"
                     android:padding="@dimen/_10sdp" />
 
                 <com.ngo.customviews.CustomEditText
@@ -247,6 +254,7 @@
                     android:hint="@string/mobile_2"
                     android:inputType="number"
                     android:maxLength="13"
+                    android:textSize="@dimen/_12ssp"
                     android:padding="@dimen/_10sdp" />
 
                 <com.ngo.customviews.CustomEditText
@@ -262,6 +270,7 @@
                     android:imeOptions="actionDone"
                     android:inputType="phone"
                     android:maxLength="12"
+                    android:textSize="@dimen/_12ssp"
                     android:padding="@dimen/_10sdp" />
 
                 <com.ngo.customviews.CustomEditText
@@ -275,6 +284,7 @@
                     android:gravity="start"
                     android:hint="@string/enter_email"
                     android:imeOptions="actionDone"
+                    android:textSize="@dimen/_12ssp"
                     android:maxLength="40"
                     android:padding="@dimen/_10sdp"/>
 
@@ -286,6 +296,7 @@
                     android:layout_marginTop="@dimen/_6sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:background="@drawable/squarebg"
+                    android:textSize="@dimen/_12ssp"
                     android:gravity="start"
                     android:hint="@string/password"
                     android:inputType="textPassword"
@@ -299,6 +310,7 @@
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
+                    android:textSize="@dimen/_12ssp"
                     android:background="@drawable/squarebg"
                     android:gravity="start"
                     android:hint="@string/confirm_password"
@@ -320,28 +332,34 @@
                         android:layout_marginEnd="@dimen/_12sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_weight="0.3"
-                        android:padding="@dimen/_12sdp"
+                        android:paddingLeft="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_10ssp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_10ssp"
                         android:background="@drawable/button_green_bg"
                         android:text="@string/submit"
                         android:gravity="center"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_14ssp" />
+                        android:textSize="@dimen/_12ssp" />
 
                     <com.ngo.customviews.CustomTextViewheading
                         android:id="@+id/btnCancel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="@dimen/_12sdp"
+                        android:paddingLeft="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_10ssp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_10ssp"
                         android:layout_marginStart="@dimen/_12sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:gravity="center"
                         android:layout_marginEnd="@dimen/_12sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_weight="0.3"
-                        android:background="@drawable/button_red_bg"
+                        android:background="@drawable/button_green_bg"
                         android:text="@string/cancel"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/_14ssp" />
+                        android:textSize="@dimen/_12ssp" />
 
                 </LinearLayout>
 

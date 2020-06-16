@@ -47,7 +47,7 @@ class CenteredToolbar : Toolbar {
     override fun setTitle(title: CharSequence) {
         if (titleView != null) {
             titleView!!.text = title
-            titleView!!.textSize = 20f
+            titleView!!.textSize = 15f
         }
     }
 

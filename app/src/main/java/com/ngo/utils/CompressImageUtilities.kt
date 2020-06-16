@@ -127,7 +127,7 @@ class CompressImageUtilities {
         try {
             out = FileOutputStream(filename)
             //write the compressed bitmap at the destination specified by filename.
-            scaledBitmap!!.compress(Bitmap.CompressFormat.JPEG, 10, out)
+            scaledBitmap!!.compress(Bitmap.CompressFormat.JPEG, 60, out)
         } catch (e: FileNotFoundException) {
             e.printStackTrace()
         }

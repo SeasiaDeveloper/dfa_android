@@ -164,8 +164,8 @@ class CasesFragment : Fragment(), CasesView, OnCaseItemClickListener, AlertDialo
                 }
             } else {
                 //when to change like status
-                adapter?.notifyParticularItem(complaintIdTobeLiked!!, response.data)
-                isLike = false
+               /* adapter?.notifyParticularItem(complaintIdTobeLiked!!, response.data)
+                isLike = false*/
             }
             GeneralPublicHomeFragment.change = 1
         } else {

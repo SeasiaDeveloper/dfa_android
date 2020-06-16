@@ -243,8 +243,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             notificationResponse.is_notify = getIntent().getExtras()?.getString("is_notify")
             displayAcceptRejDialog(notificationResponse)
         }
-
     }
+
     @SuppressLint("SetTextI18n")
     fun setTabAdapter() {
 
@@ -264,15 +264,13 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
 
         val role = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")
-
-
-        if(role.equals("0")){
+        if (role.equals("0")) {
             userType.setText(getString(R.string.gpu))
 
-        } else if(role.equals("1")){
+        } else if (role.equals("1")) {
             userType.setText(getString(R.string.ngo_user))
 
-        }else if(role.equals("2")){
+        } else if (role.equals("2")) {
             userType.setText(getString(R.string.police_user))
 
         }
@@ -285,13 +283,20 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             menu.findItem(R.id.nav_logout).setVisible(false)
             menu.findItem(R.id.nav_cases).setVisible(false)
             userType.setText(getString(R.string.guest_user))
-
+            btnLogin.visibility = View.VISIBLE
         } else {
             menu.findItem(R.id.nav_edit_profile).setVisible(true)
             menu.findItem(R.id.nav_password).setVisible(true)
             menu.findItem(R.id.nav_logout).setVisible(true)
             menu.findItem(R.id.nav_cases).setVisible(true)
+            btnLogin.visibility = View.GONE
         }
+
+        authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
+        if (authorizationToken!!.isEmpty()) {
+            textName.setText(getString(R.string.guest_user))
+        }
+
     }
 
     //checking location
@@ -345,16 +350,34 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         textName.setText(getProfileResponse.data?.first_name + " " + getProfileResponse.data?.middle_name + " " + getProfileResponse.data?.last_name)
         textAddress.setText(getProfileResponse.data?.address_1)
         if (authorizationToken!!.isEmpty()) {
-            userInfo.visibility=View.GONE
+            userInfo.visibility = View.GONE
         } else {
-            userInfo.visibility=View.VISIBLE
-            if (getProfileResponse.data?.isVerified!!.equals("1")) {
-                userInfo.setText("Verified")
+            userInfo.visibility = View.VISIBLE
+            /*  if (getProfileResponse.data?.isVerified!!.equals("1")) {
+                  userInfo.setText("Verified")
+                  verified_icon.visibility = View.VISIBLE
+              } else {
+                  userInfo.setText("Unverified")
+                  verified_icon.visibility = View.GONE
+              }
+  */
+            val role = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")
+            if (role.equals("0")) {
+                userInfo.setText(getString(R.string.gpu))
+                if (getProfileResponse.data?.isVerified!!.equals("1")) {
+                    verified_icon.visibility = View.VISIBLE
+                } else {
+                    verified_icon.visibility = View.GONE
+                }
+            } else if (role.equals("1")) {
+                userInfo.setText(getString(R.string.ngo_user))
                 verified_icon.visibility = View.VISIBLE
-            } else {
-                userInfo.setText("Unverified")
-                verified_icon.visibility = View.GONE
+
+            } else if (role.equals("2")) {
+                userInfo.setText(getString(R.string.police_user))
+                verified_icon.visibility = View.VISIBLE
             }
+
         }
 
         userInfo.setOnClickListener {
@@ -583,6 +606,14 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             try {
 
                 setTabAdapter()
+                btnLogin.setOnClickListener {
+                    ForegroundService.stopService(this)
+                    finish()
+                    PreferenceHandler.clearPreferences(this)
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                    startActivity(intent)
+                }
 
             } catch (e: Exception) {
                 Log.e("Tab Adapter", "Exception----->" + e)
@@ -614,6 +645,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
+
+        try {
+            genPubHomeFrag.refreshList()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun adhaarSavedSuccess(responseObject: SignupResponse) {

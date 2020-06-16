@@ -183,10 +183,10 @@ class CasesAdapter(
                 if (likeCount.equals("")) {
                     if (this.mList.get(i).is_liked!!.equals(0)) {
                         this.mList.get(i).like_count =
-                            (this.mList.get(i).like_count?.toInt()!! - 1).toString()
+                            (this.mList.get(i).like_count?.toInt()!! + 1).toString()
                     } else {
                         this.mList.get(i).like_count =
-                            (this.mList.get(i).like_count?.toInt()!! + 1).toString()
+                            (this.mList.get(i).like_count?.toInt()!! - 1).toString()
                     }
                 } else {
                     this.mList.get(i).like_count = likeCount.toString()
@@ -208,14 +208,12 @@ class CasesAdapter(
                            break
                        }
                    }*/
-                if (likeCount.equals("")) {
-                    if (this.mList.get(i).is_liked!!.equals(0)) {
-                        this.mList.get(i).like_count =
-                            (this.mList.get(i).like_count?.toInt()!! - 1).toString()
-                    } else {
-                        this.mList.get(i).like_count =
-                            (this.mList.get(i).like_count?.toInt()!! + 1).toString()
-                    }
+                if (this.mList.get(i).is_liked!!.equals(0)) {
+                    this.mList.get(i).like_count =
+                        (this.mList.get(i).like_count?.toInt()!! + 1).toString()
+                } else {
+                    this.mList.get(i).like_count =
+                        (this.mList.get(i).like_count?.toInt()!! - 1).toString()
                 }
                 /* else {
                      this.mList.get(i).like_count = likeCount.toString()
@@ -286,12 +284,8 @@ class CasesAdapter(
             val userDetail: GetCasesResponse.Data.UserDetail = item.userDetail!!
             val username =
                 PreferenceHandler.readString(context, PreferenceHandler.USER_FULLNAME, "")
-            val token = PreferenceHandler.readString(context, PreferenceHandler.AUTHORIZATION, "")
-            val options = RequestOptions()
-                /* .centerCrop()*/
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.noimage)
-                .error(R.drawable.noimage)
+            val token =
+                PreferenceHandler.readString(context, PreferenceHandler.AUTHORIZATION, "")
 
             var popup1 = PopupMenu(activity, itemView.iv_menu)
             if (isGeneralPublicFragment) {
@@ -344,6 +338,11 @@ class CasesAdapter(
                 listener.onItemClick(item, "webview", adapterPosition)
             }
 
+            val options = RequestOptions()
+                /* .centerCrop()*/
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.user)
+                .error(R.drawable.user)
             //in case of post:
             if (userDetail.profile_pic != null) {
                 try {
@@ -370,6 +369,12 @@ class CasesAdapter(
                         item.report_time!!
                     )
                 itemView.txtPostInfo.text = item.info
+
+                val options = RequestOptions()
+                    /* .centerCrop()*/
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.noimage)
+                    .error(R.drawable.noimage)
 
                 if (item.media_list != null && item.media_list.isNotEmpty()) {
                     itemView.imgMediaPost.visibility = View.VISIBLE
@@ -498,6 +503,12 @@ class CasesAdapter(
                 itemView.expandable_username.text =
                     userDetail.first_name + " " + userDetail.last_name
 
+                val options = RequestOptions()
+                    /* .centerCrop()*/
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.noimage)
+                    .error(R.drawable.noimage)
+
                 if (item.media_list!!.isNotEmpty()) {
                     val mediaUrl: String = item.media_list[0]
                     try {
@@ -607,12 +618,18 @@ class CasesAdapter(
                     context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
                 }
 
+                val options1 = RequestOptions()
+                    /* .centerCrop()*/
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .placeholder(R.drawable.user)
+                    .error(R.drawable.user)
+
                 //if NGO show profile image
                 if (type == 1) {
                     if (userDetail.profile_pic != null) {
                         try {
                             Glide.with(context).asBitmap().load(userDetail.profile_pic)
-                                .apply(options)
+                                .apply(options1)
                                 .into(itemView.imgCrime)
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -633,8 +650,14 @@ class CasesAdapter(
                 }
                 //in case of General public or police
                 else {
+                    val options1 = RequestOptions()
+                        /* .centerCrop()*/
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.drawable.user)
+                        .error(R.drawable.user)
+
                     Glide.with(context).asBitmap().load(getImage(context, "app_icon"))
-                        .apply(options)
+                        .apply(options1)
                         .into(itemView.imgCrime)
                     itemView.expandable_username.text =
                         context.resources.getString(R.string.drug_free_arunachal)
@@ -712,7 +735,8 @@ class CasesAdapter(
                  }
 
                  val kmValue = String.format("%.2f", kmInDouble)*/
-                var distance = Utilities.calculateDistance(item.latitude, item.longitude, context)
+                var distance =
+                    Utilities.calculateDistance(item.latitude, item.longitude, context)
                 itemView.location.setText("" + distance + "KM away").toString()
                 itemView.location.setOnClickListener {
                     val gmmIntentUri =
@@ -764,6 +788,13 @@ class CasesAdapter(
                 // itemView.view_fir.visibility = View.VISIBLE
                 if (item.fir_image != null) {
                     itemView.imgFirMedia.visibility = View.VISIBLE
+
+                    val options = RequestOptions()
+                        /* .centerCrop()*/
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.drawable.noimage)
+                        .error(R.drawable.noimage)
+
                     try {
                         Glide.with(context).asBitmap().load(item.fir_image).apply(options)
                             .into(itemView.imgFirMedia)
@@ -778,6 +809,7 @@ class CasesAdapter(
             }
 
             if (!item.status.equals("Unassigned")) {
+                item.id
                 if (item.isApiHit) {
                     itemView.childExpandable.visibility = View.VISIBLE
                     itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
@@ -813,8 +845,53 @@ class CasesAdapter(
                         com.ngo.utils.alert.AlertDialog.guesDialog(context)
                     }
                 }
+
+                //added in case of more or less
+                itemView.moreLess.setOnClickListener {
+                    if (!token!!.isEmpty()) {
+                        //1st entry
+                        if (!item.isApiHit) {
+                            //call api:
+                            if (isGeneralPublicFragment) {
+                                val callMethod = fragment as GeneralPublicHomeFragment
+                                callMethod.callFirImageApi(item.id!!, adapterPosition)
+                            } else {
+                                val myCasesActivity = activity as MyCasesActivity
+                                myCasesActivity.callFirImageApi(item.id!!, adapterPosition)
+                            }
+
+                        } else {
+                            if (itemView.childExpandable.visibility == View.VISIBLE) {
+                                itemView.childExpandable.visibility = View.GONE
+                                itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                                item.isApiHit = false
+                                itemView.moreLess.setText(R.string.more)
+                            }
+                        }
+                    } else {
+                        com.ngo.utils.alert.AlertDialog.guesDialog(context)
+                    }
+                }
+
             } else {
                 itemView.imgExpandable.setOnClickListener {
+                    if (!token!!.isEmpty()) {
+                        if (itemView.childExpandable.visibility == View.VISIBLE) {
+                            itemView.childExpandable.visibility = View.GONE
+                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                            itemView.moreLess.setText(R.string.more)
+                        } else {
+                            itemView.childExpandable.visibility = View.VISIBLE
+                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
+                            itemView.moreLess.setText(R.string.less)
+                        }
+                    } else {
+                        com.ngo.utils.alert.AlertDialog.guesDialog(context)
+                    }
+                }
+
+                //added for less or more
+                itemView.moreLess.setOnClickListener {
                     if (!token!!.isEmpty()) {
                         if (itemView.childExpandable.visibility == View.VISIBLE) {
                             itemView.childExpandable.visibility = View.GONE
@@ -852,6 +929,7 @@ class CasesAdapter(
 
             val imageView = (dialog.findViewById(R.id.imgView) as ImageView)
             val mediaUrl: String = userDetail.media_list?.get(0)!!
+
             try {
                 Glide.with(context).asBitmap().load(mediaUrl).apply(options).into(imageView)
             } catch (e: Exception) {
@@ -907,6 +985,12 @@ class CasesAdapter(
             dialog.setContentView(binding.root)
 
             val imageView = (dialog.findViewById(R.id.imgView) as ImageView)
+            val options = RequestOptions()
+                /* .centerCrop()*/
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.user)
+                .error(R.drawable.user)
+
             try {
                 Glide.with(context).asBitmap().load(userDetail.profile_pic).apply(options)
                     .into(imageView)

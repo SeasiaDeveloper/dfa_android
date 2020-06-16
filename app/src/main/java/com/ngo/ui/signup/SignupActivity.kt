@@ -173,12 +173,12 @@ class SignupActivity : BaseActivity(), SignupView {
         // Initializing an ArrayAdapter
         val adapter = ArrayAdapter(
             this@SignupActivity, // Context
-            android.R.layout.simple_spinner_item, // Layout
+            R.layout.view_spinner_item, // Layout
             distArray // Array
         )
 
         // Set the drop down view resource
-        adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+        adapter.setDropDownViewResource(R.layout.view_spinner_item)
 
         // Finally, data bind the spinner object with dapter
         spDist.adapter = adapter

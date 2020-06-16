@@ -35,7 +35,7 @@
                 android:textSize="@dimen/_12ssp"
                 />
 
-            <androidx.appcompat.widget.AppCompatSpinner
+         <!--   <androidx.appcompat.widget.AppCompatSpinner
                 android:id="@+id/phoneNumberDropDown"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_25sdp"
@@ -44,25 +44,35 @@
                 android:gravity="center"
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:background="@drawable/bg_spinner"
+                android:layout_below="@+id/txtName"/>-->
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/emergency_numbers_recycl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:layout_marginStart="@dimen/_12sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:layout_below="@+id/txtName"/>
 
 
             <com.ngo.customviews.CustomtextView
                 android:id="@+id/txtDistance"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/phoneNumberDropDown"
-                android:layout_marginLeft="@dimen/_25sdp"
+                android:layout_height="30dp"
+                android:layout_below="@+id/emergency_numbers_recycl"
+                android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
-                android:layout_toRightOf="@+id/txtCall"
+                android:gravity="center_vertical"
                 android:background="@drawable/shape_round_corner_blue"
                 android:drawableStart="@drawable/ic_location_green"
-                android:drawablePadding="@dimen/_5ssp"
-                android:paddingLeft="@dimen/_15sdp"
-                android:paddingTop="@dimen/_5sdp"
+                android:drawablePadding="@dimen/_2ssp"
+                android:paddingStart="@dimen/_10sdp"
+                android:paddingTop="@dimen/_3sdp"
+                android:visibility="visible"
                 android:paddingRight="@dimen/_15sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:text="21 KM Away"
+                android:paddingEnd="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_5sdp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp" />
 
@@ -76,23 +86,7 @@
                 android:textSize="@dimen/_10ssp"
                 android:visibility="gone" />
 
-            <com.ngo.customviews.CustomtextView
-                android:id="@+id/txtCall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/phoneNumberDropDown"
-                android:layout_marginLeft="@dimen/_15sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:background="@drawable/round_corner_green"
-                android:drawableLeft="@drawable/ic_call"
-                android:drawablePadding="@dimen/_5ssp"
-                android:paddingLeft="@dimen/_15sdp"
-                android:paddingTop="@dimen/_5sdp"
-                android:paddingRight="@dimen/_15sdp"
-                android:paddingBottom="@dimen/_5sdp"
-                android:text="@string/call"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12ssp" />
+
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
