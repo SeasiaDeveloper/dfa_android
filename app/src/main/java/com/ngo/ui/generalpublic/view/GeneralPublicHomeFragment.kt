@@ -46,6 +46,7 @@ import com.ngo.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.ngo.ui.home.fragments.cases.view.CasesView
 import com.ngo.ui.home.fragments.home.view.HomeActivity
 import com.ngo.ui.login.view.LoginActivity
+import com.ngo.ui.mycases.MyCasesActivity
 import com.ngo.utils.*
 import kotlinx.android.synthetic.main.fragment_public_home.*
 
@@ -311,6 +312,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             layoutAddPost.visibility = View.VISIBLE
             layoutPost.visibility = View.GONE
         }
+
     }
 
     private fun galleryIntent() {
@@ -777,7 +779,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             )
         }
         // setProfilePic()
-        fromIncidentDetailScreen == 0
+        fromIncidentDetailScreen = 0
+        MyCasesActivity.isfirst=true
     }
 
     fun doApiCall() {

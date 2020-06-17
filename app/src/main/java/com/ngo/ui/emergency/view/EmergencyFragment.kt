@@ -35,7 +35,7 @@ import kotlinx.android.synthetic.main.fragment_emergency.*
 
 class EmergencyFragment : Fragment(), EmergencyFragmentView {
     private var presenter: EmergencyFragmentPresenter = EmegencyFragmentPresenterImpl(this)
-    private lateinit var adapter: EmergencyDetailsAdapter
+    private lateinit var emergencyDetailsAdapter: EmergencyDetailsAdapter
     private lateinit var phoneNumberAdapter: PhoneNumberAdapter
     private var emergencyDetailList = ArrayList<EmergencyDataResponse.Data>()
     lateinit var mContext: Context
@@ -47,6 +47,7 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
         var commentChange = 0
         var fromIncidentDetailScreen = 0
         var commentsCount = 0
+        var staticDistValueList: DistResponse? = null
     }
 
     override fun onResume() {
@@ -58,6 +59,10 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
                 isFirst = false
             } else {
                 Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
+            }
+        } else {
+            if (staticDistValueList?.data!!.size > 0) {
+                getDistrictDropDown(staticDistValueList!!)
             }
         }
     }
@@ -112,12 +117,14 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     }
 
     fun getDistrictDropDown(response: DistResponse) {
+        staticDistValueList = response
 
         val distValueList = ArrayList<String>()
         distValueList.add("Please select district")
         for (i in 0..response.data.size - 1) {
             distValueList.add(response.data.get(i).name)
         }
+
         // var list_of_items = arrayOf(distValueList)
         // val distArray = distValueList.toArray(arrayOfNulls<String>(distValueList.size))
         val adapter = ArrayAdapter(
@@ -145,11 +152,14 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
                                 PreferenceHandler.AUTHORIZATION,
                                 ""
                             )
-                        var request = EmergencyDataRequest(response.data.get(position-1).id)
+                        var request = EmergencyDataRequest(response.data.get(position - 1).id)
                         presenter.hitEmergencyApi(request, authorizationToken)
                     } else {
                         Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
                     }
+                } else{
+                    var mList: ArrayList<EmergencyDataResponse.Data> = ArrayList()
+                    emergencyDetailsAdapter.changeList(mList)
                 }
             }
 
@@ -167,13 +177,13 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     }
 
     private fun setEmergencyAdapter() {
-        adapter = EmergencyDetailsAdapter(activity!!, emergencyDetailList)
+        emergencyDetailsAdapter = EmergencyDetailsAdapter(activity!!, emergencyDetailList)
         val horizontalLayoutManager = LinearLayoutManager(
             mContext,
             RecyclerView.VERTICAL, false
         )
         rvEmergencies?.layoutManager = horizontalLayoutManager
-        rvEmergencies?.adapter = adapter
+        rvEmergencies?.adapter = emergencyDetailsAdapter
         // rvEmergencies.adapter = adapter
     }
 
@@ -222,9 +232,9 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     override fun getEmergencyDataSuccess(myEarningsResponse: EmergencyDataResponse) {
         dismissProgress()
         if (myEarningsResponse.data!!.size > 0) {
-            adapter.changeList(myEarningsResponse.data!!)
+            emergencyDetailsAdapter.changeList(myEarningsResponse.data!!)
         } else {
-            adapter.changeList(myEarningsResponse.data!!)
+            emergencyDetailsAdapter.changeList(myEarningsResponse.data!!)
             Utilities.showMessage(mContext, "No data found corresponding to the selected District.")
         }
 

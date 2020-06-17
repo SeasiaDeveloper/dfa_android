@@ -2,13 +2,13 @@ package com.ngo.ui.generalpublic
 
 import android.Manifest
 import android.app.Activity
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.graphics.ImageDecoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -23,7 +23,7 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.MediaController
-import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
@@ -45,20 +45,13 @@ import com.ngo.ui.generalpublic.view.PublicComplaintView
 import com.ngo.ui.login.view.LoginActivity
 import com.ngo.utils.*
 import com.ngo.utils.Constants.GPS_REQUEST
+import com.ngo.utils.RealPathUtil.getCapturedImage
 import com.ngo.utils.Utilities.PERMISSION_ID
+import com.ngo.utils.Utilities.PERMISSION_ID_CAMERA
 import kotlinx.android.synthetic.main.activity_public.*
-import kotlinx.android.synthetic.main.activity_public.btnSubmit
-import kotlinx.android.synthetic.main.activity_public.etDescription
-import kotlinx.android.synthetic.main.activity_public.imgView
-import kotlinx.android.synthetic.main.activity_public.sb_steps_5
-import kotlinx.android.synthetic.main.activity_public.spTypesOfCrime
-import kotlinx.android.synthetic.main.activity_public.toolbarLayout
-import kotlinx.android.synthetic.main.activity_public.videoView
-import kotlinx.android.synthetic.main.image_video_layout.*
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.IOException
-import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -88,6 +81,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private var address: String = ""
     var mPhotoFile: File? = null
     var mCompressor: FileCompressor? = null
+    var isOpenCamera: Boolean = true
 
     private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
     override fun getLayout(): Int {
@@ -163,12 +157,10 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
             R.id.tvTakePhoto -> {
                 path = ""
-                val resultCamera = getMarshmallowPermission(
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
-                )
-                if (resultCamera)
+                getCameraPermission()
+                if (isOpenCamera) {
                     cameraIntent()
+                }
             }
             R.id.tvRecordVideo -> {
                 Utilities.showMessage(this, getString(R.string.coming_soon))
@@ -210,6 +202,15 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     e.printStackTrace()
                 }
             }
+        }
+    }
+
+    private fun getCameraPermission() {
+        if (!Utilities.checkCameraPermissions(this)) {
+            Utilities.requestPermissionsForCamera(this)
+            isOpenCamera = false
+        } else {
+            isOpenCamera = true
         }
     }
 
@@ -303,7 +304,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             if (photoFile != null) {
                 var photoURI = FileProvider.getUriForFile(
                     this,
-                    BuildConfig.APPLICATION_ID + ".provider",
+                    "com.ngo" + ".provider",
                     photoFile
                 )
                 mPhotoFile = photoFile
@@ -315,24 +316,19 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
     private fun createImageFile(): File {
         // Create an image file name
-        var timeStamp = SimpleDateFormat("yyyyMMddHHmmss").format(Date());
-        var mFileName = "JPEG_" + timeStamp + "_";
-        var storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        var mFile = File.createTempFile(mFileName, ".jpg", storageDir);
-        return mFile;
+        var timeStamp = SimpleDateFormat("yyyyMMddHHmmss").format(Date())
+        var mFileName = "JPEG_" + timeStamp + "_"
+        var storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        var mFile = File.createTempFile(mFileName, ".jpg", storageDir)
+        return mFile
     }
 
 
     private fun cameraIntent() {
         /* val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
          startActivityForResult(intent, REQUEST_CAMERA)*/
-
-        var m_intent =  Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-      /*  var destPath = this.getExternalFilesDir(null)?.getAbsolutePath()
-        var file =  File(destPath, "MyPhoto.jpg")
-        var uri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", file)
-        m_intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, uri)*/
-        startActivityForResult(m_intent, REQUEST_CAMERA)
+        /* ImagePicker.cameraOnly().start(this)*/
+        dispatchTakePictureIntent()
     }
 
     private fun getCaptureImageOutputUri(): Uri {
@@ -351,18 +347,40 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         grantResults: IntArray
     ) {
         when (requestCode) {
-            Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+/*            Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 if (getMarshmallowPermission(
                         Manifest.permission.WRITE_EXTERNAL_STORAGE,
                         Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
                     )
                 )
-                    cameraIntent()
+                    isPermissionsDone = true
             }
+
+            Utilities.MY_PERMISIIONS_CAMERA -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (getMarshmallowPermission(
+                        Manifest.permission.CAMERA,
+                        Utilities.MY_PERMISIIONS_CAMERA
+                    )
+                )
+                    resultCamera2 = true
+            }*/
+
             Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE -> if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 galleryIntent()
             }
         }
+
+        if (requestCode == PERMISSION_ID_CAMERA) {
+            if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED) || (grantResults[1] == PackageManager.PERMISSION_GRANTED)) {
+                //  askForGPS()
+                isOpenCamera = true
+                cameraIntent()
+            } else {
+                Utilities.requestPermissions(this)
+                isOpenCamera = false
+            }
+        }
+
         if (requestCode == PERMISSION_ID) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)
                 Utilities.requestPermissions(this)
@@ -438,6 +456,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
         if (requestCode == IMAGE_MULTIPLE && resultCode == Activity.RESULT_OK && null != intent) {
@@ -496,30 +515,31 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     }
                 }
             }
-        } else if (requestCode == REQUEST_CAMERA) {
+        }
+        //else if (ImagePicker.shouldHandle(requestCode, resultCode, intent)) {
+        else if (requestCode == REQUEST_CAMERA) {
             mediaType = "photos"
-           // var file =  File(this.getExternalFilesDir(null)?.getAbsolutePath(), "MyPhoto.jpg");
-           // var uri = FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".provider", file);
-            if (intent != null && intent.getExtras() != null && intent.getExtras()!!.get("data") != null) {
-                val photo = intent.getExtras()!!.get("data") as Bitmap
-                imageview_layout.visibility = View.VISIBLE
-                imgView.visibility = View.VISIBLE
-                videoView.visibility = View.GONE
-                val tempUri = getImageUriWhenTakePhoto(applicationContext, photo)
-                imgView.setImageURI(tempUri)
-                file = File(getRealPathFromURI(tempUri))
-
-                //compression
-              /*  val compClass = CompressImageUtilities()
-                val newPathString =
-                    compClass.compressImage(
-                        this@GeneralPublicActivity,
-                        getRealPathFromURI(tempUri)
-                    )
-                path = newPathString*/
-                path= getRealPathFromURI(tempUri)
-
-           }
+            // if (intent != null && intent.getExtras() != null && intent.getExtras()!!.get("data") != null) {
+            // val photo = intent.getExtras()!!.get("data") as Bitmap
+            val tempUri = Uri.fromFile(mPhotoFile)
+            imageview_layout.visibility = View.VISIBLE
+            imgView.visibility = View.VISIBLE
+            videoView.visibility = View.GONE
+            //val tempUri = getImageUriWhenTakePhoto(applicationContext, images.get(0).path)
+            var bitmap=getCapturedImage(tempUri,this)
+            val requiredImage=RealPathUtil.imageRotateIfRequired(mPhotoFile?.absolutePath!!,bitmap)
+            imgView.setImageBitmap(requiredImage)
+            //compression
+            /*  val compClass = CompressImageUtilities()
+              val newPathString =
+                  compClass.compressImage(
+                      this@GeneralPublicActivity,
+                      getRealPathFromURI(tempUri)
+                  )
+              path = newPathString*/
+            //imgView.setImageURI(Uri.parse(images.get(0).path))
+            path = mPhotoFile?.absolutePath!!
+            // }
         } else if (requestCode == GPS_REQUEST) {
             isGPS = true
             getLocation()
@@ -561,40 +581,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         videoView.setVideoURI(Uri.parse(videoUri))
         videoView.setBackgroundColor(Color.TRANSPARENT)
         videoView.seekTo(100) // displays thumbnail of the video
-    }
-
-    private fun getPickImageResultUri(data: Intent): Uri {
-        var isCamera = true
-        var uri: Uri
-        if (data != null) {
-            var action = data.getAction()
-            isCamera = action != null /*&& action.equals(MediaStore.ACTION_IMAGE_CAPTURE)*/
-        }
-        if (isCamera) {
-            uri = getCaptureImageOutputUri()
-        } else {
-            uri = intent?.getExtras()!!.get("data") as Uri
-        }
-        return uri
-    }
-
-    fun getImageUriWhenTakePhoto( inContext:Context, inImage:Bitmap):Uri{
-    var OutImage = Bitmap.createScaledBitmap(inImage, 1200, 1200,true)
-    var path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), OutImage, "Title", null)
-    return Uri.parse(path)
-}
-
-    private fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
-        val bytes = ByteArrayOutputStream()
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
-        val path =
-            MediaStore.Images.Media.insertImage(
-                inContext.contentResolver,
-                inImage,
-                "Title",
-                null
-            )
-        return Uri.parse(path)
     }
 
     private fun getRealPathFromURI(uri: Uri): String {

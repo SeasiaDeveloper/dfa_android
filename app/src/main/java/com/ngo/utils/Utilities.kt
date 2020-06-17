@@ -61,7 +61,9 @@ object Utilities {
     private lateinit var customDialog: KProgressHUD
     val MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 123
     val MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE = 121
+    val MY_PERMISIIONS_CAMERA = 122
     val PERMISSION_ID = 44
+    val PERMISSION_ID_CAMERA = 45
     private lateinit var formatedDate: String
     private lateinit var formattedTime: String
 
@@ -202,6 +204,19 @@ object Utilities {
         } else false
     }
 
+    fun checkCameraPermissions(context: Activity): Boolean {
+        return if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            true
+        } else false
+    }
+
     fun requestPermissions(context: Activity) {
         ActivityCompat.requestPermissions(
             context,
@@ -210,6 +225,17 @@ object Utilities {
                 Manifest.permission.ACCESS_FINE_LOCATION
             ),
             PERMISSION_ID
+        )
+    }
+
+    fun requestPermissionsForCamera(context: Activity) {
+        ActivityCompat.requestPermissions(
+            context,
+            arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ),
+            PERMISSION_ID_CAMERA
         )
     }
 

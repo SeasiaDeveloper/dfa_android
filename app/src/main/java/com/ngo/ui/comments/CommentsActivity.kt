@@ -121,6 +121,7 @@ class CommentsActivity : AppCompatActivity(), CommentsView {
         GeneralPublicHomeFragment.commentChange = id.toInt()
         //MyCasesActivity.change=1
         MyCasesActivity.commentChange = id.toInt()
+        MyCasesActivity.isfirst=true
     }
 
     override fun onBackPressed() {

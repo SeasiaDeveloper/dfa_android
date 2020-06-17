@@ -3,8 +3,13 @@ package com.ngo.utils
 import android.annotation.SuppressLint
 import android.content.ContentUris
 import android.content.Context
+import android.content.res.Resources
 import android.database.Cursor
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.graphics.Matrix
+import android.media.ExifInterface
 import android.media.MediaMetadataRetriever
 import android.media.ThumbnailUtils
 import android.net.Uri
@@ -12,7 +17,9 @@ import android.os.Build
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import androidx.annotation.RequiresApi
 import androidx.loader.content.CursorLoader
+import java.io.ByteArrayOutputStream
 
 
 object RealPathUtil {
@@ -226,5 +233,124 @@ object RealPathUtil {
      */
     fun isGooglePhotosUri(uri: Uri): Boolean {
         return "com.google.android.apps.photos.content" == uri.authority
+    }
+
+    fun imageRotateIfRequired(photoPath:String,bitmap: Bitmap):Bitmap
+    {
+        val ei = ExifInterface(photoPath)
+        val orientation: Int = ei.getAttributeInt(
+            ExifInterface.TAG_ORIENTATION,
+            ExifInterface.ORIENTATION_UNDEFINED
+        )
+
+        var rotatedBitmap: Bitmap? = null
+        when (orientation) {
+            ExifInterface.ORIENTATION_ROTATE_90 -> rotatedBitmap =
+                rotateImage(bitmap, 90f)
+            ExifInterface.ORIENTATION_ROTATE_180 -> rotatedBitmap =
+                rotateImage(bitmap, 180f)
+            ExifInterface.ORIENTATION_ROTATE_270 -> rotatedBitmap =
+                rotateImage(bitmap, 270f)
+            ExifInterface.ORIENTATION_NORMAL -> rotatedBitmap = bitmap
+            else -> rotatedBitmap = bitmap
+        }
+        return rotatedBitmap!!
+    }
+
+    fun rotateImage(source: Bitmap, angle: Float): Bitmap? {
+        val matrix = Matrix()
+        matrix.postRotate(angle)
+        return Bitmap.createBitmap(
+            source, 0, 0, source.width, source.height,
+            matrix, true
+        )
+    }
+
+/*    private fun getPickImageResultUri(data: Intent): Uri {
+        var isCamera = true
+        var uri: Uri
+        if (data != null) {
+            var action = data.getAction()
+            isCamera = action != null *//*&& action.equals(MediaStore.ACTION_IMAGE_CAPTURE)*//*
+        }
+        if (isCamera) {
+            uri = getCaptureImageOutputUri()
+        } else {
+            uri = intent?.getExtras()!!.get("data") as Uri
+        }
+        return uri
+    }*/
+
+    fun getImageUriWhenTakePhoto(inContext: Context, inImage: Bitmap): Uri {
+        var OutImage = Bitmap.createScaledBitmap(inImage, 1200, 1200, true)
+        var path = MediaStore.Images.Media.insertImage(
+            inContext.getContentResolver(),
+            OutImage,
+            "Title",
+            null
+        )
+        return Uri.parse(path)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    fun getCapturedImage(selectedPhotoUri: Uri, context:Context): Bitmap {
+        val bitmap = when {
+            Build.VERSION.SDK_INT < 28 -> MediaStore.Images.Media.getBitmap(
+                context.contentResolver,
+                selectedPhotoUri
+            )
+            else -> {
+                val source = ImageDecoder.createSource(context.contentResolver, selectedPhotoUri)
+                ImageDecoder.decodeBitmap(source)
+            }
+        }
+        return bitmap
+    }
+
+    private fun getImageUri(inContext: Context, inImage: Bitmap): Uri {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes)
+        val path =
+            MediaStore.Images.Media.insertImage(
+                inContext.contentResolver,
+                inImage,
+                "Title",
+                null
+            )
+        return Uri.parse(path)
+    }
+
+    fun decodeSampledBitmapFromResource(
+        res: Resources, resId: Int,
+        reqWidth: Int, reqHeight: Int
+    ): Bitmap? { // First decode with inJustDecodeBounds=true to check dimensions
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeResource(res, resId, options)
+        // Calculate inSampleSize
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight)
+        // Decode bitmap with inSampleSize set
+        options.inJustDecodeBounds = false
+        return BitmapFactory.decodeResource(res, resId, options)
+    }
+
+    fun calculateInSampleSize(
+        options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int
+    ): Int { // Raw height and width of image
+        val height = options.outHeight
+        val width = options.outWidth
+        var inSampleSize = 1
+        if (height > reqHeight || width > reqWidth) {
+            val halfHeight = height / 2
+            val halfWidth = width / 2
+            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+// height and width larger than the requested height and width.
+            while (halfHeight / inSampleSize > reqHeight
+                && halfWidth / inSampleSize > reqWidth
+            ) {
+                inSampleSize *= 2
+            }
+        }
+        return inSampleSize
     }
 }
