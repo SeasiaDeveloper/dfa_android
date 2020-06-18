@@ -131,7 +131,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
 
     fun setAdapter() {
-        adapter = CasesAdapter(mContext, complaints.toMutableList(), this, type.toInt(), this,activity as Activity)
+        adapter = CasesAdapter(
+            mContext,
+            complaints.toMutableList(),
+            this,
+            type.toInt(),
+            this,
+            activity as Activity
+        )
         horizontalLayoutManager = LinearLayoutManager(
             mContext,
             RecyclerView.VERTICAL, false
@@ -560,12 +567,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         Utilities.dismissProgress()
         Utilities.showMessage(mContext, responseObject.message.toString())
 
-        if(responseObject.data?.get(0)?.status!!.equals("Unauthentic") || responseObject.data.get(0).status!!.equals("Reject")){
+        if (responseObject.data?.get(0)?.status!!.equals("Unauthentic") || responseObject.data.get(0).status!!.equals(
+                "Reject"
+            )
+        ) {
             //refresh the list
             Utilities.showProgress(mContext)
             doApiCall()
-        }
-        else {
+        } else {
             actionChanged = true
             if (responseObject.data.size != 0) {
                 adapter?.notifyActionData(responseObject.data)
@@ -575,34 +584,36 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun showServerError(error: String) {
         Utilities.dismissProgress()
-        if(error.equals(Constants.TOKEN_ERROR)){
+        if (error.equals(Constants.TOKEN_ERROR)) {
             //logout user
             //(activity as GeneralPublicActivity).logoutUser
-            ForegroundService.stopService(activity as Context)
-            (activity as HomeActivity).finish()
-            PreferenceHandler.clearPreferences(activity as Context)
-            val intent = Intent(activity, LoginActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
-        }
 
-        else{
-        Utilities.showMessage(mContext, error)
-        if (edtPostInfo != null) {
-            edtPostInfo.setText("")
-            imgPost.setImageResource(0)
-            try {
-                Glide.with(this)
-                    .load("")
-                    .apply(
-                        RequestOptions()
-                            .placeholder(R.drawable.camera_placeholder)
-                    )
-                    .into(imgPost)
-            } catch (e: Exception) {
-                e.printStackTrace()
+            if (activity != null) {
+                ForegroundService.stopService(activity as Context)
+                (activity as HomeActivity).finish()
+                PreferenceHandler.clearPreferences(activity as Context)
+                val intent = Intent(activity, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
             }
-        }}
+        } else {
+            Utilities.showMessage(mContext, error)
+            if (edtPostInfo != null) {
+                edtPostInfo.setText("")
+                imgPost.setImageResource(0)
+                try {
+                    Glide.with(this)
+                        .load("")
+                        .apply(
+                            RequestOptions()
+                                .placeholder(R.drawable.camera_placeholder)
+                        )
+                        .into(imgPost)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }
+        }
     }
 
     override fun onClick(p0: View?) {

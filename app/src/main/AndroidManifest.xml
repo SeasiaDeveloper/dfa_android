@@ -72,8 +72,8 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="dfa.app.link"
-                    android:scheme="https" />
+                android:host="dfa.app.link"
+                android:scheme="https" />
             </intent-filter>
 
         </activity>
