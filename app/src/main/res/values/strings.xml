@@ -146,6 +146,8 @@
     <string name="add_your_comment_here">Add a comment..</string>
     <string name="liked_users">Liked Users</string>
     <string name="commented_users">Commented Users</string>
+    <string name="trimming_progress">Trimming your video...</string>
+
 
     <!-- Toolbar titles when navigation menu item is selected -->
     <string-array name="nav_item_activity_titles">

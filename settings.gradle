@@ -1,2 +1,4 @@
+include ':videocompressor'
+include ':k4l-video-trimmer'
 include ':app'
 rootProject.name='NGODemo'

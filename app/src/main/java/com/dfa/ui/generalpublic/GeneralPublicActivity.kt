@@ -1,18 +1,23 @@
 package com.dfa.ui.generalpublic
 
 import android.Manifest
+import android.annotation.TargetApi
 import android.app.Activity
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
@@ -21,14 +26,13 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.MediaController
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.jaygoo.widget.OnRangeChangedListener
-import com.jaygoo.widget.RangeSeekBar
 import com.dfa.R
 import com.dfa.base.BaseActivity
 import com.dfa.customviews.CenteredToolbar
@@ -46,14 +50,17 @@ import com.dfa.utils.RealPathUtil.getCapturedImage
 import com.dfa.utils.Utilities.PERMISSION_ID
 import com.dfa.utils.Utilities.PERMISSION_ID_CAMERA
 import com.dfa.utils.Utilities.requestPermissions
-import com.dfa.utils.FileCompressor
-import com.dfa.utils.GpsUtils
+import com.jaygoo.widget.OnRangeChangedListener
+import com.jaygoo.widget.RangeSeekBar
+import com.vincent.videocompressor.VideoCompress
 import kotlinx.android.synthetic.main.activity_public.*
-import java.io.*
+import java.io.File
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
+@Suppress("INACCESSIBLE_TYPE")
 class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChangedListener,
     PublicComplaintView {
     private lateinit var file: File
@@ -84,6 +91,12 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     var resultGallery: Boolean = true
     var gps_enabled: Boolean = false
     var network_enabled: Boolean = false
+    private val REQUEST_PERMISSIONS = 1
+
+    val PERMISSION_READ_STORAGE = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.CAMERA)
 
     private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
     override fun getLayout(): Int {
@@ -138,6 +151,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private fun setListeners() {
         tvSelectPhoto.setOnClickListener(this)
         tvTakePhoto.setOnClickListener(this)
+        img_delete.setOnClickListener(this)
 
         tvRecordVideo.setOnClickListener(this)
         tvTakeVideo.setOnClickListener(this)
@@ -186,31 +200,66 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     cameraIntent()
                 }
             }
+
+            R.id.img_delete -> {
+                path = ""
+                video_parent.visibility=View.GONE
+                if(videoView!= null){
+                    videoView.stopPlayback()
+                }
+            }
             R.id.tvRecordVideo -> {
                 //Utilities.showMessage(this, getString(R.string.coming_soon))
                 //commented for next ,milestone(server was overloaded)
                   path = ""
-                  val resultVideo = getMarshmallowPermission(
-                      Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                      Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
-                  )
-                  if (resultVideo)
-                      videoFromGalleryIntent()
+//                  val resultVideo = getMarshmallowPermission(
+//                      Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                      Manifest.permission.CAMERA,
+//                      Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
+//                  )
+
+                if (CheckRuntimePermissions.checkMashMallowPermissions(
+                        this,
+                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS
+                    )
+                ) {
+                    videoFromGalleryIntent()
+                }
+
             }
 
             R.id.tvTakeVideo -> {
                 //Utilities.showMessage(this, getString(R.string.coming_soon))
                 //commented for next ,milestone(server was overloaded)
                      path = ""
-                     val resultVideo = getMarshmallowPermission(
-                         Manifest.permission.READ_EXTERNAL_STORAGE,
-                         Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
-                     )
-                     if (resultVideo)
-                         recordVideo()
+//                     val resultVideo = getMarshmallowPermission(
+//                         Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
+//                         Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
+//                     )
+
+                if (CheckRuntimePermissions.checkMashMallowPermissions(
+                        this,
+                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS)) {
+                    recordVideo()
+                }
+
             }
             R.id.btnSubmit -> {
-                complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+
+
+                if(mediaType.equals("videos")){
+                    if(!etDescription.text.toString().trim().isEmpty() && !pathOfImages.get(0).isEmpty()){
+
+                        if(File(pathOfImages.get(0)).length()>5000){
+                            videoCompressorCustom(pathOfImages)
+                        } else{
+                            complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                        }
+                    }
+
+                } else{
+                    complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                }
             }
             R.id.clear_image -> {
                 pathOfImages = ArrayList()
@@ -228,6 +277,99 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
         }
     }
+
+
+
+
+    private fun videoCompressorCustom(video: ArrayList<String>) {
+
+
+        if ( !video.get(0).isEmpty() && File(video.get(0)).length()>0) {
+            var myDirectory = File(Environment.getExternalStorageDirectory(), "Pictures");
+
+            if (!myDirectory.exists()) {
+                myDirectory.mkdirs();
+            }
+
+            var outPath =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath + File.separator + "VID_" + SimpleDateFormat(
+                    "yyyyMMdd_HHmmss",
+                    getLocale()
+                ).format(Date()) + ".mp4";
+
+
+            var progressDialog = ProgressDialog(this)
+
+            VideoCompress.compressVideoMedium( video.get(0), outPath, object :
+                VideoCompress.CompressListener {
+                override fun onStart() {
+                    Log.e("Compressing", "Compress Start")
+                    progressDialog.setCancelable(false)
+                    progressDialog.setMessage("Processing Video...")
+                    progressDialog.show()
+                }
+
+                override fun onSuccess() {
+
+                    try {
+                        if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
+                    } catch (e: IllegalArgumentException) { // Handle or log or ignore
+
+                    } catch (e: java.lang.Exception) { // Handle or log or ignore
+
+                    }
+                  var  compressVideo = ArrayList<String>()
+                    compressVideo.add(outPath)
+                    complaintsPresenter.checkValidations(1, compressVideo, etDescription.text.toString())
+                   ///here is hit api
+
+                }
+
+                override fun onFail() {
+                    Log.e("Compressing", "Compress Failed!")
+                    try {
+                        if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
+                    } catch (e: IllegalArgumentException) { // Handle or log or ignore
+
+                    } catch (e: java.lang.Exception) { // Handle or log or ignore
+
+                    }
+                }
+
+                override fun onProgress(percent: Float) {
+                    progressDialog.setMessage("Compressing video " + percent.toInt() + "%")
+                    Log.e("Compressing", percent.toString())
+
+                }
+            })
+        } else{
+            Toast.makeText(this,"video is very short",Toast.LENGTH_LONG).show()
+        }
+    }
+
+
+    private fun getLocale(): Locale? {
+        val config = resources.configuration
+        var sysLocale: Locale? = null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            sysLocale = getSystemLocale(config)
+        } else {
+            sysLocale = getSystemLocaleLegacy(config)
+        }
+        return sysLocale
+    }
+
+    fun getSystemLocaleLegacy(config: Configuration): Locale? {
+        return config.locale
+    }
+
+    @TargetApi(Build.VERSION_CODES.N)
+    fun getSystemLocale(config: Configuration): Locale? {
+        return config.locales[0]
+    }
+
+
+
 
     private fun getCameraPermission() {
         if (!Utilities.checkCameraPermissions(this)) {
@@ -249,6 +391,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
     private fun recordVideo() {
         val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 59);
         if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent, CAMERA_REQUEST_CODE_VEDIO);
         }
@@ -292,10 +435,27 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
     private fun videoFromGalleryIntent() {
         if (Build.VERSION.SDK_INT < 19) {
+//            val intent = Intent()
+//            intent.setType("video/*")
+//            intent.setAction(Intent.ACTION_GET_CONTENT)
+//            startActivityForResult(Intent.createChooser(intent, "Select videos"), SELECT_VIDEOS)
+
+
+//
+//                Intent intent = new Intent();
+//                intent.setType("video/*");
+//                intent.setAction(Intent.ACTION_PICK);
+//                BaseCameraActivity.this.startActivityForResult(intent, REQUEST_TAKE_GALLERY_VIDEO);
             val intent = Intent()
-            intent.setType("video/*")
-            intent.setAction(Intent.ACTION_GET_CONTENT)
-            startActivityForResult(Intent.createChooser(intent, "Select videos"), SELECT_VIDEOS)
+            intent.setTypeAndNormalize("video/*")
+            intent.action = Intent.ACTION_GET_CONTENT
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            startActivityForResult(
+                Intent.createChooser(intent, "Select Video"),
+                SELECT_VIDEOS
+            )
+
+
         } else {
             val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
             // intent.addCategory(Intent.CATEGORY_OPENABLE)
@@ -312,7 +472,11 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         startActivityForResult(Intent.createChooser(intent, "Select File"), IMAGE_MULTIPLE)
     }
 
-    private fun getMarshmallowPermission(permissionRequest: String, requestCode: Int): Boolean {
+    private fun getMarshmallowPermission(
+        permissionRequest: String,
+        requestCode1: String,
+        requestCode: Int
+    ): Boolean {
         return Utilities.checkPermission(
             this,
             permissionRequest,
@@ -509,16 +673,14 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             if (intent.data != null) {
                 mediaType = "photos"
                 imageUri = intent.data
-
                 if (imageUri != null) {
                     try {
                         BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri!!))
                         imgView.visibility = View.VISIBLE
-                        videoView.visibility = View.GONE
+                        video_parent.visibility = View.GONE
                         imageview_layout.visibility = View.VISIBLE
                         imgView.setImageURI(imageUri)
                         //  path = getRealPathFromURI(imageUri!!)
-
                         //compression
                         val compClass = CompressImageUtilities()
                         val newPathString = compClass.compressImage(
@@ -550,7 +712,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                                     cursor.getString(columnIndex!!)
                                 )
                                 path = newPathString
-
                                 pathOfImages = ArrayList()
                                 pathOfImages.add(path)
                             }
@@ -562,6 +723,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 }
             }
         }
+
+
         //else if (ImagePicker.shouldHandle(requestCode, resultCode, intent)) {
         else if (requestCode == REQUEST_CAMERA && resultCode == Activity.RESULT_OK) {
             mediaType = "photos"
@@ -581,7 +744,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 val tempUri = Uri.fromFile(mPhotoFile)
                 imageview_layout.visibility = View.VISIBLE
                 imgView.visibility = View.VISIBLE
-                videoView.visibility = View.GONE
+
+                video_parent.visibility = View.GONE
                 imgView.setImageURI(tempUri)
 
                 //val tempUri = getImageUriWhenTakePhoto(applicationContext, images.get(0).path)
@@ -606,24 +770,61 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             mediaType = "videos"
             imgView.visibility = View.GONE
             imageview_layout.visibility = View.GONE
-            videoView.visibility = View.VISIBLE
+            video_parent.visibility = View.VISIBLE
             if (intent?.data != null) {
-                val imagePath = intent.getData()?.getPath()
-                if (imagePath!!.contains("video")) {
-                    val realpath = RealPathUtil.getRealPath(this, intent.data!!)
-                    val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
+
+
+                // String selectedVideoPath = getAbsolutePath(this, data.getData());
+
+                val imagePath = intent.getData()
+              //  if (imagePath!!.contains("video")) {
+//                    val realpath = RealPathUtil.getRealPath(this, intent.data!!)
+//                    val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
                     // imgView.setImageBitmap(thumbnail)
 
-                    showVideo(intent.data.toString())
+                if(imagePath!=null){
+                    val intent = Intent(this, TrimmerActivity::class.java)
+                    intent.putExtra("path", FileUtils.getPath(this,imagePath ))
+                    startActivityForResult(intent, 5)
                 }
-                pathOfImages = ArrayList<String>()
-                pathOfImages.add(RealPathUtil.getRealPath(this, intent.data!!).toString())
+
+
+//                    showVideo(intent.data.toString())
+            //    }
+//                pathOfImages = ArrayList<String>()
+//                pathOfImages.add(RealPathUtil.getRealPath(this, intent.data!!).toString())
             }
-        } else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
+        }
+
+        else if (requestCode == 5) {
+            try {
+                if (intent!!.getStringExtra("filePath") != null) {
+                    //Toast.makeText(this,""+data.getStringExtra("filePath"),Toast.LENGTH_LONG).show();
+                    var  path =intent!!.getStringExtra("filePath")
+                    //  onBackPress = "1"
+                    var ountDownTimer = object : CountDownTimer(1000, 1000) {
+                        override fun onTick(millisUntilFinished: Long) {
+                        }
+                        override fun onFinish() {
+                            try {
+                                showVideo(path)
+                            } catch (e: Exception) {
+
+                            }
+                        }
+                    }.start()
+                    pathOfImages = ArrayList<String>()
+                    pathOfImages.add(path)
+                }
+            } catch (e: java.lang.Exception) {
+            }
+        }
+
+        else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
             mediaType = "videos"
             imgView.visibility = View.GONE
             imageview_layout.visibility = View.GONE
-            videoView.visibility = View.VISIBLE
+            video_parent.visibility = View.VISIBLE
             val videoUri = intent?.getData()
             path = getRealPathFromURI(videoUri!!)
             pathOfImages = ArrayList()
@@ -639,7 +840,13 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         videoView.setMediaController(mediaControls)
         videoView.setVideoURI(Uri.parse(videoUri))
         videoView.setBackgroundColor(Color.TRANSPARENT)
-        videoView.seekTo(100) // displays thumbnail of the video
+        videoView.seekTo(100)
+        videoView.setOnErrorListener(object : MediaPlayer.OnErrorListener {
+            override fun onError(mp: MediaPlayer?, what: Int, extra: Int): Boolean {
+                return true
+            }
+        })
+
     }
 
     private fun getRealPathFromURI(uri: Uri): String {
