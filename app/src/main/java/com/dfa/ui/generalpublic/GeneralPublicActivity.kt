@@ -8,6 +8,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.location.Location
@@ -55,8 +56,7 @@ import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.vincent.videocompressor.VideoCompress
 import kotlinx.android.synthetic.main.activity_public.*
-import java.io.File
-import java.io.IOException
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -97,7 +97,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     val PERMISSION_READ_STORAGE = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.CAMERA)
+        Manifest.permission.CAMERA
+    )
 
     private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
     override fun getLayout(): Int {
@@ -213,7 +214,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             R.id.tvRecordVideo -> {
                 //Utilities.showMessage(this, getString(R.string.coming_soon))
                 //commented for next ,milestone(server was overloaded)
-                  path = ""
+                path = ""
 //                  val resultVideo = getMarshmallowPermission(
 //                      Manifest.permission.WRITE_EXTERNAL_STORAGE,
 //                      Manifest.permission.CAMERA,
@@ -233,7 +234,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             R.id.tvTakeVideo -> {
                 //Utilities.showMessage(this, getString(R.string.coming_soon))
                 //commented for next ,milestone(server was overloaded)
-                     path = ""
+                path = ""
 //                     val resultVideo = getMarshmallowPermission(
 //                         Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
 //                         Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
@@ -241,23 +242,35 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                 if (CheckRuntimePermissions.checkMashMallowPermissions(
                         this,
-                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS)) {
+                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS
+                    )
+                ) {
                     recordVideo()
                 }
 
             }
             R.id.btnSubmit -> {
-                if(mediaType.equals("videos")){
-                    if(!etDescription.text.toString().trim().isEmpty() && !pathOfImages.get(0).isEmpty()){
+                if (mediaType.equals("videos")) {
+                    if (!etDescription.text.toString().trim().isEmpty() && !pathOfImages.get(0)
+                            .isEmpty()
+                    ) {
 
-                        if(File(pathOfImages.get(0)).length()>5000){
+                        if (File(pathOfImages.get(0)).length() > 5000) {
                             videoCompressorCustom(pathOfImages)
-                        } else{
-                            complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                        } else {
+                            complaintsPresenter.checkValidations(
+                                1,
+                                pathOfImages,
+                                etDescription.text.toString()
+                            )
                         }
                     }
-                } else{
-                    complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                } else {
+                    complaintsPresenter.checkValidations(
+                        1,
+                        pathOfImages,
+                        etDescription.text.toString()
+                    )
                 }
             }
             R.id.clear_image -> {
@@ -278,12 +291,10 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     }
 
 
-
-
     private fun videoCompressorCustom(video: ArrayList<String>) {
 
 
-        if ( !video.get(0).isEmpty() && File(video.get(0)).length()>0) {
+        if (!video.get(0).isEmpty() && File(video.get(0)).length() > 0) {
             var myDirectory = File(Environment.getExternalStorageDirectory(), "Pictures");
 
             if (!myDirectory.exists()) {
@@ -299,7 +310,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
             var progressDialog = ProgressDialog(this)
 
-            VideoCompress.compressVideoMedium( video.get(0), outPath, object :
+            VideoCompress.compressVideoMedium(video.get(0), outPath, object :
                 VideoCompress.CompressListener {
                 override fun onStart() {
                     Log.e("Compressing", "Compress Start")
@@ -307,6 +318,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     progressDialog.setMessage("Processing Video...")
                     progressDialog.show()
                 }
+
 
                 override fun onSuccess() {
 
@@ -317,10 +329,14 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     } catch (e: java.lang.Exception) { // Handle or log or ignore
 
                     }
-                  var  compressVideo = ArrayList<String>()
+                    var compressVideo = ArrayList<String>()
                     compressVideo.add(outPath)
-                    complaintsPresenter.checkValidations(1, compressVideo, etDescription.text.toString())
-                   ///here is hit api
+                    complaintsPresenter.checkValidations(
+                        1,
+                        compressVideo,
+                        etDescription.text.toString()
+                    )
+                    ///here is hit api
 
                 }
 
@@ -341,8 +357,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                 }
             })
-        } else{
-            Toast.makeText(this,"video is very short",Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "video is very short", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -366,8 +382,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     fun getSystemLocale(config: Configuration): Locale? {
         return config.locales[0]
     }
-
-
 
 
     private fun getCameraPermission() {
@@ -588,15 +602,15 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private fun askForGPS() {
         GpsUtils(this)
             .turnGPSOn(object : GpsUtils.onGpsListener {
-            override fun gpsStatus(isGPSEnable: Boolean) {
-                // turn on GPS
-                isGPS = isGPSEnable
-                /* if(!isGPS)
-            askForGPS()*/
-                if (isGPS)
-                    getLocation()
-            }
-        })
+                override fun gpsStatus(isGPSEnable: Boolean) {
+                    // turn on GPS
+                    isGPS = isGPSEnable
+                    /* if(!isGPS)
+                askForGPS()*/
+                    if (isGPS)
+                        getLocation()
+                }
+            })
     }
 
     private fun getLocation() {
@@ -665,6 +679,43 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
     }
 
+    fun imageCompressor(selectedImage: Uri): Bitmap {
+
+        var imageStream: InputStream? = null
+        try {
+            imageStream = contentResolver.openInputStream(
+                selectedImage
+            )
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        }
+
+        val bmp: Bitmap = BitmapFactory.decodeStream(imageStream)
+
+        var stream: ByteArrayOutputStream? = ByteArrayOutputStream()
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        val byteArray: ByteArray = stream!!.toByteArray()
+        try {
+            stream!!.close()
+            stream = null
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return bmp
+    }
+
+    fun getImageUri(
+        inContext: Context,
+        inImage: Bitmap
+    ): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 80, bytes)
+        val path: String =
+            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
+    }
+
+
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
@@ -674,19 +725,37 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 imageUri = intent.data
                 if (imageUri != null) {
                     try {
-                        BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri!!))
+                        ///   BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri!!))
                         imgView.visibility = View.VISIBLE
                         video_parent.visibility = View.GONE
                         imageview_layout.visibility = View.VISIBLE
                         imgView.setImageURI(imageUri)
                         //  path = getRealPathFromURI(imageUri!!)
                         //compression
-                        val compClass = CompressImageUtilities()
-                        val newPathString = compClass.compressImage(
-                            this@GeneralPublicActivity,
-                            getRealPathFromURI(imageUri!!)
+//                        val compClass = CompressImageUtilities()
+//                        val newPathString = compClass.compressImage(
+//                            this@GeneralPublicActivity,
+//                            getRealPathFromURI(imageUri!!)
+//                        )
+
+                        var bitmap = imageCompressor(imageUri!!)
+
+                        var newPathString = getImageUri(this, bitmap)
+
+
+                        Log.d(
+                            "GeneralPublicActivity",
+                            "gettingSiseUri" + File(imageUri!!.path).length()
                         )
-                        path = newPathString
+                        Log.d(
+                            "GeneralPublicActivity",
+                            "compressedSize" + File(newPathString!!.path).length()
+                        )
+
+//                        var newPathString = Compressor.getDefault(this).compressToFile(File(imageUri.toString()));
+
+
+                        path =  FileUtils.getPath(this, newPathString)
 
                         pathOfImages = ArrayList()
                         pathOfImages.add(path)
@@ -694,7 +763,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         try {
                             val wholeID = DocumentsContract.getDocumentId(imageUri)
                             val id =
-                                wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
+                                wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() })
+                                    .toTypedArray()[1]
                             val column = arrayOf(MediaStore.Images.Media.DATA)
                             val sel = MediaStore.Images.Media._ID + "=?"
                             val cursor = getContentResolver().query(
@@ -749,13 +819,14 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                 //val tempUri = getImageUriWhenTakePhoto(applicationContext, images.get(0).path)
                 var bitmap = getCapturedImage(tempUri, this)
+                var newPathString = getImageUri(this, bitmap)
+
                 if (bitmap != null) {
                     val requiredImage =
                         RealPathUtil.imageRotateIfRequired(mPhotoFile?.absolutePath!!, bitmap)
                     imgView.setImageBitmap(requiredImage)
-                    path =
-                            /*compClass.storeImage(decoded,this@GeneralPublicActivity)?.absolutePath!!*/
-                        mPhotoFile?.absolutePath!!
+                    //path = mPhotoFile?.absolutePath!!
+                    path =  FileUtils.getPath(this, newPathString)
                     pathOfImages = ArrayList<String>()
                     pathOfImages.add(path)
                     // }
@@ -774,12 +845,12 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 // String selectedVideoPath = getAbsolutePath(this, data.getData());
 
                 val imagePath = intent.getData()
-              //  if (imagePath!!.contains("video")) {
+                //  if (imagePath!!.contains("video")) {
 //                    val realpath = RealPathUtil.getRealPath(this, intent.data!!)
 //                    val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
-                    // imgView.setImageBitmap(thumbnail)
+                // imgView.setImageBitmap(thumbnail)
 
-                if(imagePath!=null){
+                if (imagePath != null) {
 
                     val retriever =
                         MediaMetadataRetriever()
@@ -794,28 +865,27 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         val intent = Intent(this, TrimmerActivity::class.java)
                         intent.putExtra("path", FileUtils.getPath(this, imagePath))
                         startActivityForResult(intent, 5)
-                    } else{
+                    } else {
                         Toast.makeText(this, "Video length is too short", Toast.LENGTH_LONG).show()
                     }
                 }
 
 
 //                    showVideo(intent.data.toString())
-            //    }
+                //    }
 //                pathOfImages = ArrayList<String>()
 //                pathOfImages.add(RealPathUtil.getRealPath(this, intent.data!!).toString())
             }
-        }
-
-        else if (requestCode == 5) {
+        } else if (requestCode == 5) {
             try {
                 if (intent!!.getStringExtra("filePath") != null) {
                     //Toast.makeText(this,""+data.getStringExtra("filePath"),Toast.LENGTH_LONG).show();
-                    var  path =intent!!.getStringExtra("filePath")
+                    var path = intent!!.getStringExtra("filePath")
                     //  onBackPress = "1"
                     var ountDownTimer = object : CountDownTimer(1000, 1000) {
                         override fun onTick(millisUntilFinished: Long) {
                         }
+
                         override fun onFinish() {
                             try {
                                 showVideo(path)
@@ -832,9 +902,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 }
             } catch (e: java.lang.Exception) {
             }
-        }
-
-        else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
             mediaType = "videos"
             imgView.visibility = View.GONE
             imageview_layout.visibility = View.GONE
