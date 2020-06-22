@@ -1,14 +1,16 @@
 package com.dfa.ui.home.fragments.home.view
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
+import android.os.Build
+import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -20,6 +22,7 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -69,6 +72,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     var genPubHomeFrag = GeneralPublicHomeFragment()
     private var isGPS: Boolean = false
     var isFirstTimeEntry = true
+    private var provider: String = ""
+    private lateinit var locationManager: LocationManager
+    var gps_enabled: Boolean = false
+    var network_enabled: Boolean = false
 
     override fun getLayout(): Int {
         return R.layout.home_activity
@@ -96,7 +103,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         if (!authorizationToken!!.isEmpty()) {
             homePresenter.hitProfileApi(authorizationToken)
         }
-        if (!isGPS && !isPermissionDialogRequired) {
+        if (!isGPS && !isPermissionDialogRequired ) {
             askForGPS()
         }
 
@@ -104,6 +111,17 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             refreshReceiver,
             IntentFilter("policeJsonReceiver")
         ) //registering the broadcast receiver
+
+        if (btnLogin != null) {
+            btnLogin.setOnClickListener {
+                // ForegroundService.stopService(this)
+                finish()
+                PreferenceHandler.clearPreferences(this)
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onPause() {
@@ -226,7 +244,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             toolbar_title.text = getString(R.string.police_dashboard)
         (nav_action as Toolbar).setTitleTextColor(Color.BLACK)
 
-        getLocation()
+        getStartingLocation()
 
         //dialog
         if (getIntent() != null && getIntent().getExtras() != null && (getIntent().getExtras()?.getString(
@@ -243,15 +261,18 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             notificationResponse.is_notify = getIntent().getExtras()?.getString("is_notify")
             displayAcceptRejDialog(notificationResponse)
         }
+
+        setTabAdapter()
     }
 
     @SuppressLint("SetTextI18n")
     fun setTabAdapter() {
 
         val adapter = TabLayoutAdapter(supportFragmentManager)
-        if (!genPubHomeFrag.isAdded) {
-            adapter.addFragment(genPubHomeFrag, "Home")
-        }
+        /*  if (!genPubHomeFrag.isAdded) {
+              adapter.addFragment(genPubHomeFrag, "Home")
+          }*/
+        adapter.addFragment(genPubHomeFrag, "Home")
         adapter.addFragment(EmergencyFragment(), "Emergency")
         //adapter.addFragment(CasesFragment(), "Cases")
         adapter.addFragment(PhotosFragment(), "Photos")
@@ -263,50 +284,113 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         var menu = nav_view.menu
 
 
-        val role = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")
-        if (role.equals("0")) {
-            userType.setText(getString(R.string.gpu))
+        /*  val role = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")
+          if (role.equals("0")) {
+              userType.setText(getString(R.string.gpu))
 
-        } else if (role.equals("1")) {
-            userType.setText(getString(R.string.ngo_user))
+          } else if (role.equals("1")) {
+              userType.setText(getString(R.string.ngo_user))
 
-        } else if (role.equals("2")) {
-            userType.setText(getString(R.string.police_user))
+          } else if (role.equals("2")) {
+              userType.setText(getString(R.string.police_user))
 
-        }
+          }*/
 
-
-
+        authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         if (authorizationToken!!.isEmpty()) {
             menu.findItem(R.id.nav_edit_profile).setVisible(false)
             menu.findItem(R.id.nav_password).setVisible(false)
             menu.findItem(R.id.nav_logout).setVisible(false)
             menu.findItem(R.id.nav_cases).setVisible(false)
-            userType.setText(getString(R.string.guest_user))
-            btnLogin.visibility = View.VISIBLE
+            //userType.setText(getString(R.string.guest_user))
         } else {
             menu.findItem(R.id.nav_edit_profile).setVisible(true)
             menu.findItem(R.id.nav_password).setVisible(true)
             menu.findItem(R.id.nav_logout).setVisible(true)
             menu.findItem(R.id.nav_cases).setVisible(true)
-            btnLogin.visibility = View.GONE
         }
 
-        authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
-        if (authorizationToken!!.isEmpty()) {
-            textName.setText(getString(R.string.guest_user))
+        /*  if (authorizationToken!!.isEmpty()) {
+              textName.setText(getString(R.string.guest_user))
+          }*/
+    }
+
+    private val mLocationListener = object : LocationListener {
+        override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
         }
 
+        override fun onProviderEnabled(p0: String?) {
+        }
+
+        override fun onProviderDisabled(p0: String?) {
+        }
+
+        override fun onLocationChanged(location: Location) {
+            //your code here
+            if (location != null) {
+                val latti = location.latitude
+                val longi = location.longitude
+                var lattitude = (latti).toString()
+                var longitude = (longi).toString()
+                PreferenceHandler.writeString(
+                    this@HomeActivity,
+                    PreferenceHandler.LATITUDE,
+                    lattitude
+                )
+                PreferenceHandler.writeString(
+                    this@HomeActivity,
+                    PreferenceHandler.LONGITUDE,
+                    longitude
+                )
+
+            }
+        }
+    }
+
+    private fun getLocation() {
+        if (!Utilities.checkPermissions(this))
+            Utilities.requestPermissions(this)
+        else
+            try {
+                // Request location updates
+                locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER,
+                    0L,
+                    0f,
+                    mLocationListener
+                )
+            } catch (ex: SecurityException) {
+                Log.d("myTag", "Security Exception, no location available")
+            }
     }
 
     //checking location
-    private fun getLocation() {
-        if (!Utilities.checkPermissions(this)) {
-            Utilities.requestPermissions(this)
-        } else {
-            //  askForGPS()
-            isPermissionDialogRequired = false
-        }
+    private fun getStartingLocation() {
+        locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        provider = LocationManager.GPS_PROVIDER
+
+      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            } catch (ex: Exception) {
+            }
+            try {
+                network_enabled =
+                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+            } catch (ex: Exception) {
+            }
+            if (!gps_enabled && !network_enabled) {
+                askForGPS()
+            }
+
+        } else {*/
+            if (!Utilities.checkPermissions(this)) {
+                Utilities.requestPermissions(this)
+            } else {
+                //  askForGPS()
+                isPermissionDialogRequired = false
+            }
+        //}
     }
 
     //handling callback of Location permission
@@ -320,20 +404,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 //  askForGPS()
                 isPermissionDialogRequired = false
             } else {
-                if(ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])){
-                    //denied
-                    Log.e("denied",  permissions[0]);
-                }else{
-                    if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED){
-                        //allowed
-                        Log.e("allowed",  permissions[0]);
-                    } else{
-                        //set to never ask again
-                        Log.e("set to never ask again",  permissions[0]);
-                        //do something here.
-                    }
-                }
-                Utilities.requestPermissions(this)
+               AlertDialog.settingDialog(this)
             }
         }
     }
@@ -342,30 +413,23 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private fun askForGPS() {
         GpsUtils(this)
             .turnGPSOn(object : GpsUtils.onGpsListener {
-            override fun gpsStatus(isGPSEnable: Boolean) {
-                // turn on GPS
-                isGPS = isGPSEnable
-                if (isGPS) {
-                    //location
-                    locationCallBack = this@HomeActivity;
-
-                    ForegroundService.startService(
-                        this@HomeActivity,
-                        "Syncing your location..",
-                        locationCallBack
-                    )
-                    Utilities.showProgress(this@HomeActivity)
+                override fun gpsStatus(isGPSEnable: Boolean) {
+                    // turn on GPS
+                    isGPS = isGPSEnable
+                    if (isGPS)
+                        getLocation()
                 }
-            }
-        })
+            })
     }
 
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
         textName.setText(getProfileResponse.data?.first_name + " " + getProfileResponse.data?.middle_name + " " + getProfileResponse.data?.last_name)
         if (authorizationToken!!.isEmpty()) {
             userInfo.visibility = View.GONE
+            btnLogin.visibility = View.VISIBLE
         } else {
             userInfo.visibility = View.VISIBLE
+            btnLogin.visibility = View.GONE
             /*  if (getProfileResponse.data?.isVerified!!.equals("1")) {
                   userInfo.setText("Verified")
                   verified_icon.visibility = View.VISIBLE
@@ -382,15 +446,15 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 } else {
                     verified_icon.visibility = View.GONE
                 }
-                textAddress.visibility=View.GONE
+                textAddress.visibility = View.GONE
             } else if (role.equals("1")) {
                 userInfo.setText(getString(R.string.ngo_user))
                 verified_icon.visibility = View.VISIBLE
-                textAddress.visibility=View.VISIBLE
+                textAddress.visibility = View.VISIBLE
             } else if (role.equals("2")) {
                 userInfo.setText(getString(R.string.police_user))
                 verified_icon.visibility = View.VISIBLE
-                textAddress.visibility=View.VISIBLE
+                textAddress.visibility = View.VISIBLE
             }
 
             textAddress.setText(getProfileResponse.data?.address_1)
@@ -436,8 +500,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         menuItem = item
-        when (item.itemId) {
 
+        when (item.itemId) {
 
             R.id.nav_edit_profile -> {
                 val intent = Intent(this, ProfileActivity::class.java)
@@ -496,6 +560,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        mToggle
         return if (mToggle!!.onOptionsItemSelected(item)) {
             true
         } else super.onOptionsItemSelected(item)
@@ -601,7 +666,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     override fun onClick() {
-        ForegroundService.stopService(this)
+        // ForegroundService.stopService(this)
         finish()
         PreferenceHandler.clearPreferences(this)
         val intent = Intent(this, LoginActivity::class.java)
@@ -624,7 +689,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
                 setTabAdapter()
                 btnLogin.setOnClickListener {
-                    ForegroundService.stopService(this)
+                    // ForegroundService.stopService(this)
                     finish()
                     PreferenceHandler.clearPreferences(this)
                     val intent = Intent(this, LoginActivity::class.java)
@@ -662,7 +727,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
-
         try {
             genPubHomeFrag.refreshList()
         } catch (e: Exception) {

@@ -4,18 +4,23 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import android.view.Gravity
 import android.view.Window
 import android.view.WindowManager
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import com.dfa.R
 import com.dfa.ui.generalpublic.presenter.GetReportCrimeAlertDialog
 import com.dfa.ui.login.view.LoginActivity
 import com.dfa.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.dfa.utils.PoliceDialogCallback
 import com.dfa.utils.Utilities
+import com.fasterxml.jackson.databind.util.ClassUtil.getPackageName
+
 
 class AlertDialog {
     companion object {
@@ -95,6 +100,28 @@ class AlertDialog {
             }
             btnCancel.setOnClickListener {
                 dialog.dismiss()
+            }
+            dialog.show()
+        }
+
+        fun settingDialog(context: Context) {
+            var dialog = Dialog(context!!)
+            dialog.setContentView(R.layout.show_locations_settings_dialog)
+            dialog.setCanceledOnTouchOutside(false)
+            dialog.window?.setLayout(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT
+            )
+            dialog.window?.setGravity(Gravity.CENTER)
+            dialog.getWindow()!!.setBackgroundDrawableResource(android.R.color.transparent)
+            var btnLocation = dialog.findViewById<TextView>(R.id.btn_location)
+            btnLocation.setOnClickListener {
+                dialog.dismiss()
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri = Uri.fromParts("package", context.getPackageName(), null)
+                intent.data = uri
+                context.startActivity(intent)
+
             }
             dialog.show()
         }

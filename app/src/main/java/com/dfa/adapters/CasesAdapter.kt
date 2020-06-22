@@ -897,7 +897,7 @@ class CasesAdapter(
 
             } else {
                 itemView.imgExpandable.setOnClickListener {
-                    if (!token!!.isEmpty()) {
+                   // if (!token!!.isEmpty()) {
                         if (itemView.childExpandable.visibility == View.VISIBLE) {
                             itemView.childExpandable.visibility = View.GONE
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
@@ -907,14 +907,15 @@ class CasesAdapter(
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
                             itemView.moreLess.setText(R.string.less)
                         }
-                    } else {
+                   /* }
+                    else {
                         com.dfa.utils.alert.AlertDialog.guesDialog(context)
-                    }
+                    }*/
                 }
 
                 //added for less or more
                 itemView.moreLess.setOnClickListener {
-                    if (!token!!.isEmpty()) {
+                   // if (!token!!.isEmpty()) {
                         if (itemView.childExpandable.visibility == View.VISIBLE) {
                             itemView.childExpandable.visibility = View.GONE
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
@@ -924,9 +925,9 @@ class CasesAdapter(
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
                             itemView.moreLess.setText(R.string.less)
                         }
-                    } else {
+                /*    } else {
                         com.dfa.utils.alert.AlertDialog.guesDialog(context)
-                    }
+                    }*/
                 }
             }
         }

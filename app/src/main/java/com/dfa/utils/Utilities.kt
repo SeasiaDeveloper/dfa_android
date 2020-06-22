@@ -421,7 +421,7 @@ object Utilities {
             locationB.longitude = longitude!!.toDouble()
             return (locationA.distanceTo(locationB) / 1000).toInt()
         } else {
-            return -1
+            return 0
         }
     }
 

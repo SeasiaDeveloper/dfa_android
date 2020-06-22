@@ -63,7 +63,7 @@ import kotlin.collections.ArrayList
 
 @Suppress("INACCESSIBLE_TYPE")
 class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChangedListener,
-    PublicComplaintView,GetReportCrimeAlertDialog {
+    PublicComplaintView, GetReportCrimeAlertDialog {
     private lateinit var file: File
     private var longitude: String = ""
     private var lattitude: String = ""
@@ -93,15 +93,25 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     var gps_enabled: Boolean = false
     var network_enabled: Boolean = false
     private val REQUEST_PERMISSIONS = 1
+    private val REQUEST_PERMISSIONS_GALLERY_VIDEO = 2
+    private var isPermissionDialogRequired = true
 
     val PERMISSION_READ_STORAGE = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.CAMERA)
+        Manifest.permission.CAMERA
+    )
 
     private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
     override fun getLayout(): Int {
         return R.layout.activity_public
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (!isGPS && !isPermissionDialogRequired ) {
+            askForGPS()
+        }
     }
 
     override fun setupUI() {
@@ -113,24 +123,11 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
         setListeners()
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        provider = LocationManager.GPS_PROVIDER
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            try {
-                gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            } catch (ex: Exception) {
-            }
-            try {
-                network_enabled =
-                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-            } catch (ex: Exception) {
-            }
-            if (!gps_enabled && !network_enabled) {
-                askForGPS()
-            }
-
+        if (!Utilities.checkPermissions(this)) {
+            Utilities.requestPermissions(this)
         } else {
-            requestPermissions(this)
+            //  askForGPS()
+            isPermissionDialogRequired = false
         }
 
 
@@ -213,7 +210,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             R.id.tvRecordVideo -> {
                 //Utilities.showMessage(this, getString(R.string.coming_soon))
                 //commented for next ,milestone(server was overloaded)
-                  path = ""
+                path = ""
 //                  val resultVideo = getMarshmallowPermission(
 //                      Manifest.permission.WRITE_EXTERNAL_STORAGE,
 //                      Manifest.permission.CAMERA,
@@ -233,7 +230,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             R.id.tvTakeVideo -> {
                 //Utilities.showMessage(this, getString(R.string.coming_soon))
                 //commented for next ,milestone(server was overloaded)
-                     path = ""
+                path = ""
 //                     val resultVideo = getMarshmallowPermission(
 //                         Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
 //                         Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
@@ -241,7 +238,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                 if (CheckRuntimePermissions.checkMashMallowPermissions(
                         this,
-                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS)) {
+                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS
+                    )
+                ) {
                     recordVideo()
                 }
 
@@ -249,18 +248,26 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             R.id.btnSubmit -> {
 
 
-                if(mediaType.equals("videos")){
-                    if(!etDescription.text.toString().trim().isEmpty() && !pathOfImages.get(0).isEmpty()){
+                if (mediaType.equals("videos")) {
+                    if (/*!etDescription.text.toString().trim().isEmpty() &&*/ !pathOfImages.get(0).isEmpty()) {
 
-                        if(File(pathOfImages.get(0)).length()>5000){
+                        if (File(pathOfImages.get(0)).length() > 5000) {
                             videoCompressorCustom(pathOfImages)
-                        } else{
-                            complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                        } else {
+                            complaintsPresenter.checkValidations(
+                                1,
+                                pathOfImages,
+                                etDescription.text.toString()
+                            )
                         }
                     }
 
-                } else{
-                    complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                } else {
+                    complaintsPresenter.checkValidations(
+                        1,
+                        pathOfImages,
+                        etDescription.text.toString()
+                    )
                 }
             }
             R.id.clear_image -> {
@@ -281,12 +288,10 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     }
 
 
-
-
     private fun videoCompressorCustom(video: ArrayList<String>) {
 
 
-        if ( !video.get(0).isEmpty() && File(video.get(0)).length()>0) {
+        if (!video.get(0).isEmpty() && File(video.get(0)).length() > 0) {
             var myDirectory = File(Environment.getExternalStorageDirectory(), "Pictures");
 
             if (!myDirectory.exists()) {
@@ -302,7 +307,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
             var progressDialog = ProgressDialog(this)
 
-            VideoCompress.compressVideoMedium( video.get(0), outPath, object :
+            VideoCompress.compressVideoMedium(video.get(0), outPath, object :
                 VideoCompress.CompressListener {
                 override fun onStart() {
                     Log.e("Compressing", "Compress Start")
@@ -320,10 +325,14 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     } catch (e: java.lang.Exception) { // Handle or log or ignore
 
                     }
-                  var  compressVideo = ArrayList<String>()
+                    var compressVideo = ArrayList<String>()
                     compressVideo.add(outPath)
-                    complaintsPresenter.checkValidations(1, compressVideo, etDescription.text.toString())
-                   ///here is hit api
+                    complaintsPresenter.checkValidations(
+                        1,
+                        compressVideo,
+                        etDescription.text.toString()
+                    )
+                    ///here is hit api
 
                 }
 
@@ -344,8 +353,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                 }
             })
-        } else{
-            Toast.makeText(this,"video is very short",Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "video is very short", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -369,8 +378,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     fun getSystemLocale(config: Configuration): Locale? {
         return config.locales[0]
     }
-
-
 
 
     private fun getCameraPermission() {
@@ -583,23 +590,32 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED)
             // Utilities.requestPermissions(this)
             else
-                askForGPS()
+                if (!isGPS) {
+                    askForGPS()
+                }
         }
+
+        if (requestCode == REQUEST_PERMISSIONS) {
+            recordVideo()
+        }
+
+        if (requestCode == REQUEST_PERMISSIONS_GALLERY_VIDEO) {
+            videoFromGalleryIntent()
+        }
+
     }
 
 
     private fun askForGPS() {
         GpsUtils(this)
             .turnGPSOn(object : GpsUtils.onGpsListener {
-            override fun gpsStatus(isGPSEnable: Boolean) {
-                // turn on GPS
-                isGPS = isGPSEnable
-                /* if(!isGPS)
-            askForGPS()*/
-                if (isGPS)
-                    getLocation()
-            }
-        })
+                override fun gpsStatus(isGPSEnable: Boolean) {
+                    // turn on GPS
+                    isGPS = isGPSEnable
+                    if (isGPS)
+                        getLocation()
+                }
+            })
     }
 
     private fun getLocation() {
@@ -779,34 +795,33 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 // String selectedVideoPath = getAbsolutePath(this, data.getData());
 
                 val imagePath = intent.getData()
-              //  if (imagePath!!.contains("video")) {
+                //  if (imagePath!!.contains("video")) {
 //                    val realpath = RealPathUtil.getRealPath(this, intent.data!!)
 //                    val thumbnail = RealPathUtil.getThumbnailFromVideo(realpath!!)
-                    // imgView.setImageBitmap(thumbnail)
+                // imgView.setImageBitmap(thumbnail)
 
-                if(imagePath!=null){
+                if (imagePath != null) {
                     val intent = Intent(this, TrimmerActivity::class.java)
-                    intent.putExtra("path", FileUtils.getPath(this,imagePath ))
+                    intent.putExtra("path", FileUtils.getPath(this, imagePath))
                     startActivityForResult(intent, 5)
                 }
 
 
 //                    showVideo(intent.data.toString())
-            //    }
+                //    }
 //                pathOfImages = ArrayList<String>()
 //                pathOfImages.add(RealPathUtil.getRealPath(this, intent.data!!).toString())
             }
-        }
-
-        else if (requestCode == 5) {
+        } else if (requestCode == 5) {
             try {
                 if (intent!!.getStringExtra("filePath") != null) {
                     //Toast.makeText(this,""+data.getStringExtra("filePath"),Toast.LENGTH_LONG).show();
-                    var  path =intent!!.getStringExtra("filePath")
+                    var path = intent!!.getStringExtra("filePath")
                     //  onBackPress = "1"
                     var ountDownTimer = object : CountDownTimer(1000, 1000) {
                         override fun onTick(millisUntilFinished: Long) {
                         }
+
                         override fun onFinish() {
                             try {
                                 showVideo(path)
@@ -820,9 +835,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 }
             } catch (e: java.lang.Exception) {
             }
-        }
-
-        else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
+        } else if (requestCode == CAMERA_REQUEST_CODE_VEDIO && resultCode == Activity.RESULT_OK) {
             mediaType = "videos"
             imgView.visibility = View.GONE
             imageview_layout.visibility = View.GONE
@@ -953,7 +966,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             askForGPS()
         }
 
-        com.dfa.utils.alert.AlertDialog.reportCrimeAlertDialog(this,this)
+        com.dfa.utils.alert.AlertDialog.reportCrimeAlertDialog(this, this)
     }
 
     override fun getCallback() {
@@ -1019,7 +1032,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     override fun showServerError(error: String) {
         dismissProgress()
         if (error.equals(Constants.TOKEN_ERROR)) {
-            ForegroundService.stopService(this@GeneralPublicActivity)
+            //ForegroundService.stopService(this@GeneralPublicActivity)
             finish()
             PreferenceHandler.clearPreferences(this@GeneralPublicActivity)
             val intent = Intent(this, LoginActivity::class.java)
