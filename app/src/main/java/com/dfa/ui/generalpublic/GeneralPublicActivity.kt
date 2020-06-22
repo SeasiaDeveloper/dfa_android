@@ -13,6 +13,7 @@ import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
@@ -246,8 +247,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
             }
             R.id.btnSubmit -> {
-
-
                 if(mediaType.equals("videos")){
                     if(!etDescription.text.toString().trim().isEmpty() && !pathOfImages.get(0).isEmpty()){
 
@@ -257,7 +256,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                             complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
                         }
                     }
-
                 } else{
                     complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
                 }
@@ -392,7 +390,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
     private fun recordVideo() {
         val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 59);
+        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 120);
         if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent, CAMERA_REQUEST_CODE_VEDIO);
         }
@@ -769,9 +767,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             getLocation()
         } else if (requestCode == SELECT_VIDEOS && resultCode == Activity.RESULT_OK || requestCode == SELECT_VIDEOS_KITKAT && resultCode == Activity.RESULT_OK) {
             mediaType = "videos"
-            imgView.visibility = View.GONE
-            imageview_layout.visibility = View.GONE
-            video_parent.visibility = View.VISIBLE
+
             if (intent?.data != null) {
 
 
@@ -784,9 +780,23 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     // imgView.setImageBitmap(thumbnail)
 
                 if(imagePath!=null){
-                    val intent = Intent(this, TrimmerActivity::class.java)
-                    intent.putExtra("path", FileUtils.getPath(this,imagePath ))
-                    startActivityForResult(intent, 5)
+
+                    val retriever =
+                        MediaMetadataRetriever()
+                    retriever.setDataSource(this, imagePath)
+                    val time =
+                        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                    val timeInMillisec = time.toLong()
+                    retriever.release()
+
+                    if (timeInMillisec >= 5000) {
+
+                        val intent = Intent(this, TrimmerActivity::class.java)
+                        intent.putExtra("path", FileUtils.getPath(this, imagePath))
+                        startActivityForResult(intent, 5)
+                    } else{
+                        Toast.makeText(this, "Video length is too short", Toast.LENGTH_LONG).show()
+                    }
                 }
 
 
@@ -814,6 +824,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                             }
                         }
                     }.start()
+                    imgView.visibility = View.GONE
+                    imageview_layout.visibility = View.GONE
+                    video_parent.visibility = View.VISIBLE
                     pathOfImages = ArrayList<String>()
                     pathOfImages.add(path)
                 }
