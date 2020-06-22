@@ -19,6 +19,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -319,6 +320,19 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 //  askForGPS()
                 isPermissionDialogRequired = false
             } else {
+                if(ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])){
+                    //denied
+                    Log.e("denied",  permissions[0]);
+                }else{
+                    if(ActivityCompat.checkSelfPermission(this, permissions[0]) == PackageManager.PERMISSION_GRANTED){
+                        //allowed
+                        Log.e("allowed",  permissions[0]);
+                    } else{
+                        //set to never ask again
+                        Log.e("set to never ask again",  permissions[0]);
+                        //do something here.
+                    }
+                }
                 Utilities.requestPermissions(this)
             }
         }
@@ -348,7 +362,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
         textName.setText(getProfileResponse.data?.first_name + " " + getProfileResponse.data?.middle_name + " " + getProfileResponse.data?.last_name)
-        textAddress.setText(getProfileResponse.data?.address_1)
         if (authorizationToken!!.isEmpty()) {
             userInfo.visibility = View.GONE
         } else {
@@ -369,14 +382,18 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 } else {
                     verified_icon.visibility = View.GONE
                 }
+                textAddress.visibility=View.GONE
             } else if (role.equals("1")) {
                 userInfo.setText(getString(R.string.ngo_user))
                 verified_icon.visibility = View.VISIBLE
-
+                textAddress.visibility=View.VISIBLE
             } else if (role.equals("2")) {
                 userInfo.setText(getString(R.string.police_user))
                 verified_icon.visibility = View.VISIBLE
+                textAddress.visibility=View.VISIBLE
             }
+
+            textAddress.setText(getProfileResponse.data?.address_1)
 
         }
 

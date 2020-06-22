@@ -238,4 +238,9 @@
     <string name="gpu">GPU</string>
     <string name="ngo_user">NGO</string>
     <string name="police_user">Police</string>
+    <string name="case_no_heading">Case No:</string>
+    <string name="confirm">Confirm</string>
+    <string name="agree">Agree</string>
+    <string name="warning_text">Please make sure that the drug incident you are reporting is genuine.For reporting false incident,you may be jailed/punished/fined for abuse/misuse/mislead/nuisance including other appropriate criminal case against you.</string>
+    <string name="earnings_screen_text"><font fgcolor="#ff000a">* </font><font fgcolor="#006600">Report drug incident in your area and get Paid from Drug Free Arunachal</font></string>
 </resources>

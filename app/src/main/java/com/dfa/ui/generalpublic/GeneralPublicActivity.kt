@@ -35,6 +35,7 @@ import com.dfa.customviews.CenteredToolbar
 import com.dfa.pojo.request.ComplaintRequest
 import com.dfa.pojo.response.ComplaintResponse
 import com.dfa.pojo.response.GetCrimeTypesResponse
+import com.dfa.ui.generalpublic.presenter.GetReportCrimeAlertDialog
 import com.dfa.ui.generalpublic.presenter.PublicComplaintPresenter
 import com.dfa.ui.generalpublic.presenter.PublicComplaintPresenterImpl
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
@@ -55,7 +56,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChangedListener,
-    PublicComplaintView {
+    PublicComplaintView,GetReportCrimeAlertDialog {
     private lateinit var file: File
     private var longitude: String = ""
     private var lattitude: String = ""
@@ -695,12 +696,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     override fun onValidationSuccess() {
         dismissProgress()
 
-        val array = arrayOfNulls<String>(pathOfImages.size)
-        var id: String? = null
-        if (getCrimeTypesResponse != null) {
-            id = getCrimeTypesResponse.data?.get(spTypesOfCrime.selectedItemPosition)?.id
-        }
-
         if (lattitude.equals("") || longitude.equals("")) {
             if (ActivityCompat.checkSelfPermission(
                     this,
@@ -749,6 +744,16 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         if (lattitude.equals("")) {
             askForGPS()
         }
+
+        com.dfa.utils.alert.AlertDialog.reportCrimeAlertDialog(this,this)
+    }
+
+    override fun getCallback() {
+        var id: String? = null
+        if (getCrimeTypesResponse != null) {
+            id = getCrimeTypesResponse.data?.get(spTypesOfCrime.selectedItemPosition)?.id
+        }
+        val array = arrayOfNulls<String>(pathOfImages.size)
 
         if (isInternetAvailable()) {
             showProgress()
