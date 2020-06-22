@@ -201,13 +201,14 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 }
             }
 
-            R.id.img_delete -> {
-                path = ""
-                video_parent.visibility=View.GONE
-                if(videoView!= null){
-                    videoView.stopPlayback()
-                }
-            }
+//            R.id.img_delete -> {
+//                path = ""
+//                video_parent.visibility=View.GONE
+//
+//                if(videoView!= null){
+//                    videoView.stopPlayback()
+//                }
+//            }
             R.id.tvRecordVideo -> {
                 //Utilities.showMessage(this, getString(R.string.coming_soon))
                 //commented for next ,milestone(server was overloaded)

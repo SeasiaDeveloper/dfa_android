@@ -235,6 +235,7 @@
                     <ImageView
                         android:id="@+id/img_delete"
                         android:layout_margin="5dp"
+                        android:visibility="gone"
                         android:layout_alignParentRight="true"
                         android:src="@drawable/ic_deleve"
                         android:layout_width="30dp"
