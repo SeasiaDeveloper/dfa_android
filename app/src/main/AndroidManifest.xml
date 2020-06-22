@@ -89,6 +89,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".ui.generalpublic.TrimmerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+
+
+        <activity
             android:name=".ui.police.PoliceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />

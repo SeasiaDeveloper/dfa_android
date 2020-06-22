@@ -4,10 +4,13 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.view.*
 import android.widget.ImageView
+import android.widget.MediaController
 import android.widget.PopupMenu
 import androidx.core.view.MenuCompat
 
@@ -35,6 +38,7 @@ import com.dfa.ui.mycases.MyCasesActivity
 import com.dfa.ui.profile.ProfileActivity
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
+import kotlinx.android.synthetic.main.activity_public.*
 import kotlinx.android.synthetic.main.item_case.view.*
 
 
@@ -374,22 +378,33 @@ class CasesAdapter(
                     .placeholder(R.drawable.noimage)
                     .error(R.drawable.noimage)
 
-                if (item.media_list != null && item.media_list.isNotEmpty()) {
-                    itemView.imgMediaPost.visibility = View.VISIBLE
-                    val mediaUrl: String = item.media_list[0]
-                    try {
-                        Glide.with(context).asBitmap().load(mediaUrl).apply(options)
-                            .into(itemView.imgMediaPost)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                } else {
-                    itemView.imgMediaPost.visibility = View.GONE
-                }
 
+               if(item.media_type.equals("image")){
+                   if (item.media_list != null && item.media_list.isNotEmpty()) {
+                       itemView.imgMediaPost.visibility = View.VISIBLE
+                       itemView.videoThumbNial.visibility = View.GONE
+                       val mediaUrl: String = item.media_list[0]
+                       try {
+                           Glide.with(context).asBitmap().load(mediaUrl).apply(options)
+                               .into(itemView.imgMediaPost)
+                       } catch (e: Exception) {
+                           e.printStackTrace()
+                       }
+                   } else {
+                       itemView.imgMediaPost.visibility = View.GONE
+                   }
+
+               } else if(item.media_type.equals("videos")){
+                   if (item.media_list != null && item.media_list.isNotEmpty()) {
+                       itemView.imgMediaPost.visibility = View.GONE
+                       itemView.videoThumbNial.visibility = View.VISIBLE
+                       Glide.with(context)
+                           .asBitmap()
+                           .load(itemView.imgMediaPost)
+                           .into(itemView.videoThumbNial);
+                   }
+               }
                 //btnDelete visibility
-
-
                 if (item.showDelete == 1) {
                     itemView.btnDeletePost.visibility = View.VISIBLE
                     //  itemView.iv_menu.visibility=View.
