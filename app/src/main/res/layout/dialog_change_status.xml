@@ -7,7 +7,7 @@
         android:orientation="vertical">
 
 
-       <com.ngo.customviews.CustomTextViewheading
+       <com.dfa.customviews.CustomTextViewheading
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
@@ -71,7 +71,7 @@
         </RadioGroup>
 
 
-        <com.ngo.customviews.CustomEditText
+        <com.dfa.customviews.CustomEditText
             android:id="@+id/etDescription"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_100sdp"
@@ -93,7 +93,7 @@
             app:font="@{`regular`}" />
 
 
-       <com.ngo.customviews.CustomTextViewheading
+       <com.dfa.customviews.CustomTextViewheading
             android:id="@+id/btnDone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

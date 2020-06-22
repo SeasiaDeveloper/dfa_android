@@ -11,6 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:background="@color/light_grey_bg"
             android:orientation="vertical">
 
             <include
@@ -211,7 +212,7 @@
                      android:layout_width="match_parent"
                      android:layout_height="wrap_content">-->
 
-            <com.ngo.customviews.CustomTextViewheading
+            <com.dfa.customviews.CustomTextViewheading
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -255,7 +256,7 @@
             </RelativeLayout>
             <!--</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
-            <com.ngo.customviews.CustomtextView
+            <com.dfa.customviews.CustomtextView
                 android:id="@+id/tvRecord"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -265,15 +266,13 @@
 
         </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+      <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|right"
             android:layout_margin="@dimen/_30sdp"
-            android:src="@drawable/ic_plus"
-            app:backgroundTint="@color/green"
-            app:tint="@android:color/white" />
+            android:src="@drawable/add_icon" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

@@ -25,7 +25,7 @@
             android:background="@color/white"
             android:orientation="vertical">
 
-         <com.ngo.customviews.CustomTextViewheading
+         <com.dfa.customviews.CustomTextViewheading
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/_10sdp"
@@ -33,10 +33,10 @@
                 android:gravity="center"
                 android:text="@string/please_enter_confirmation_code"
                 android:textColor="@color/black"
-                android:textSize="@dimen/_16ssp"
-               />
+             android:textSize="@dimen/_12ssp"
+             />
 
-            <com.ngo.customviews.CustomEditText
+            <com.dfa.customviews.CustomEditText
                 android:id="@+id/et_otp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,9 +52,10 @@
                 android:maxLength="500"
                 android:maxLines="1"
                 android:minLines="1"
+                android:textSize="@dimen/_12ssp"
                 android:padding="@dimen/_10sdp" />
 
-            <com.ngo.customviews.CustomTextViewheading
+            <com.dfa.customviews.CustomTextViewheading
                 android:id="@+id/btnOtpSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,24 +64,31 @@
                 android:layout_marginEnd="@dimen/_12sdp"
                 android:background="@drawable/button_green_bg"
                 android:gravity="center"
-                android:padding="@dimen/_12sdp"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingTop="@dimen/_10ssp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:paddingBottom="@dimen/_10ssp"
+                android:textSize="@dimen/_12ssp"
                 android:text="SUBMIT"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_12ssp" />
+                />
 
-            <com.ngo.customviews.CustomTextViewheading
+            <com.dfa.customviews.CustomTextViewheading
                 android:id="@+id/btnOtpResend"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_marginStart="@dimen/_12sdp"
                 android:layout_marginTop="@dimen/_10sdp"
                 android:layout_marginEnd="@dimen/_12sdp"
-                android:background="@drawable/button_red_bg"
+                android:background="@drawable/button_green_bg"
                 android:gravity="center"
-                android:padding="@dimen/_12sdp"
+                android:textSize="@dimen/_12ssp"
+                android:paddingLeft="@dimen/_15sdp"
+                android:paddingTop="@dimen/_10ssp"
+                android:paddingEnd="@dimen/_15sdp"
+                android:paddingBottom="@dimen/_10ssp"
                 android:text="RESEND"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_12ssp"/>
+                android:textColor="@color/white" />
 
         </LinearLayout>
     </LinearLayout>

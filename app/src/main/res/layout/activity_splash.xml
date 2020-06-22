@@ -1,19 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/splashParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/police_logo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:gravity="top"
+                android:src="@drawable/pc_logo"
+                android:textSize="@dimen/_30ssp" />
+
+            <LinearLayout
+                android:id="@+id/and_symbol"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/police_logo"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10ssp"
+                    android:text="&amp;"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_20sdp" />
+            </LinearLayout>
+
+
+            <ImageView
+                android:id="@+id/dfa_logo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_below="@+id/and_symbol"
+                android:gravity="center"
+                android:src="@drawable/app_icon"
+                android:textSize="@dimen/_30ssp" />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_30sdp"
+            android:layout_above="@+id/moonwalk"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/_3ssp"
+            android:gravity="center"
+            android:text="Developed by"
+            android:textColor="@color/black" />
 
         <ImageView
+            android:id="@+id/moonwalk"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/_20sdp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/_10ssp"
             android:gravity="center"
-            android:src="@drawable/splash"
-            android:textSize="@dimen/_30ssp" />
-    </LinearLayout>
+            android:src="@drawable/moonwalk" />
+    </RelativeLayout>
 </layout>

@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">DFA APP</string>
-    <string name="ngo_app">DFA APP</string>
+    <string name="app_name">DFA</string>
+    <string name="ngo_app">DFA</string>
     <string name="no_internet_connection">No internet connection</string>
     <string name="general_public">General Public</string>
     <string name="drug_free_ngo">Drug Free NGO</string>
@@ -56,6 +56,7 @@
     <string name="dont_have_an_account_yet">Don\'t have an account yet?</string>
     <string name="email_mobile_hint">Email / Mobile no</string>
     <string name="password">Enter password</string>
+    <string name="password_estrick">Password <font fgcolor="#006600">*</font></string>
     <string name="login">Login</string>
     <string name="please_login_to_your_account">Please Login to Your account!</string>
 
@@ -75,20 +76,30 @@
 
     <string name="cancel">CANCEL</string>
     <string name="enter_adhar_no_here">Enter Aadhaar no here</string>
+    <string name="adhar_no_estrick">Aadhaar no</string>
     <string name="enter_first_name">First name</string>
+    <string name="first_estrick">First name <font fgcolor="#006600">*</font></string>
     <string name="enter_middle_name">Middle name</string>
+    <string name="middle_estrick">Middle name <font fgcolor="#006600">*</font></string>
     <string name="enter_last_name">Last name</string>
+    <string name="last_estrick">Last name <font fgcolor="#006600">*</font></string>
     <string name="select_district">Select District</string>
+    <string name="destrict_estrick">District <font fgcolor="#006600">*</font></string>
     <string name="enter_email">Email</string>
     <string name="mobile_2">Mobile 2</string>
     <string name="mobile_1">Mobile Number 1</string>
+    <string name="mobile_estrick">Mobile Number <font fgcolor="#006600">*</font></string>
     <string name="pin_code">Pin Code</string>
+    <string name="pin_code_estrick">Pin Code <font fgcolor="#006600">*</font></string>
     <string name="address_2">Address Line 2</string>
+    <string name="address_2_estrick">Address Line 2 <font fgcolor="#006600">*</font></string>
     <string name="address_1">Address Line 1</string>
+    <string name="address_1_estrick">Address Line 1 <font fgcolor="#006600">*</font></string>
     <string name="change_image">Change Image</string>
     <string name="update">UPDATE</string>
     <string name="verified">Verified</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="confirm_password_estrick">Confirm Password <font fgcolor="#006600">*</font></string>
     <string name="signup">Signup</string>
 
     <!--Otp Verification-->
@@ -223,7 +234,7 @@
     <string name="incident_heading">Recent Reported Incidents</string>
     <string name="more">More</string>
     <string name="less">Less</string>
-    <string name="if_you_want_to_do_action_you_should_login">If you want to do action you should login</string>
+    <string name="if_you_want_to_do_action_you_should_login">To perform this action please Login</string>
     <string name="gpu">GPU</string>
     <string name="ngo_user">NGO</string>
     <string name="police_user">Police</string>

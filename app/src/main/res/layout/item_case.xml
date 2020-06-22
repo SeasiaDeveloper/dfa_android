@@ -14,10 +14,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_8sdp"
-            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_8sdp"
             android:layout_marginBottom="@dimen/_1sdp"
             app:cardCornerRadius="@dimen/_4sdp"
+            android:elevation="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -45,7 +46,7 @@
                         app:civ_border_color="@color/black"
                         app:civ_border_width="0.4dp" />
 
-                    <com.ngo.customviews.CustomTextViewheading
+                    <com.dfa.customviews.CustomTextViewheading
                         android:id="@+id/expandable_username"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
@@ -69,7 +70,7 @@
 
 
 
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/btnDelete"
                         android:layout_width="40dp"
                         android:layout_height="30dp"
@@ -106,7 +107,7 @@
                         android:orientation="horizontal"
                         android:visibility="gone">
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:layout_marginStart="@dimen/_4sdp"
@@ -115,7 +116,7 @@
                             android:textColor="@color/grey_text"
                             android:textStyle="bold" />
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:id="@+id/tvCrime"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -141,7 +142,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
 
-                                <com.ngo.customviews.CustomTextViewheading
+                                <com.dfa.customviews.CustomTextViewheading
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/_6sdp"
@@ -149,7 +150,7 @@
                                     android:textColor="@color/grey_text"
                                     android:textStyle="bold" />
 
-                                <com.ngo.customviews.CustomtextView
+                                <com.dfa.customviews.CustomtextView
                                     android:id="@+id/txtCrimeType"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -166,7 +167,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
-                                <com.ngo.customviews.CustomTextViewheading
+                                <com.dfa.customviews.CustomTextViewheading
                                     android:layout_width="wrap_content"
                                     android:layout_height="27dp"
                                     android:layout_marginStart="@dimen/_6sdp"
@@ -174,7 +175,7 @@
                                     android:textColor="@color/grey_text"
                                     android:textStyle="bold" />
 
-                                <com.ngo.customviews.CustomtextView
+                                <com.dfa.customviews.CustomtextView
                                     android:id="@+id/txtStatus"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -190,7 +191,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
-                                <com.ngo.customviews.CustomTextViewheading
+                                <com.dfa.customviews.CustomTextViewheading
                                     android:id="@+id/txtUrgencyTitle"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -199,7 +200,7 @@
                                     android:textColor="@color/grey_text"
                                     android:textStyle="bold" />
 
-                                <com.ngo.customviews.CustomtextView
+                                <com.dfa.customviews.CustomtextView
                                     android:id="@+id/expandable_Level"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -221,7 +222,7 @@
                         android:layout_gravity="center"
                         android:orientation="horizontal">
 
-                        <com.ngo.customviews.CustomTextViewheading
+                        <com.dfa.customviews.CustomTextViewheading
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_6sdp"
@@ -229,7 +230,7 @@
                             android:textColor="@color/grey_text"
                             android:textStyle="bold" />
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:id="@+id/expandable_Date"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -252,7 +253,7 @@
                                 android:padding="@dimen/_5sdp"
                                 android:src="@drawable/ic_expand_more_black_24dp" />
 
-                            <com.ngo.customviews.CustomtextView
+                            <com.dfa.customviews.CustomtextView
                                 android:id="@+id/moreLess"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -283,7 +284,7 @@
                             android:orientation="horizontal"
                             android:visibility="visible">
 
-                            <com.ngo.customviews.CustomTextViewheading
+                            <com.dfa.customviews.CustomTextViewheading
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_6sdp"
@@ -291,7 +292,7 @@
                                 android:textColor="@color/grey_text"
                                 android:textStyle="bold" />
 
-                            <com.ngo.customviews.CustomtextView
+                            <com.dfa.customviews.CustomtextView
                                 android:id="@+id/expandable_contactNo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -321,7 +322,7 @@
                             android:src="@drawable/camera_placeholder"
                             android:visibility="visible" />
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:id="@+id/view_fir"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -352,7 +353,7 @@
                             android:layout_gravity="center"
                             android:orientation="vertical">
 
-                            <com.ngo.customviews.CustomTextViewheading
+                            <com.dfa.customviews.CustomTextViewheading
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_6sdp"
@@ -361,7 +362,7 @@
                                 android:textColor="@color/grey_text"
                                 android:textStyle="bold" />
 
-                            <com.ngo.customviews.CustomtextView
+                            <com.dfa.customviews.CustomtextView
                                 android:id="@+id/expandable_DescriptionNgo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -383,7 +384,7 @@
                             android:orientation="vertical"
                             android:visibility="gone">
 
-                            <com.ngo.customviews.CustomTextViewheading
+                            <com.dfa.customviews.CustomTextViewheading
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/_6sdp"
@@ -391,7 +392,7 @@
                                 android:textColor="@color/grey_text"
                                 android:textStyle="bold" />
 
-                            <com.ngo.customviews.CustomtextView
+                            <com.dfa.customviews.CustomtextView
                                 android:id="@+id/expandable_comment"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -411,7 +412,7 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginEnd="@dimen/_5sdp">
 
-                        <com.ngo.customviews.CustomTextViewheading
+                        <com.dfa.customviews.CustomTextViewheading
                             android:id="@+id/location"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -435,7 +436,7 @@
                             android:visibility="gone"
                             tools:targetApi="m" />
 
-                        <com.ngo.customviews.CustomTextViewheading
+                        <com.dfa.customviews.CustomTextViewheading
                             android:id="@+id/action_complaint"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -500,7 +501,7 @@
                             android:src="@drawable/filled_like"
                             android:visibility="gone" />
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:id="@+id/txtLikeNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -523,7 +524,7 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/comment" />
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:id="@+id/txtCommentNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -546,7 +547,7 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/share" />
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6sp"
@@ -611,13 +612,13 @@
                         android:layout_marginTop="@dimen/_4sdp"
                         android:orientation="vertical">
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:id="@+id/txtUserNameForPost"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/grey" />
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:id="@+id/txtDateForPost"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -633,7 +634,7 @@
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:gravity="end">
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:id="@+id/btnDeletePost"
                             android:layout_width="match_parent"
                             android:layout_height="30dp"
@@ -652,7 +653,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:id="@+id/txtPostInfo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -702,7 +703,7 @@
                             android:src="@drawable/filled_like"
                             android:visibility="gone" />
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:id="@+id/txtPostLikeNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -724,7 +725,7 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/comment" />
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:id="@+id/txtPostCommentNo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -746,7 +747,7 @@
                             android:layout_height="wrap_content"
                             android:src="@drawable/share" />
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6sp"

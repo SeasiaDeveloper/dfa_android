@@ -22,7 +22,7 @@
             android:layout_above="@+id/view"
             android:layout_below="@+id/toolbarLayout" />
 
-        <com.ngo.customviews.CustomtextView
+        <com.dfa.customviews.CustomtextView
             android:id="@+id/tvRecord"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -37,7 +37,6 @@
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="0.2dp"
-            android:layout_above="@+id/layout_add_comment"
             android:background="@color/green" />
 
     </RelativeLayout>

@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.ngo.customviews.CustomTextViewheading
+        <com.dfa.customviews.CustomTextViewheading
             android:id="@+id/title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -34,12 +34,12 @@
                 android:visibility="gone"
                 android:orientation="horizontal">
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/complainer_contact" />
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:id="@+id/txtComplainerContact"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -52,12 +52,12 @@
                 android:orientation="horizontal"
                 android:visibility="gone">
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/complaint_date" />
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:id="@+id/txtComplaintDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -69,12 +69,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/complaint_time" />
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:id="@+id/txtComplaintTime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -87,12 +87,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/description" />
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:id="@+id/txtDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -104,45 +104,39 @@
         <LinearLayout
             android:id="@+id/layout_buttons"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/_40sdp"
             android:layout_below="@+id/layout_content"
             android:gravity="center">
 
-            <com.ngo.customviews.CustomtextView
+            <com.dfa.customviews.CustomtextView
                 android:id="@+id/btnAccept"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@color/green"
+                android:background="@drawable/button_green_bg"
                 android:gravity="center"
                 android:text="@string/accept"
                 android:textColor="@color/white"
                 app:font="@{`bold`}" />
 
-            <com.ngo.customviews.CustomtextView
+            <com.dfa.customviews.CustomtextView
                 android:id="@+id/btnReject"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@color/red"
+                android:background="@drawable/gray_background"
                 android:gravity="center"
                 android:text="@string/reject"
                 android:textColor="@color/white"
                 app:font="@{`bold`}" />
 
-            <com.ngo.customviews.CustomtextView
+            <com.dfa.customviews.CustomtextView
                 android:id="@+id/btnOpen"
                 android:layout_width="@dimen/_70sdp"
                 android:layout_height="@dimen/_30sdp"
-                android:layout_marginTop="@dimen/_2sdp"
                 android:layout_marginEnd="10dp"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@color/green"
+                android:background="@drawable/button_green_bg"
                 android:gravity="center"
                 android:text="@string/open"
                 android:textColor="@color/white"

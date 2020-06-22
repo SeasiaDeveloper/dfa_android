@@ -19,7 +19,6 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:visibility="gone"
             android:background="@color/silver" />
 
         <ScrollView
@@ -69,7 +68,7 @@
                         android:layout_weight="0.6"
                         android:orientation="vertical">
 
-                        <com.ngo.customviews.CustomEditText
+                        <com.dfa.customviews.CustomEditText
                             android:id="@+id/etMobile1"
                             android:layout_width="match_parent"
                             android:textSize="@dimen/_12sdp"
@@ -90,7 +89,7 @@
                             android:orientation="horizontal"
                             android:weightSum="1">
 
-                            <com.ngo.customviews.CustomEditText
+                            <com.dfa.customviews.CustomEditText
                                 android:id="@+id/etFirstName"
                                 android:layout_width="0dp"
                                 android:textSize="@dimen/_12sdp"
@@ -106,7 +105,7 @@
                                 android:padding="@dimen/_10sdp"
                                 android:singleLine="true" />
 
-                            <com.ngo.customviews.CustomEditText
+                            <com.dfa.customviews.CustomEditText
                                 android:id="@+id/etMiddleName"
                                 android:layout_width="0dp"
                                 android:textSize="@dimen/_12sdp"
@@ -125,7 +124,7 @@
                         </LinearLayout>
 
 
-                        <com.ngo.customviews.CustomEditText
+                        <com.dfa.customviews.CustomEditText
                             android:id="@+id/etLastName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -149,7 +148,7 @@
                             android:layout_marginEnd="@dimen/_12sdp"
                             android:background="@drawable/bg_spinner" />
 
-                        <com.ngo.customviews.CustomEditText
+                        <com.dfa.customviews.CustomEditText
                             android:id="@+id/etDist"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -167,7 +166,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <com.ngo.customviews.CustomEditText
+                <com.dfa.customviews.CustomEditText
                     android:id="@+id/etAddress1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -183,7 +182,7 @@
                     android:maxLength="50"
                     android:padding="@dimen/_10sdp" />
 
-                <com.ngo.customviews.CustomEditText
+                <com.dfa.customviews.CustomEditText
                     android:id="@+id/etAddress2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -199,7 +198,7 @@
                     android:maxLength="50"
                     android:padding="@dimen/_10sdp" />
 
-                <com.ngo.customviews.CustomEditText
+                <com.dfa.customviews.CustomEditText
                     android:id="@+id/etPinCode"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -216,7 +215,7 @@
                     android:maxLength="20"
                     android:padding="@dimen/_10sdp" />
 
-                <com.ngo.customviews.CustomEditText
+                <com.dfa.customviews.CustomEditText
                     android:id="@+id/etMobile2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -234,7 +233,7 @@
                     android:padding="@dimen/_10sdp" />
 
 
-                <com.ngo.customviews.CustomEditText
+                <com.dfa.customviews.CustomEditText
                     android:id="@+id/etAdharNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -251,7 +250,7 @@
                     android:maxLength="13"
                     android:padding="@dimen/_10sdp" />
 
-                <com.ngo.customviews.CustomEditText
+                <com.dfa.customviews.CustomEditText
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -289,7 +288,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.ngo.customviews.CustomTextViewheading
+                    <com.dfa.customviews.CustomTextViewheading
                         android:id="@+id/btnUpdate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -300,13 +299,15 @@
                         android:layout_weight="0.3"
                         android:background="@drawable/button_green_bg"
                         android:gravity="center"
-
-                        android:padding="@dimen/_10sdp"
+                        android:paddingLeft="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_10ssp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_10ssp"
                         android:text="@string/update"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp" />
 
-                    <com.ngo.customviews.CustomTextViewheading
+                    <com.dfa.customviews.CustomTextViewheading
                         android:id="@+id/btnCancel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -316,8 +317,11 @@
                         android:layout_marginEnd="@dimen/_12sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:layout_weight="0.3"
-                        android:background="@drawable/button_red_bg"
-                        android:padding="@dimen/_10sdp"
+                        android:background="@drawable/gray_background"
+                        android:paddingLeft="@dimen/_15sdp"
+                        android:paddingTop="@dimen/_10ssp"
+                        android:paddingEnd="@dimen/_15sdp"
+                        android:paddingBottom="@dimen/_10ssp"
                         android:text="@string/cancel"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp" />

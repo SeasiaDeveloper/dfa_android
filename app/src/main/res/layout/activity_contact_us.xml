@@ -26,162 +26,163 @@
             android:background="@color/white">
 
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center">
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:background="@drawable/black_border"
                     android:orientation="vertical"
-                    android:paddingRight="@dimen/_5sdp"
                     android:paddingLeft="@dimen/_5sdp"
-                    android:paddingBottom="@dimen/_20sdp"
-                    android:background="@drawable/black_border">
+                    android:paddingRight="@dimen/_5sdp"
+                    android:paddingBottom="@dimen/_20sdp">
 
-                <ImageView
-                    android:id="@+id/imgProfile"
-                    android:layout_width="@dimen/_100sdp"
-                    android:layout_height="@dimen/_100sdp"
-                    android:layout_marginTop="@dimen/_5sdp"
-                    android:paddingTop="6dp"
-                    android:paddingBottom="6dp"
-                    android:src="@drawable/app_icon"
-                    android:layout_gravity="center"
-                    app:civ_border_color="@color/black"
-                    android:scaleType="centerCrop"
-                    app:civ_border_width="0.4dp" />
+                    <ImageView
+                        android:id="@+id/imgProfile"
+                        android:layout_width="@dimen/_150sdp"
+                        android:layout_height="@dimen/_150sdp"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:paddingTop="3dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/app_icon"
+                        app:civ_border_color="@color/black" />
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/_5sdp"
-                    android:layout_marginRight="@dimen/_5sdp"
-                    android:orientation="vertical">
-
-                    <com.ngo.customviews.CustomEditText
-                        android:id="@+id/etName"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_12sdp"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:layout_marginEnd="@dimen/_12sdp"
-                        android:gravity="start"
-                        android:maxLength="20"
-                        android:editable="false"
-                        android:textStyle="bold"
-                        android:focusable="false"
-                        android:background="@null"
-                        android:padding="@dimen/_4sdp" />
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginRight="@dimen/_5sdp"
+                        android:orientation="vertical">
 
-                    <com.ngo.customviews.CustomEditText
-                        android:id="@+id/etAddressLine1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_12sdp"
-                        android:layout_marginEnd="@dimen/_12sdp"
-                        android:background="@null"
-                        android:gravity="start"
-                        android:maxLength="20"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:padding="@dimen/_4sdp"
-                       />
+                        <com.dfa.customviews.CustomEditText
+                            android:id="@+id/etName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:background="@null"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:gravity="start"
+                            android:maxLength="20"
+                            android:padding="@dimen/_4sdp"
+                            android:textSize="@dimen/_12ssp"
+                            android:textStyle="bold" />
 
-                    <com.ngo.customviews.CustomEditText
-                        android:id="@+id/etDist"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_12sdp"
-                        android:layout_marginEnd="@dimen/_12sdp"
-                        android:background="@null"
-                        android:gravity="start"
-                        android:maxLength="20"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:padding="@dimen/_4sdp"
-                       />
+                        <com.dfa.customviews.CustomEditText
+                            android:id="@+id/etAddressLine1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:background="@null"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:gravity="start"
+                            android:maxLength="20"
+                            android:padding="@dimen/_4sdp"
+                            android:textSize="@dimen/_12ssp" />
 
-                    <com.ngo.customviews.CustomEditText
-                        android:id="@+id/etState"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_12sdp"
-                        android:layout_marginEnd="@dimen/_12sdp"
-                        android:background="@null"
-                        android:gravity="start"
-                        android:maxLength="20"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:padding="@dimen/_4sdp"
-                       />
+                        <com.dfa.customviews.CustomEditText
+                            android:id="@+id/etDist"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:background="@null"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:gravity="start"
+                            android:maxLength="20"
+                            android:padding="@dimen/_4sdp"
+                            android:textSize="@dimen/_12ssp" />
 
-                    <com.ngo.customviews.CustomEditText
-                        android:id="@+id/etPinCode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_12sdp"
-                        android:layout_marginEnd="@dimen/_12sdp"
-                        android:background="@null"
-                        android:gravity="start"
-                        android:maxLength="20"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:padding="@dimen/_4sdp"
-                       />
+                        <com.dfa.customviews.CustomEditText
+                            android:id="@+id/etState"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:background="@null"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:gravity="start"
+                            android:maxLength="20"
+                            android:padding="@dimen/_4sdp"
+                            android:textSize="@dimen/_12ssp" />
 
-                    <com.ngo.customviews.CustomEditText
-                        android:id="@+id/etMobile1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_12sdp"
-                        android:layout_marginEnd="@dimen/_12sdp"
-                        android:gravity="start"
-                        android:inputType="number"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:background="@null"
-                        android:maxLength="13"
-                        android:padding="@dimen/_4sdp"
-                       />
+                        <com.dfa.customviews.CustomEditText
+                            android:id="@+id/etPinCode"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:background="@null"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:gravity="start"
+                            android:maxLength="20"
+                            android:padding="@dimen/_4sdp"
+                            android:textSize="@dimen/_12ssp" />
 
-                    <com.ngo.customviews.CustomEditText
-                        android:id="@+id/etEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_12sdp"
-                        android:layout_marginEnd="@dimen/_12sdp"
-                        android:background="@null"
-                        android:gravity="start"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:padding="@dimen/_4sdp"
-                       />
+                        <com.dfa.customviews.CustomEditText
+                            android:id="@+id/etMobile1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:background="@null"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:gravity="start"
+                            android:inputType="number"
+                            android:maxLength="13"
+                            android:padding="@dimen/_4sdp"
+                            android:textSize="@dimen/_12ssp" />
 
-                    <com.ngo.customviews.CustomTextViewheading
-                        android:id="@+id/btnLocate"
-                        android:drawableTint="@color/white"
-                        android:drawablePadding="@dimen/_4sdp"
-                        android:drawableEnd="@drawable/ic_location"
-                        android:layout_gravity="end"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_12sdp"
-                        android:layout_marginTop="@dimen/_15sdp"
-                        android:layout_marginEnd="@dimen/_12sdp"
-                        android:layout_marginBottom="@dimen/_10sdp"
-                        android:padding="@dimen/_12sdp"
-                        android:background="@drawable/button_green_bg"
-                        android:text="@string/locate_us"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:textSize="@dimen/_14ssp" />
+                        <com.dfa.customviews.CustomEditText
+                            android:id="@+id/etEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:background="@null"
+                            android:editable="false"
+                            android:focusable="false"
+                            android:gravity="start"
+                            android:padding="@dimen/_4sdp"
+                            android:textSize="@dimen/_12ssp" />
 
+                        <com.dfa.customviews.CustomTextViewheading
+                            android:id="@+id/btnLocate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:layout_marginBottom="@dimen/_5sdp"
+                            android:background="@drawable/button_green_bg"
+                            android:drawableEnd="@drawable/ic_location"
+                            android:drawablePadding="@dimen/_4sdp"
+                            android:drawableTint="@color/white"
+                            android:gravity="center"
+                            android:paddingStart="@dimen/_10ssp"
+                            android:paddingTop="@dimen/_5sdp"
+                            android:paddingEnd="@dimen/_10ssp"
+                            android:paddingBottom="@dimen/_5sdp"
+                            android:text="@string/locate_us"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/_12ssp" />
+
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
             </LinearLayout>
 
         </ScrollView>

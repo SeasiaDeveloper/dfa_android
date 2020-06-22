@@ -1,271 +1,275 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:id="@+id/ngoDetailLayout"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical">
-    <include
-        android:id="@+id/toolbarLayout"
-        layout="@layout/toolbar_layout"
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ngoDetailLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbarLayout"
+            layout="@layout/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <com.ngo.customviews.CustomtextView
-                android:id="@+id/tvUSerName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_7sdp"
-                android:text="User Name:"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_13ssp"
-                android:textStyle="bold"
-               />
+            android:layout_height="wrap_content" />
 
-            <com.ngo.customviews.CustomEditText
-                android:id="@+id/etUserName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_9sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:background="@null"
-                android:editable="false"
-                android:ems="10"
-                android:focusable="false"
-                android:imeOptions="actionNext"
-                android:inputType="textPersonName"
-                android:lines="1"
-                android:padding="@dimen/_3sdp"
-               />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            <com.ngo.customviews.CustomtextView
-                android:id="@+id/tvEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:layout_marginEnd="@dimen/_7sdp"
-                android:text="Email:"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_13ssp"
-                android:textStyle="bold"
-               />
-
-            <com.ngo.customviews.CustomEditText
-                android:id="@+id/etEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_9sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:background="@null"
-                android:editable="false"
-                android:ems="10"
-
-                android:focusable="false"
-                android:imeOptions="actionNext"
-                android:inputType="textPersonName"
-                android:lines="1"
-                android:padding="@dimen/_3sdp"
-              />
-            <com.ngo.customviews.CustomtextView
-                android:id="@+id/tvContact"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:layout_marginEnd="@dimen/_7sdp"
-                android:text="Contact No:"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_13ssp"
-
-                android:textStyle="bold"
-              />
-
-            <com.ngo.customviews.CustomEditText
-                android:id="@+id/etContactNo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_9sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:background="@null"
-                android:editable="false"
-                android:ems="10"
-
-                android:focusable="false"
-                android:imeOptions="actionNext"
-                android:inputType="number"
-                android:lines="1"
-                android:maxLength="10"
-                android:padding="@dimen/_3sdp"
-                />
-            <com.ngo.customviews.CustomtextView
-                android:id="@+id/tvTypesOfCrime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:layout_marginEnd="@dimen/_7sdp"
-                android:text="Crime Type:"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_13ssp"
-
-                android:textStyle="bold"
-              />
-            <com.ngo.customviews.CustomtextView
-                android:id="@+id/spTypesOfCrime"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_9sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:background="@null"
-                android:padding="@dimen/_3sdp"
-
-                android:textColor="@color/black"
-                android:textSize="@dimen/_13ssp"
-           />
-            <com.ngo.customviews.CustomtextView
-                android:id="@+id/tvLevel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_7sdp"
-                android:text="Urgency Level:"
-                android:textColor="@color/black" android:textSize="@dimen/_13ssp"
-
-
-                android:textStyle="bold"
-              />
-
-            <com.jaygoo.widget.RangeSeekBar
-                android:id="@+id/sb_steps_5"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_10sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_10sdp"
-                app:rsb_gravity="bottom"
-                app:rsb_mode="single"
-                app:rsb_progress_color="@color/grey"
-                app:rsb_step_auto_bonding="true"
-                app:rsb_step_color="@color/grey"
-                app:rsb_step_height="15dp"
-                app:rsb_step_radius="4dp"
-                app:rsb_step_width="10dp"
-                app:rsb_steps="9"
-                app:rsb_thumb_drawable="@drawable/thumb_stroke"
-                app:rsb_tick_mark_layout_gravity="top"
-                app:rsb_tick_mark_mode="other"
-                app:rsb_tick_mark_text_array="@array/levelArray"
-                app:rsb_tick_mark_text_margin="20dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/imgView"
+                android:orientation="vertical">
+
+                <com.dfa.customviews.CustomtextView
+                    android:id="@+id/tvUSerName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_7sdp"
+                    android:text="User Name:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    android:textStyle="bold" />
+
+                <com.dfa.customviews.CustomEditText
+                    android:id="@+id/etUserName"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_150sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_9sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:background="@null"
+                    android:editable="false"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName"
+                    android:lines="1"
+                    android:padding="@dimen/_3sdp" />
+
+                <com.dfa.customviews.CustomtextView
+                    android:id="@+id/tvEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:layout_marginEnd="@dimen/_7sdp"
+                    android:text="Email:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+                    android:textStyle="bold" />
+
+                <com.dfa.customviews.CustomEditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_9sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:background="@null"
+                    android:editable="false"
+                    android:ems="10"
+
+                    android:focusable="false"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName"
+                    android:lines="1"
+                    android:padding="@dimen/_3sdp" />
+
+                <com.dfa.customviews.CustomtextView
+                    android:id="@+id/tvContact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
-                    android:layout_marginEnd="@dimen/_7sdp"/>
+                    android:layout_marginEnd="@dimen/_7sdp"
+                    android:text="Contact No:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
 
+                    android:textStyle="bold" />
+
+                <com.dfa.customviews.CustomEditText
+                    android:id="@+id/etContactNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_9sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:background="@null"
+                    android:editable="false"
+                    android:ems="10"
+
+                    android:focusable="false"
+                    android:imeOptions="actionNext"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:maxLength="10"
+                    android:padding="@dimen/_3sdp" />
+
+                <com.dfa.customviews.CustomtextView
+                    android:id="@+id/tvTypesOfCrime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_6sdp"
+                    android:layout_marginEnd="@dimen/_7sdp"
+                    android:text="Crime Type:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+
+                    android:textStyle="bold" />
+
+                <com.dfa.customviews.CustomtextView
+                    android:id="@+id/spTypesOfCrime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_9sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:background="@null"
+                    android:padding="@dimen/_3sdp"
+
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp" />
+
+                <com.dfa.customviews.CustomtextView
+                    android:id="@+id/tvLevel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_7sdp"
+                    android:text="Urgency Level:"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_13ssp"
+
+
+                    android:textStyle="bold" />
+
+                <com.jaygoo.widget.RangeSeekBar
+                    android:id="@+id/sb_steps_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_10sdp"
+                    app:rsb_gravity="bottom"
+                    app:rsb_mode="single"
+                    app:rsb_progress_color="@color/grey"
+                    app:rsb_step_auto_bonding="true"
+                    app:rsb_step_color="@color/grey"
+                    app:rsb_step_height="15dp"
+                    app:rsb_step_radius="4dp"
+                    app:rsb_step_width="10dp"
+                    app:rsb_steps="9"
+                    app:rsb_thumb_drawable="@drawable/thumb_stroke"
+                    app:rsb_tick_mark_layout_gravity="top"
+                    app:rsb_tick_mark_mode="other"
+                    app:rsb_tick_mark_text_array="@array/levelArray"
+                    app:rsb_tick_mark_text_margin="20dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/imgView"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_150sdp"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:layout_marginEnd="@dimen/_7sdp" />
+
+                </LinearLayout>
+
+                <com.dfa.customviews.CustomtextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_12sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginEnd="@dimen/_7sdp"
+                    android:text="Description:"
+                    android:textColor="@color/black"
+
+                    android:textSize="@dimen/_13ssp"
+                    android:textStyle="bold" />
+
+                <com.dfa.customviews.CustomEditText
+                    android:id="@+id/etDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_9sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
+                    android:background="@null"
+                    android:editable="false"
+                    android:ems="10"
+                    android:focusable="false"
+                    android:gravity="start"
+                    android:imeOptions="actionDone"
+                    android:inputType="textMultiLine"
+                    android:maxLength="500"
+                    android:padding="@dimen/_3sdp" />
+
+                <LinearLayout
+                    android:id="@+id/forwarded"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <com.dfa.customviews.CustomtextView
+                        android:id="@+id/tvNGOComment"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_7sdp"
+                        android:text="NGO Comment"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_13ssp"
+                        android:textStyle="bold" />
+
+                    <com.dfa.customviews.CustomEditText
+                        android:id="@+id/etNGOComment"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/_80sdp"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_6sdp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:background="@drawable/squarebg"
+                        android:ems="10"
+                        android:gravity="start"
+                        android:imeOptions="actionDone"
+                        android:inputType="textMultiLine"
+                        android:maxLength="500"
+                        android:padding="@dimen/_7sdp" />
+
+                    <com.dfa.customviews.CustomtextView
+                        android:id="@+id/btnSubmit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_12sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_12sdp"
+                        android:layout_marginBottom="@dimen/_10sdp"
+                        android:background="@drawable/button_green_bg"
+                        android:gravity="center"
+                        android:paddingLeft="@dimen/_10sdp"
+                        android:paddingTop="@dimen/_5ssp"
+                        android:paddingEnd="@dimen/_10sdp"
+                        android:paddingBottom="@dimen/_5ssp"
+                        android:text="@string/submit"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_14ssp" />
+                </LinearLayout>
             </LinearLayout>
-            <com.ngo.customviews.CustomtextView
-                android:id="@+id/tvDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_7sdp"
-                android:text="Description:"
-                android:textColor="@color/black"
-
-                android:textSize="@dimen/_13ssp"
-                android:textStyle="bold"
-              />
-
-            <com.ngo.customviews.CustomEditText
-                android:id="@+id/etDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_9sdp"
-                android:layout_marginTop="@dimen/_2sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:background="@null"
-                android:editable="false"
-                android:ems="10"
-                android:focusable="false"
-                android:gravity="start"
-                android:imeOptions="actionDone"
-                android:inputType="textMultiLine"
-                android:maxLength="500"
-                android:padding="@dimen/_3sdp"
-               />
-
-        <LinearLayout android:layout_width="match_parent"
-                      android:id="@+id/forwarded"
-                      android:orientation="vertical"
-                      android:layout_height="wrap_content">
-
-            <com.ngo.customviews.CustomtextView
-                android:id="@+id/tvNGOComment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_7sdp"
-                android:text="NGO Comment"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_13ssp"
-                android:textStyle="bold"
-             />
-
-            <com.ngo.customviews.CustomEditText
-                android:id="@+id/etNGOComment"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/_80sdp"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_6sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:background="@drawable/squarebg"
-                android:ems="10"
-                android:gravity="start"
-                android:imeOptions="actionDone"
-                android:inputType="textMultiLine"
-                android:maxLength="500"
-                android:padding="@dimen/_7sdp"
-             />
-
-            <com.ngo.customviews.CustomtextView
-                android:id="@+id/btnSubmit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/_12sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:layout_marginEnd="@dimen/_12sdp"
-                android:padding="@dimen/_12sdp"
-                android:gravity="center"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:background="@drawable/button_red_bg"
-                android:text="@string/submit"
-                android:textColor="@color/white"
-                android:textSize="@dimen/_14ssp"/>
-        </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 </layout>

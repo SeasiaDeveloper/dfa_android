@@ -52,7 +52,7 @@
                         android:orientation="horizontal">
 
 
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:id="@+id/btnDelete"
                             android:layout_width="0dp"
                             android:layout_height="30dp"
@@ -71,7 +71,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
                             android:gravity="end">
-                            <com.ngo.customviews.CustomtextView
+                            <com.dfa.customviews.CustomtextView
                                 android:id="@+id/txtName"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                             android:orientation="horizontal"
                             android:visibility="visible">
 
-                            <com.ngo.customviews.CustomtextView
+                            <com.dfa.customviews.CustomtextView
                                 android:id="@+id/expandable_comment"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

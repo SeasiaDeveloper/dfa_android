@@ -36,7 +36,7 @@
                 android:background="@drawable/shape_round_corner_blue"
                 android:orientation="vertical">
 
-              <com.ngo.customviews.CustomTextViewheading
+              <com.dfa.customviews.CustomTextViewheading
                     android:id="@+id/textAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -47,14 +47,14 @@
                     android:textSize="15dp"
                     android:textStyle="bold" />
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:id="@+id/my_earnings"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
                     android:textColor="@color/black"
                     android:paddingBottom="@dimen/_5sdp"
-                    android:textSize="@dimen/_20sdp" />
+                    android:textSize="@dimen/_12sdp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
