@@ -16,7 +16,7 @@
             android:id="@+id/iv_delete"
             android:layout_height="80dp"/>
 
-        <com.ngo.customviews.CustomTextViewheading
+        <com.dfa.customviews.CustomTextViewheading
             android:text="@string/app_name"
             android:textStyle="bold"
             android:layout_alignParentRight="true"
@@ -29,7 +29,7 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-        <com.ngo.customviews.CustomTextViewheading
+        <com.dfa.customviews.CustomTextViewheading
             android:text="@string/if_you_want_to_do_action_you_should_login"
             android:layout_below="@+id/std_name"
             android:textSize="@dimen/_12ssp"
@@ -50,7 +50,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/_60sdp">
 
-        <com.ngo.customviews.CustomTextViewheading
+        <com.dfa.customviews.CustomTextViewheading
             android:id="@+id/tv_cancel"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="40dp"
@@ -63,7 +63,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp" />
 
-        <com.ngo.customviews.CustomTextViewheading
+        <com.dfa.customviews.CustomTextViewheading
             android:layout_width="@dimen/_90sdp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"

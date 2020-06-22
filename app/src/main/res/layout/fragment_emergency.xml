@@ -18,7 +18,7 @@
             android:layout_marginEnd="@dimen/_12sdp"
             android:background="@drawable/bg_spinner" />
 
-        <com.ngo.customviews.CustomTextViewheading
+        <com.dfa.customviews.CustomTextViewheading
             android:id="@+id/txtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

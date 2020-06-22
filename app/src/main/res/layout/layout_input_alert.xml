@@ -6,7 +6,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.ngo.customviews.CustomtextView
+        <com.dfa.customviews.CustomtextView
             android:id="@+id/title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
             android:textSize="@dimen/_16ssp"
             app:font="@{`bold`}" />
 
-        <com.ngo.customviews.CustomtextView
+        <com.dfa.customviews.CustomtextView
             android:layout_below="@+id/title"
             android:hint="To report an incident you need to fill in your Aadhaar no first"
             android:id="@+id/txt"
@@ -32,7 +32,7 @@
             android:textColor="@color/black"
             app:font="@{`bold`}" />
 
-        <com.ngo.customviews.CustomEditText
+        <com.dfa.customviews.CustomEditText
             android:layout_below="@+id/txt"
             android:hint="@string/enter_your_valid_adhaar_no_here"
             android:id="@+id/edt"

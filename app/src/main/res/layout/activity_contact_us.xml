@@ -59,7 +59,7 @@
                         android:layout_marginRight="@dimen/_5sdp"
                         android:orientation="vertical">
 
-                        <com.ngo.customviews.CustomEditText
+                        <com.dfa.customviews.CustomEditText
                             android:id="@+id/etName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                             android:textSize="@dimen/_12ssp"
                             android:textStyle="bold" />
 
-                        <com.ngo.customviews.CustomEditText
+                        <com.dfa.customviews.CustomEditText
                             android:id="@+id/etAddressLine1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                             android:padding="@dimen/_4sdp"
                             android:textSize="@dimen/_12ssp" />
 
-                        <com.ngo.customviews.CustomEditText
+                        <com.dfa.customviews.CustomEditText
                             android:id="@+id/etDist"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                             android:padding="@dimen/_4sdp"
                             android:textSize="@dimen/_12ssp" />
 
-                        <com.ngo.customviews.CustomEditText
+                        <com.dfa.customviews.CustomEditText
                             android:id="@+id/etState"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                             android:padding="@dimen/_4sdp"
                             android:textSize="@dimen/_12ssp" />
 
-                        <com.ngo.customviews.CustomEditText
+                        <com.dfa.customviews.CustomEditText
                             android:id="@+id/etPinCode"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
                             android:padding="@dimen/_4sdp"
                             android:textSize="@dimen/_12ssp" />
 
-                        <com.ngo.customviews.CustomEditText
+                        <com.dfa.customviews.CustomEditText
                             android:id="@+id/etMobile1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                             android:padding="@dimen/_4sdp"
                             android:textSize="@dimen/_12ssp" />
 
-                        <com.ngo.customviews.CustomEditText
+                        <com.dfa.customviews.CustomEditText
                             android:id="@+id/etEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -159,7 +159,7 @@
                             android:padding="@dimen/_4sdp"
                             android:textSize="@dimen/_12ssp" />
 
-                        <com.ngo.customviews.CustomTextViewheading
+                        <com.dfa.customviews.CustomTextViewheading
                             android:id="@+id/btnLocate"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

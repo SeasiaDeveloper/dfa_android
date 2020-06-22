@@ -46,7 +46,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_below="@+id/includeView">
 
-                <com.ngo.customviews.CustomEditText
+                <com.dfa.customviews.CustomEditText
                     android:id="@+id/etSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                 android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <com.ngo.customviews.CustomtextView
+            <com.dfa.customviews.CustomtextView
                 android:id="@+id/tvRecord"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

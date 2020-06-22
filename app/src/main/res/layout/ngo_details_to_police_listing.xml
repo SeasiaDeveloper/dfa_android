@@ -120,7 +120,7 @@
                     android:layout_marginTop="@dimen/_3sdp"
                     android:layout_gravity="center"
                     android:orientation="horizontal">
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:layout_width="wrap_content"
                         android:id="@+id/tvUrgency"
                         android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         app:font="@{`semibold`}"/>
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/expandable_Level"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:orientation="horizontal">
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_6sdp"
@@ -154,7 +154,7 @@
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         app:font="@{`semibold`}"/>
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/expandable_Date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -203,7 +203,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:orientation="vertical">
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_6sdp"
@@ -211,7 +211,7 @@
                             android:textColor="@color/black"
                             android:textStyle="bold"
                             app:font="@{`semibold`}"/>
-                        <com.ngo.customviews.CustomtextView
+                        <com.dfa.customviews.CustomtextView
                             android:id="@+id/expandable_DescriptionNgo"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

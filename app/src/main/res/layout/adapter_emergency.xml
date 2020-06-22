@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/_5sdp">
 
-            <com.ngo.customviews.CustomTextViewheading
+            <com.dfa.customviews.CustomTextViewheading
                 android:id="@+id/txtName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
                 android:layout_below="@+id/txtName"/>
 
 
-            <com.ngo.customviews.CustomtextView
+            <com.dfa.customviews.CustomtextView
                 android:id="@+id/txtDistance"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
@@ -76,7 +76,7 @@
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp" />
 
-            <com.ngo.customviews.CustomtextView
+            <com.dfa.customviews.CustomtextView
                 android:id="@+id/txtNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

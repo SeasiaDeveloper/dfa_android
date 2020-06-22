@@ -11,7 +11,7 @@
         android:background="@color/green"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
 
-        <com.ngo.customviews.CustomtextView
+        <com.dfa.customviews.CustomtextView
             android:id="@+id/toolbar_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

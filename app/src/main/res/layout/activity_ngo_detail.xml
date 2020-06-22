@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:id="@+id/tvUSerName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
                     android:textSize="@dimen/_13ssp"
                     android:textStyle="bold" />
 
-                <com.ngo.customviews.CustomEditText
+                <com.dfa.customviews.CustomEditText
                     android:id="@+id/etUserName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                     android:lines="1"
                     android:padding="@dimen/_3sdp" />
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:id="@+id/tvEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
                     android:textSize="@dimen/_13ssp"
                     android:textStyle="bold" />
 
-                <com.ngo.customviews.CustomEditText
+                <com.dfa.customviews.CustomEditText
                     android:id="@+id/etEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -80,7 +80,7 @@
                     android:lines="1"
                     android:padding="@dimen/_3sdp" />
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:id="@+id/tvContact"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
 
                     android:textStyle="bold" />
 
-                <com.ngo.customviews.CustomEditText
+                <com.dfa.customviews.CustomEditText
                     android:id="@+id/etContactNo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -111,7 +111,7 @@
                     android:maxLength="10"
                     android:padding="@dimen/_3sdp" />
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:id="@+id/tvTypesOfCrime"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -124,7 +124,7 @@
 
                     android:textStyle="bold" />
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:id="@+id/spTypesOfCrime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                     android:textColor="@color/black"
                     android:textSize="@dimen/_13ssp" />
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:id="@+id/tvLevel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -188,7 +188,7 @@
 
                 </LinearLayout>
 
-                <com.ngo.customviews.CustomtextView
+                <com.dfa.customviews.CustomtextView
                     android:id="@+id/tvDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -201,7 +201,7 @@
                     android:textSize="@dimen/_13ssp"
                     android:textStyle="bold" />
 
-                <com.ngo.customviews.CustomEditText
+                <com.dfa.customviews.CustomEditText
                     android:id="@+id/etDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -224,7 +224,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/tvNGOComment"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -236,7 +236,7 @@
                         android:textSize="@dimen/_13ssp"
                         android:textStyle="bold" />
 
-                    <com.ngo.customviews.CustomEditText
+                    <com.dfa.customviews.CustomEditText
                         android:id="@+id/etNGOComment"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/_80sdp"
@@ -251,7 +251,7 @@
                         android:maxLength="500"
                         android:padding="@dimen/_7sdp" />
 
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/btnSubmit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

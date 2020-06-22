@@ -29,7 +29,7 @@
                     android:layout_marginTop="@dimen/_10sdp"
                     android:weightSum="1">
 
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/tvTypesOfCrime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                         android:visibility="visible"
                         />
 
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/spTypesOfCrime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
                     android:weightSum="1">
 
 
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/tvStatusOfCrime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                       />
 
 
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/spStatusOfCrime"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
                     android:weightSum="1">
 
 
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/upgency_level"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                      />
 
 
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/level"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                     android:weightSum="1">
 
 
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/reported"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                        />
 
 
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/tv_reported"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -181,7 +181,7 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/tvDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -192,7 +192,7 @@
                         android:textSize="@dimen/_13ssp"
                         android:textStyle="bold" />
 
-                    <com.ngo.customviews.CustomEditText
+                    <com.dfa.customviews.CustomEditText
                         android:id="@+id/editDescription"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -242,7 +242,7 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <com.ngo.customviews.CustomtextView
+                    <com.dfa.customviews.CustomtextView
                         android:id="@+id/action_complaint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

@@ -7,7 +7,7 @@
     >
 
 
-        <com.ngo.customviews.CustomtextView
+        <com.dfa.customviews.CustomtextView
                 android:id="@+id/title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
         />
 
 
-        <com.ngo.customviews.CustomtextView
+        <com.dfa.customviews.CustomtextView
                 android:id="@+id/text"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
