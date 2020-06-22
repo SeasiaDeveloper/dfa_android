@@ -454,12 +454,12 @@ public class K4LVideoTrimmer extends FrameLayout {
             }
         }
 
-        if(mDuration>59000){
+        if(mDuration>119000){
             int pp=mStartPosition;
-            int test=pp+59000;
+            int test=pp+119000;
 
             if(mEndPosition>test){
-                mEndPosition=pp+59000;
+                mEndPosition=pp+119000;
             }
         }
 

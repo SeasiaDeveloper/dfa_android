@@ -49,7 +49,7 @@ public class TrimmerActivity extends AppCompatActivity implements OnTrimVideoLis
 
         mVideoTrimmer = ((K4LVideoTrimmer) findViewById(R.id.timeLine));
         if (mVideoTrimmer != null && path != null) {
-            mVideoTrimmer.setMaxDuration(59);
+            mVideoTrimmer.setMaxDuration(120);
             mVideoTrimmer.setOnTrimVideoListener(this);
             mVideoTrimmer.setOnK4LVideoListener(this);
             mVideoTrimmer.setVideoURI(Uri.parse(path));

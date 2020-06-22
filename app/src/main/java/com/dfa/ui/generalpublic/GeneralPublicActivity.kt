@@ -8,11 +8,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
+import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
@@ -55,8 +57,7 @@ import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.vincent.videocompressor.VideoCompress
 import kotlinx.android.synthetic.main.activity_public.*
-import java.io.File
-import java.io.IOException
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -246,10 +247,10 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
             }
             R.id.btnSubmit -> {
-
-
                 if (mediaType.equals("videos")) {
-                    if (/*!etDescription.text.toString().trim().isEmpty() &&*/ !pathOfImages.get(0).isEmpty()) {
+                    if (!etDescription.text.toString().trim().isEmpty() && !pathOfImages.get(0)
+                            .isEmpty()
+                    ) {
 
                         if (File(pathOfImages.get(0)).length() > 5000) {
                             videoCompressorCustom(pathOfImages)
@@ -261,7 +262,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                             )
                         }
                     }
-
                 } else {
                     complaintsPresenter.checkValidations(
                         1,
@@ -286,6 +286,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
         }
     }
+
+
 
 
     private fun videoCompressorCustom(video: ArrayList<String>) {
@@ -315,6 +317,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     progressDialog.setMessage("Processing Video...")
                     progressDialog.show()
                 }
+
 
                 override fun onSuccess() {
 
@@ -400,7 +403,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
     private fun recordVideo() {
         val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 59);
+        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 120);
         if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent, CAMERA_REQUEST_CODE_VEDIO);
         }
@@ -684,6 +687,43 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
     }
 
+    fun imageCompressor(selectedImage: Uri): Bitmap {
+
+        var imageStream: InputStream? = null
+        try {
+            imageStream = contentResolver.openInputStream(
+                selectedImage
+            )
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+        }
+
+        val bmp: Bitmap = BitmapFactory.decodeStream(imageStream)
+
+        var stream: ByteArrayOutputStream? = ByteArrayOutputStream()
+        bmp.compress(Bitmap.CompressFormat.PNG, 100, stream)
+        val byteArray: ByteArray = stream!!.toByteArray()
+        try {
+            stream!!.close()
+            stream = null
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
+        return bmp
+    }
+
+    fun getImageUri(
+        inContext: Context,
+        inImage: Bitmap
+    ): Uri? {
+        val bytes = ByteArrayOutputStream()
+        inImage.compress(Bitmap.CompressFormat.JPEG, 80, bytes)
+        val path: String =
+            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        return Uri.parse(path)
+    }
+
+
     @RequiresApi(Build.VERSION_CODES.P)
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
@@ -693,19 +733,37 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 imageUri = intent.data
                 if (imageUri != null) {
                     try {
-                        BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri!!))
+                        ///   BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri!!))
                         imgView.visibility = View.VISIBLE
                         video_parent.visibility = View.GONE
                         imageview_layout.visibility = View.VISIBLE
                         imgView.setImageURI(imageUri)
                         //  path = getRealPathFromURI(imageUri!!)
                         //compression
-                        val compClass = CompressImageUtilities()
-                        val newPathString = compClass.compressImage(
-                            this@GeneralPublicActivity,
-                            getRealPathFromURI(imageUri!!)
+//                        val compClass = CompressImageUtilities()
+//                        val newPathString = compClass.compressImage(
+//                            this@GeneralPublicActivity,
+//                            getRealPathFromURI(imageUri!!)
+//                        )
+
+                        var bitmap = imageCompressor(imageUri!!)
+
+                        var newPathString = getImageUri(this, bitmap)
+
+
+                        Log.d(
+                            "GeneralPublicActivity",
+                            "gettingSiseUri" + File(imageUri!!.path).length()
                         )
-                        path = newPathString
+                        Log.d(
+                            "GeneralPublicActivity",
+                            "compressedSize" + File(newPathString!!.path).length()
+                        )
+
+//                        var newPathString = Compressor.getDefault(this).compressToFile(File(imageUri.toString()));
+
+
+                        path =  FileUtils.getPath(this, newPathString)
 
                         pathOfImages = ArrayList()
                         pathOfImages.add(path)
@@ -713,7 +771,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         try {
                             val wholeID = DocumentsContract.getDocumentId(imageUri)
                             val id =
-                                wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() }).toTypedArray()[1]
+                                wholeID.split((":").toRegex()).dropLastWhile({ it.isEmpty() })
+                                    .toTypedArray()[1]
                             val column = arrayOf(MediaStore.Images.Media.DATA)
                             val sel = MediaStore.Images.Media._ID + "=?"
                             val cursor = getContentResolver().query(
@@ -768,13 +827,14 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                 //val tempUri = getImageUriWhenTakePhoto(applicationContext, images.get(0).path)
                 var bitmap = getCapturedImage(tempUri, this)
+                var newPathString = getImageUri(this, bitmap)
+
                 if (bitmap != null) {
                     val requiredImage =
                         RealPathUtil.imageRotateIfRequired(mPhotoFile?.absolutePath!!, bitmap)
                     imgView.setImageBitmap(requiredImage)
-                    path =
-                            /*compClass.storeImage(decoded,this@GeneralPublicActivity)?.absolutePath!!*/
-                        mPhotoFile?.absolutePath!!
+                    //path = mPhotoFile?.absolutePath!!
+                    path =  FileUtils.getPath(this, newPathString)
                     pathOfImages = ArrayList<String>()
                     pathOfImages.add(path)
                     // }
@@ -786,9 +846,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             getLocation()
         } else if (requestCode == SELECT_VIDEOS && resultCode == Activity.RESULT_OK || requestCode == SELECT_VIDEOS_KITKAT && resultCode == Activity.RESULT_OK) {
             mediaType = "videos"
-            imgView.visibility = View.GONE
-            imageview_layout.visibility = View.GONE
-            video_parent.visibility = View.VISIBLE
+
             if (intent?.data != null) {
 
 
@@ -801,9 +859,23 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 // imgView.setImageBitmap(thumbnail)
 
                 if (imagePath != null) {
-                    val intent = Intent(this, TrimmerActivity::class.java)
-                    intent.putExtra("path", FileUtils.getPath(this, imagePath))
-                    startActivityForResult(intent, 5)
+
+                    val retriever =
+                        MediaMetadataRetriever()
+                    retriever.setDataSource(this, imagePath)
+                    val time =
+                        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                    val timeInMillisec = time.toLong()
+                    retriever.release()
+
+                    if (timeInMillisec >= 5000) {
+
+                        val intent = Intent(this, TrimmerActivity::class.java)
+                        intent.putExtra("path", FileUtils.getPath(this, imagePath))
+                        startActivityForResult(intent, 5)
+                    } else {
+                        Toast.makeText(this, "Video length is too short", Toast.LENGTH_LONG).show()
+                    }
                 }
 
 
@@ -830,6 +902,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                             }
                         }
                     }.start()
+                    imgView.visibility = View.GONE
+                    imageview_layout.visibility = View.GONE
+                    video_parent.visibility = View.VISIBLE
                     pathOfImages = ArrayList<String>()
                     pathOfImages.add(path)
                 }
