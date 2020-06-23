@@ -38,6 +38,12 @@
             android:title="@string/nav_terms_and_conditions" />
 
         <item
+            android:id="@+id/privacy_policy"
+            android:icon="@drawable/policy"
+            app:itemTextAppearance="@style/Style_menu"
+            android:title="@string/privacy_policy" />
+
+        <item
             android:id="@+id/nav_contact_us"
             android:icon="@drawable/ic_call_grey"
             app:itemTextAppearance="@style/Style_menu"
@@ -48,6 +54,7 @@
             android:icon="@drawable/logout"
             app:itemTextAppearance="@style/Style_menu"
             android:title="@string/nav_logout" />
+
     </group>
 
 </menu>

@@ -201,14 +201,18 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 }
             }
 
-//            R.id.img_delete -> {
-//                path = ""
-//                video_parent.visibility=View.GONE
-//
-//                if(videoView!= null){
-//                    videoView.stopPlayback()
-//                }
-//            }
+           R.id.img_delete -> {
+                path = ""
+                pathOfImages = ArrayList()
+                mediaControls.visibility = View.GONE
+                mediaControls.setAnchorView(videoView)
+                videoView.setMediaController(mediaControls)
+                video_parent.visibility=View.GONE
+
+                if(videoView!= null){
+                   videoView.stopPlayback()
+                }
+            }
             R.id.tvRecordVideo -> {
                 //Utilities.showMessage(this, getString(R.string.coming_soon))
                 //commented for next ,milestone(server was overloaded)
@@ -221,7 +225,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                 if (CheckRuntimePermissions.checkMashMallowPermissions(
                         this,
-                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS
+                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS_GALLERY_VIDEO
                     )
                 ) {
                     videoFromGalleryIntent()
@@ -248,18 +252,26 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
             R.id.btnSubmit -> {
                 if (mediaType.equals("videos")) {
-                    if (!pathOfImages.get(0).isEmpty()
-                    ) {
+                    if(pathOfImages.size>0) {
+                        if (!pathOfImages.get(0).isEmpty()
+                        ) {
 
-                        if (File(pathOfImages.get(0)).length() > 5000) {
-                            videoCompressorCustom(pathOfImages)
-                        } else {
-                            complaintsPresenter.checkValidations(
-                                1,
-                                pathOfImages,
-                                etDescription.text.toString()
-                            )
+                            if (File(pathOfImages.get(0)).length() > 5000) {
+                                videoCompressorCustom(pathOfImages)
+                            } else {
+                                complaintsPresenter.checkValidations(
+                                    1,
+                                    pathOfImages,
+                                    etDescription.text.toString()
+                                )
+                            }
                         }
+                    }else{
+                        complaintsPresenter.checkValidations(
+                            1,
+                            pathOfImages,
+                            etDescription.text.toString()
+                        )
                     }
                 } else {
                     complaintsPresenter.checkValidations(
@@ -327,11 +339,13 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     }
 
                     if(File(outPath).length()<=25000000){
-                        var compressVideo = ArrayList<String>()
-                        compressVideo.add(outPath)
+                       /* var compressVideo = ArrayList<String>()
+                        compressVideo.add(outPath)*/
+                        pathOfImages = ArrayList()
+                        pathOfImages.add(outPath)
                         complaintsPresenter.checkValidations(
                             1,
-                            compressVideo,
+                            pathOfImages,
                             etDescription.text.toString()
                         )
                     } else{

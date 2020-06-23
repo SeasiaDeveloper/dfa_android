@@ -135,7 +135,7 @@ interface CallRetrofitApi {
     @POST("jwt-auth/v1/crime_detail")
     fun getCrimeDetails(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<GetCrimeDetailsResponse>
 
-    @GET("wp/v2/user/get_terms_condition")
+    @GET("terms-conditions/") //wp/v2/user/get_terms_condition
     fun get_terms_condition(@Header("Authorization") authorization: String?): Call<GetTermsConditionsResponse>
 
     @GET("jwt-auth/v1/comment_list")

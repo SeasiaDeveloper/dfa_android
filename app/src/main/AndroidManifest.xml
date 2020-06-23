@@ -139,6 +139,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".ui.privacy_policy.PrivacyPolicyActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".ui.crimedetails.view.IncidentDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />

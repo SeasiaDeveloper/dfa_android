@@ -799,12 +799,12 @@ class CasesAdapter(
             /*itemView.imgFirMedia.setOnClickListener {
                 //show enlarged image
                 displayLargeImageofFir(context, item, options)
-            }
+            }*/
 
             itemView.imgComplaintMedia.setOnClickListener {
                 //show enlarged image
                 DisplayLargeImageOfMedia(context, item, options)
-            }*/
+            }
 
             if (!(item.status.equals("Unassigned"))) {  //change
                 // itemView.view_fir.visibility = View.VISIBLE

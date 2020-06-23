@@ -188,12 +188,14 @@
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/clear_image"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
                         android:layout_marginTop="5dp"
                         android:layout_gravity="end"
                         android:layout_marginEnd="@dimen/_10ssp"
-                        android:src="@drawable/ic_close_black_24dp" />
+                        android:layout_margin="5dp"
+                        android:visibility="visible"
+                        android:src="@drawable/ic_deleve"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"/>
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/imgView"
@@ -228,14 +230,13 @@
                             android:layout_centerInParent="true"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-
-                           />
+                            />
 
 
                     <ImageView
                         android:id="@+id/img_delete"
                         android:layout_margin="5dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:layout_alignParentRight="true"
                         android:src="@drawable/ic_deleve"
                         android:layout_width="30dp"

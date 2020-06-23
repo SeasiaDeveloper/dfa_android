@@ -45,7 +45,9 @@ import com.dfa.ui.home.fragments.videos.view.VideosFragment
 import com.dfa.ui.login.view.LoginActivity
 import com.dfa.ui.mycases.MyCasesActivity
 import com.dfa.ui.policedetail.view.PoliceIncidentDetailScreen
+import com.dfa.ui.privacy_policy.PrivacyPolicyActivity
 import com.dfa.ui.profile.ProfileActivity
+import com.dfa.ui.termsConditions.view.TermsAndConditionActivity
 import com.dfa.ui.updatepassword.view.GetLogoutDialogCallbacks
 import com.dfa.ui.updatepassword.view.UpdatePasswordActivity
 import com.dfa.utils.*
@@ -517,13 +519,20 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 startActivity(Intent.createChooser(shareIntent, "send to"))
 
             }
-            R.id.nav_terms_and_conditions -> Utilities.showMessage(this@HomeActivity, "Coming Soon")
-            /*startActivity(
+            R.id.nav_terms_and_conditions ->
+            startActivity(
                 Intent(
                     this@HomeActivity,
                     TermsAndConditionActivity::class.java
                 )
-            )*/
+            )
+            R.id.privacy_policy ->
+                startActivity(
+                    Intent(
+                        this@HomeActivity,
+                        PrivacyPolicyActivity::class.java
+                    )
+                )
         }
 
         drawerLayout.closeDrawer(GravityCompat.START)
