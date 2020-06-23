@@ -949,7 +949,12 @@ class CasesAdapter(
             val dialog = Dialog(context)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setContentView(binding.root)
-
+            dialog.window?.setLayout(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT
+            )
+            dialog.window?.setGravity(Gravity.CENTER)
+            dialog.getWindow()!!.setBackgroundDrawableResource(android.R.color.transparent)
             val imageView = (dialog.findViewById(R.id.imgView) as ImageView)
             val mediaUrl: String = userDetail.media_list?.get(0)!!
 
