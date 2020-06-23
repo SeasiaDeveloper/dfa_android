@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.vaibhavlakhera.circularprogressview.CircularProgressView
+        android:id="@+id/progressView"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="40dp"
+        app:animate="true"
+        app:animateDuration="600"
+        app:progressColor="@color/colorPrimary"
+        app:progressRoundCap="true"
+        app:progressTextEnabled="true"
+        app:progressTextSize="15sp"
+        app:progressTextType="percent"
+        app:progressWidth="8dp"
+        app:startAngle="0"
+        app:total="100"
+        app:totalColor="@color/silver"
+        app:totalWidth="8dp"
+        tools:ignore="MissingClass" />
+
+</RelativeLayout>

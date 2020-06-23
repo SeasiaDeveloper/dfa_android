@@ -94,15 +94,19 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     var resultGallery: Boolean = true
     var gps_enabled: Boolean = false
     var network_enabled: Boolean = false
-    private val REQUEST_PERMISSIONS = 1
     private val REQUEST_PERMISSIONS_GALLERY_VIDEO = 2
     private var isPermissionDialogRequired = true
 
-    val PERMISSION_READ_STORAGE = arrayOf(
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        Manifest.permission.CAMERA
-    )
+
+        val PERMISSION_READ_STORAGE = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
+        )
+         val REQUEST_PERMISSIONS = 1
+
+
+
 
     private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
     override fun getLayout(): Int {

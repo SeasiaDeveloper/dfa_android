@@ -402,6 +402,33 @@
                             android:src="@drawable/camera_placeholder"
                             android:visibility="visible" />
 
+
+                        <RelativeLayout
+                            android:id="@+id/videoThumbNialParent"
+                            android:layout_marginTop="@dimen/_4sdp"
+                            android:visibility="gone"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_200sdp"
+                            android:layout_gravity="center_horizontal">
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/videoThumbNial"
+                                android:layout_width="match_parent"
+
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/camera_placeholder"
+                                />
+
+                            <ImageView
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/ic_play_video"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"/>
+
+                        </RelativeLayout>
+
+
+
                         <com.dfa.customviews.CustomtextView
                             android:id="@+id/view_fir"
                             android:layout_width="wrap_content"
@@ -754,17 +781,7 @@
                     android:src="@drawable/camera_placeholder" />
 
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/videoThumbNial"
-                    android:layout_width="match_parent"
-                    android:layout_height="156dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="@dimen/_4sdp"
-                    android:background="@drawable/squarebg_non_curve"
-                    android:scaleType="centerCrop"
-                    android:visibility="gone"
 
-                    android:src="@drawable/camera_placeholder" />
 
 
                 <LinearLayout

@@ -142,6 +142,7 @@
     <string name="nav_terms_and_conditions">Terms and Conditions</string>
     <string name="nav_logout">Logout</string>
     <string name="my_cases">My Cases</string>
+    <string name="video_player">Video Player</string>
     <string name="add_comments">Add Comments</string>
     <string name="add_your_comment_here">Add a comment..</string>
     <string name="liked_users">Liked Users</string>
