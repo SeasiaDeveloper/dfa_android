@@ -1,6 +1,5 @@
 package com.dfa.ui.home.fragments.home.view
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.*
@@ -9,7 +8,6 @@ import android.graphics.Color
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -21,8 +19,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -283,19 +279,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         var menu = nav_view.menu
 
-
-        /*  val role = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")
-          if (role.equals("0")) {
-              userType.setText(getString(R.string.gpu))
-
-          } else if (role.equals("1")) {
-              userType.setText(getString(R.string.ngo_user))
-
-          } else if (role.equals("2")) {
-              userType.setText(getString(R.string.police_user))
-
-          }*/
-
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         if (authorizationToken!!.isEmpty()) {
             menu.findItem(R.id.nav_edit_profile).setVisible(false)
@@ -430,14 +413,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         } else {
             userInfo.visibility = View.VISIBLE
             btnLogin.visibility = View.GONE
-            /*  if (getProfileResponse.data?.isVerified!!.equals("1")) {
-                  userInfo.setText("Verified")
-                  verified_icon.visibility = View.VISIBLE
-              } else {
-                  userInfo.setText("Unverified")
-                  verified_icon.visibility = View.GONE
-              }
-  */
             val role = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")
             if (role.equals("0")) {
                 userInfo.setText(getString(R.string.gpu))

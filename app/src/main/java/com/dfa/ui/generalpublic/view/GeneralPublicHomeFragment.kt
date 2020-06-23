@@ -412,7 +412,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
-        Utilities.dismissProgress() //       val jsondata = GsonBuilder().create().fromJson(response, GetCasesResponse::class.java)
+        Utilities.dismissProgress()
         complaints = response.data!!
         if (complaints.isNotEmpty()) {
             if (tvRecord != null) {

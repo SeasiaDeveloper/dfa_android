@@ -110,7 +110,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
     override fun onResume() {
         super.onResume()
-        if (!isGPS && !isPermissionDialogRequired ) {
+        if (!isGPS && !isPermissionDialogRequired) {
             askForGPS()
         }
     }
@@ -225,7 +225,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 ) {
                     videoFromGalleryIntent()
                 }
-
             }
 
             R.id.tvTakeVideo -> {
@@ -248,8 +247,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
             R.id.btnSubmit -> {
                 if (mediaType.equals("videos")) {
-                    if (!etDescription.text.toString().trim().isEmpty() && !pathOfImages.get(0)
-                            .isEmpty()
+                    if (!pathOfImages.get(0).isEmpty()
                     ) {
 
                         if (File(pathOfImages.get(0)).length() > 5000) {
@@ -286,8 +284,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
         }
     }
-
-
 
 
     private fun videoCompressorCustom(video: ArrayList<String>) {
@@ -579,33 +575,36 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 resultGallery = true
                 galleryIntent()
             }
-        }
 
-        if (requestCode == PERMISSION_ID_CAMERA) {
-            if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED) && (grantResults[1] == PackageManager.PERMISSION_GRANTED) && (grantResults[2] == PackageManager.PERMISSION_GRANTED)) {
-                //  askForGPS()
-                isOpenCamera = true
-                cameraIntent()
+            PERMISSION_ID_CAMERA -> {
+                if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED) && (grantResults[1] == PackageManager.PERMISSION_GRANTED) && (grantResults[2] == PackageManager.PERMISSION_GRANTED)) {
+                    //  askForGPS()
+                    isOpenCamera = true
+                    cameraIntent()
+                }
+            }
+
+            PERMISSION_ID -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED)
+                // Utilities.requestPermissions(this)
+                else
+                    if (!isGPS) {
+                        askForGPS()
+                    }
+            }
+
+            REQUEST_PERMISSIONS -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    recordVideo()
+                }
+            }
+
+            REQUEST_PERMISSIONS_GALLERY_VIDEO -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    videoFromGalleryIntent()
+                }
             }
         }
-
-        if (requestCode == PERMISSION_ID) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED)
-            // Utilities.requestPermissions(this)
-            else
-                if (!isGPS) {
-                    askForGPS()
-                }
-        }
-
-        if (requestCode == REQUEST_PERMISSIONS) {
-            recordVideo()
-        }
-
-        if (requestCode == REQUEST_PERMISSIONS_GALLERY_VIDEO) {
-            videoFromGalleryIntent()
-        }
-
     }
 
 
@@ -763,7 +762,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 //                        var newPathString = Compressor.getDefault(this).compressToFile(File(imageUri.toString()));
 
 
-                        path =  FileUtils.getPath(this, newPathString)
+                        path = FileUtils.getPath(this, newPathString)
 
                         pathOfImages = ArrayList()
                         pathOfImages.add(path)
@@ -834,7 +833,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         RealPathUtil.imageRotateIfRequired(mPhotoFile?.absolutePath!!, bitmap)
                     imgView.setImageBitmap(requiredImage)
                     //path = mPhotoFile?.absolutePath!!
-                    path =  FileUtils.getPath(this, newPathString)
+                    path = FileUtils.getPath(this, newPathString)
                     pathOfImages = ArrayList<String>()
                     pathOfImages.add(path)
                     // }
