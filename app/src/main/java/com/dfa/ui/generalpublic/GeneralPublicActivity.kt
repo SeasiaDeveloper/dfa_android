@@ -57,6 +57,7 @@ import com.jaygoo.widget.RangeSeekBar
 import com.vincent.videocompressor.VideoCompress
 import kotlinx.android.synthetic.main.activity_public.*
 import java.io.*
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -329,13 +330,21 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     } catch (e: java.lang.Exception) { // Handle or log or ignore
 
                     }
-                    var compressVideo = ArrayList<String>()
-                    compressVideo.add(outPath)
-                    complaintsPresenter.checkValidations(
-                        1,
-                        compressVideo,
-                        etDescription.text.toString()
-                    )
+
+                    if(File(outPath).length()<=25000000){
+                        var compressVideo = ArrayList<String>()
+                        compressVideo.add(outPath)
+                        complaintsPresenter.checkValidations(
+                            1,
+                            compressVideo,
+                            etDescription.text.toString()
+                        )
+                    } else{
+                        Toast.makeText(this@GeneralPublicActivity,"video size is very large",Toast.LENGTH_LONG).show()
+                    }
+
+
+
                     ///here is hit api
 
                 }
@@ -361,6 +370,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             Toast.makeText(this, "video is very short", Toast.LENGTH_LONG).show()
         }
     }
+
+
 
 
     private fun getLocale(): Locale? {
