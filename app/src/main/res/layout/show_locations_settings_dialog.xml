@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:padding="@dimen/_20sdp"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:background="@drawable/white_round_corner"
+    android:orientation="vertical">
+
+    <com.dfa.customviews.CustomTextViewheading
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingTop="6dp"
+        android:text="LOCATION PERMISSION"
+        android:textColor="@color/green"
+        android:textSize="@dimen/_12sdp"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/layer"></ImageView>
+
+    <com.dfa.customviews.CustomtextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:text="@string/permission_text"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10sdp" />
+
+    <com.dfa.customviews.CustomtextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="@dimen/_5sdp"
+        android:text="@string/location_permission_text"
+        android:textColor="@color/green"
+        android:textSize="@dimen/_10sdp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center">
+
+        <com.dfa.customviews.CustomTextViewheading
+            android:id="@+id/btn_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:background="@drawable/button_green_bg"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:text="@string/turn_on_location"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/_10ssp" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -8,6 +8,7 @@ android {
     compileSdkVersion 29
     defaultConfig {
         applicationId "com.dfango.android"
+       // applicationId "com.dfango.android"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 2

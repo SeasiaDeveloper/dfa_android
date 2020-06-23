@@ -40,12 +40,37 @@
                     android:id="@+id/textAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="start"
-                    android:padding="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:paddingTop="6dp"
                     android:text="My Earning"
                     android:textColor="@color/black"
                     android:textSize="15dp"
                     android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_2sdp"
+                    android:background="@color/black" />
+
+
+                <com.dfa.customviews.CustomtextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:padding="@dimen/_5sdp"
+                    android:text="@string/earnings_screen_text"
+                    android:paddingBottom="@dimen/_5sdp"
+                    android:textSize="@dimen/_10sdp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginStart="@dimen/_5sdp"
+                    android:layout_marginEnd="@dimen/_5sdp"
+                    android:background="@color/green" />
 
                 <com.dfa.customviews.CustomtextView
                     android:id="@+id/my_earnings"

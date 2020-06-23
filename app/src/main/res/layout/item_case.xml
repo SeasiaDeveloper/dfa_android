@@ -17,8 +17,8 @@
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginEnd="@dimen/_8sdp"
             android:layout_marginBottom="@dimen/_1sdp"
-            app:cardCornerRadius="@dimen/_4sdp"
             android:elevation="8dp"
+            app:cardCornerRadius="@dimen/_4sdp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -137,10 +137,18 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
                             <LinearLayout
                                 android:id="@+id/layoutCrimeType"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content">
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5">
 
                                 <com.dfa.customviews.CustomTextViewheading
                                     android:layout_width="wrap_content"
@@ -157,10 +165,41 @@
                                     android:layout_marginStart="@dimen/_4sdp"
                                     android:layout_marginEnd="@dimen/_4sdp"
                                     android:layout_marginBottom="@dimen/_5sdp"
+                                    android:text="Suspect"
+                                    android:textColor="@color/grey_text"
+                                    android:textSize="@dimen/_12ssp" />
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/ngo_case_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:gravity="end"
+                                android:visibility="gone"
+                                android:layout_marginEnd="@dimen/_2sdp"
+                                android:layout_weight="0.5">
+
+                                <com.dfa.customviews.CustomTextViewheading
+                                    android:id="@+id/case_no_text_ngo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_6sdp"
+                                    android:text="@string/case_no_heading"
+                                    android:textColor="@color/grey_text"
+                                    android:textStyle="bold" />
+
+                                <com.dfa.customviews.CustomtextView
+                                    android:id="@+id/case_no_ngo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_4sdp"
+                                    android:layout_marginEnd="@dimen/_4sdp"
+                                    android:layout_marginBottom="@dimen/_5sdp"
                                     android:textColor="@color/grey_text"
                                     android:textSize="@dimen/_12ssp"
                                     android:text="Suspect"/>
                             </LinearLayout>
+                        </LinearLayout>
 
                             <LinearLayout
                                 android:id="@+id/layoutStatus"
@@ -187,9 +226,16 @@
                                     tools:text="Reject" />
                             </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="1">
+
                             <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content">
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="0.5">
 
                                 <com.dfa.customviews.CustomTextViewheading
                                     android:id="@+id/txtUrgencyTitle"
@@ -199,6 +245,7 @@
                                     android:text="@string/urgency"
                                     android:textColor="@color/grey_text"
                                     android:textStyle="bold" />
+
 
                                 <com.dfa.customviews.CustomtextView
                                     android:id="@+id/expandable_Level"
@@ -210,17 +257,50 @@
                                     android:textColor="@color/grey_text"
                                     android:textSize="@dimen/_12ssp"
                                     tools:text="Level 3" />
+
                             </LinearLayout>
+
+                            <LinearLayout
+                                android:id="@+id/gpu_case_layout"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:visibility="gone"
+                                android:gravity="end"
+                                android:layout_marginEnd="@dimen/_2sdp"
+                                android:layout_weight="0.5">
+
+                            <com.dfa.customviews.CustomTextViewheading
+                                android:id="@+id/case_no_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_6sdp"
+                                android:text="@string/case_no_heading"
+                                android:textColor="@color/grey_text"
+                                android:textStyle="bold" />
+
+                            <com.dfa.customviews.CustomtextView
+                                android:id="@+id/case_no"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_4sdp"
+                                android:layout_marginEnd="@dimen/_4sdp"
+                                android:layout_marginBottom="@dimen/_5sdp"
+                                android:textColor="@color/grey_text"
+                                android:textSize="@dimen/_12ssp"
+                                tools:text="Level 3" />
                         </LinearLayout>
 
-
                     </LinearLayout>
+                </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="horizontal">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
                         <com.dfa.customviews.CustomTextViewheading
                             android:layout_width="wrap_content"
@@ -671,7 +751,6 @@
                     android:layout_marginTop="@dimen/_4sdp"
                     android:background="@drawable/squarebg_non_curve"
                     android:scaleType="centerCrop"
-
                     android:src="@drawable/camera_placeholder" />
 
 

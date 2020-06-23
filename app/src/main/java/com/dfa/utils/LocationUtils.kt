@@ -31,7 +31,18 @@ class LocationUtils(var activity: Context) : GoogleApiClient.ConnectionCallbacks
 
     override fun onLocationChanged(location: Location) {
 //Call the function of interface define in Activity i.e MainActivity
-        mlocationListener?.updateUi(location)
+        PreferenceHandler.writeString(
+            activity,
+            PreferenceHandler.LATITUDE,
+            "" + location.latitude
+        )
+
+        PreferenceHandler.writeString(
+            activity,
+            PreferenceHandler.LONGITUDE,
+            "" + location.longitude
+        )
+      //  mlocationListener?.updateUi(location)
         //Toast.makeText(activity,"sd "+location.latitude,Toast.LENGTH_SHORT).show()
     }
 

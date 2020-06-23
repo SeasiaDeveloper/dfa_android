@@ -1,4 +1,4 @@
-package com.dfa.ui.termsConditions.view
+package com.dfa.ui.privacy_policy
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -18,15 +18,14 @@ import kotlinx.android.synthetic.main.activity_profile.toolbarLayout
 import kotlinx.android.synthetic.main.terms_and_conditions_activity.*
 
 @SuppressLint("SetJavaScriptEnabled")
-class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
-    private var presenter: TermsConditionsPresenter = TermsConditionsPresenterImpl(this)
+class PrivacyPolicyActivity : BaseActivity() {
 
     override fun getLayout(): Int {
-        return R.layout.terms_and_conditions_activity
+        return R.layout.privacy_policy_layout
     }
 
     override fun setupUI() {
-        (toolbarLayout as CenteredToolbar).title = getString(R.string.terms_and_condition)
+        (toolbarLayout as CenteredToolbar).title = getString(R.string.privacy_policy)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
         (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_button)
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
@@ -42,21 +41,8 @@ class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
         return termsConditionsLayout
     }
 
-    override fun onTermsConditionsSuccess(response: GetTermsConditionsResponse) {
-        Utilities.dismissProgress()
-       // showWebView(response.post_content)
-    }
-
-    override fun onPoliceDetailsFailed(error: String) {
-        Utilities.dismissProgress()
-    }
-
-    override fun showServerError(error: String) {
-        Utilities.dismissProgress()
-    }
-
     private fun showWebView() {
-        val html =  Constants.BASE_URL_FOR_TERMS_AND_CONDITIONS
+        val html =  Constants.BASE_URL_FOR_PRIVACY_POLICY
         val mimeType = "text/html"
         val encoding = "UTF-8"
 

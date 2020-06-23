@@ -139,6 +139,10 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
+            android:name=".ui.privacy_policy.PrivacyPolicyActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
             android:name=".ui.crimedetails.view.IncidentDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
@@ -176,12 +180,12 @@
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
-        <service
-            android:name=".utils.LocationUpdateService"
-            android:enabled="true"
-            android:exported="true"
-            android:foregroundServiceType="location" />
-
+        <!--  <service
+              android:name=".utils.LocationUpdateService"
+              android:enabled="true"
+              android:exported="true"
+              android:foregroundServiceType="location" />
+  -->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

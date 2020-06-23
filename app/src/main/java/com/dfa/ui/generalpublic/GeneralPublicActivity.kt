@@ -41,6 +41,7 @@ import com.dfa.customviews.CenteredToolbar
 import com.dfa.pojo.request.ComplaintRequest
 import com.dfa.pojo.response.ComplaintResponse
 import com.dfa.pojo.response.GetCrimeTypesResponse
+import com.dfa.ui.generalpublic.presenter.GetReportCrimeAlertDialog
 import com.dfa.ui.generalpublic.presenter.PublicComplaintPresenter
 import com.dfa.ui.generalpublic.presenter.PublicComplaintPresenterImpl
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
@@ -64,7 +65,7 @@ import kotlin.collections.ArrayList
 
 @Suppress("INACCESSIBLE_TYPE")
 class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChangedListener,
-    PublicComplaintView {
+    PublicComplaintView, GetReportCrimeAlertDialog {
     private lateinit var file: File
     private var longitude: String = ""
     private var lattitude: String = ""
@@ -94,6 +95,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     var gps_enabled: Boolean = false
     var network_enabled: Boolean = false
     private val REQUEST_PERMISSIONS = 1
+    private val REQUEST_PERMISSIONS_GALLERY_VIDEO = 2
+    private var isPermissionDialogRequired = true
 
     val PERMISSION_READ_STORAGE = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -106,6 +109,13 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         return R.layout.activity_public
     }
 
+    override fun onResume() {
+        super.onResume()
+        if (!isGPS && !isPermissionDialogRequired) {
+            askForGPS()
+        }
+    }
+
     override fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.report_incident)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
@@ -115,24 +125,11 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
         setListeners()
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        provider = LocationManager.GPS_PROVIDER
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            try {
-                gps_enabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-            } catch (ex: Exception) {
-            }
-            try {
-                network_enabled =
-                    locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-            } catch (ex: Exception) {
-            }
-            if (!gps_enabled && !network_enabled) {
-                askForGPS()
-            }
-
+        if (!Utilities.checkPermissions(this)) {
+            Utilities.requestPermissions(this)
         } else {
-            requestPermissions(this)
+            //  askForGPS()
+            isPermissionDialogRequired = false
         }
 
 
@@ -204,14 +201,18 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 }
             }
 
-//            R.id.img_delete -> {
-//                path = ""
-//                video_parent.visibility=View.GONE
-//
-//                if(videoView!= null){
-//                    videoView.stopPlayback()
-//                }
-//            }
+           R.id.img_delete -> {
+                path = ""
+                pathOfImages = ArrayList()
+                mediaControls.visibility = View.GONE
+                mediaControls.setAnchorView(videoView)
+                videoView.setMediaController(mediaControls)
+                video_parent.visibility=View.GONE
+
+                if(videoView!= null){
+                   videoView.stopPlayback()
+                }
+            }
             R.id.tvRecordVideo -> {
                 //Utilities.showMessage(this, getString(R.string.coming_soon))
                 //commented for next ,milestone(server was overloaded)
@@ -224,12 +225,11 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                 if (CheckRuntimePermissions.checkMashMallowPermissions(
                         this,
-                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS
+                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS_GALLERY_VIDEO
                     )
                 ) {
                     videoFromGalleryIntent()
                 }
-
             }
 
             R.id.tvTakeVideo -> {
@@ -252,19 +252,26 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
             R.id.btnSubmit -> {
                 if (mediaType.equals("videos")) {
-                    if (!etDescription.text.toString().trim().isEmpty() && !pathOfImages.get(0)
-                            .isEmpty()
-                    ) {
+                    if(pathOfImages.size>0) {
+                        if (!pathOfImages.get(0).isEmpty()
+                        ) {
 
-                        if (File(pathOfImages.get(0)).length() > 5000) {
-                            videoCompressorCustom(pathOfImages)
-                        } else {
-                            complaintsPresenter.checkValidations(
-                                1,
-                                pathOfImages,
-                                etDescription.text.toString()
-                            )
+                            if (File(pathOfImages.get(0)).length() > 5000) {
+                                videoCompressorCustom(pathOfImages)
+                            } else {
+                                complaintsPresenter.checkValidations(
+                                    1,
+                                    pathOfImages,
+                                    etDescription.text.toString()
+                                )
+                            }
                         }
+                    }else{
+                        complaintsPresenter.checkValidations(
+                            1,
+                            pathOfImages,
+                            etDescription.text.toString()
+                        )
                     }
                 } else {
                     complaintsPresenter.checkValidations(
@@ -332,11 +339,10 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     }
 
                     if(File(outPath).length()<=25000000){
-//                        var compressVideo = ArrayList<String>()
-//                        compressVideo.add(outPath)
+                       /* var compressVideo = ArrayList<String>()
+                        compressVideo.add(outPath)*/
                         pathOfImages = ArrayList()
                         pathOfImages.add(outPath)
-
                         complaintsPresenter.checkValidations(
                             1,
                             pathOfImages,
@@ -594,21 +600,35 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 resultGallery = true
                 galleryIntent()
             }
-        }
 
-        if (requestCode == PERMISSION_ID_CAMERA) {
-            if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED) && (grantResults[1] == PackageManager.PERMISSION_GRANTED) && (grantResults[2] == PackageManager.PERMISSION_GRANTED)) {
-                //  askForGPS()
-                isOpenCamera = true
-                cameraIntent()
+            PERMISSION_ID_CAMERA -> {
+                if (grantResults.isNotEmpty() && (grantResults[0] == PackageManager.PERMISSION_GRANTED) && (grantResults[1] == PackageManager.PERMISSION_GRANTED) && (grantResults[2] == PackageManager.PERMISSION_GRANTED)) {
+                    //  askForGPS()
+                    isOpenCamera = true
+                    cameraIntent()
+                }
             }
-        }
 
-        if (requestCode == PERMISSION_ID) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED)
-            // Utilities.requestPermissions(this)
-            else
-                askForGPS()
+            PERMISSION_ID -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED)
+                // Utilities.requestPermissions(this)
+                else
+                    if (!isGPS) {
+                        askForGPS()
+                    }
+            }
+
+            REQUEST_PERMISSIONS -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    recordVideo()
+                }
+            }
+
+            REQUEST_PERMISSIONS_GALLERY_VIDEO -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    videoFromGalleryIntent()
+                }
+            }
         }
     }
 
@@ -619,8 +639,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 override fun gpsStatus(isGPSEnable: Boolean) {
                     // turn on GPS
                     isGPS = isGPSEnable
-                    /* if(!isGPS)
-                askForGPS()*/
                     if (isGPS)
                         getLocation()
                 }
@@ -769,7 +787,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 //                        var newPathString = Compressor.getDefault(this).compressToFile(File(imageUri.toString()));
 
 
-                        path =  FileUtils.getPath(this, newPathString)
+                        path = FileUtils.getPath(this, newPathString)
 
                         pathOfImages = ArrayList()
                         pathOfImages.add(path)
@@ -840,7 +858,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         RealPathUtil.imageRotateIfRequired(mPhotoFile?.absolutePath!!, bitmap)
                     imgView.setImageBitmap(requiredImage)
                     //path = mPhotoFile?.absolutePath!!
-                    path =  FileUtils.getPath(this, newPathString)
+                    path = FileUtils.getPath(this, newPathString)
                     pathOfImages = ArrayList<String>()
                     pathOfImages.add(path)
                     // }
@@ -998,12 +1016,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     override fun onValidationSuccess() {
         dismissProgress()
 
-        val array = arrayOfNulls<String>(pathOfImages.size)
-        var id: String? = null
-        if (getCrimeTypesResponse != null) {
-            id = getCrimeTypesResponse.data?.get(spTypesOfCrime.selectedItemPosition)?.id
-        }
-
         if (lattitude.equals("") || longitude.equals("")) {
             if (ActivityCompat.checkSelfPermission(
                     this,
@@ -1052,6 +1064,16 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         if (lattitude.equals("")) {
             askForGPS()
         }
+
+        com.dfa.utils.alert.AlertDialog.reportCrimeAlertDialog(this, this)
+    }
+
+    override fun getCallback() {
+        var id: String? = null
+        if (getCrimeTypesResponse != null) {
+            id = getCrimeTypesResponse.data?.get(spTypesOfCrime.selectedItemPosition)?.id
+        }
+        val array = arrayOfNulls<String>(pathOfImages.size)
 
         if (isInternetAvailable()) {
             showProgress()
@@ -1109,7 +1131,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     override fun showServerError(error: String) {
         dismissProgress()
         if (error.equals(Constants.TOKEN_ERROR)) {
-            ForegroundService.stopService(this@GeneralPublicActivity)
+            //ForegroundService.stopService(this@GeneralPublicActivity)
             finish()
             PreferenceHandler.clearPreferences(this@GeneralPublicActivity)
             val intent = Intent(this, LoginActivity::class.java)

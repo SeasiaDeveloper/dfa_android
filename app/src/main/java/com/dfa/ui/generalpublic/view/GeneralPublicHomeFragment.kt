@@ -412,7 +412,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
-        Utilities.dismissProgress() //       val jsondata = GsonBuilder().create().fromJson(response, GetCasesResponse::class.java)
+        Utilities.dismissProgress()
         complaints = response.data!!
         if (complaints.isNotEmpty()) {
             if (tvRecord != null) {
@@ -684,7 +684,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         if (error.equals(Constants.TOKEN_ERROR)) {
             //logout user
             //(activity as GeneralPublicActivity).logoutUser
-            ForegroundService.stopService(activity as Context)
+            //ForegroundService.stopService(activity as Context)
             (activity as HomeActivity).finish()
             PreferenceHandler.clearPreferences(activity as Context)
             val intent = Intent(activity, LoginActivity::class.java)

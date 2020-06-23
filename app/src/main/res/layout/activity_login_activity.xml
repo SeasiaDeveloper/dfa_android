@@ -75,7 +75,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="-60dp"
                         android:backgroundTint="@color/white"
-                        android:src="@drawable/email" />
+                        android:src="@drawable/phone" />
                 </LinearLayout>
 
                 <LinearLayout

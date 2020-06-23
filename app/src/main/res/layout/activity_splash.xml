@@ -29,16 +29,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/police_logo"
-                android:gravity="center_horizontal">
+                android:gravity="center">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/_10ssp"
-                    android:text="&amp;"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_20sdp" />
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_below="@+id/and_symbol"
+                    android:gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:src="@drawable/handshake"
+                    android:textSize="@dimen/_30ssp" />
             </LinearLayout>
 
 

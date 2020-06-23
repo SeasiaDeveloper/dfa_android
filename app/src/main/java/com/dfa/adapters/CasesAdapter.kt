@@ -333,8 +333,6 @@ class CasesAdapter(
 
 
 
-
-
             itemView.layoutListItem.setOnClickListener {
                 listener.onItemClick(item, "full", adapterPosition)
             }
@@ -761,8 +759,17 @@ class CasesAdapter(
                     context.startActivity(mapIntent)
                 }
 
+                itemView.gpu_case_layout.visibility = View.GONE
+                itemView.ngo_case_layout.visibility = View.VISIBLE
+                itemView.ngo_case_layout.visibility = View.VISIBLE
+                itemView.case_no_ngo.setText(item.id).toString()
+
             } else {
                 //in case of general public/general user
+                itemView.gpu_case_layout.visibility = View.VISIBLE
+                itemView.ngo_case_layout.visibility = View.GONE
+                itemView.case_no.setText(item.id).toString()
+
                 itemView.imgComplaintMedia.visibility = View.VISIBLE
                 itemView.layoutContact.visibility = View.GONE
                 itemView.action_complaint.visibility = View.GONE
@@ -792,12 +799,12 @@ class CasesAdapter(
             /*itemView.imgFirMedia.setOnClickListener {
                 //show enlarged image
                 displayLargeImageofFir(context, item, options)
-            }
+            }*/
 
             itemView.imgComplaintMedia.setOnClickListener {
                 //show enlarged image
                 DisplayLargeImageOfMedia(context, item, options)
-            }*/
+            }
 
             if (!(item.status.equals("Unassigned"))) {  //change
                 // itemView.view_fir.visibility = View.VISIBLE
@@ -836,7 +843,7 @@ class CasesAdapter(
                 }
 
                 itemView.imgExpandable.setOnClickListener {
-                    if (!token!!.isEmpty()) {
+                  //  if (!token!!.isEmpty()) {
                         //1st entry
                         if (!item.isApiHit) {
                             //call api:
@@ -856,14 +863,14 @@ class CasesAdapter(
                                 itemView.moreLess.setText(R.string.more)
                             }
                         }
-                    } else {
+               /*     } else {
                         com.dfa.utils.alert.AlertDialog.guesDialog(context)
-                    }
+                    }*/
                 }
 
                 //added in case of more or less
                 itemView.moreLess.setOnClickListener {
-                    if (!token!!.isEmpty()) {
+                  //  if (!token!!.isEmpty()) {
                         //1st entry
                         if (!item.isApiHit) {
                             //call api:
@@ -883,14 +890,14 @@ class CasesAdapter(
                                 itemView.moreLess.setText(R.string.more)
                             }
                         }
-                    } else {
+                  /*  } else {
                         com.dfa.utils.alert.AlertDialog.guesDialog(context)
-                    }
+                    }*/
                 }
 
             } else {
                 itemView.imgExpandable.setOnClickListener {
-                    if (!token!!.isEmpty()) {
+                   // if (!token!!.isEmpty()) {
                         if (itemView.childExpandable.visibility == View.VISIBLE) {
                             itemView.childExpandable.visibility = View.GONE
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
@@ -900,14 +907,15 @@ class CasesAdapter(
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
                             itemView.moreLess.setText(R.string.less)
                         }
-                    } else {
+                   /* }
+                    else {
                         com.dfa.utils.alert.AlertDialog.guesDialog(context)
-                    }
+                    }*/
                 }
 
                 //added for less or more
                 itemView.moreLess.setOnClickListener {
-                    if (!token!!.isEmpty()) {
+                   // if (!token!!.isEmpty()) {
                         if (itemView.childExpandable.visibility == View.VISIBLE) {
                             itemView.childExpandable.visibility = View.GONE
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
@@ -917,9 +925,9 @@ class CasesAdapter(
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
                             itemView.moreLess.setText(R.string.less)
                         }
-                    } else {
+                /*    } else {
                         com.dfa.utils.alert.AlertDialog.guesDialog(context)
-                    }
+                    }*/
                 }
             }
         }

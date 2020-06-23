@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/white_round_corner"
+    android:layout_marginStart="@dimen/_10sdp"
+    android:layout_marginEnd="@dimen/_10sdp"
+    android:orientation="vertical">
+
+        <com.dfa.customviews.CustomTextViewheading
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:paddingTop="6dp"
+            android:text=" * WARNING *"
+            android:textColor="@color/red"
+            android:textSize="15dp"
+            android:textStyle="bold" />
+
+        <com.dfa.customviews.CustomtextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/_5sdp"
+            android:paddingBottom="@dimen/_5sdp"
+            android:text="@string/warning_text"
+            android:textColor="@color/green"
+            android:textSize="@dimen/_10sdp" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/isVerified"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_4sdp"
+            android:text="@string/agree"
+            android:textColor="@color/green"
+            android:textSize="@dimen/_10sdp"
+            app:buttonTint="@color/green" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_centerInParent="true"
+            android:background="#EDE7E7" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_60sdp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp"
+            android:weightSum="1">
+
+            <com.dfa.customviews.CustomTextViewheading
+                android:id="@+id/tv_cancel"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:layout_weight="0.5"
+                android:background="@drawable/delete_shape"
+                android:gravity="center"
+                android:text="Cancel"
+                android:textColor="@color/white"
+                android:textSize="@dimen/_12ssp" />
+
+            <com.dfa.customviews.CustomTextViewheading
+                android:id="@+id/tv_confirm"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/_4sdp"
+                android:layout_weight="0.5"
+                android:background="@drawable/button_green_bg"
+                android:gravity="center"
+                android:text="@string/confirm"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/_12ssp" />
+        </LinearLayout>
+
+</LinearLayout>

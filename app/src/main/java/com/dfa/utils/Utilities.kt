@@ -421,7 +421,7 @@ object Utilities {
             locationB.longitude = longitude!!.toDouble()
             return (locationA.distanceTo(locationB) / 1000).toInt()
         } else {
-            return -1
+            return 0
         }
     }
 
@@ -612,6 +612,7 @@ object Utilities {
 
     fun getAddressFromLatLong(latitude: Double, longitude: Double, context: Context): String {
         var geocoder: Geocoder
+        var address:String=""
         var addresses: List<Address> = ArrayList()
         geocoder = Geocoder(context, Locale.getDefault())
 
@@ -621,7 +622,7 @@ object Utilities {
                 longitude,
                 1
             ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-            var address = addresses.get(0)
+             address = addresses.get(0)
                 .getAddressLine(0)// If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
             var city = addresses.get(0).getLocality()
             var state = addresses.get(0).getAdminArea()
@@ -631,7 +632,7 @@ object Utilities {
         } catch (e: Exception) {
             e.printStackTrace();
         }
-        return addresses.get(0).toString()
+        return address
     }
 
 }
