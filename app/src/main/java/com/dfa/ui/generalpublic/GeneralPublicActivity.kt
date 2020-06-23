@@ -332,11 +332,14 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     }
 
                     if(File(outPath).length()<=25000000){
-                        var compressVideo = ArrayList<String>()
-                        compressVideo.add(outPath)
+//                        var compressVideo = ArrayList<String>()
+//                        compressVideo.add(outPath)
+                        pathOfImages = ArrayList()
+                        pathOfImages.add(outPath)
+
                         complaintsPresenter.checkValidations(
                             1,
-                            compressVideo,
+                            pathOfImages,
                             etDescription.text.toString()
                         )
                     } else{
