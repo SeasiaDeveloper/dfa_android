@@ -1,5 +1,6 @@
 package com.dfa.ui.mycases
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -49,6 +50,11 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     var actionChanged: Boolean = false
     lateinit var fragment: Fragment
     var positionOfFir: Int? = null
+
+
+
+
+
 
     override fun onStatusClick(statusId: String) {
         this.statusId = statusId
@@ -100,6 +106,13 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         var fromIncidentDetailScreen = 1
         var commentsCount = 0
         var firstSavedList: MutableList<GetCasesResponse.Data> = mutableListOf()
+
+        val PERMISSION_READ_STORAGE = arrayOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.CAMERA
+        )
+        val REQUEST_PERMISSIONS = 1
     }
 
     override fun onResume() {
@@ -191,7 +204,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             this,
             type.toInt(),
             this,
-            this,
+            this@MyCasesActivity,
             fragment,
             false
         )

@@ -12,6 +12,7 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.MediaController
 import android.widget.PopupMenu
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.MenuCompat
 
 import androidx.databinding.DataBindingUtil
@@ -33,9 +34,14 @@ import com.dfa.pojo.response.UpdateStatusSuccess
 import com.dfa.ui.commentlikelist.CommentLikeUsersList
 import com.dfa.ui.comments.CommentsActivity
 import com.dfa.ui.contactus.ContactUsActivity
+
+import com.dfa.ui.generalpublic.VideoPlayerActivity
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.dfa.ui.mycases.MyCasesActivity
+import com.dfa.ui.mycases.MyCasesActivity.Companion.PERMISSION_READ_STORAGE
+import com.dfa.ui.mycases.MyCasesActivity.Companion.REQUEST_PERMISSIONS
 import com.dfa.ui.profile.ProfileActivity
+import com.dfa.utils.CheckRuntimePermissions
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
 import kotlinx.android.synthetic.main.activity_public.*
@@ -379,10 +385,10 @@ class CasesAdapter(
                     .error(R.drawable.noimage)
 
 
-               if(item.media_type.equals("image")){
+               if(item.media_type.equals("photos")){
                    if (item.media_list != null && item.media_list.isNotEmpty()) {
                        itemView.imgMediaPost.visibility = View.VISIBLE
-                       itemView.videoThumbNial.visibility = View.GONE
+                       itemView.videoThumbNialParent.visibility = View.GONE
                        val mediaUrl: String = item.media_list[0]
                        try {
                            Glide.with(context).asBitmap().load(mediaUrl).apply(options)
@@ -397,11 +403,17 @@ class CasesAdapter(
                } else if(item.media_type.equals("videos")){
                    if (item.media_list != null && item.media_list.isNotEmpty()) {
                        itemView.imgMediaPost.visibility = View.GONE
-                       itemView.videoThumbNial.visibility = View.VISIBLE
+                       itemView.videoThumbNialParent.visibility = View.VISIBLE
                        Glide.with(context)
                            .asBitmap()
                            .load(itemView.imgMediaPost)
                            .into(itemView.videoThumbNial);
+
+                       itemView.videoThumbNialParent.setOnClickListener {
+                           var intent=Intent(context,VideoPlayerActivity::class.java)
+                           context.startActivity(intent)
+                       }
+
                    }
                }
                 //btnDelete visibility
@@ -522,16 +534,40 @@ class CasesAdapter(
                     .placeholder(R.drawable.noimage)
                     .error(R.drawable.noimage)
 
-                if (item.media_list!!.isNotEmpty()) {
-                    val mediaUrl: String = item.media_list[0]
-                    try {
-                        Glide.with(context).asBitmap().load(mediaUrl).apply(options)
-                            .into(itemView.imgComplaintMedia)
-                    } catch (e: Exception) {
-                        e.printStackTrace()
+
+                if(item.media_type.equals("photos")) {
+                    if (item.media_list!!.isNotEmpty()) {
+                        val mediaUrl: String = item.media_list[0]
+                        try {
+                            Glide.with(context).asBitmap().load(mediaUrl).apply(options)
+                                .into(itemView.imgComplaintMedia)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
                     }
                 }
+                else if(item.media_type.equals("videos")){
+                    if (item.media_list != null && item.media_list.isNotEmpty()) {
+                        itemView.imgComplaintMedia.visibility = View.GONE
+                        itemView.videoThumbNialParent.visibility = View.VISIBLE
+                        val mediaUrl: String = item.media_list[0]
+                        val options = RequestOptions()
+                        Glide.with(context)
+                            .asBitmap()
+                            .load(mediaUrl).apply(options).into(itemView.videoThumbNial);
+                    }
+                }
+                itemView.videoThumbNialParent.setOnClickListener {
 
+
+                        val mediaUrl= item!!.media_list?.get(0)
+                        var intent=Intent(context,VideoPlayerActivity::class.java)
+                        intent.putExtra("videoPath",mediaUrl)
+                        intent.putExtra("documentId",item.id)
+                        context.startActivity(intent)
+
+
+                }
                 if (item.showDelete == 1) {
                     itemView.btnDelete.visibility = View.GONE
                     itemView.iv_menu.visibility = View.VISIBLE
@@ -770,7 +806,17 @@ class CasesAdapter(
                 itemView.ngo_case_layout.visibility = View.GONE
                 itemView.case_no.setText(item.id).toString()
 
-                itemView.imgComplaintMedia.visibility = View.VISIBLE
+
+
+
+                if(item.media_type.equals("videos")){
+                    itemView.imgComplaintMedia.visibility = View.GONE
+                    itemView.videoThumbNialParent.visibility = View.VISIBLE
+                }else{
+                    itemView.imgComplaintMedia.visibility = View.VISIBLE
+                    itemView.videoThumbNialParent.visibility = View.GONE
+                }
+
                 itemView.layoutContact.visibility = View.GONE
                 itemView.action_complaint.visibility = View.GONE
                 itemView.layoutCrimeType.visibility = View.GONE

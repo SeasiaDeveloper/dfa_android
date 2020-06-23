@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/parantLayout"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    tools:context="com.dfa.ui.generalpublic.VideoPlayerActivity">
+
+    <include
+        android:id="@+id/toolbarLayout"
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <RelativeLayout
+        android:layout_marginBottom="@dimen/_30sdp"
+        android:layout_below="@+id/toolbarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <VideoView
+            android:id="@+id/videoView"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_height="match_parent"
+            />
+        <ImageView
+            android:id="@+id/image_view"
+            android:visibility="gone"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_height="match_parent"
+            />
+    </RelativeLayout>
+
+
+    <ProgressBar
+        android:id="@+id/progress"
+        android:visibility="gone"
+        android:indeterminate="true"
+        android:layout_centerInParent="true"
+        android:indeterminateBehavior="repeat"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:layout_gravity="center">
+    </ProgressBar>
+
+</RelativeLayout>
