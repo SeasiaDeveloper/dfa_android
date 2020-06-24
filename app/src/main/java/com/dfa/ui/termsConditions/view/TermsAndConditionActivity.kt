@@ -1,6 +1,7 @@
 package com.dfa.ui.termsConditions.view
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.view.View
 import android.webkit.WebChromeClient
@@ -33,9 +34,9 @@ class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
             onBackPressed()
         }
         showWebView()
-     //  Utilities.showProgress(this)
-      //  val authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
-      //  presenter.getTermsConditions(authorizationToken)
+        //  Utilities.showProgress(this)
+        //  val authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
+        //  presenter.getTermsConditions(authorizationToken)
     }
 
     override fun handleKeyboard(): View {
@@ -44,7 +45,7 @@ class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
 
     override fun onTermsConditionsSuccess(response: GetTermsConditionsResponse) {
         Utilities.dismissProgress()
-       // showWebView(response.post_content)
+        // showWebView(response.post_content)
     }
 
     override fun onPoliceDetailsFailed(error: String) {
@@ -56,21 +57,28 @@ class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
     }
 
     private fun showWebView() {
-        val html =  Constants.BASE_URL_FOR_TERMS_AND_CONDITIONS
+        val html = Constants.BASE_URL_FOR_TERMS_AND_CONDITIONS
         val mimeType = "text/html"
         val encoding = "UTF-8"
-
         var header = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
         // wv_terms_activity.loadData(html, mimeType, encoding)
         // wv_terms.loadDataWithBaseURL("", html, mimeType, encoding, "")
-        wv_terms_activity.setWebChromeClient(WebChromeClient ())
+        wv_terms_activity.setWebChromeClient(WebChromeClient())
         wv_terms_activity.getSettings().setJavaScriptEnabled(true)
-        wv_terms_activity.loadUrl(html)
         wv_terms_activity.setWebViewClient(object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 view.loadUrl(url)
                 return true
             }
+
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                Utilities.showProgress(this@TermsAndConditionActivity)
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                Utilities.dismissProgress()
+            }
         })
+        wv_terms_activity.loadUrl(html)
     }
 }

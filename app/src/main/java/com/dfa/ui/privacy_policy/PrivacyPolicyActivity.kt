@@ -1,6 +1,7 @@
 package com.dfa.ui.privacy_policy
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.view.View
 import android.webkit.WebChromeClient
@@ -51,12 +52,20 @@ class PrivacyPolicyActivity : BaseActivity() {
         // wv_terms.loadDataWithBaseURL("", html, mimeType, encoding, "")
         wv_terms_activity.setWebChromeClient(WebChromeClient ())
         wv_terms_activity.getSettings().setJavaScriptEnabled(true)
-        wv_terms_activity.loadUrl(html)
         wv_terms_activity.setWebViewClient(object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 view.loadUrl(url)
                 return true
             }
+
+            override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                Utilities.showProgress(this@PrivacyPolicyActivity)
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                Utilities.dismissProgress()
+            }
         })
+        wv_terms_activity.loadUrl(html)
     }
 }

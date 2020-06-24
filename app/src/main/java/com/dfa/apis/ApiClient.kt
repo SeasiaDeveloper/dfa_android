@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit
 object ApiClient {
 
     fun getClient(): Retrofit {
-        val builder = OkHttpClient.Builder().readTimeout(73, TimeUnit.MINUTES).connectTimeout(3, TimeUnit.MINUTES).addInterceptor { chain ->
+        val builder = OkHttpClient.Builder().readTimeout(3, TimeUnit.MINUTES).connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES).addInterceptor { chain ->
             val builder = chain.request().newBuilder()
             val build = builder.addHeader("Content-Type", "application/json")
                 .build()

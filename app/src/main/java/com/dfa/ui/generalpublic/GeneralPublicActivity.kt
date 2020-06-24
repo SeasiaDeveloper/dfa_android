@@ -24,7 +24,9 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.view.ViewConfiguration
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.MediaController
@@ -98,14 +100,12 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private var isPermissionDialogRequired = true
 
 
-        val PERMISSION_READ_STORAGE = arrayOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA
-        )
-         val REQUEST_PERMISSIONS = 1
-
-
+    val PERMISSION_READ_STORAGE = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        Manifest.permission.CAMERA
+    )
+    val REQUEST_PERMISSIONS = 1
 
 
     private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
@@ -149,6 +149,28 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         // GeneralPublicHomeFragment.change = 0
         GeneralPublicHomeFragment.changeThroughIncidentScreen = 0
         clear_image.setOnClickListener(this)
+
+       /* scroll_view.setOnTouchListener(object : View.OnTouchListener {
+            var startClickTime: Long = 0
+            override fun onTouch(p0: View?,event: MotionEvent?): Boolean {
+                if (event?.getAction() == MotionEvent.ACTION_DOWN) {
+                    startClickTime = System.currentTimeMillis();
+                } else if (event?.getAction() == MotionEvent.ACTION_UP) {
+                    if (System.currentTimeMillis() - startClickTime < ViewConfiguration.getTapTimeout()) {
+                        // Touch was a simple tap. Do whatever.
+                        mediaControls.visibility = View.GONE
+                        mediaControls.setAnchorView(videoView)
+                        videoView.setMediaController(mediaControls)
+                    } else {
+                        // Touch was a not a simple tap.
+                        mediaControls.visibility = View.GONE
+                        mediaControls.setAnchorView(videoView)
+                        videoView.setMediaController(mediaControls)
+                    }
+                }
+                return true;
+            }
+        })*/
     }
 
     //
@@ -205,16 +227,16 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 }
             }
 
-           R.id.img_delete -> {
+            R.id.img_delete -> {
                 path = ""
                 pathOfImages = ArrayList()
                 mediaControls.visibility = View.GONE
                 mediaControls.setAnchorView(videoView)
                 videoView.setMediaController(mediaControls)
-                video_parent.visibility=View.GONE
+                video_parent.visibility = View.GONE
 
-                if(videoView!= null){
-                   videoView.stopPlayback()
+                if (videoView != null) {
+                    videoView.stopPlayback()
                 }
             }
             R.id.tvRecordVideo -> {
@@ -256,7 +278,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
             R.id.btnSubmit -> {
                 if (mediaType.equals("videos")) {
-                    if(pathOfImages.size>0) {
+                    if (pathOfImages.size > 0) {
                         if (!pathOfImages.get(0).isEmpty()
                         ) {
 
@@ -270,7 +292,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                                 )
                             }
                         }
-                    }else{
+                    } else {
                         complaintsPresenter.checkValidations(
                             1,
                             pathOfImages,
@@ -302,10 +324,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
     }
 
-
     private fun videoCompressorCustom(video: ArrayList<String>) {
-
-
         if (!video.get(0).isEmpty() && File(video.get(0)).length() > 0) {
             var myDirectory = File(Environment.getExternalStorageDirectory(), "Pictures");
 
@@ -342,9 +361,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                     }
 
-                    if(File(outPath).length()<=25000000){
-                       /* var compressVideo = ArrayList<String>()
-                        compressVideo.add(outPath)*/
+                    if (File(outPath).length() <= 100000000) {
                         pathOfImages = ArrayList()
                         pathOfImages.add(outPath)
                         complaintsPresenter.checkValidations(
@@ -352,14 +369,13 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                             pathOfImages,
                             etDescription.text.toString()
                         )
-                    } else{
-                        Toast.makeText(this@GeneralPublicActivity,"video size is very large",Toast.LENGTH_LONG).show()
+                    } else {
+                        Toast.makeText(
+                            this@GeneralPublicActivity,
+                            "video size is very large",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
-
-
-
-                    ///here is hit api
-
                 }
 
                 override fun onFail() {
@@ -383,8 +399,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             Toast.makeText(this, "video is very short", Toast.LENGTH_LONG).show()
         }
     }
-
-
 
 
     private fun getLocale(): Locale? {
@@ -427,10 +441,11 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     }
 
     private fun recordVideo() {
-        val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 120);
+        val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+        takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 120)
+        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1)
         if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takeVideoIntent, CAMERA_REQUEST_CODE_VEDIO);
+            startActivityForResult(takeVideoIntent, CAMERA_REQUEST_CODE_VEDIO)
         }
     }
 
@@ -964,6 +979,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 return true
             }
         })
+
+        videoView.setOnClickListener(this)
 
     }
 
