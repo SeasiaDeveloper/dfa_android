@@ -19,7 +19,7 @@ object ApiClient {
         }
 
         val loggingInterceptor = HttpLoggingInterceptor()
-        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.NONE
         builder.networkInterceptors().add(loggingInterceptor)
         val url = Constants.BASE_URL
         return Retrofit.Builder().baseUrl(url).client(builder.build())

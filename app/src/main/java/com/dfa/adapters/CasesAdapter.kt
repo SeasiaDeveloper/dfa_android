@@ -571,9 +571,8 @@ class CasesAdapter(
                         intent.putExtra("videoPath",mediaUrl)
                         intent.putExtra("documentId",item.id)
                         context.startActivity(intent)
-
-
                 }
+
                 if (item.showDelete == 1) {
                     itemView.btnDelete.visibility = View.GONE
                     itemView.iv_menu.visibility = View.VISIBLE
@@ -886,20 +885,20 @@ class CasesAdapter(
                     itemView.childExpandable.visibility = View.VISIBLE
                     itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
                     itemView.moreLess.setText(R.string.less)
-                    if(item.media_type.equals("videos")){
+                  /*  if(item.media_type.equals("videos")){
                         itemView.imgComplaintMedia.visibility = View.GONE
                         itemView.videoThumbNialParent.visibility = View.VISIBLE
                     }else{
                         itemView.imgComplaintMedia.visibility = View.VISIBLE
                         itemView.videoThumbNialParent.visibility = View.GONE
-                    }
+                    }*/
                 } else {
                     itemView.childExpandable.visibility = View.GONE
                     itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
                     itemView.moreLess.setText(R.string.more)
                 }
 
-                itemView.imgExpandable.setOnClickListener {
+                itemView.imgExpandable_linear_layout.setOnClickListener {
                         //1st entry
                         if (!item.isApiHit) {
                             //call api:
@@ -922,7 +921,7 @@ class CasesAdapter(
                 }
 
                 //added in case of more or less
-                itemView.moreLess.setOnClickListener {
+               /* itemView.moreLess.setOnClickListener {
                         //1st entry
                         if (!item.isApiHit) {
                             //call api:
@@ -942,10 +941,10 @@ class CasesAdapter(
                                 itemView.moreLess.setText(R.string.more)
                             }
                         }
-                }
+                }*/
 
             } else {
-                itemView.imgExpandable.setOnClickListener {
+                itemView.imgExpandable_linear_layout.setOnClickListener {
                         if (itemView.childExpandable.visibility == View.VISIBLE) {
                             itemView.childExpandable.visibility = View.GONE
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
@@ -958,7 +957,7 @@ class CasesAdapter(
                 }
 
                 //added for less or more
-                itemView.moreLess.setOnClickListener {
+               /* itemView.moreLess.setOnClickListener {
                         if (itemView.childExpandable.visibility == View.VISIBLE) {
                             itemView.childExpandable.visibility = View.GONE
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
@@ -975,7 +974,7 @@ class CasesAdapter(
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
                             itemView.moreLess.setText(R.string.less)
                         }
-                }
+                }*/
             }
         }
 
