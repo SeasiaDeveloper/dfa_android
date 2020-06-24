@@ -24,7 +24,5 @@ object ApiClient {
         val url = Constants.BASE_URL
         return Retrofit.Builder().baseUrl(url).client(builder.build())
             .addConverterFactory(GsonConverterFactory.create()).build()
-
     }
-
 }

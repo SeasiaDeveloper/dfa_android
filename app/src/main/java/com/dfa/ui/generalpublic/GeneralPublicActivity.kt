@@ -240,7 +240,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 }
             }
             R.id.tvRecordVideo -> {
-                //Utilities.showMessage(this, getString(R.string.coming_soon))
+               // Utilities.showMessage(this, getString(R.string.coming_soon))
                 path = ""
                 if (CheckRuntimePermissions.checkMashMallowPermissions(
                         this,
@@ -252,7 +252,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
 
             R.id.tvTakeVideo -> {
-                Utilities.showMessage(this, getString(R.string.coming_soon))
+            //    Utilities.showMessage(this, getString(R.string.coming_soon))
                 path = ""
                 if (CheckRuntimePermissions.checkMashMallowPermissions(
                         this,
