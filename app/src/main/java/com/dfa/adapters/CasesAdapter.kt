@@ -404,10 +404,15 @@ class CasesAdapter(
                    if (item.media_list != null && item.media_list.isNotEmpty()) {
                        itemView.imgMediaPost.visibility = View.GONE
                        itemView.videoThumbNialParent.visibility = View.VISIBLE
+                       val options = RequestOptions()
+                       val mediaUrl: String = item.media_list[0]
                        Glide.with(context)
                            .asBitmap()
+                           .load(mediaUrl).apply(options).into(itemView.videoThumbNial);
+                      /* Glide.with(context)
+                           .asBitmap()
                            .load(itemView.imgMediaPost)
-                           .into(itemView.videoThumbNial);
+                           .into(itemView.videoThumbNial);*/
 
                        itemView.videoThumbNialParent.setOnClickListener {
                            val mediaUrl= item!!.media_list?.get(0)

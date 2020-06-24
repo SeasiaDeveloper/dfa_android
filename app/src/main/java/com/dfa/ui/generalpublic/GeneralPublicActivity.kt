@@ -240,41 +240,27 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 }
             }
             R.id.tvRecordVideo -> {
-                //Utilities.showMessage(this, getString(R.string.coming_soon))
-                //commented for next ,milestone(server was overloaded)
-                path = ""
-//                  val resultVideo = getMarshmallowPermission(
-//                      Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                      Manifest.permission.CAMERA,
-//                      Utilities.MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE
-//                  )
-
+                Utilities.showMessage(this, getString(R.string.coming_soon))
+                /*path = ""
                 if (CheckRuntimePermissions.checkMashMallowPermissions(
                         this,
                         PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS_GALLERY_VIDEO
                     )
                 ) {
                     videoFromGalleryIntent()
-                }
+                }*/
             }
 
             R.id.tvTakeVideo -> {
-                //Utilities.showMessage(this, getString(R.string.coming_soon))
-                //commented for next ,milestone(server was overloaded)
-                path = ""
-//                     val resultVideo = getMarshmallowPermission(
-//                         Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
-//                         Utilities.MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE
-//                     )
-
+                Utilities.showMessage(this, getString(R.string.coming_soon))
+               /* path = ""
                 if (CheckRuntimePermissions.checkMashMallowPermissions(
                         this,
                         PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS
                     )
                 ) {
                     recordVideo()
-                }
-
+                }*/
             }
             R.id.btnSubmit -> {
                 if (mediaType.equals("videos")) {
