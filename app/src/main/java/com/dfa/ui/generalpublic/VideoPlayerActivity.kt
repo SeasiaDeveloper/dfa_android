@@ -187,7 +187,7 @@ class VideoPlayerActivity : BaseActivity() {
                         firstPlay = false
                         var fileName = File(
                             Environment.getExternalStorageDirectory(),
-                            "SeasiaPrism/" + documentId
+                            "DFA/" + documentId
                         )
                         fileName.delete()
                         DownloadTask(
