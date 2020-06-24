@@ -29,6 +29,7 @@ import com.google.gson.GsonBuilder
 import com.dfa.R
 import com.dfa.adapters.TabLayoutAdapter
 import com.dfa.base.BaseActivity
+import com.dfa.customviews.CustomTextViewheading
 import com.dfa.customviews.CustomtextView
 import com.dfa.listeners.AdharNoListener
 import com.dfa.pojo.response.*
@@ -73,7 +74,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private var provider: String = ""
     private lateinit var locationManager: LocationManager
     var gps_enabled: Boolean = false
-    var network_enabled: Boolean = false
+   //var getProfileresponse: GetProfileResponse
+    lateinit var btnLogin:CustomtextView
 
     override fun getLayout(): Int {
         return R.layout.home_activity
@@ -109,6 +111,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             refreshReceiver,
             IntentFilter("policeJsonReceiver")
         ) //registering the broadcast receiver
+
 
         if (btnLogin != null) {
             btnLogin.setOnClickListener {
@@ -295,6 +298,18 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             menu.findItem(R.id.nav_cases).setVisible(true)
         }
 
+       /* var headerLayout = nav_view?.inflateHeaderView(R.layout.nav_header)
+        btnLogin=  headerLayout?.findViewById(R.id.btnLogin)!!
+        loadNavHeader()
+        btnLogin.setOnClickListener {
+            // ForegroundService.stopService(this)
+            finish()
+            PreferenceHandler.clearPreferences(this)
+            val intent = Intent(this, LoginActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+        }*/
+
         /*  if (authorizationToken!!.isEmpty()) {
               textName.setText(getString(R.string.guest_user))
           }*/
@@ -408,7 +423,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
-        textName.setText(getProfileResponse.data?.first_name + " " + getProfileResponse.data?.middle_name + " " + getProfileResponse.data?.last_name)
+        if(getProfileResponse!=null)
+        {
+            textName.setText(getProfileResponse.data?.first_name + " " + getProfileResponse.data?.middle_name + " " + getProfileResponse.data?.last_name)
+        }
         if (authorizationToken!!.isEmpty()) {
             userInfo.visibility = View.GONE
             btnLogin.visibility = View.VISIBLE
@@ -462,13 +480,14 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 com.dfa.utils.alert.AlertDialog.guesDialog(this)
             }
         }
-
-        if (getProfileResponse.data?.profile_pic != null) {
-            try {
-                Glide.with(this).load(getProfileResponse.data.profile_pic)
-                    .into(imageNavigator)
-            } catch (e: Exception) {
-                e.printStackTrace()
+        if(getProfileResponse!=null) {
+            if (getProfileResponse.data?.profile_pic != null) {
+                try {
+                    Glide.with(this).load(getProfileResponse.data.profile_pic)
+                        .into(imageNavigator)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
         }
     }
@@ -511,6 +530,13 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
 
             R.id.nav_invite_friends -> {
+                if (authorizationToken!!.isEmpty()) {
+                    PreferenceHandler.writeString(
+                        this,
+                        PreferenceHandler.APP_URL,
+                    "https://play.google.com/store/apps/details?id=com.moonwalk.app&hl=en"
+                    )
+                }
                 val appUrl = PreferenceHandler.readString(this, PreferenceHandler.APP_URL, "")
                 val shareIntent = Intent()
                 shareIntent.action = Intent.ACTION_SEND

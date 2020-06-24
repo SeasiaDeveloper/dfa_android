@@ -583,7 +583,7 @@ class CasesAdapter(
                             .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .placeholder(R.drawable.camera_placeholder)
                             .error(R.drawable.camera_placeholder)
-                            .into(itemView.videoThumbNial);
+                            .into(itemView.videoThumbNial)
 
                     }
                 }

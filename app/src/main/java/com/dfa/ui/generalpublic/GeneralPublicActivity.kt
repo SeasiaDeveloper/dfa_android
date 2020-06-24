@@ -347,7 +347,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                     }
 
-                    if (File(outPath).length() <= 100000000) {
+                    if (File(outPath).length() <= 50000000) {
                         pathOfImages = ArrayList()
                         pathOfImages.add(outPath)
                         complaintsPresenter.checkValidations(
