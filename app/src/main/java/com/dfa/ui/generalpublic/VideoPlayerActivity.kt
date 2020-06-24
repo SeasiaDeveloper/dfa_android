@@ -59,8 +59,6 @@ class VideoPlayerActivity : BaseActivity() {
         }
 
         askPermissionScanner()
-
-
     }
 
 
