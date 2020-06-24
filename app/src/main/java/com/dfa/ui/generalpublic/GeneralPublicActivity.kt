@@ -342,7 +342,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                     }
 
-                    if(File(outPath).length()<=25000000){
+                 //   if(File(outPath).length()<=25000000){
                        /* var compressVideo = ArrayList<String>()
                         compressVideo.add(outPath)*/
                         pathOfImages = ArrayList()
@@ -352,9 +352,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                             pathOfImages,
                             etDescription.text.toString()
                         )
-                    } else{
-                        Toast.makeText(this@GeneralPublicActivity,"video size is very large",Toast.LENGTH_LONG).show()
-                    }
+//                    } else{
+//                        Toast.makeText(this@GeneralPublicActivity,"video size is very large",Toast.LENGTH_LONG).show()
+//                    }
 
 
 
@@ -429,6 +429,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private fun recordVideo() {
         val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 120);
+    //    takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,1)
         if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent, CAMERA_REQUEST_CODE_VEDIO);
         }

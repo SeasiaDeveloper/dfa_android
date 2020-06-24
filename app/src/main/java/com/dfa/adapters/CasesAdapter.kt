@@ -410,7 +410,10 @@ class CasesAdapter(
                            .into(itemView.videoThumbNial);
 
                        itemView.videoThumbNialParent.setOnClickListener {
+                           val mediaUrl= item!!.media_list?.get(0)
                            var intent=Intent(context,VideoPlayerActivity::class.java)
+                           intent.putExtra("videoPath",mediaUrl)
+                           intent.putExtra("documentId",item.id)
                            context.startActivity(intent)
                        }
 
