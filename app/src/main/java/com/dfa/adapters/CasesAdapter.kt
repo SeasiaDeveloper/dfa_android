@@ -406,13 +406,26 @@ class CasesAdapter(
                        itemView.videoThumbNialParent.visibility = View.VISIBLE
                        val options = RequestOptions()
                        val mediaUrl: String = item.media_list[0]
-                       Glide.with(context)
-                           .asBitmap()
-                           .load(mediaUrl).apply(options).into(itemView.videoThumbNial);
+//                       Glide.with(context)
+//                           .asBitmap()
+//                           .load(mediaUrl)
+//                           .apply(options)
+//                           .into(itemView.videoThumbNial);
                       /* Glide.with(context)
                            .asBitmap()
                            .load(itemView.imgMediaPost)
                            .into(itemView.videoThumbNial);*/
+
+
+                       Glide.with(context)
+                           .asBitmap()
+                           .load(mediaUrl)
+                           .timeout(60000)
+                           .diskCacheStrategy(DiskCacheStrategy.ALL)
+                           .placeholder(R.drawable.camera_placeholder)
+                           .error(R.drawable.camera_placeholder)
+                           .into(itemView.videoThumbNial);
+
 
                        itemView.videoThumbNialParent.setOnClickListener {
                            val mediaUrl= item!!.media_list?.get(0)
@@ -560,9 +573,18 @@ class CasesAdapter(
                         itemView.videoThumbNialParent.visibility = View.VISIBLE
                         val mediaUrl: String = item.media_list[0]
                         val options = RequestOptions()
+//                        Glide.with(context)
+//                            .asBitmap()
+//                            .load(mediaUrl).apply(options).into(itemView.videoThumbNial);
                         Glide.with(context)
                             .asBitmap()
-                            .load(mediaUrl).apply(options).into(itemView.videoThumbNial);
+                            .load(mediaUrl)
+                            .timeout(60000)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .placeholder(R.drawable.camera_placeholder)
+                            .error(R.drawable.camera_placeholder)
+                            .into(itemView.videoThumbNial);
+
                     }
                 }
                 itemView.videoThumbNialParent.setOnClickListener {
