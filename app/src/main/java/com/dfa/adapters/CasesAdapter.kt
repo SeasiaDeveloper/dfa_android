@@ -910,32 +910,9 @@ class CasesAdapter(
                     if(item.media_type.equals("videos")){
                         itemView.imgComplaintMedia.visibility = View.GONE
                         itemView.videoThumbNialParent.visibility = View.VISIBLE
-                        if (item.media_list != null && item.media_list.isNotEmpty()) {
-                            itemView.imgComplaintMedia.visibility = View.GONE
-                            itemView.videoThumbNialParent.visibility = View.VISIBLE
-                            val mediaUrl: String = item.media_list[0]
-                            val options = RequestOptions()
-                            Glide.with(context)
-                                .asBitmap()
-                                .load(mediaUrl).apply(options).into(itemView.videoThumbNial);
-                        }
                     }else{
                         itemView.imgComplaintMedia.visibility = View.VISIBLE
                         itemView.videoThumbNialParent.visibility = View.GONE
-                        if (item.media_list!!.isNotEmpty()) {
-                            val mediaUrl: String = item.media_list[0]
-                            val options = RequestOptions()
-                                /* .centerCrop()*/
-                                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                .placeholder(R.drawable.noimage)
-                                .error(R.drawable.noimage)
-                            try {
-                                Glide.with(context).asBitmap().load(mediaUrl).apply(options)
-                                    .into(itemView.imgComplaintMedia)
-                            } catch (e: Exception) {
-                                e.printStackTrace()
-                            }
-                        }
                     }
                 } else {
                     itemView.childExpandable.visibility = View.GONE
@@ -999,32 +976,9 @@ class CasesAdapter(
                             if(item.media_type.equals("videos")){
                                 itemView.imgComplaintMedia.visibility = View.GONE
                                 itemView.videoThumbNialParent.visibility = View.VISIBLE
-                                if (item.media_list != null && item.media_list.isNotEmpty()) {
-                                    itemView.imgComplaintMedia.visibility = View.GONE
-                                    itemView.videoThumbNialParent.visibility = View.VISIBLE
-                                    val mediaUrl: String = item.media_list[0]
-                                    val options = RequestOptions()
-                                    Glide.with(context)
-                                        .asBitmap()
-                                        .load(mediaUrl).apply(options).into(itemView.videoThumbNial);
-                                }
                             }else{
                                 itemView.imgComplaintMedia.visibility = View.VISIBLE
                                 itemView.videoThumbNialParent.visibility = View.GONE
-                                if (item.media_list!!.isNotEmpty()) {
-                                    val mediaUrl: String = item.media_list[0]
-                                    val options = RequestOptions()
-                                        /* .centerCrop()*/
-                                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                                        .placeholder(R.drawable.noimage)
-                                        .error(R.drawable.noimage)
-                                    try {
-                                        Glide.with(context).asBitmap().load(mediaUrl).apply(options)
-                                            .into(itemView.imgComplaintMedia)
-                                    } catch (e: Exception) {
-                                        e.printStackTrace()
-                                    }
-                                }
                             }
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
                             itemView.moreLess.setText(R.string.less)
