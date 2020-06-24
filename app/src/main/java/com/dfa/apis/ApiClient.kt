@@ -10,20 +10,21 @@ import java.util.concurrent.TimeUnit
 object ApiClient {
 
     fun getClient(): Retrofit {
-        val builder = OkHttpClient.Builder().readTimeout(73, TimeUnit.MINUTES).connectTimeout(3, TimeUnit.MINUTES).writeTimeout(5, TimeUnit.MINUTES).addInterceptor{
-                chain ->
+        val builder = OkHttpClient.Builder().readTimeout(3, TimeUnit.MINUTES).connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES).addInterceptor { chain ->
             val builder = chain.request().newBuilder()
             val build = builder.addHeader("Content-Type", "application/json")
                 .build()
             builder
             chain.proceed(build)
         }
+
         val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         builder.networkInterceptors().add(loggingInterceptor)
         val url = Constants.BASE_URL
         return Retrofit.Builder().baseUrl(url).client(builder.build())
             .addConverterFactory(GsonConverterFactory.create()).build()
+
     }
 
 }

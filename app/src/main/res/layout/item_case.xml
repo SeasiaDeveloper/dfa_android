@@ -390,7 +390,6 @@
                             android:layout_gravity="center_horizontal"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/_4sdp"
-                            android:src="@drawable/camera_placeholder"
                             android:visibility="gone"/>
 
                         <androidx.appcompat.widget.AppCompatImageView
@@ -413,7 +412,6 @@
                             <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/videoThumbNial"
                                 android:layout_width="match_parent"
-
                                 android:layout_height="match_parent"
                                 android:scaleType="centerCrop"
                                 android:src="@drawable/camera_placeholder"
@@ -778,6 +776,7 @@
                     android:layout_marginTop="@dimen/_4sdp"
                     android:background="@drawable/squarebg_non_curve"
                     android:scaleType="centerCrop"
+                    android:visibility="gone"
                     android:src="@drawable/camera_placeholder" />
 
 

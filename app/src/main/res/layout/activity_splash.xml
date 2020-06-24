@@ -21,6 +21,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_150sdp"
                 android:gravity="top"
+                android:visibility="gone"
                 android:src="@drawable/pc_logo"
                 android:textSize="@dimen/_30ssp" />
 
@@ -29,6 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/police_logo"
+                android:visibility="gone"
                 android:gravity="center">
 
                 <ImageView
@@ -46,6 +48,7 @@
                 android:id="@+id/dfa_logo"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/_150sdp"
+                android:layout_centerInParent="true"
                 android:layout_below="@+id/and_symbol"
                 android:gravity="center"
                 android:src="@drawable/app_icon"

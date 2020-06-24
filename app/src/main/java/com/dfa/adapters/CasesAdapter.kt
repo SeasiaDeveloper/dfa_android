@@ -404,10 +404,15 @@ class CasesAdapter(
                    if (item.media_list != null && item.media_list.isNotEmpty()) {
                        itemView.imgMediaPost.visibility = View.GONE
                        itemView.videoThumbNialParent.visibility = View.VISIBLE
+                       val options = RequestOptions()
+                       val mediaUrl: String = item.media_list[0]
                        Glide.with(context)
                            .asBitmap()
+                           .load(mediaUrl).apply(options).into(itemView.videoThumbNial);
+                      /* Glide.with(context)
+                           .asBitmap()
                            .load(itemView.imgMediaPost)
-                           .into(itemView.videoThumbNial);
+                           .into(itemView.videoThumbNial);*/
 
                        itemView.videoThumbNialParent.setOnClickListener {
                            val mediaUrl= item!!.media_list?.get(0)
@@ -561,8 +566,6 @@ class CasesAdapter(
                     }
                 }
                 itemView.videoThumbNialParent.setOnClickListener {
-
-
                         val mediaUrl= item!!.media_list?.get(0)
                         var intent=Intent(context,VideoPlayerActivity::class.java)
                         intent.putExtra("videoPath",mediaUrl)
@@ -764,7 +767,7 @@ class CasesAdapter(
                         itemView.action_complaint.visibility = View.GONE
                     }
                     itemView.layoutContact.visibility = View.GONE
-                    itemView.imgComplaintMedia.visibility = View.VISIBLE
+                    //itemView.imgComplaintMedia.visibility = View.VISIBLE
 
                 } else {
                     //in case of NGO
@@ -773,7 +776,7 @@ class CasesAdapter(
                     }
                     itemView.action_complaint.visibility = View.VISIBLE
 
-                    itemView.imgComplaintMedia.visibility = View.VISIBLE
+                    //itemView.imgComplaintMedia.visibility = View.VISIBLE
                     //itemView.action_complaint.setText(item.status)
                 }
 
@@ -808,8 +811,6 @@ class CasesAdapter(
                 itemView.gpu_case_layout.visibility = View.VISIBLE
                 itemView.ngo_case_layout.visibility = View.GONE
                 itemView.case_no.setText(item.id).toString()
-
-
 
 
                 if(item.media_type.equals("videos")){
@@ -852,7 +853,7 @@ class CasesAdapter(
 
             itemView.imgComplaintMedia.setOnClickListener {
                 //show enlarged image
-                DisplayLargeImageOfMedia(context, item, options)
+                DisplayLargeImageOfMedia(context, item)
             }
 
             if (!(item.status.equals("Unassigned"))) {  //change
@@ -885,6 +886,13 @@ class CasesAdapter(
                     itemView.childExpandable.visibility = View.VISIBLE
                     itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
                     itemView.moreLess.setText(R.string.less)
+                    if(item.media_type.equals("videos")){
+                        itemView.imgComplaintMedia.visibility = View.GONE
+                        itemView.videoThumbNialParent.visibility = View.VISIBLE
+                    }else{
+                        itemView.imgComplaintMedia.visibility = View.VISIBLE
+                        itemView.videoThumbNialParent.visibility = View.GONE
+                    }
                 } else {
                     itemView.childExpandable.visibility = View.GONE
                     itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
@@ -892,7 +900,6 @@ class CasesAdapter(
                 }
 
                 itemView.imgExpandable.setOnClickListener {
-                  //  if (!token!!.isEmpty()) {
                         //1st entry
                         if (!item.isApiHit) {
                             //call api:
@@ -912,14 +919,10 @@ class CasesAdapter(
                                 itemView.moreLess.setText(R.string.more)
                             }
                         }
-               /*     } else {
-                        com.dfa.utils.alert.AlertDialog.guesDialog(context)
-                    }*/
                 }
 
                 //added in case of more or less
                 itemView.moreLess.setOnClickListener {
-                  //  if (!token!!.isEmpty()) {
                         //1st entry
                         if (!item.isApiHit) {
                             //call api:
@@ -939,14 +942,10 @@ class CasesAdapter(
                                 itemView.moreLess.setText(R.string.more)
                             }
                         }
-                  /*  } else {
-                        com.dfa.utils.alert.AlertDialog.guesDialog(context)
-                    }*/
                 }
 
             } else {
                 itemView.imgExpandable.setOnClickListener {
-                   // if (!token!!.isEmpty()) {
                         if (itemView.childExpandable.visibility == View.VISIBLE) {
                             itemView.childExpandable.visibility = View.GONE
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
@@ -956,35 +955,33 @@ class CasesAdapter(
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
                             itemView.moreLess.setText(R.string.less)
                         }
-                   /* }
-                    else {
-                        com.dfa.utils.alert.AlertDialog.guesDialog(context)
-                    }*/
                 }
 
                 //added for less or more
                 itemView.moreLess.setOnClickListener {
-                   // if (!token!!.isEmpty()) {
                         if (itemView.childExpandable.visibility == View.VISIBLE) {
                             itemView.childExpandable.visibility = View.GONE
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
                             itemView.moreLess.setText(R.string.more)
                         } else {
+                            if(item.media_type.equals("videos")){
+                                itemView.imgComplaintMedia.visibility = View.GONE
+                                itemView.videoThumbNialParent.visibility = View.VISIBLE
+                            }else{
+                                itemView.imgComplaintMedia.visibility = View.VISIBLE
+                                itemView.videoThumbNialParent.visibility = View.GONE
+                            }
                             itemView.childExpandable.visibility = View.VISIBLE
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
                             itemView.moreLess.setText(R.string.less)
                         }
-                /*    } else {
-                        com.dfa.utils.alert.AlertDialog.guesDialog(context)
-                    }*/
                 }
             }
         }
 
         fun DisplayLargeImageOfMedia(
             context: Context,
-            userDetail: GetCasesResponse.Data,
-            options: RequestOptions
+            userDetail: GetCasesResponse.Data
         ) {
             //show enlarged image
             val binding =
@@ -998,9 +995,19 @@ class CasesAdapter(
             val dialog = Dialog(context)
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
             dialog.setContentView(binding.root)
-
+            dialog.window?.setLayout(
+                WindowManager.LayoutParams.MATCH_PARENT,
+                WindowManager.LayoutParams.MATCH_PARENT
+            )
+            dialog.window?.setGravity(Gravity.CENTER)
+            dialog.getWindow()!!.setBackgroundDrawableResource(android.R.color.transparent)
             val imageView = (dialog.findViewById(R.id.imgView) as ImageView)
             val mediaUrl: String = userDetail.media_list?.get(0)!!
+            val options = RequestOptions()
+                /* .centerCrop()*/
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .placeholder(R.drawable.noimage)
+                .error(R.drawable.noimage)
 
             try {
                 Glide.with(context).asBitmap().load(mediaUrl).apply(options).into(imageView)
@@ -1060,8 +1067,8 @@ class CasesAdapter(
             val options = RequestOptions()
                 /* .centerCrop()*/
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .placeholder(R.drawable.user)
-                .error(R.drawable.user)
+                .placeholder(R.drawable.noimage)
+                .error(R.drawable.noimage)
 
             try {
                 Glide.with(context).asBitmap().load(userDetail.profile_pic).apply(options)
