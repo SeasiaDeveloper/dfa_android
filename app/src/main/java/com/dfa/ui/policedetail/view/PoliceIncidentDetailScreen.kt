@@ -188,6 +188,7 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
             try {
                 Glide.with(this).setDefaultRequestOptions(requestOptions)
                     .load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
+                    .placeholder(R.drawable.grey_bg)
                     .into(imgView)
                 ivVideoIcon.visibility = View.VISIBLE
 
