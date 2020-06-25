@@ -5,6 +5,11 @@ package life.knowledge4.videotrimmer;
 
 public final class BuildConfig {
   public static final boolean DEBUG = Boolean.parseBoolean("true");
+  public static final String LIBRARY_PACKAGE_NAME = "life.knowledge4.videotrimmer";
+  /**
+   * @deprecated APPLICATION_ID is misleading in libraries. For the library package name use LIBRARY_PACKAGE_NAME
+   */
+  @Deprecated
   public static final String APPLICATION_ID = "life.knowledge4.videotrimmer";
   public static final String BUILD_TYPE = "debug";
   public static final String FLAVOR = "";
