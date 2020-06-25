@@ -53,7 +53,8 @@
     <string name="mark_status">Mark Status</string>
     <string name="crime_types_error">Not getting Crime Types</string>
     <string name="complaint_details">Complaint Details</string>
-
+    <string name="cases_heading">Arunachal Pradesh Police\n &amp; Drug Free Arunachal
+</string>
 
     <!--  login screen-->
     <string name="forgot_password"><u>Forgot Password?</u></string>

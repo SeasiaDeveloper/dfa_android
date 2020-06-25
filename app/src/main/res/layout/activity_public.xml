@@ -253,7 +253,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_12sdp"
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="@string/description"
                     android:textColor="@color/black"
@@ -268,6 +268,7 @@
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:background="@drawable/squarebg"
                     android:ems="10"
+                    android:hint="Please add as much details as possible including name, place, supplying drug, consuming drug etc. "
                     android:gravity="start"
                     android:imeOptions="actionDone"
                     android:inputType="textMultiLine"
@@ -275,6 +276,7 @@
                     android:maxLength="500"
                     android:maxLines="10"
                     android:minLines="6"
+                    android:textSize="@dimen/_12ssp"
                     android:padding="@dimen/_7sdp" />
 
 

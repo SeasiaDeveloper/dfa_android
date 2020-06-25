@@ -706,6 +706,9 @@ class CasesAdapter(
 
                 //if NGO show profile image
                 if (type == 1) {
+
+                    itemView.ll_gp.visibility=View.VISIBLE
+                    itemView.ll_ngo.visibility=View.GONE
                     if (userDetail.profile_pic != null) {
                         try {
                             Glide.with(context).asBitmap().load(userDetail.profile_pic)
@@ -730,6 +733,9 @@ class CasesAdapter(
                 }
                 //in case of General public or police
                 else {
+                    itemView.ll_gp.visibility=View.GONE
+                    itemView.ll_ngo.visibility=View.VISIBLE
+
                     val options1 = RequestOptions()
                         /* .centerCrop()*/
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
