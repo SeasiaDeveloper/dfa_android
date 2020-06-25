@@ -3,9 +3,6 @@ package com.dfa.ui.emergency.view
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +28,7 @@ import com.dfa.utils.Utilities
 import com.dfa.utils.Utilities.dismissProgress
 import com.dfa.utils.Utilities.showProgress
 import kotlinx.android.synthetic.main.fragment_emergency.*
+import java.lang.Exception
 
 class EmergencyFragment : Fragment(), EmergencyFragmentView {
     private var presenter: EmergencyFragmentPresenter = EmegencyFragmentPresenterImpl(this)
@@ -52,13 +50,13 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     override fun onResume() {
         super.onResume()
         if (isFirst) {
-            if (isInternetAvailable(mContext)) {
+            //if (isInternetAvailable()) {
                 showProgress(mContext)
                 presenter.hitDistricApi()
                 isFirst = false
-            } else {
+           /* } else {
                 Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
-            }
+            }*/
         } else {
             if (staticDistValueList?.data!!.size > 0) {
                 getDistrictDropDown(staticDistValueList!!)
@@ -133,39 +131,49 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
 
         adapter.setDropDownViewResource(R.layout.view_spinner_item)
         spDistrict.setAdapter(adapter)
-        spDistrict.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                // Display the selected item text on text view
-                "Spinner selected : ${parent.getItemAtPosition(position)}"
-                if (position != 0) {
-                    if (isInternetAvailable(mContext)) {
-                        showProgress(mContext)
-                        var authorizationToken =
-                            PreferenceHandler.readString(
-                                mContext,
-                                PreferenceHandler.AUTHORIZATION,
-                                ""
-                            )
-                        var request = EmergencyDataRequest(response.data.get(position - 1).id)
-                        presenter.hitEmergencyApi(request, authorizationToken)
-                    } else {
-                        Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
-                    }
-                } else{
-                    var mList: ArrayList<EmergencyDataResponse.Data> = ArrayList()
-                    emergencyDetailsAdapter.changeList(mList)
-                }
-            }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Another interface callback
-            }
-        }
+      try {
+
+
+          spDistrict.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+              override fun onItemSelected(
+                  parent: AdapterView<*>,
+                  view: View?,
+                  position: Int,
+                  id: Long
+              ) {
+                  // Display the selected item text on text view
+                  "Spinner selected : ${parent.getItemAtPosition(position)}"
+                  if (position != 0) {
+                      //  if (isInternetAvailable()) {
+                      showProgress(mContext)
+                      var authorizationToken =
+                          PreferenceHandler.readString(
+                              mContext,
+                              PreferenceHandler.AUTHORIZATION,
+                              ""
+                          )
+                      var request = EmergencyDataRequest(response.data.get(position - 1).id)
+                      presenter.hitEmergencyApi(request, authorizationToken)
+                      /* } else {
+                        Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
+                    }*/
+                  } else {
+                      var mList: ArrayList<EmergencyDataResponse.Data> = ArrayList()
+                      emergencyDetailsAdapter.changeList(mList)
+                  }
+              }
+
+              override fun onNothingSelected(parent: AdapterView<*>) {
+                  // Another interface callback
+              }
+          }
+      }
+
+      catch (e:Exception)
+      {
+          e.printStackTrace()
+      }
     }
 
     override fun onAttach(context: Context) {
@@ -206,7 +214,7 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
                  }
              }
          }
-     }﻿*/
+     }*/
 
     // Receive the permissions request result
     override fun onRequestPermissionsResult(
@@ -258,9 +266,9 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     /*
  * method to check internet connection
  * */
-    fun isInternetAvailable(context: Context): Boolean {
+   /* fun isInternetAvailable(): Boolean {
         val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val nw = connectivityManager.activeNetwork ?: return false
             val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
@@ -273,6 +281,6 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
             val nwInfo = connectivityManager.activeNetworkInfo ?: return false
             return nwInfo.isConnected
         }
-    }
+    }*/
 
 }
