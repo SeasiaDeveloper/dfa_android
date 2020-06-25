@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:id="@+id/publicParentLayout"
@@ -82,34 +83,34 @@
                     app:rsb_tick_mark_layout_gravity="top"
                     app:rsb_tick_mark_mode="other"
                     app:rsb_tick_mark_text_array="@array/levelArray"
-                    app:rsb_tick_mark_text_margin="10dp"
-                    />
+                    app:rsb_tick_mark_text_margin="10dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-                    <com.dfa.customviews.CustomtextView
-                        android:id="@+id/tvSelectPhoto"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_15sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_7sdp"
-                        android:layout_marginBottom="@dimen/_4sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/shape_round_corner_green"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/_5sdp"
-                        android:paddingTop="@dimen/_5ssp"
-                        android:paddingRight="@dimen/_5sdp"
-                        android:paddingBottom="@dimen/_5ssp"
-                        android:text="@string/select_photo"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
+                    <!--                    <com.dfa.customviews.CustomtextView-->
+                    <!--                        android:id="@+id/tvSelectPhoto"-->
+                    <!--                        android:layout_width="0dp"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_gravity="center"-->
+                    <!--                        android:layout_marginStart="@dimen/_15sdp"-->
+                    <!--                        android:layout_marginTop="@dimen/_10sdp"-->
+                    <!--                        android:layout_marginEnd="@dimen/_7sdp"-->
+                    <!--                        android:layout_marginBottom="@dimen/_4sdp"-->
+                    <!--                        android:layout_weight="1"-->
+                    <!--                        android:background="@drawable/shape_round_corner_green"-->
+                    <!--                        android:gravity="center"-->
+                    <!--                        android:paddingLeft="@dimen/_5sdp"-->
+                    <!--                        android:paddingTop="@dimen/_5ssp"-->
+                    <!--                        android:paddingRight="@dimen/_5sdp"-->
+                    <!--                        android:paddingBottom="@dimen/_5ssp"-->
+                    <!--                        android:text="@string/select_photo"-->
+                    <!--                        android:textColor="@color/black"-->
+                    <!--                        android:textSize="@dimen/_12sdp" />-->
 
                     <com.dfa.customviews.CustomtextView
                         android:id="@+id/tvTakePhoto"
@@ -120,14 +121,14 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_15sdp"
                         android:layout_marginBottom="@dimen/_4sdp"
-                        android:layout_weight="1"
+                        android:layout_weight="1.7"
                         android:background="@drawable/shape_round_corner_green"
                         android:gravity="center"
                         android:paddingLeft="@dimen/_5sdp"
-                        android:paddingTop="@dimen/_5ssp"
+                        android:paddingTop="@dimen/_8ssp"
                         android:paddingRight="@dimen/_5sdp"
-                        android:paddingBottom="@dimen/_5ssp"
-                        android:text="Take Photo"
+                        android:paddingBottom="@dimen/_8ssp"
+                        android:text="@string/take_photo"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12sdp" />
                 </LinearLayout>
@@ -135,28 +136,29 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-                    <com.dfa.customviews.CustomtextView
-                        android:id="@+id/tvRecordVideo"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_15sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_7sdp"
-                        android:layout_marginBottom="@dimen/_4sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/shape_round_corner_green"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/_5sdp"
-                        android:paddingTop="@dimen/_5ssp"
-                        android:paddingRight="@dimen/_5sdp"
-                        android:paddingBottom="@dimen/_5ssp"
-                        android:text="Select Video"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
+                    <!--                    <com.dfa.customviews.CustomtextView-->
+                    <!--                        android:id="@+id/tvRecordVideo"-->
+                    <!--                        android:layout_width="0dp"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:layout_gravity="center"-->
+                    <!--                        android:layout_marginStart="@dimen/_15sdp"-->
+                    <!--                        android:layout_marginTop="@dimen/_10sdp"-->
+                    <!--                        android:layout_marginEnd="@dimen/_7sdp"-->
+                    <!--                        android:layout_marginBottom="@dimen/_4sdp"-->
+                    <!--                        android:layout_weight="1"-->
+                    <!--                        android:background="@drawable/shape_round_corner_green"-->
+                    <!--                        android:gravity="center"-->
+                    <!--                        android:paddingLeft="@dimen/_5sdp"-->
+                    <!--                        android:paddingTop="@dimen/_5ssp"-->
+                    <!--                        android:paddingRight="@dimen/_5sdp"-->
+                    <!--                        android:paddingBottom="@dimen/_5ssp"-->
+                    <!--                        android:text="Select Video"-->
+                    <!--                        android:textColor="@color/black"-->
+                    <!--                        android:textSize="@dimen/_12sdp" />-->
 
                     <com.dfa.customviews.CustomtextView
                         android:id="@+id/tvTakeVideo"
@@ -167,45 +169,46 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_15sdp"
                         android:layout_marginBottom="@dimen/_4sdp"
-                        android:layout_weight="1"
+                        android:layout_weight="1.7"
                         android:background="@drawable/shape_round_corner_green"
                         android:gravity="center"
                         android:paddingLeft="@dimen/_5sdp"
-                        android:paddingTop="@dimen/_5ssp"
+                        android:paddingTop="@dimen/_8ssp"
                         android:paddingRight="@dimen/_5sdp"
-                        android:paddingBottom="@dimen/_5ssp"
-                        android:text="Record Video"
+                        android:paddingBottom="@dimen/_8ssp"
+                        android:text="Capture Live Video"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_12sdp"
+                        tools:ignore="HardcodedText" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/imageview_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:visibility="gone"
                     android:orientation="vertical"
-                    android:id="@+id/imageview_layout">
+                    android:visibility="gone">
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/clear_image"
-                        android:layout_marginTop="5dp"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="@dimen/_10ssp"
-                        android:layout_margin="5dp"
-                        android:visibility="visible"
-                        android:src="@drawable/ic_deleve"
                         android:layout_width="30dp"
-                        android:layout_height="30dp"/>
+                        android:layout_height="30dp"
+                        android:layout_gravity="end"
+                        android:layout_margin="5dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="@dimen/_10ssp"
+                        android:src="@drawable/ic_deleve"
+                        android:visibility="visible" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/imgView"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:layout_marginStart="@dimen/_10ssp"
-                        android:layout_marginEnd="@dimen/_10ssp"
                         android:layout_gravity="top"
+                        android:layout_marginStart="@dimen/_10ssp"
+                        android:layout_marginTop="@dimen/_2sdp"
+                        android:layout_marginEnd="@dimen/_10ssp"
                         android:src="@color/bottom_view_bg"
                         android:visibility="gone" />
 
@@ -213,36 +216,34 @@
 
                 <RelativeLayout
                     android:id="@+id/video_parent"
-                    android:background="@color/black"
-                    android:visibility="gone"
-                    android:layout_margin="@dimen/_20sdp"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_150sdp">
+                    android:layout_height="@dimen/_150sdp"
+                    android:layout_margin="@dimen/_20sdp"
+                    android:background="@color/black"
+                    android:visibility="gone">
 
 
+                    <!--                    <LinearLayout-->
+                    <!--                        android:layout_width="match_parent"-->
+                    <!--                        android:layout_height="match_parent"-->
+                    <!--                        android:gravity="center">-->
 
-<!--                    <LinearLayout-->
-<!--                        android:layout_width="match_parent"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:gravity="center">-->
-
-                        <VideoView
-                            android:id="@+id/videoView"
-                            android:layout_centerInParent="true"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            />
+                    <VideoView
+                        android:id="@+id/videoView"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_centerInParent="true" />
 
 
                     <ImageView
                         android:id="@+id/img_delete"
-                        android:layout_margin="5dp"
-                        android:visibility="visible"
-                        android:layout_alignParentRight="true"
-                        android:src="@drawable/ic_deleve"
                         android:layout_width="30dp"
-                        android:layout_height="30dp"/>
-<!--                    </LinearLayout>-->
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_margin="5dp"
+                        android:src="@drawable/ic_deleve"
+                        android:visibility="visible" />
+                    <!--                    </LinearLayout>-->
 
 
                 </RelativeLayout>

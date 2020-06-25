@@ -1,5 +1,4 @@
-package com.artha.beacon_service
-
+package com.dfa.utils
 import android.content.Context
 import com.bumptech.glide.Glide
 import com.bumptech.glide.Registry

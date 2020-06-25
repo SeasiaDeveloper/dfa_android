@@ -12,7 +12,9 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.MediaController
 import android.widget.PopupMenu
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.MenuCompat
 
 import androidx.databinding.DataBindingUtil
@@ -25,6 +27,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 
 import com.dfa.R
+import com.dfa.application.MyApplication
 import com.dfa.databinding.ItemCaseBinding
 import com.dfa.listeners.AlertDialogListener
 import com.dfa.listeners.OnCaseItemClickListener
@@ -37,6 +40,7 @@ import com.dfa.ui.contactus.ContactUsActivity
 
 import com.dfa.ui.generalpublic.VideoPlayerActivity
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
+import com.dfa.ui.home.fragments.home.view.HomeActivity
 import com.dfa.ui.mycases.MyCasesActivity
 import com.dfa.ui.mycases.MyCasesActivity.Companion.PERMISSION_READ_STORAGE
 import com.dfa.ui.mycases.MyCasesActivity.Companion.REQUEST_PERMISSIONS
@@ -757,6 +761,7 @@ class CasesAdapter(
                 itemView.layoutStatus.visibility = View.VISIBLE
                 itemView.txtCrimeType.text = item.crime_type
                 itemView.txtStatus.text = item.status
+                if(activity is HomeActivity) setColor(itemView.txtStatus,item.status.toString().toLowerCase())
                 itemView.txtUrgencyTitle.text = context.getString(R.string.urgency_level)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     itemView.txtUrgencyTitle.setTextColor(
@@ -1071,6 +1076,24 @@ class CasesAdapter(
                 e.printStackTrace()
             }
             dialog.show()
+        }
+
+        fun setColor( textView:com.dfa.customviews.CustomtextView,data:String)
+        {
+           when(data)
+           {
+               "unassigned"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.red));
+               "approved"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.yellow));
+               "accepted"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.blue));
+               "accept"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.blue));
+               "resolved"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.green));
+               "unauthentic"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.grey));
+
+
+
+
+           }
+
         }
 
         fun DisplayLargeImage(

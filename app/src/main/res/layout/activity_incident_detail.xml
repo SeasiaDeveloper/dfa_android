@@ -92,7 +92,7 @@
                         android:layout_marginEnd="@dimen/_12sdp"
                         android:padding="@dimen/_3sdp"
                         android:textColor="@color/grey"
-                        android:textSize="@dimen/_12ssp"/>
+                        android:textSize="@dimen/_12ssp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -361,85 +361,84 @@
                         android:textSize="@dimen/_12ssp" />
                 </LinearLayout>
 
-     <!--           <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView2"
+                <!--           <androidx.cardview.widget.CardView
+                               android:id="@+id/cardView2"
+                               android:layout_width="match_parent"
+                               android:layout_height="wrap_content"
+                               android:layout_marginStart="@dimen/_8sdp"
+                               android:layout_marginTop="@dimen/_6sdp"
+                               android:layout_marginEnd="@dimen/_8sdp"
+                               android:layout_marginBottom="@dimen/_4sdp"
+                               app:cardCornerRadius="@dimen/_4sdp"
+                               app:layout_constraintEnd_toEndOf="parent"
+                               app:layout_constraintStart_toStartOf="parent"
+                               app:layout_constraintTop_toTopOf="parent">-->
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_8sdp"
                     android:layout_marginTop="@dimen/_6sdp"
                     android:layout_marginEnd="@dimen/_8sdp"
                     android:layout_marginBottom="@dimen/_4sdp"
-                    app:cardCornerRadius="@dimen/_4sdp"
+                    android:orientation="vertical"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">-->
+                    app:layout_constraintTop_toTopOf="parent">
 
-                    <LinearLayout
+                    <com.jaygoo.widget.RangeSeekBar
+                        android:id="@+id/sb_steps_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_marginStart="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginEnd="@dimen/_10sdp"
+                        android:paddingLeft="@dimen/_5ssp"
+                        android:paddingEnd="@dimen/_10ssp"
+                        android:visibility="gone"
+                        app:rsb_gravity="bottom"
+                        app:rsb_mode="single"
+                        app:rsb_progress_color="@color/grey"
+                        app:rsb_step_auto_bonding="true"
+                        app:rsb_step_color="@color/grey"
+                        app:rsb_step_height="5dp"
+                        app:rsb_step_radius="4dp"
+                        app:rsb_step_width="5dp"
+                        app:rsb_steps="9"
+                        app:rsb_thumb_drawable="@drawable/thumb_stroke"
+                        app:rsb_thumb_height="@dimen/_10ssp"
+                        app:rsb_thumb_width="@dimen/_10ssp"
+                        app:rsb_tick_mark_layout_gravity="top"
+                        app:rsb_tick_mark_mode="other"
+                        app:rsb_tick_mark_text_array="@array/levelArray"
+                        app:rsb_tick_mark_text_margin="10dp" />
+
+                    <RelativeLayout
+                        android:id="@+id/layout_media"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_8sdp"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:layout_marginEnd="@dimen/_8sdp"
-                        android:layout_marginBottom="@dimen/_4sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:orientation="vertical">
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
 
-                        <com.jaygoo.widget.RangeSeekBar
-                            android:id="@+id/sb_steps_5"
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/imgView"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
-                            android:layout_marginStart="@dimen/_10sdp"
-                            android:layout_marginTop="@dimen/_10sdp"
-                            android:layout_marginEnd="@dimen/_10sdp"
-                            android:paddingLeft="@dimen/_5ssp"
-                            android:paddingEnd="@dimen/_10ssp"
-                            android:visibility="gone"
-                            app:rsb_gravity="bottom"
-                            app:rsb_mode="single"
-                            app:rsb_progress_color="@color/grey"
-                            app:rsb_step_auto_bonding="true"
-                            app:rsb_step_color="@color/grey"
-                            app:rsb_thumb_height="@dimen/_10ssp"
-                            app:rsb_thumb_width="@dimen/_10ssp"
-                            app:rsb_step_height="5dp"
-                            app:rsb_step_radius="4dp"
-                            app:rsb_step_width="5dp"
-                            app:rsb_steps="9"
-                            app:rsb_thumb_drawable="@drawable/thumb_stroke"
-                            app:rsb_tick_mark_layout_gravity="top"
-                            app:rsb_tick_mark_mode="other"
-                            app:rsb_tick_mark_text_array="@array/levelArray"
-                            app:rsb_tick_mark_text_margin="10dp"
-                            />
+                            android:layout_height="@dimen/_200sdp"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:layout_marginEnd="@dimen/_7sdp" />
 
-                        <RelativeLayout
-                            android:id="@+id/layout_media"
-                            android:layout_width="match_parent"
+                        <ImageView
+                            android:id="@+id/ivVideoIcon"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:orientation="horizontal">
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/ic_play_circle_outline"
+                            android:visibility="visible" />
 
-                            <androidx.appcompat.widget.AppCompatImageView
-                                android:id="@+id/imgView"
-                                android:layout_width="match_parent"
-                                android:layout_height="@dimen/_200sdp"
-                                android:layout_marginStart="@dimen/_12sdp"
-                                android:layout_marginTop="@dimen/_6sdp"
-                                android:layout_marginEnd="@dimen/_7sdp" />
-
-                            <ImageView
-                                android:id="@+id/ivVideoIcon"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/ic_play_circle_outline"
-                                android:visibility="visible" />
-
-                        </RelativeLayout>
-                    </LinearLayout>
-               <!-- </androidx.cardview.widget.CardView>-->
+                    </RelativeLayout>
+                </LinearLayout>
+                <!-- </androidx.cardview.widget.CardView>-->
 
                 <LinearLayout
                     android:id="@+id/desc_layout"

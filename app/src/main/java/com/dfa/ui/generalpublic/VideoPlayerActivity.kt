@@ -6,31 +6,23 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.PixelFormat
 import android.media.MediaPlayer
-import android.media.ThumbnailUtils
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.os.CountDownTimer
 import android.os.Environment
-import android.provider.MediaStore
 import android.view.View
 import android.widget.ImageView
 import android.widget.MediaController
+import android.widget.Toast
 import android.widget.VideoView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.dfa.R
 import com.dfa.base.BaseActivity
 import com.dfa.customviews.CenteredToolbar
-import com.dfa.ui.mycases.MyCasesActivity
-import com.dfa.utils.CheckRuntimePermissions
+import com.dfa.utils.Utilities
 import com.vaibhavlakhera.circularprogressview.CircularProgressView
-import kotlinx.android.synthetic.main.activity_my_cases.*
 import kotlinx.android.synthetic.main.activity_video_player.*
-import kotlinx.android.synthetic.main.activity_video_player.toolbarLayout
 import java.io.File
 
 class VideoPlayerActivity : BaseActivity() {
@@ -59,6 +51,8 @@ class VideoPlayerActivity : BaseActivity() {
         }
 
         askPermissionScanner()
+
+
     }
 
 
@@ -83,11 +77,16 @@ class VideoPlayerActivity : BaseActivity() {
         } catch (e: Exception) {
         }
         if (!videoPath.isEmpty()) {
-            Glide.with(this)
-                .asBitmap()
-                .load(videoPath)
-                .into(thumbImage!!);
-            thumbImage!!.visibility = View.VISIBLE
+
+            try {
+                Glide.with(this)
+                    .asBitmap()
+                    .load(videoPath)
+                    .into(thumbImage!!);
+                thumbImage!!.visibility = View.VISIBLE
+            } catch (e: Exception) {
+                println("Exception>>>>>>>>>>>>>>" + e)
+            }
         }
     }
 
@@ -170,6 +169,20 @@ class VideoPlayerActivity : BaseActivity() {
             mediaController!!.setMediaPlayer(videoView);
             videoView!!.setMediaController(mediaController)
             videoView!!.setVideoURI(myUri)
+
+//            try {
+//                val trustStore: KeyStore = KeyStore.getInstance(KeyStore.getDefaultType())
+//                trustStore.load(null, null)
+//                val sf = MySSLSocketFactory(trustStore)
+//                sf.setHostnameVerifier(MySSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER)
+//                sf.fixHttpsURLConnection()
+//                val hostnameVerifier: HostnameVerifier =
+//                    SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER
+//                HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier)
+//            } catch (e: java.lang.Exception) {
+//                e.printStackTrace()
+//            }
+
             videoView!!.requestFocus()
             videoView!!.start()
             videoView!!.setOnPreparedListener(object : MediaPlayer.OnPreparedListener {
@@ -188,12 +201,14 @@ class VideoPlayerActivity : BaseActivity() {
                             "DFA/" + documentId
                         )
                         fileName.delete()
-                        DownloadTask(
-                            this@VideoPlayerActivity,
-                            mPath,
-                            documentId,
-                            this@VideoPlayerActivity
-                        )
+                       Toast.makeText(this@VideoPlayerActivity, "Can't play this video", Toast.LENGTH_LONG).show()
+
+//                        DownloadTask(
+//                            this@VideoPlayerActivity,
+//                            mPath,
+//                            documentId,
+//                            this@VideoPlayerActivity
+//                        )
                     }
                     return true
                 }
@@ -229,7 +244,7 @@ class VideoPlayerActivity : BaseActivity() {
                     /* Toast.makeText(activity!!, "Permission Denied", Toast.LENGTH_SHORT).show()*/
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         if (ContextCompat.checkSelfPermission(
-                                this!!,
+                                this,
                                 Manifest.permission.WRITE_EXTERNAL_STORAGE
                             ) != PackageManager.PERMISSION_GRANTED
                         ) {
