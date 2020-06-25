@@ -4,35 +4,25 @@ package com.dfa.ui.generalpublic;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.util.Log;
-import android.view.ContextThemeWrapper;
 import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
-
-import androidx.appcompat.app.AlertDialog;
 
 import com.dfa.R;
 import com.vaibhavlakhera.circularprogressview.CircularProgressView;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -42,15 +32,14 @@ import javax.net.ssl.X509TrustManager;
 
 public class DownloadTask {
     private static final String TAG = "Download Task";
+    public static DownloadingTask task;
     private Context context;
-
     private String downloadUrl = "", downloadFileName = "";
     private ProgressDialog progressDialog;
     private Dialog dialog;
     private CircularProgressView circleProgress;
     private VideoPlayerActivity playVideo;
     private int pStatus = 0;
-    public static DownloadingTask task;
 
     public DownloadTask(Context context, String downloadUrl, String documentId, VideoPlayerActivity play) {
         this.context = context;
@@ -64,7 +53,7 @@ public class DownloadTask {
         Log.e(TAG, downloadFileName);
 
         //Start Downloading Task
-        task= (DownloadingTask) new DownloadingTask().execute();
+        task = (DownloadingTask) new DownloadingTask().execute();
     }
 
     public class DownloadingTask extends AsyncTask<Void, Void, Void> {
@@ -89,7 +78,7 @@ public class DownloadTask {
                 dialog.setCanceledOnTouchOutside(false);
 
                 circleProgress = dialog.findViewById(R.id.progressView);
-                circleProgress.setProgress(1,true);
+                circleProgress.setProgress(1, true);
                 dialog.show();
 
                 dialog.setOnKeyListener(new Dialog.OnKeyListener() {
@@ -104,6 +93,7 @@ public class DownloadTask {
                 });
 
             } catch (Exception e) {
+                System.out.println("EXCEPTION2>>>>>>>>>>>>>>>>"+e);
 
             }
 
@@ -133,6 +123,7 @@ public class DownloadTask {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println("EXCEPTION3>>>>>>>>>>>>>>>>"+e);
 
                 //Change button text if exception occurs
 
@@ -161,9 +152,11 @@ public class DownloadTask {
                             public java.security.cert.X509Certificate[] getAcceptedIssuers() {
                                 return null;
                             }
+
                             public void checkClientTrusted(
                                     java.security.cert.X509Certificate[] certs, String authType) {
                             }
+
                             public void checkServerTrusted(
                                     java.security.cert.X509Certificate[] certs, String authType) {
                             }
@@ -176,9 +169,9 @@ public class DownloadTask {
                     sc.init(null, trustAllCerts, new java.security.SecureRandom());
                     HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
                 } catch (Exception e) {
+                    System.out.println("EXCEPTION4>>>>>>>>>>>>>>>>"+e);
+
                 }
-
-
 
 
                 URL url = new URL(downloadUrl);//Create Download URl
@@ -229,7 +222,7 @@ public class DownloadTask {
                 while ((len1 = is.read(buffer)) != -1) {
                     total += len1;
                     fos.write(buffer, 0, len1);//Write new file
-                    Log.d(TAG, "checking the percentage " + (int) ((total * 100) / lenghtOfFile));
+                    //Log.d(TAG, "checking the percentage " + (int) ((total * 100) / lenghtOfFile));
                     setPercentage((int) ((total * 100) / lenghtOfFile));
                 }
 
@@ -239,8 +232,10 @@ public class DownloadTask {
 
             } catch (Exception e) {
                 //Read exception if something went wrong
+                System.out.println("EXCEPTION>>>>>>>>>>>>>>>>"+e);
                 e.printStackTrace();
-                outputFile = null;
+                outputFile = null;;
+                //task.cancel(true);
                 Log.e(TAG, "Download Error Exception " + e.getMessage());
             }
             return null;
@@ -248,7 +243,7 @@ public class DownloadTask {
 
         public void setPercentage(int percentage) {
 
-            playVideo.setLoader(circleProgress, percentage,dialog);
+            playVideo.setLoader(circleProgress, percentage, dialog);
 
         }
     }

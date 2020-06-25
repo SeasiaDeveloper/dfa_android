@@ -3,6 +3,7 @@ package com.dfa.ui.generalpublic
 import android.Manifest
 import android.annotation.TargetApi
 import android.app.Activity
+import android.app.AlertDialog
 import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
@@ -24,9 +25,8 @@ import android.os.Environment
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
-import android.view.MotionEvent
+import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewConfiguration
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.MediaController
@@ -34,12 +34,14 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.dfa.R
 import com.dfa.base.BaseActivity
 import com.dfa.customviews.CenteredToolbar
+import com.dfa.databinding.DialogImageChoiceBinding
 import com.dfa.pojo.request.ComplaintRequest
 import com.dfa.pojo.response.ComplaintResponse
 import com.dfa.pojo.response.GetCrimeTypesResponse
@@ -54,13 +56,11 @@ import com.dfa.utils.Constants.GPS_REQUEST
 import com.dfa.utils.RealPathUtil.getCapturedImage
 import com.dfa.utils.Utilities.PERMISSION_ID
 import com.dfa.utils.Utilities.PERMISSION_ID_CAMERA
-import com.dfa.utils.Utilities.requestPermissions
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.vincent.videocompressor.VideoCompress
 import kotlinx.android.synthetic.main.activity_public.*
 import java.io.*
-import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -150,36 +150,36 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         GeneralPublicHomeFragment.changeThroughIncidentScreen = 0
         clear_image.setOnClickListener(this)
 
-       /* scroll_view.setOnTouchListener(object : View.OnTouchListener {
-            var startClickTime: Long = 0
-            override fun onTouch(p0: View?,event: MotionEvent?): Boolean {
-                if (event?.getAction() == MotionEvent.ACTION_DOWN) {
-                    startClickTime = System.currentTimeMillis();
-                } else if (event?.getAction() == MotionEvent.ACTION_UP) {
-                    if (System.currentTimeMillis() - startClickTime < ViewConfiguration.getTapTimeout()) {
-                        // Touch was a simple tap. Do whatever.
-                        mediaControls.visibility = View.GONE
-                        mediaControls.setAnchorView(videoView)
-                        videoView.setMediaController(mediaControls)
-                    } else {
-                        // Touch was a not a simple tap.
-                        mediaControls.visibility = View.GONE
-                        mediaControls.setAnchorView(videoView)
-                        videoView.setMediaController(mediaControls)
-                    }
-                }
-                return true;
-            }
-        })*/
+        /* scroll_view.setOnTouchListener(object : View.OnTouchListener {
+             var startClickTime: Long = 0
+             override fun onTouch(p0: View?,event: MotionEvent?): Boolean {
+                 if (event?.getAction() == MotionEvent.ACTION_DOWN) {
+                     startClickTime = System.currentTimeMillis();
+                 } else if (event?.getAction() == MotionEvent.ACTION_UP) {
+                     if (System.currentTimeMillis() - startClickTime < ViewConfiguration.getTapTimeout()) {
+                         // Touch was a simple tap. Do whatever.
+                         mediaControls.visibility = View.GONE
+                         mediaControls.setAnchorView(videoView)
+                         videoView.setMediaController(mediaControls)
+                     } else {
+                         // Touch was a not a simple tap.
+                         mediaControls.visibility = View.GONE
+                         mediaControls.setAnchorView(videoView)
+                         videoView.setMediaController(mediaControls)
+                     }
+                 }
+                 return true;
+             }
+         })*/
     }
 
     //
     private fun setListeners() {
-        tvSelectPhoto.setOnClickListener(this)
+        // tvSelectPhoto.setOnClickListener(this)
         tvTakePhoto.setOnClickListener(this)
         img_delete.setOnClickListener(this)
 
-        tvRecordVideo.setOnClickListener(this)
+        // tvRecordVideo.setOnClickListener(this)
         tvTakeVideo.setOnClickListener(this)
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         if (isInternetAvailable()) {
@@ -213,18 +213,22 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
     override fun onClick(p0: View?) {
         when (p0?.id) {
-            R.id.tvSelectPhoto -> {
-                path = ""
-                getGalleryPermission()
-                if (resultGallery)
-                    galleryIntent()
-            }
+//            R.id.tvSelectPhoto -> {
+//                path = ""
+//                getGalleryPermission()
+//                if (resultGallery)
+//                    galleryIntent()
+//            }
             R.id.tvTakePhoto -> {
-                path = ""
-                getCameraPermission()
-                if (isOpenCamera) {
-                    cameraIntent()
-                }
+//                path = ""
+//                getCameraPermission()
+//                if (isOpenCamera) {
+//                    cameraIntent()
+//                }
+
+                showChoiceDialog("photo")
+
+
             }
 
             R.id.img_delete -> {
@@ -239,28 +243,31 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     videoView.stopPlayback()
                 }
             }
-            R.id.tvRecordVideo -> {
-                Utilities.showMessage(this, getString(R.string.coming_soon))
-               /* path = ""
-                if (CheckRuntimePermissions.checkMashMallowPermissions(
-                        this,
-                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS_GALLERY_VIDEO
-                    )
-                ) {
-                    videoFromGalleryIntent()
-                }*/
-            }
+//            R.id.tvRecordVideo -> {
+//               // Utilities.showMessage(this, getString(R.string.coming_soon))
+//               path = ""
+//                if (CheckRuntimePermissions.checkMashMallowPermissions(
+//                        this,
+//                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS_GALLERY_VIDEO
+//                    )
+//                ) {
+//                    videoFromGalleryIntent()
+//                }
+//            }
 
             R.id.tvTakeVideo -> {
-               Utilities.showMessage(this, getString(R.string.coming_soon))
-               /* path = ""
-                if (CheckRuntimePermissions.checkMashMallowPermissions(
-                        this,
-                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS
-                    )
-                ) {
-                    recordVideo()
-                }*/
+//                //Utilities.showMessage(this, getString(R.string.coming_soon))
+//                path = ""
+//                if (CheckRuntimePermissions.checkMashMallowPermissions(
+//                        this,
+//                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS
+//                    )
+//                ) {
+//                    recordVideo()
+//                }
+
+                showChoiceDialog("video")
+
             }
             R.id.btnSubmit -> {
                 if (mediaType.equals("videos")) {
@@ -309,6 +316,85 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
         }
     }
+
+
+    private fun showChoiceDialog(type: String) {
+        lateinit var dialog: AlertDialog
+        val builder = AlertDialog.Builder(this@GeneralPublicActivity)
+        val binding = DataBindingUtil.inflate(
+            LayoutInflater.from(this@GeneralPublicActivity),
+            R.layout.dialog_image_choice,
+            null,
+            false
+        ) as DialogImageChoiceBinding
+
+
+        val camera = binding.cvCamera
+        val gallery = binding.cvGallery
+        // Create the AlertDialog object and return it
+        camera.setOnClickListener {
+            // mInterface.photoFromCamera(mKey)
+
+            if (type == "photo") {
+
+                path = ""
+                getCameraPermission()
+                if (isOpenCamera) {
+                    cameraIntent()
+                }
+
+            } else {
+
+                path = ""
+                if (CheckRuntimePermissions.checkMashMallowPermissions(
+                        this,
+                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS
+                    )
+                ) {
+                    recordVideo()
+                }
+
+            }
+
+
+
+            dialog.dismiss()
+        }
+        gallery.setOnClickListener {
+            // mInterface.photoFromGallery(mKey)
+
+            if (type == "photo") {
+
+                path = ""
+                getGalleryPermission()
+                if (resultGallery)
+                    galleryIntent()
+
+            } else {
+
+                path = ""
+                if (CheckRuntimePermissions.checkMashMallowPermissions(
+                        this,
+                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS_GALLERY_VIDEO
+                    )
+                ) {
+                    videoFromGalleryIntent()
+                }
+
+
+            }
+
+
+
+            dialog.dismiss()
+        }
+
+
+        builder.setView(binding.root)
+        dialog = builder.create()
+        dialog.show()
+    }
+
 
     private fun videoCompressorCustom(video: ArrayList<String>) {
         if (!video.get(0).isEmpty() && File(video.get(0)).length() > 0) {

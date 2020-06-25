@@ -17,7 +17,7 @@ import javax.net.ssl.X509TrustManager
 object ApiClient {
 
     fun getClient(): Retrofit {
-        val builder = getUnsafeOkHttpClient().readTimeout(3, TimeUnit.MINUTES).connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES).addInterceptor { chain ->
+        val builder = getUnsafeOkHttpClient().readTimeout(1, TimeUnit.MINUTES).connectTimeout(1, TimeUnit.MINUTES).writeTimeout(1, TimeUnit.MINUTES).addInterceptor { chain ->
             val builder = chain.request().newBuilder()
             val build = builder.addHeader("Content-Type", "application/json")
                 .build()

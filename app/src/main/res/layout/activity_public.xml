@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
@@ -88,28 +89,29 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-                    <com.dfa.customviews.CustomtextView
-                        android:id="@+id/tvSelectPhoto"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_15sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_7sdp"
-                        android:layout_marginBottom="@dimen/_4sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/shape_round_corner_green"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/_5sdp"
-                        android:paddingTop="@dimen/_5ssp"
-                        android:paddingRight="@dimen/_5sdp"
-                        android:paddingBottom="@dimen/_5ssp"
-                        android:text="@string/select_photo"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
+<!--                    <com.dfa.customviews.CustomtextView-->
+<!--                        android:id="@+id/tvSelectPhoto"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_marginStart="@dimen/_15sdp"-->
+<!--                        android:layout_marginTop="@dimen/_10sdp"-->
+<!--                        android:layout_marginEnd="@dimen/_7sdp"-->
+<!--                        android:layout_marginBottom="@dimen/_4sdp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:background="@drawable/shape_round_corner_green"-->
+<!--                        android:gravity="center"-->
+<!--                        android:paddingLeft="@dimen/_5sdp"-->
+<!--                        android:paddingTop="@dimen/_5ssp"-->
+<!--                        android:paddingRight="@dimen/_5sdp"-->
+<!--                        android:paddingBottom="@dimen/_5ssp"-->
+<!--                        android:text="@string/select_photo"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="@dimen/_12sdp" />-->
 
                     <com.dfa.customviews.CustomtextView
                         android:id="@+id/tvTakePhoto"
@@ -120,14 +122,14 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_15sdp"
                         android:layout_marginBottom="@dimen/_4sdp"
-                        android:layout_weight="1"
+                        android:layout_weight="1.7"
                         android:background="@drawable/shape_round_corner_green"
                         android:gravity="center"
                         android:paddingLeft="@dimen/_5sdp"
                         android:paddingTop="@dimen/_5ssp"
                         android:paddingRight="@dimen/_5sdp"
                         android:paddingBottom="@dimen/_5ssp"
-                        android:text="Take Photo"
+                        android:text="@string/take_photo"
                         android:textColor="@color/black"
                         android:textSize="@dimen/_12sdp" />
                 </LinearLayout>
@@ -135,28 +137,29 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:orientation="horizontal"
                     android:weightSum="2">
 
-                    <com.dfa.customviews.CustomtextView
-                        android:id="@+id/tvRecordVideo"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_15sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_7sdp"
-                        android:layout_marginBottom="@dimen/_4sdp"
-                        android:layout_weight="1"
-                        android:background="@drawable/shape_round_corner_green"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/_5sdp"
-                        android:paddingTop="@dimen/_5ssp"
-                        android:paddingRight="@dimen/_5sdp"
-                        android:paddingBottom="@dimen/_5ssp"
-                        android:text="Select Video"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
+<!--                    <com.dfa.customviews.CustomtextView-->
+<!--                        android:id="@+id/tvRecordVideo"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_marginStart="@dimen/_15sdp"-->
+<!--                        android:layout_marginTop="@dimen/_10sdp"-->
+<!--                        android:layout_marginEnd="@dimen/_7sdp"-->
+<!--                        android:layout_marginBottom="@dimen/_4sdp"-->
+<!--                        android:layout_weight="1"-->
+<!--                        android:background="@drawable/shape_round_corner_green"-->
+<!--                        android:gravity="center"-->
+<!--                        android:paddingLeft="@dimen/_5sdp"-->
+<!--                        android:paddingTop="@dimen/_5ssp"-->
+<!--                        android:paddingRight="@dimen/_5sdp"-->
+<!--                        android:paddingBottom="@dimen/_5ssp"-->
+<!--                        android:text="Select Video"-->
+<!--                        android:textColor="@color/black"-->
+<!--                        android:textSize="@dimen/_12sdp" />-->
 
                     <com.dfa.customviews.CustomtextView
                         android:id="@+id/tvTakeVideo"
@@ -167,16 +170,17 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginEnd="@dimen/_15sdp"
                         android:layout_marginBottom="@dimen/_4sdp"
-                        android:layout_weight="1"
+                        android:layout_weight="1.7"
                         android:background="@drawable/shape_round_corner_green"
                         android:gravity="center"
                         android:paddingLeft="@dimen/_5sdp"
                         android:paddingTop="@dimen/_5ssp"
                         android:paddingRight="@dimen/_5sdp"
                         android:paddingBottom="@dimen/_5ssp"
-                        android:text="Record Video"
+                        android:text="Capture Live Video"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
+                        android:textSize="@dimen/_12sdp"
+                        tools:ignore="HardcodedText" />
                 </LinearLayout>
 
                 <LinearLayout
