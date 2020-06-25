@@ -14,6 +14,7 @@ import com.dfa.listeners.OnCaseItemClickListener
 import com.dfa.listeners.StatusListener
 import com.dfa.pojo.request.PoliceDetailrequest
 import com.dfa.pojo.response.*
+import com.dfa.ui.generalpublic.VideoPlayerActivity
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.dfa.ui.home.fragments.cases.CasesFragment
 import com.dfa.ui.policedetail.presenter.PoliceDetailPresenter
@@ -189,8 +190,16 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
                     .load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
                     .into(imgView)
                 ivVideoIcon.visibility = View.VISIBLE
+
             } catch (e: Exception) {
                 e.printStackTrace()
+            }
+
+            ivVideoIcon.setOnClickListener {
+                intent = Intent(this, VideoPlayerActivity::class.java)
+                intent!!.putExtra("videoPath",getCrimeDetailsResponse?.data?.get(0)?.media_list?.get(0)?.toString())
+                intent!!.putExtra("documentId",getCrimeDetailsResponse?.data?.get(0)?.id)
+                startActivity(intent)
             }
         } else {
             val options = RequestOptions()
