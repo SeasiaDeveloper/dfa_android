@@ -59,7 +59,6 @@
                         android:editable="false"
                         android:focusable="false"
                         android:gravity="center"
-                        android:maxLength="20"
                         android:padding="@dimen/_4sdp"
                         android:text="@string/police_firstline"
                         android:textSize="@dimen/_12ssp"
@@ -76,7 +75,6 @@
                         android:editable="false"
                         android:focusable="false"
                         android:gravity="center"
-                        android:maxLength="20"
                         android:padding="@dimen/_4sdp"
                         android:text="@string/police_secondline"
                         android:textSize="@dimen/_12ssp"
@@ -92,7 +90,6 @@
                         android:editable="false"
                         android:focusable="false"
                         android:gravity="center"
-                        android:maxLength="20"
                         android:padding="@dimen/_4sdp"
                         android:text="@string/police_thirdline"
                         android:textSize="@dimen/_12ssp"
@@ -103,12 +100,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_12sdp"
-                        android:layout_marginEnd="@dimen/_12sdp"
                         android:background="@null"
                         android:editable="false"
                         android:focusable="false"
                         android:gravity="center"
-                        android:maxLength="20"
                         android:padding="@dimen/_4sdp"
                         android:text="@string/police_fourthline"
                         android:textSize="@dimen/_12ssp"
@@ -144,7 +139,7 @@
                             android:editable="false"
                             android:focusable="false"
                             android:gravity="center"
-                            android:maxLength="20"
+                         
                             android:padding="@dimen/_4sdp"
                             android:textSize="@dimen/_12ssp"
                             android:textStyle="bold" />
@@ -159,7 +154,7 @@
                             android:editable="false"
                             android:focusable="false"
                             android:gravity="center"
-                            android:maxLength="20"
+                         
                             android:padding="@dimen/_4sdp"
                             android:textSize="@dimen/_12ssp" />
 
@@ -173,7 +168,7 @@
                             android:editable="false"
                             android:focusable="false"
                             android:gravity="center"
-                            android:maxLength="20"
+                         
                             android:padding="@dimen/_4sdp"
                             android:textSize="@dimen/_12ssp" />
 
@@ -187,7 +182,7 @@
                             android:editable="false"
                             android:focusable="false"
                             android:gravity="center"
-                            android:maxLength="20"
+                         
                             android:padding="@dimen/_4sdp"
                             android:textSize="@dimen/_12ssp" />
 
@@ -201,7 +196,7 @@
                             android:editable="false"
                             android:focusable="false"
                             android:gravity="center"
-                            android:maxLength="20"
+                         
                             android:padding="@dimen/_4sdp"
                             android:textSize="@dimen/_12ssp" />
 
@@ -216,7 +211,6 @@
                             android:focusable="false"
                             android:gravity="center"
                             android:inputType="number"
-                            android:maxLength="13"
                             android:padding="@dimen/_4sdp"
                             android:textSize="@dimen/_12ssp" />
 

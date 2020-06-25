@@ -76,7 +76,7 @@
                                     android:textColor="@color/black"
                                     app:font="@{`bold`}" />
 
-                                <de.hdodenhof.circleimageview.CircleImageView
+                                <ImageView
                                     android:id="@+id/ngoLogo"
                                     android:layout_width="@dimen/_43sdp"
                                     android:layout_height="@dimen/_43sdp"
@@ -422,6 +422,7 @@
                                     android:layout_marginEnd="@dimen/_10sdp"
                                     android:fontFamily="@fonts/Montserrat-SemiBold_0.ttf"
                                     android:padding="@dimen/_2sdp"
+                                    android:textStyle="bold"
                                     android:text="@string/more"
                                     android:textColor="@color/green"
                                     android:textSize="@dimen/_12sdp" />
