@@ -197,10 +197,10 @@ class CasesAdapter(
                 if (likeCount.equals("")) {
                     if (this.mList.get(i).is_liked!!.equals(0)) {
                         this.mList.get(i).like_count =
-                            (this.mList.get(i).like_count?.toInt()!! + 1).toString()
+                            (this.mList.get(i).like_count?.toInt()!! - 1).toString()
                     } else {
                         this.mList.get(i).like_count =
-                            (this.mList.get(i).like_count?.toInt()!! - 1).toString()
+                            (this.mList.get(i).like_count?.toInt()!! + 1).toString()
                     }
                 } else {
                     this.mList.get(i).like_count = likeCount.toString()
