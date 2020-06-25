@@ -18,6 +18,7 @@
     <string name="gallery">Gallery</string>
     <string name="camera">Camera</string>
     <string name="submit">Submit</string>
+    <string name="submit_capital">SUBMIT</string>
     <string name="take_photo">Capture Live Photo</string>
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="no_record_found">No record found</string>

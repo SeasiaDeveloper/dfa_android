@@ -491,7 +491,7 @@
                         android:gravity="center"
                         android:layout_gravity="center|center_vertical"
                         android:padding="@dimen/_10sdp"
-                        android:text="@string/submit"
+                        android:text="@string/submit_capital"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp" />
 

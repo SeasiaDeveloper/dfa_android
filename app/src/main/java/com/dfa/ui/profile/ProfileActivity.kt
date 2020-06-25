@@ -355,6 +355,8 @@ class ProfileActivity : BaseActivity(), ProfileView {
             jsondata.data?.adhar_number = responseObject.data.adhar_number //add adhar no
         }
         jsondata.data?.profile_pic = responseObject.data.profile_pic
+     /*   val gson = responseObject.data
+        PreferenceHandler.writeString(this, PreferenceHandler.PROFILE_JSON, gson.toString())*/
         finish()
     }
 

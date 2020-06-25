@@ -217,20 +217,44 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:orientation="horizontal">
 
-                        <androidx.appcompat.widget.AppCompatImageView
+                    <!--    <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/imgView"
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/_200sdp"
                             android:layout_marginStart="@dimen/_12sdp"
                             android:layout_marginTop="@dimen/_6sdp"
-                            android:layout_marginEnd="@dimen/_7sdp" />
+                            android:layout_marginEnd="@dimen/_7sdp" />-->
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/_200sdp"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:visibility="visible">
+
+                            <ImageView
+                                android:id="@+id/imgView"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/camera_placeholder" />
+
+                            <ImageView
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
+                                android:layout_centerInParent="true"
+                                android:src="@drawable/ic_play_video" />
+
+                        </RelativeLayout>
 
                         <ImageView
                             android:id="@+id/ivVideoIcon"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:src="@drawable/camera_placeholder"
                             android:layout_centerInParent="true"
-                            android:src="@drawable/ic_play_circle_outline"
                             android:visibility="gone" />
 
                     </RelativeLayout>

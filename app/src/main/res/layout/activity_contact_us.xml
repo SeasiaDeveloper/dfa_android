@@ -27,9 +27,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="@drawable/black_border"
-                android:gravity="center"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -43,8 +40,7 @@
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="@dimen/_120sdp"
                         android:layout_gravity="center"
-                        android:paddingTop="10dp"
-                        android:layout_marginTop="@dimen/_60sdp"
+                        android:layout_marginTop="@dimen/_2sdp"
                         android:src="@drawable/pc_logo"
                         app:civ_border_color="@color/black" />
 
@@ -53,13 +49,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/_12sdp"
-                        android:layout_marginTop="@dimen/_6sdp"
+                        android:layout_marginTop="@dimen/_3sdp"
                         android:layout_marginEnd="@dimen/_12sdp"
                         android:background="@null"
                         android:editable="false"
                         android:focusable="false"
                         android:gravity="center"
-                        android:padding="@dimen/_4sdp"
+                        android:padding="@dimen/_2sdp"
                         android:text="@string/police_firstline"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -75,7 +71,7 @@
                         android:editable="false"
                         android:focusable="false"
                         android:gravity="center"
-                        android:padding="@dimen/_4sdp"
+                        android:padding="@dimen/_2sdp"
                         android:text="@string/police_secondline"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -90,7 +86,7 @@
                         android:editable="false"
                         android:focusable="false"
                         android:gravity="center"
-                        android:padding="@dimen/_4sdp"
+                        android:padding="@dimen/_2sdp"
                         android:text="@string/police_thirdline"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
@@ -104,20 +100,21 @@
                         android:editable="false"
                         android:focusable="false"
                         android:gravity="center"
-                        android:padding="@dimen/_4sdp"
+                        android:padding="@dimen/_2sdp"
                         android:text="@string/police_fourthline"
                         android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
                     <ImageView
                         android:id="@+id/imgProfile"
-                        android:layout_width="@dimen/_120sdp"
-                        android:layout_height="@dimen/_120sdp"
+                        android:layout_width="@dimen/_100sdp"
+                        android:layout_height="@dimen/_90sdp"
                         android:layout_gravity="center"
+                        android:padding="@dimen/_4sdp"
                         android:layout_marginTop="@dimen/_5sdp"
                         android:paddingTop="3dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/app_icon"
+                        android:src="@drawable/layer"
                         app:civ_border_color="@color/black" />
 
                     <LinearLayout
@@ -133,14 +130,13 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_12sdp"
-                            android:layout_marginTop="@dimen/_6sdp"
+                            android:layout_marginTop="@dimen/_3sdp"
                             android:layout_marginEnd="@dimen/_12sdp"
                             android:background="@null"
                             android:editable="false"
                             android:focusable="false"
                             android:gravity="center"
-                         
-                            android:padding="@dimen/_4sdp"
+                            android:padding="@dimen/_2sdp"
                             android:textSize="@dimen/_12ssp"
                             android:textStyle="bold" />
 
@@ -154,8 +150,7 @@
                             android:editable="false"
                             android:focusable="false"
                             android:gravity="center"
-                         
-                            android:padding="@dimen/_4sdp"
+                            android:padding="@dimen/_2sdp"
                             android:textSize="@dimen/_12ssp" />
 
                         <com.dfa.customviews.CustomEditText
@@ -168,8 +163,7 @@
                             android:editable="false"
                             android:focusable="false"
                             android:gravity="center"
-                         
-                            android:padding="@dimen/_4sdp"
+                            android:padding="@dimen/_2sdp"
                             android:textSize="@dimen/_12ssp" />
 
                         <com.dfa.customviews.CustomEditText
@@ -182,8 +176,7 @@
                             android:editable="false"
                             android:focusable="false"
                             android:gravity="center"
-                         
-                            android:padding="@dimen/_4sdp"
+                            android:padding="@dimen/_2sdp"
                             android:textSize="@dimen/_12ssp" />
 
                         <com.dfa.customviews.CustomEditText
@@ -196,8 +189,7 @@
                             android:editable="false"
                             android:focusable="false"
                             android:gravity="center"
-                         
-                            android:padding="@dimen/_4sdp"
+                            android:padding="@dimen/_2sdp"
                             android:textSize="@dimen/_12ssp" />
 
                         <com.dfa.customviews.CustomEditText
@@ -211,7 +203,7 @@
                             android:focusable="false"
                             android:gravity="center"
                             android:inputType="number"
-                            android:padding="@dimen/_4sdp"
+                            android:padding="@dimen/_2sdp"
                             android:textSize="@dimen/_12ssp" />
 
                         <com.dfa.customviews.CustomEditText
@@ -224,7 +216,7 @@
                             android:editable="false"
                             android:focusable="false"
                             android:gravity="center"
-                            android:padding="@dimen/_4sdp"
+                            android:padding="@dimen/_2sdp"
                             android:textSize="@dimen/_12ssp" />
 
                         <com.dfa.customviews.CustomTextViewheading

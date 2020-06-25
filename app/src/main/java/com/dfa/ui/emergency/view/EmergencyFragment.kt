@@ -3,9 +3,6 @@ package com.dfa.ui.emergency.view
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -52,13 +49,13 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     override fun onResume() {
         super.onResume()
         if (isFirst) {
-            if (isInternetAvailable(mContext)) {
+            //if (isInternetAvailable()) {
                 showProgress(mContext)
                 presenter.hitDistricApi()
                 isFirst = false
-            } else {
+           /* } else {
                 Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
-            }
+            }*/
         } else {
             if (staticDistValueList?.data!!.size > 0) {
                 getDistrictDropDown(staticDistValueList!!)
@@ -143,7 +140,7 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
                 // Display the selected item text on text view
                 "Spinner selected : ${parent.getItemAtPosition(position)}"
                 if (position != 0) {
-                    if (isInternetAvailable(mContext)) {
+                  //  if (isInternetAvailable()) {
                         showProgress(mContext)
                         var authorizationToken =
                             PreferenceHandler.readString(
@@ -153,9 +150,9 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
                             )
                         var request = EmergencyDataRequest(response.data.get(position - 1).id)
                         presenter.hitEmergencyApi(request, authorizationToken)
-                    } else {
+                  /* } else {
                         Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
-                    }
+                    }*/
                 } else{
                     var mList: ArrayList<EmergencyDataResponse.Data> = ArrayList()
                     emergencyDetailsAdapter.changeList(mList)
@@ -258,9 +255,9 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     /*
  * method to check internet connection
  * */
-    fun isInternetAvailable(context: Context): Boolean {
+   /* fun isInternetAvailable(): Boolean {
         val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+            activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val nw = connectivityManager.activeNetwork ?: return false
             val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
@@ -273,6 +270,6 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
             val nwInfo = connectivityManager.activeNetworkInfo ?: return false
             return nwInfo.isConnected
         }
-    }
+    }*/
 
 }

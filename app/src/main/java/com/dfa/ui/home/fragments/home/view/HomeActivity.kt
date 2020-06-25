@@ -109,6 +109,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             IntentFilter("policeJsonReceiver")
         ) //registering the broadcast receiver
 
+        authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
+        if (!authorizationToken!!.isEmpty()) {
+            homePresenter.hitProfileApi(authorizationToken)
+        }
 
         if (btnLogin != null) {
             btnLogin.setOnClickListener {
@@ -230,11 +234,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         if (supportActionBar != null) {
             supportActionBar?.setDisplayShowTitleEnabled(false)
-        }
-
-        authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
-        if (!authorizationToken!!.isEmpty()) {
-            homePresenter.hitProfileApi(authorizationToken)
         }
 
         val role = PreferenceHandler.readString(this@HomeActivity, PreferenceHandler.USER_ROLE, "0")
