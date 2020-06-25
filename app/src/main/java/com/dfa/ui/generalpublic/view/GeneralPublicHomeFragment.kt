@@ -400,9 +400,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         if (jsondata != null) {
             if (jsondata.data?.profile_pic != null) {
                 if (activity != null) {
+                    val options1 = RequestOptions()
+                        /* .centerCrop()*/
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .placeholder(R.drawable.user)
+                        .error(R.drawable.user)
                     try {
                         imgProfile.setImageResource(0)
-                        Glide.with(activity!!).load(jsondata.data.profile_pic).into(imgProfile)
+                        Glide.with(activity!!).load(jsondata.data.profile_pic).apply(options1).into(imgProfile)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }

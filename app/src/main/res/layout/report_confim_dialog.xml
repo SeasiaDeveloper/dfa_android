@@ -26,7 +26,7 @@
             android:padding="@dimen/_5sdp"
             android:paddingBottom="@dimen/_5sdp"
             android:text="@string/warning_text"
-            android:textColor="@color/green"
+            android:textColor="@color/red"
             android:textSize="@dimen/_10sdp" />
 
         <androidx.appcompat.widget.AppCompatCheckBox

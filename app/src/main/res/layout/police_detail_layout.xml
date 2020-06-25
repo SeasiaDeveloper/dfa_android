@@ -38,7 +38,7 @@
                         android:layout_weight=".3"
                         android:text="@string/crime_type"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
+                        android:textSize="@dimen/_12ssp"
                         android:textStyle="bold"
                         android:visibility="visible"
                         />
@@ -52,8 +52,8 @@
                         android:background="@null"
                         android:padding="@dimen/_3sdp"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
-                     />
+                        android:textSize="@dimen/_12ssp"
+                        />
 
                 </LinearLayout>
 
@@ -73,7 +73,7 @@
                         android:layout_weight=".3"
                         android:text="@string/state"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
+                        android:textSize="@dimen/_12ssp"
                         android:textStyle="bold"
                       />
 
@@ -87,8 +87,8 @@
                         android:background="@null"
                         android:padding="@dimen/_3sdp"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
-                       />
+                        android:textSize="@dimen/_12ssp"
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -107,7 +107,7 @@
                         android:layout_weight=".3"
                         android:text="@string/urgency_level"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
+                        android:textSize="@dimen/_12ssp"
                         android:textStyle="bold"
                      />
 
@@ -121,8 +121,8 @@
                         android:background="@null"
                         android:padding="@dimen/_3sdp"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
-                       />
+                        android:textSize="@dimen/_12ssp"
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -141,7 +141,7 @@
                         android:layout_weight=".3"
                         android:text="@string/reported"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
+                        android:textSize="@dimen/_12ssp"
                         android:textStyle="bold"
                        />
 
@@ -156,14 +156,15 @@
                         android:background="@null"
                         android:padding="@dimen/_3sdp"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
-                      />
+                        android:textSize="@dimen/_12ssp"
+                        />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end"
+                    android:visibility="gone"
                     android:gravity="end">
 
                     <ImageView
@@ -179,7 +180,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <com.dfa.customviews.CustomtextView
                         android:id="@+id/tvDescription"
@@ -189,7 +190,7 @@
                         android:layout_marginEnd="@dimen/_7sdp"
                         android:text="@string/reported_description"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/_13ssp"
+                        android:textSize="@dimen/_12ssp"
                         android:textStyle="bold" />
 
                     <com.dfa.customviews.CustomEditText
@@ -199,6 +200,7 @@
                         android:layout_marginStart="@dimen/_9sdp"
                         android:layout_marginEnd="@dimen/_12sdp"
                         android:background="@null"
+                        android:textSize="@dimen/_12ssp"
                         android:editable="false"
                         android:ems="10"
                         android:focusable="false"
@@ -240,13 +242,14 @@
                     android:layout_gravity="bottom"
                     android:layout_marginEnd="@dimen/_5sdp"
                     android:gravity="center"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:orientation="horizontal">
 
                     <com.dfa.customviews.CustomtextView
                         android:id="@+id/action_complaint"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_20sdp"
                         android:layout_marginEnd="@dimen/_10sdp"
                         android:layout_marginBottom="@dimen/_10sdp"
                         android:background="@drawable/button_green_bg"
@@ -254,9 +257,9 @@
                         android:drawableTint="@color/white"
                         android:gravity="center"
                         android:paddingStart="@dimen/_30ssp"
-                        android:paddingTop="10dp"
+                        android:paddingTop="@dimen/_10sdp"
                         android:paddingEnd="@dimen/_30ssp"
-                        android:paddingBottom="10dp"
+                        android:paddingBottom="@dimen/_10sdp"
                         android:text="@string/action"
                         android:textAllCaps="false"
                         android:textColor="@color/white"

@@ -486,20 +486,23 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 com.dfa.utils.alert.AlertDialog.guesDialog(this)
             }
         }
+
+        val options1 = RequestOptions()
+            /* .centerCrop()*/
+            .diskCacheStrategy(DiskCacheStrategy.ALL)
+            .placeholder(R.drawable.user)
+            .error(R.drawable.user)
         if(getProfileResponse.data!=null) {
             if (getProfileResponse.data?.profile_pic != null) {
                 try {
-                    Glide.with(this).load(getProfileResponse.data.profile_pic)
+                    Glide.with(this).load(getProfileResponse.data.profile_pic).apply(options1)
                         .into(imageNavigator)
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
             }else{
-                val options = RequestOptions()
-                    .placeholder(R.drawable.user)
-                    .error(R.drawable.user)
                 try {
-                    Glide.with(this).load(R.drawable.user).apply(options)
+                    Glide.with(this).load(R.drawable.user).apply(options1)
                         .into(imageNavigator)
                 } catch (e: Exception) {
                     e.printStackTrace()

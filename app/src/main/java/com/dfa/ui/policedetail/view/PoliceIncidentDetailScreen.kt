@@ -139,14 +139,14 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
          }
  */
 
-        imgExpandable.setOnClickListener {
+      /*  imgExpandable.setOnClickListener {
             if (image_video_layout.isVisible) {
                 image_video_layout.visibility = View.GONE
             } else {
                 image_video_layout.visibility = View.VISIBLE
             }
 
-        }
+        }*/
 
     }
 

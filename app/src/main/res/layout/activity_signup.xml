@@ -490,10 +490,7 @@
                         android:background="@drawable/button_green_bg"
                         android:gravity="center"
                         android:layout_gravity="center|center_vertical"
-                        android:paddingLeft="@dimen/_15sdp"
-                        android:paddingTop="@dimen/_10ssp"
-                        android:paddingEnd="@dimen/_15sdp"
-                        android:paddingBottom="@dimen/_10ssp"
+                        android:padding="@dimen/_10sdp"
                         android:text="@string/submit"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp" />
@@ -510,10 +507,7 @@
                         android:background="@drawable/button_green_bg"
                         android:gravity="center"
                         android:layout_gravity="center|center_vertical"
-                        android:paddingLeft="@dimen/_15sdp"
-                        android:paddingTop="@dimen/_10ssp"
-                        android:paddingEnd="@dimen/_15sdp"
-                        android:paddingBottom="@dimen/_10ssp"
+                        android:padding="@dimen/_10sdp"
                         android:text="@string/cancel"
                         android:textColor="@color/white"
                         android:textSize="@dimen/_12ssp" />

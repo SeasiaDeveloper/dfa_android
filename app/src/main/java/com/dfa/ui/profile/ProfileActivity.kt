@@ -13,6 +13,8 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.gson.GsonBuilder
@@ -44,6 +46,7 @@ import kotlinx.android.synthetic.main.activity_profile.etPinCode
 import kotlinx.android.synthetic.main.activity_profile.imgProfile
 import kotlinx.android.synthetic.main.activity_profile.spDist
 import kotlinx.android.synthetic.main.activity_profile.toolbarLayout
+import kotlinx.android.synthetic.main.item_case.view.*
 
 class ProfileActivity : BaseActivity(), ProfileView {
 
@@ -277,7 +280,22 @@ class ProfileActivity : BaseActivity(), ProfileView {
                             path = cursor.getString(columnIndex!!)
                         }
                         cursor.close()
-                        imgProfile.setImageURI(imageUri)
+
+                        val options1 = RequestOptions()
+                            /* .centerCrop()*/
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .placeholder(R.drawable.user)
+                            .error(R.drawable.user)
+
+                        try{
+                        Glide.with(this).asBitmap().load(imageUri)
+                                        .apply(options1)
+                                        .into(imgProfile)
+                                } catch (e: Exception) {
+                                    e.printStackTrace()
+                                }
+
+                        //imgProfile.setImageURI(imageUri)
                     } catch (e: Exception) {
                         try {
                             BitmapFactory.decodeStream(getContentResolver().openInputStream(imageUri))
