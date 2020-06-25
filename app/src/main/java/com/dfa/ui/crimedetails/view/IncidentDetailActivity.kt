@@ -35,9 +35,6 @@ import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
 import com.dfa.utils.algo.DirectionApiAsyncTask
 import kotlinx.android.synthetic.main.activity_incident_detail.*
-import kotlinx.android.synthetic.main.activity_incident_detail.action_complaint
-import kotlinx.android.synthetic.main.item_case.*
-import java.lang.Exception
 
 class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, AsyncResponse,
     OnCaseItemClickListener {
@@ -66,12 +63,12 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
-        GeneralPublicHomeFragment.fromIncidentDetailScreen=1
-        GeneralPublicHomeFragment.change=0
-        CasesFragment.change=0
-        CasesFragment.fromIncidentDetailScreen=1
-        MyCasesActivity.change=0
-        MyCasesActivity.fromIncidentDetailScreen=1
+        GeneralPublicHomeFragment.fromIncidentDetailScreen = 1
+        GeneralPublicHomeFragment.change = 0
+        CasesFragment.change = 0
+        CasesFragment.fromIncidentDetailScreen = 1
+        MyCasesActivity.change = 0
+        MyCasesActivity.fromIncidentDetailScreen = 1
         type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         complaintId = intent.getStringExtra(Constants.PUBLIC_COMPLAINT_DATA)
@@ -90,12 +87,15 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         }
 
         sb_steps_5.setOnRangeChangedListener(null)
-        var intent:Intent?=null
+        var intent: Intent? = null
         imgView.setOnClickListener {
             if (getCrimeDetailsResponse?.data?.get(0)?.media_type.equals("videos")) {
                 intent = Intent(this, VideoPlayerActivity::class.java)
-                intent!!.putExtra("videoPath",getCrimeDetailsResponse?.data?.get(0)?.media_list?.get(0)?.toString())
-                intent!!.putExtra("documentId",getCrimeDetailsResponse?.data?.get(0)?.id)
+                intent!!.putExtra(
+                    "videoPath",
+                    getCrimeDetailsResponse?.data?.get(0)?.media_list?.get(0)?.toString()
+                )
+                intent!!.putExtra("documentId", getCrimeDetailsResponse?.data?.get(0)?.id)
             } else {
                 intent = Intent(this, ImageVideoScreen::class.java)
                 intent!!.putExtra("fromWhere", "IMAGES")
@@ -217,9 +217,11 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         else
             level = 0f
 
-        if(getCrimeDetailsResponse!=null && getCrimeDetailsResponse.data!=null && getCrimeDetailsResponse.data?.get(0)!=null && getCrimeDetailsResponse.data?.get(0)?.urgency.equals("10"))
-        {
-            level= 99f
+        if (getCrimeDetailsResponse != null && getCrimeDetailsResponse.data != null && getCrimeDetailsResponse.data?.get(
+                0
+            ) != null && getCrimeDetailsResponse.data?.get(0)?.urgency.equals("10")
+        ) {
+            level = 99f
         }
         sb_steps_5.setProgress(level)
 
@@ -254,7 +256,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
             }
 
             //in case of NGO
-            if(type.equals("1")){
+            if (type.equals("1")) {
                 layout_action.visibility = View.VISIBLE
                 action_complaint.setOnClickListener {
                     /*  if (getCrimeDetailsResponse.data.get(0).status != null) currentStatus = getCrimeDetailsResponse.data.get(0).status!!
@@ -316,19 +318,19 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
                 }
                 etUserName.setOnClickListener {
                     val intent = Intent(this@IncidentDetailActivity, ProfileActivity::class.java)
-                    intent.putExtra("id",getCrimeDetailsResponse.data.get(0).userDetail?.id)
-                    intent.putExtra("fromWhere","userProfile")
+                    intent.putExtra("id", getCrimeDetailsResponse.data.get(0).userDetail?.id)
+                    intent.putExtra("fromWhere", "userProfile")
                     startActivity(intent)
                 }
             }
 
-            if(getCrimeDetailsResponse.data.get(0).info.equals("")){
-                desc_layout.visibility =View.GONE
+            if (getCrimeDetailsResponse.data.get(0).info.equals("")) {
+                desc_layout.visibility = View.GONE
             }
         }
 
         //in case of police or General Public
-        if(type.equals("0") || type.equals("2")){
+        if (type.equals("0") || type.equals("2")) {
             etUserName.setText(resources.getString(R.string.drug_free_arunachal))
             contact_layout.visibility = View.GONE
         }
@@ -340,11 +342,10 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
             editTitle.setText(getCrimeDetailsResponse.data?.get(0)?.info)
         }
 
-        if(getCrimeDetailsResponse.data?.get(0)?.media_type!=null){
-            layout_media.visibility= View.VISIBLE
-        }
-        else{
-            layout_media.visibility= View.GONE
+        if (getCrimeDetailsResponse.data?.get(0)?.media_type != null) {
+            layout_media.visibility = View.VISIBLE
+        } else {
+            layout_media.visibility = View.GONE
         }
 
     }
@@ -466,14 +467,19 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         }
 
         //display the list on the screen
-        val statusAdapter = StatusAdapter(this@IncidentDetailActivity, responseObject.data.toMutableList(), this)
-        val horizontalLayoutManager = LinearLayoutManager(this@IncidentDetailActivity, RecyclerView.VERTICAL, false)
+        val statusAdapter =
+            StatusAdapter(this@IncidentDetailActivity, responseObject.data.toMutableList(), this)
+        val horizontalLayoutManager =
+            LinearLayoutManager(this@IncidentDetailActivity, RecyclerView.VERTICAL, false)
         binding.rvStatus?.layoutManager = horizontalLayoutManager
         binding.rvStatus?.adapter = statusAdapter
         binding.btnDone.setOnClickListener {
 
             if (statusId == "-1") {
-                Utilities.showMessage(this@IncidentDetailActivity, getString(R.string.select_option_validation))
+                Utilities.showMessage(
+                    this@IncidentDetailActivity,
+                    getString(R.string.select_option_validation)
+                )
             } else {
                 //hit status update api
                 Utilities.showProgress(this@IncidentDetailActivity)
@@ -506,10 +512,15 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         CasesFragment.change = 1
     }
 
-    override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String, position: Int) {
+    override fun onItemClick(
+        complaintsData: GetCasesResponse.Data,
+        actionType: String,
+        position: Int
+    ) {
         when (actionType) {
             "action" -> {
-                if (getCrimeDetailsResponse?.data?.get(0)?.status != null) currentStatus = getCrimeDetailsResponse?.data?.get(0)?.status!!
+                if (getCrimeDetailsResponse?.data?.get(0)?.status != null) currentStatus =
+                    getCrimeDetailsResponse?.data?.get(0)?.status!!
                 //hit api based on role
                 Utilities.showProgress(this@IncidentDetailActivity)
                 crimePresenter.fetchStatusList(authorizationToken!!, type)
@@ -524,7 +535,6 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
     override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
         //nothing to do
     }
-
 
 
 }
