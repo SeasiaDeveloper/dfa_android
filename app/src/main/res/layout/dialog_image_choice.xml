@@ -6,46 +6,45 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:background="@drawable/shape_square_grey_stroke">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_marginRight="@dimen/_10sdp"
             android:orientation="vertical"
             tools:ignore="UselessParent">
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@color/green"
                 android:gravity="center"
-                android:paddingTop="@dimen/_15sdp"
-                android:paddingBottom="@dimen/_10sdp"
+                android:paddingTop="@dimen/_8sdp"
+                android:paddingBottom="@dimen/_8sdp"
                 android:text="@string/select_option"
                 android:textColor="@color/white"
-                android:textSize="@dimen/_14ssp"
+                android:textSize="@dimen/_12ssp"
                 app:font="@{`bold`}" />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_gallery"
-                    android:layout_width="@dimen/_120sdp"
-                    android:layout_height="@dimen/_100sdp"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_90sdp"
                     android:layout_margin="@dimen/_10sdp"
+                    android:elevation="@dimen/_15sdp"
                     app:cardCornerRadius="4dp"
-                    app:cardElevation="2dp"
-                    app:cardUseCompatPadding="true"
-                    android:elevation="@dimen/_10sdp">
+                    app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:id="@+id/ll_gallery"
@@ -61,15 +60,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:background="@drawable/ic_photo_library"
                             android:contentDescription="@string/todo"
                             android:padding="@dimen/_10sdp"
-                            android:src="@drawable/ic_photo_library"/>
+                            android:backgroundTint="@color/green" />
 
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="@string/gallery"
                             android:textColor="@color/grey"
                             android:textSize="@dimen/_12ssp"
@@ -80,13 +81,13 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cv_camera"
-                    android:layout_width="@dimen/_120sdp"
-                    android:layout_height="@dimen/_100sdp"
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_90sdp"
                     android:layout_margin="@dimen/_10sdp"
+                    android:elevation="@dimen/_15sdp"
                     app:cardCornerRadius="4dp"
-                    app:cardElevation="2dp"
-                    app:cardUseCompatPadding="true"
-                    android:elevation="@dimen/_10sdp">
+                    app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true">
 
                     <LinearLayout
                         android:id="@+id/ll_camera"
@@ -102,15 +103,17 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:background="@drawable/ic_camera"
                             android:contentDescription="@string/todo"
                             android:padding="@dimen/_10sdp"
-                            android:src="@drawable/ic_camera" />
+                            android:backgroundTint="@color/green" />
 
 
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:gravity="center"
+                            android:layout_marginTop="@dimen/_5sdp"
                             android:text="@string/camera"
                             android:textColor="@color/grey"
                             android:textSize="@dimen/_12ssp"

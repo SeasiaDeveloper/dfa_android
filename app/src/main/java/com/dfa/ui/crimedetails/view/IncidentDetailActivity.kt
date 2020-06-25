@@ -35,6 +35,8 @@ import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
 import com.dfa.utils.algo.DirectionApiAsyncTask
 import kotlinx.android.synthetic.main.activity_incident_detail.*
+import kotlinx.android.synthetic.main.activity_incident_detail.action_complaint
+import kotlinx.android.synthetic.main.item_case.*
 import java.lang.Exception
 
 class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, AsyncResponse,
@@ -376,6 +378,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
             try {
                 Glide.with(this).setDefaultRequestOptions(requestOptions)
                     .load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
+                    .placeholder(R.drawable.grey_bg)
                     .into(imgView)
                 ivVideoIcon.visibility = View.VISIBLE
             } catch (e: Exception) {

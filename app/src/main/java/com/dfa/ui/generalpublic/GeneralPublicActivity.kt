@@ -413,60 +413,69 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
             var progressDialog = ProgressDialog(this)
 
-            VideoCompress.compressVideoMedium(video.get(0), outPath, object :
-                VideoCompress.CompressListener {
-                override fun onStart() {
-                    Log.e("Compressing", "Compress Start")
-                    progressDialog.setCancelable(false)
-                    progressDialog.setMessage("Processing Video...")
-                    progressDialog.show()
-                }
+            var lengthBeforeCom = File(video.get(0)).length()
+            println(lengthBeforeCom)
 
+            if (lengthBeforeCom > 1000000 && lengthBeforeCom < 80000000) {
 
-                override fun onSuccess() {
-
-                    try {
-                        if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
-                    } catch (e: IllegalArgumentException) { // Handle or log or ignore
-
-                    } catch (e: java.lang.Exception) { // Handle or log or ignore
-
+                VideoCompress.compressVideoMedium(video.get(0), outPath, object :
+                    VideoCompress.CompressListener {
+                    override fun onStart() {
+                        Log.e("Compressing", "Compress Start")
+                        progressDialog.setCancelable(false)
+                        progressDialog.setMessage("Processing Video...")
+                        progressDialog.show()
                     }
 
-                    if (File(outPath).length() <= 50000000) {
-                        pathOfImages = ArrayList()
-                        pathOfImages.add(outPath)
-                        complaintsPresenter.checkValidations(
-                            1,
-                            pathOfImages,
-                            etDescription.text.toString()
-                        )
-                    } else {
-                        Toast.makeText(
-                            this@GeneralPublicActivity,
-                            "video size is very large",
-                            Toast.LENGTH_LONG
-                        ).show()
+
+                    override fun onSuccess() {
+
+                        try {
+                            if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
+                        } catch (e: IllegalArgumentException) { // Handle or log or ignore
+
+                        } catch (e: java.lang.Exception) { // Handle or log or ignore
+
+                        }
+
+                        if (File(outPath).length() <= 50000000) {
+                            pathOfImages = ArrayList()
+                            pathOfImages.add(outPath)
+                            complaintsPresenter.checkValidations(
+                                1,
+                                pathOfImages,
+                                etDescription.text.toString()
+                            )
+                        } else {
+                            Toast.makeText(
+                                this@GeneralPublicActivity,
+                                "video size is very large",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
-                }
 
-                override fun onFail() {
-                    Log.e("Compressing", "Compress Failed!")
-                    try {
-                        if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
-                    } catch (e: IllegalArgumentException) { // Handle or log or ignore
+                    override fun onFail() {
+                        Log.e("Compressing", "Compress Failed!")
+                        try {
+                            if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
+                        } catch (e: IllegalArgumentException) { // Handle or log or ignore
 
-                    } catch (e: java.lang.Exception) { // Handle or log or ignore
+                        } catch (e: java.lang.Exception) { // Handle or log or ignore
+
+                        }
+                    }
+
+                    override fun onProgress(percent: Float) {
+                        progressDialog.setMessage("Compressing video " + percent.toInt() + "%")
+                        Log.e("Compressing", percent.toString())
 
                     }
-                }
+                })
 
-                override fun onProgress(percent: Float) {
-                    progressDialog.setMessage("Compressing video " + percent.toInt() + "%")
-                    Log.e("Compressing", percent.toString())
-
-                }
-            })
+            } else {
+                Toast.makeText(this, "Video size should be 1-70 MB ", Toast.LENGTH_LONG).show()
+            }
         } else {
             Toast.makeText(this, "video is very short", Toast.LENGTH_LONG).show()
         }

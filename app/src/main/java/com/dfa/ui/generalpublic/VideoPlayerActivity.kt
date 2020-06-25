@@ -12,6 +12,7 @@ import android.os.Environment
 import android.view.View
 import android.widget.ImageView
 import android.widget.MediaController
+import android.widget.Toast
 import android.widget.VideoView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -19,13 +20,10 @@ import com.bumptech.glide.Glide
 import com.dfa.R
 import com.dfa.base.BaseActivity
 import com.dfa.customviews.CenteredToolbar
+import com.dfa.utils.Utilities
 import com.vaibhavlakhera.circularprogressview.CircularProgressView
 import kotlinx.android.synthetic.main.activity_video_player.*
-import org.apache.http.conn.ssl.SSLSocketFactory
 import java.io.File
-import java.security.KeyStore
-import javax.net.ssl.HostnameVerifier
-import javax.net.ssl.HttpsURLConnection
 
 class VideoPlayerActivity : BaseActivity() {
     var mediaController: MediaController? = null
@@ -86,10 +84,8 @@ class VideoPlayerActivity : BaseActivity() {
                     .load(videoPath)
                     .into(thumbImage!!);
                 thumbImage!!.visibility = View.VISIBLE
-            }
-            catch (e: Exception)
-            {
-                println("Exception>>>>>>>>>>>>>>"+e)
+            } catch (e: Exception) {
+                println("Exception>>>>>>>>>>>>>>" + e)
             }
         }
     }
@@ -202,15 +198,17 @@ class VideoPlayerActivity : BaseActivity() {
                         firstPlay = false
                         var fileName = File(
                             Environment.getExternalStorageDirectory(),
-                            "SeasiaPrism/" + documentId
+                            "DFA/" + documentId
                         )
                         fileName.delete()
-                        DownloadTask(
-                            this@VideoPlayerActivity,
-                            mPath,
-                            documentId,
-                            this@VideoPlayerActivity
-                        )
+                       Toast.makeText(this@VideoPlayerActivity, "Can't play this video", Toast.LENGTH_LONG).show()
+
+//                        DownloadTask(
+//                            this@VideoPlayerActivity,
+//                            mPath,
+//                            documentId,
+//                            this@VideoPlayerActivity
+//                        )
                     }
                     return true
                 }

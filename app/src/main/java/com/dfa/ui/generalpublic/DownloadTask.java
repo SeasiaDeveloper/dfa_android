@@ -93,7 +93,7 @@ public class DownloadTask {
                 });
 
             } catch (Exception e) {
-                System.out.println("EXCEPTION2>>>>>>>>>>>>>>>>"+e);
+                System.out.println("EXCEPTION2>>>>>>>>>>>>>>>>" + e);
 
             }
 
@@ -123,7 +123,7 @@ public class DownloadTask {
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                System.out.println("EXCEPTION3>>>>>>>>>>>>>>>>"+e);
+                System.out.println("EXCEPTION3>>>>>>>>>>>>>>>>" + e);
 
                 //Change button text if exception occurs
 
@@ -169,7 +169,7 @@ public class DownloadTask {
                     sc.init(null, trustAllCerts, new java.security.SecureRandom());
                     HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
                 } catch (Exception e) {
-                    System.out.println("EXCEPTION4>>>>>>>>>>>>>>>>"+e);
+                    System.out.println("EXCEPTION4>>>>>>>>>>>>>>>>" + e);
 
                 }
 
@@ -232,9 +232,10 @@ public class DownloadTask {
 
             } catch (Exception e) {
                 //Read exception if something went wrong
-                System.out.println("EXCEPTION>>>>>>>>>>>>>>>>"+e);
+                System.out.println("EXCEPTION>>>>>>>>>>>>>>>>" + e);
                 e.printStackTrace();
-                outputFile = null;;
+                outputFile = null;
+                ;
                 //task.cancel(true);
                 Log.e(TAG, "Download Error Exception " + e.getMessage());
             }
