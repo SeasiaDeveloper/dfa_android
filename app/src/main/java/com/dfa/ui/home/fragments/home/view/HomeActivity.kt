@@ -24,6 +24,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.drawerlayout.widget.DrawerLayout
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.navigation.NavigationView
 import com.google.gson.GsonBuilder
 import com.dfa.R
@@ -74,8 +76,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private var provider: String = ""
     private lateinit var locationManager: LocationManager
     var gps_enabled: Boolean = false
-   //var getProfileresponse: GetProfileResponse
-    lateinit var btnLogin:CustomtextView
+    lateinit var getProfileresponse: GetProfileResponse
+ //   lateinit var btnLogin:CustomtextView
 
     override fun getLayout(): Int {
         return R.layout.home_activity
@@ -98,11 +100,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         if (menuItem != null && menuItem!!.isChecked) menuItem!!.isChecked = false
 
-        authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
-
-        if (!authorizationToken!!.isEmpty()) {
-            homePresenter.hitProfileApi(authorizationToken)
-        }
         if (!isGPS && !isPermissionDialogRequired ) {
             askForGPS()
         }
@@ -235,6 +232,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             supportActionBar?.setDisplayShowTitleEnabled(false)
         }
 
+        authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
+        if (!authorizationToken!!.isEmpty()) {
+            homePresenter.hitProfileApi(authorizationToken)
+        }
+
         val role = PreferenceHandler.readString(this@HomeActivity, PreferenceHandler.USER_ROLE, "0")
 
         if (role.equals("0"))
@@ -298,21 +300,22 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             menu.findItem(R.id.nav_cases).setVisible(true)
         }
 
-       /* var headerLayout = nav_view?.inflateHeaderView(R.layout.nav_header)
-        btnLogin=  headerLayout?.findViewById(R.id.btnLogin)!!
-        loadNavHeader()
-        btnLogin.setOnClickListener {
-            // ForegroundService.stopService(this)
-            finish()
-            PreferenceHandler.clearPreferences(this)
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivity(intent)
-        }*/
+        val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
+        val headerview = navigationView.getHeaderView(0)
+        val profilename =
+            headerview.findViewById<View>(R.id.btnLogin) as TextView
 
-        /*  if (authorizationToken!!.isEmpty()) {
-              textName.setText(getString(R.string.guest_user))
-          }*/
+        if (profilename != null) {
+            profilename.setOnClickListener {
+                // ForegroundService.stopService(this)
+
+                PreferenceHandler.clearPreferences(this)
+                val intent = Intent(this, LoginActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)
+                finish()
+            }
+        }
     }
 
     private val mLocationListener = object : LocationListener {
@@ -423,7 +426,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     }
 
     private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
-        if(getProfileResponse!=null)
+        if(getProfileResponse.data!=null)
         {
             textName.setText(getProfileResponse.data?.first_name + " " + getProfileResponse.data?.middle_name + " " + getProfileResponse.data?.last_name)
         }
@@ -431,22 +434,25 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             userInfo.visibility = View.GONE
             btnLogin.visibility = View.VISIBLE
         } else {
-            userInfo.visibility = View.VISIBLE
             btnLogin.visibility = View.GONE
             val role = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")
             if (role.equals("0")) {
-                userInfo.setText(getString(R.string.gpu))
+               // userInfo.setText(getString(R.string.gpu))
                 if (getProfileResponse.data?.isVerified!!.equals("1")) {
-                    verified_icon.visibility = View.VISIBLE
+                    if (!role.equals("0")) {
+                        verified_icon.visibility = View.VISIBLE
+                    }
                 } else {
                     verified_icon.visibility = View.GONE
                 }
                 textAddress.visibility = View.GONE
             } else if (role.equals("1")) {
+                userInfo.visibility = View.VISIBLE
                 userInfo.setText(getString(R.string.ngo_user))
                 verified_icon.visibility = View.VISIBLE
                 textAddress.visibility = View.VISIBLE
             } else if (role.equals("2")) {
+                userInfo.visibility = View.VISIBLE
                 userInfo.setText(getString(R.string.police_user))
                 verified_icon.visibility = View.VISIBLE
                 textAddress.visibility = View.VISIBLE
@@ -480,10 +486,20 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 com.dfa.utils.alert.AlertDialog.guesDialog(this)
             }
         }
-        if(getProfileResponse!=null) {
+        if(getProfileResponse.data!=null) {
             if (getProfileResponse.data?.profile_pic != null) {
                 try {
                     Glide.with(this).load(getProfileResponse.data.profile_pic)
+                        .into(imageNavigator)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+            }else{
+                val options = RequestOptions()
+                    .placeholder(R.drawable.user)
+                    .error(R.drawable.user)
+                try {
+                    Glide.with(this).load(R.drawable.user).apply(options)
                         .into(imageNavigator)
                 } catch (e: Exception) {
                     e.printStackTrace()

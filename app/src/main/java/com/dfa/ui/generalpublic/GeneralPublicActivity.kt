@@ -240,27 +240,27 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 }
             }
             R.id.tvRecordVideo -> {
-               // Utilities.showMessage(this, getString(R.string.coming_soon))
-                path = ""
+                Utilities.showMessage(this, getString(R.string.coming_soon))
+               /* path = ""
                 if (CheckRuntimePermissions.checkMashMallowPermissions(
                         this,
                         PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS_GALLERY_VIDEO
                     )
                 ) {
                     videoFromGalleryIntent()
-                }
+                }*/
             }
 
             R.id.tvTakeVideo -> {
-            //    Utilities.showMessage(this, getString(R.string.coming_soon))
-                path = ""
+               Utilities.showMessage(this, getString(R.string.coming_soon))
+               /* path = ""
                 if (CheckRuntimePermissions.checkMashMallowPermissions(
                         this,
                         PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS
                     )
                 ) {
                     recordVideo()
-                }
+                }*/
             }
             R.id.btnSubmit -> {
                 if (mediaType.equals("videos")) {
@@ -429,7 +429,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private fun recordVideo() {
         val takeVideoIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
         takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 120)
-        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1)
+        takeVideoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 0)
         if (takeVideoIntent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(takeVideoIntent, CAMERA_REQUEST_CODE_VEDIO)
         }
@@ -856,13 +856,14 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                 //val tempUri = getImageUriWhenTakePhoto(applicationContext, images.get(0).path)
                 var bitmap = getCapturedImage(tempUri, this)
-                var newPathString = getImageUri(this, bitmap)
+
 
                 if (bitmap != null) {
                     val requiredImage =
                         RealPathUtil.imageRotateIfRequired(mPhotoFile?.absolutePath!!, bitmap)
                     imgView.setImageBitmap(requiredImage)
                     //path = mPhotoFile?.absolutePath!!
+                    var newPathString = getImageUri(this, requiredImage)
                     path = FileUtils.getPath(this, newPathString)
                     pathOfImages = ArrayList<String>()
                     pathOfImages.add(path)

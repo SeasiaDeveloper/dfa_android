@@ -22,6 +22,7 @@ import com.dfa.pojo.request.CrimeDetailsRequest
 import com.dfa.pojo.response.*
 import com.dfa.ui.crimedetails.presenter.CrimeDetailsPresenter
 import com.dfa.ui.crimedetails.presenter.CrimeDetailsPresenterImpl
+import com.dfa.ui.generalpublic.VideoPlayerActivity
 import com.dfa.ui.generalpublic.view.AsyncResponse
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.dfa.ui.home.fragments.cases.CasesFragment
@@ -69,7 +70,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         CasesFragment.fromIncidentDetailScreen=1
         MyCasesActivity.change=0
         MyCasesActivity.fromIncidentDetailScreen=1
-         type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
+        type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         complaintId = intent.getStringExtra(Constants.PUBLIC_COMPLAINT_DATA)
         isKnowPostOrComplaint = intent.getStringExtra(Constants.FROM_WHERE)
@@ -87,15 +88,17 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         }
 
         sb_steps_5.setOnRangeChangedListener(null)
-
+        var intent:Intent?=null
         imgView.setOnClickListener {
-            val intent = Intent(this, ImageVideoScreen::class.java)
             if (getCrimeDetailsResponse?.data?.get(0)?.media_type.equals("videos")) {
-                intent.putExtra("fromWhere", "VIDEOS")
+                intent = Intent(this, VideoPlayerActivity::class.java)
+                intent!!.putExtra("videoPath",getCrimeDetailsResponse?.data?.get(0)?.media_list?.get(0)?.toString())
+                intent!!.putExtra("documentId",getCrimeDetailsResponse?.data?.get(0)?.id)
             } else {
-                intent.putExtra("fromWhere", "IMAGES")
+                intent = Intent(this, ImageVideoScreen::class.java)
+                intent!!.putExtra("fromWhere", "IMAGES")
             }
-            intent.putExtra(
+            intent!!.putExtra(
                 Constants.IMAGE_URL,
                 getCrimeDetailsResponse?.data?.get(0)?.media_list?.get(0)?.toString()
             )
@@ -237,13 +240,13 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
                     "0"
                 )
             ) {
-                    val task = DirectionApiAsyncTask(
-                        this,
-                        getCrimeDetailsResponse.data.get(0).latitude!!,
-                        getCrimeDetailsResponse.data.get(0).longitude!!,
-                        this
-                    )
-                    task.execute()
+                val task = DirectionApiAsyncTask(
+                    this,
+                    getCrimeDetailsResponse.data.get(0).latitude!!,
+                    getCrimeDetailsResponse.data.get(0).longitude!!,
+                    this
+                )
+                task.execute()
             } else {
                 show_location.visibility = View.GONE
             }
@@ -252,10 +255,10 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
             if(type.equals("1")){
                 layout_action.visibility = View.VISIBLE
                 action_complaint.setOnClickListener {
-                  /*  if (getCrimeDetailsResponse.data.get(0).status != null) currentStatus = getCrimeDetailsResponse.data.get(0).status!!
-                    //hit api based on role
-                    Utilities.showProgress(this@IncidentDetailActivity)
-                    crimePresenter.fetchStatusList(authorizationToken!!, type)*/
+                    /*  if (getCrimeDetailsResponse.data.get(0).status != null) currentStatus = getCrimeDetailsResponse.data.get(0).status!!
+                      //hit api based on role
+                      Utilities.showProgress(this@IncidentDetailActivity)
+                      crimePresenter.fetchStatusList(authorizationToken!!, type)*/
                     var list: ArrayList<GetStatusDataBean> = ArrayList()
                     var item1: GetStatusDataBean
                     if (type == "1") {
@@ -313,7 +316,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
                     val intent = Intent(this@IncidentDetailActivity, ProfileActivity::class.java)
                     intent.putExtra("id",getCrimeDetailsResponse.data.get(0).userDetail?.id)
                     intent.putExtra("fromWhere","userProfile")
-                   startActivity(intent)
+                    startActivity(intent)
                 }
             }
 
