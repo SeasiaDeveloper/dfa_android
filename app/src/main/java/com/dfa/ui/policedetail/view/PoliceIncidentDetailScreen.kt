@@ -6,6 +6,7 @@ import android.net.Uri
 import android.view.View
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.dfa.R
 import com.dfa.base.BaseActivity
@@ -185,17 +186,21 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
         if (getCrimeDetailsResponse.data?.get(0)?.media_type.equals("videos")) {
             val requestOptions = RequestOptions()
             requestOptions.isMemoryCacheable
+
             try {
                 Glide.with(this).setDefaultRequestOptions(requestOptions)
-                    .load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
-                    .into(imgView)
+                    .load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0)).placeholder(R.drawable
+                        .camera_placeholder)
+                    .into(ivVideoIcon)
+
+                video_layout.visibility = View.VISIBLE
                 ivVideoIcon.visibility = View.VISIBLE
 
             } catch (e: Exception) {
                 e.printStackTrace()
             }
 
-            ivVideoIcon.setOnClickListener {
+            video_layout.setOnClickListener {
                 intent = Intent(this, VideoPlayerActivity::class.java)
                 intent!!.putExtra("videoPath",getCrimeDetailsResponse?.data?.get(0)?.media_list?.get(0)?.toString())
                 intent!!.putExtra("documentId",getCrimeDetailsResponse?.data?.get(0)?.id)
@@ -210,7 +215,7 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
                 Glide.with(this).load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
                     .apply(options)
                     .into(imgView)
-                ivVideoIcon.visibility = View.GONE
+                video_layout.visibility = View.GONE
             } catch (e: Exception) {
                 e.printStackTrace()
             }

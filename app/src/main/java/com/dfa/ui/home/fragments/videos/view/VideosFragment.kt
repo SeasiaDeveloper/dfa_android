@@ -32,7 +32,6 @@ import kotlinx.android.synthetic.main.fragment_videos.*
 import kotlinx.android.synthetic.main.fragment_videos.itemsswipetorefresh
 
 class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
-
     private lateinit var adapter: VideosAdapter
     private var videos: List<GetPhotosResponse.Data> = mutableListOf()
     lateinit var request: GetPhotosRequest
