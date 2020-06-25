@@ -12,19 +12,18 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/police_logo"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
-                android:gravity="top"
-                android:src="@drawable/pc_logo"
+                android:layout_height="match_parent"
+                android:src="@drawable/splash"
                 android:textSize="@dimen/_30ssp" />
 
-            <LinearLayout
+         <!--   <LinearLayout
                 android:id="@+id/and_symbol"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,7 +44,7 @@
             <ImageView
                 android:id="@+id/dfa_logo"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_150sdp"
+                android:layout_height="@dimen/_120sdp"
                 android:layout_centerInParent="true"
                 android:layout_below="@+id/and_symbol"
                 android:gravity="center"
@@ -73,6 +72,7 @@
             android:layout_gravity="bottom"
             android:layout_marginBottom="@dimen/_10ssp"
             android:gravity="center"
-            android:src="@drawable/moonwalk" />
+            android:src="@drawable/moonwalk" />-->
+        </LinearLayout>
     </RelativeLayout>
 </layout>

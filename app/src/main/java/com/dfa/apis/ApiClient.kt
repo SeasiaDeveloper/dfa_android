@@ -17,7 +17,7 @@ import javax.net.ssl.X509TrustManager
 object ApiClient {
 
     fun getClient(): Retrofit {
-        val builder = /*getUnsafeOkHttpClient()*/OkHttpClient.Builder().readTimeout(3, TimeUnit.MINUTES).connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES).addInterceptor { chain ->
+        val builder = getUnsafeOkHttpClient().readTimeout(3, TimeUnit.MINUTES).connectTimeout(3, TimeUnit.MINUTES).writeTimeout(3, TimeUnit.MINUTES).addInterceptor { chain ->
             val builder = chain.request().newBuilder()
             val build = builder.addHeader("Content-Type", "application/json")
                 .build()
@@ -33,7 +33,7 @@ object ApiClient {
             .addConverterFactory(GsonConverterFactory.create()).build()
     }
 
-    /*@JvmStatic
+    @JvmStatic
     fun getUnsafeOkHttpClient(): OkHttpClient.Builder =
         try {
             // Create a trust manager that does not validate certificate chains
@@ -68,5 +68,5 @@ object ApiClient {
             builder
         } catch (e: Exception) {
             throw RuntimeException(e)
-        }*/
+        }
 }

@@ -254,4 +254,10 @@
     <string name="permission_text">Location Permission Turned Off</string>
     <string name="warning_text">Please make sure that the drug incident you are reporting is genuine.For reporting false incident, you may be jailed / punished / fined for abuse / misuse / mislead / nuisance including other appropriate criminal case against you.</string>
     <string name="earnings_screen_text"><font fgcolor="#ff000a">* </font><font fgcolor="#006600">Report drug incident in your area and get Paid from Drug Free Arunachal</font></string>
+
+    <string name="police_firstline">Superintendent of Police (Crime)</string>
+    <string name="police_secondline">Police Head Quarter,Chimpu,</string>
+    <string name="police_thirdline">Itanagar, Govt. of AP</string>
+    <string name="police_fourthline">Email:sp.ndps@gmail.com</string>
+
 </resources>
