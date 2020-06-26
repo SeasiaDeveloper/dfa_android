@@ -1227,7 +1227,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             lattitude = "0"
             longitude = "0"
         } else {
-            if (lattitude.equals("") || longitude.equals("")|| lattitude.equals("0")) {
+            lattitude = ""
+            longitude = ""
+            if (lattitude.equals("") || longitude.equals("")) {
 
 
                 if (ActivityCompat.checkSelfPermission(

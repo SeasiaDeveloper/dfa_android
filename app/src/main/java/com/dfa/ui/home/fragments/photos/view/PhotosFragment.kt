@@ -64,6 +64,11 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
                 Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
             }
         }
+        else
+        {
+            checkVisibility()
+
+        }
     }
 
 
@@ -118,11 +123,27 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
         GeneralPublicHomeFragment.change = 1
     }
 
+
+    fun checkVisibility()
+    {
+
+        if (photos.size>0) {
+            tvRecord?.visibility = View.GONE
+            rvPhotos?.visibility = View.VISIBLE
+            itemsswipetorefresh?.visibility = View.VISIBLE
+
+        } else {
+            tvRecord?.visibility = View.VISIBLE
+            rvPhotos?.visibility = View.GONE
+            itemsswipetorefresh?.visibility = View.GONE
+
+        }
+    }
     override fun showGetPhotosResponse(response: GetPhotosResponse) {
         Utilities.dismissProgress()
         photos = response.data!!
         adapter.changeList(photos.toMutableList())
-        if (!photos.isEmpty()) {
+        if (photos.size>0) {
             tvRecord?.visibility = View.GONE
             rvPhotos?.visibility = View.VISIBLE
             itemsswipetorefresh?.visibility = View.VISIBLE
