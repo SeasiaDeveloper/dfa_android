@@ -226,7 +226,6 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:id="@+id/dataView"
                 android:layout_height="match_parent"
                 android:paddingTop="@dimen/_10sdp">
 
@@ -251,7 +250,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingBottom="@dimen/_20sdp"
-                        android:visibility="visible" />
+                        />
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
                 <ProgressBar

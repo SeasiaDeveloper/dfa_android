@@ -26,10 +26,10 @@ import com.dfa.ui.home.fragments.photos.view.OnClickOfVideoAndPhoto
 import com.dfa.ui.home.fragments.videos.presenter.VideoPresenter
 import com.dfa.ui.home.fragments.videos.presenter.VideosPresenterImpl
 import com.dfa.utils.Constants
-import com.dfa.utils.InternetUtils
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_videos.*
+import kotlinx.android.synthetic.main.fragment_videos.itemsswipetorefresh
 
 class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
     private lateinit var adapter: VideosAdapter
@@ -51,21 +51,11 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
         super.onResume()
         if (isFirst) {
             request = GetPhotosRequest("videos")
-            var internetUtils = InternetUtils()
-            if (internetUtils.isOnline(activity!!)) {
-                Utilities.showProgress(activity!!)
-                authorizationToken =
-                    PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
-                presenter.getVideos(authorizationToken, request)
-                isFirst = false
-            } else {
-                Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
-            }
-        }
-        else
-        {
-            checkVisibility()
-
+            Utilities.showProgress(activity!!)
+            authorizationToken =
+                PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+            presenter.getVideos(authorizationToken, request)
+            isFirst=false
         }
     }
 
@@ -112,35 +102,17 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
 
     }
 
-    fun checkVisibility()
-    {
-        if (videos.size>0) {
-            tvRecordVideos?.visibility = View.GONE
-            rvVideos?.visibility = View.VISIBLE
-            itemsswipetorefresh?.visibility = View.VISIBLE
-
-        } else {
-            tvRecordVideos?.visibility = View.VISIBLE
-            rvVideos?.visibility = View.GONE
-            itemsswipetorefresh?.visibility = View.GONE
-
-        }
-    }
-
     override fun showGetVideosResponse(response: GetPhotosResponse) {
         Utilities.dismissProgress()
         videos = response.data!!
         adapter.changeList(videos.toMutableList())
-        if (videos.size>0) {
+        if (videos.isNotEmpty()) {
             tvRecordVideos?.visibility = View.GONE
             rvVideos?.visibility = View.VISIBLE
-            itemsswipetorefresh?.visibility = View.VISIBLE
 
         } else {
             tvRecordVideos?.visibility = View.VISIBLE
             rvVideos?.visibility = View.GONE
-            itemsswipetorefresh?.visibility = View.GONE
-
         }
     }
 

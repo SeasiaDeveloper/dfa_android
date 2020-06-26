@@ -25,7 +25,6 @@ import com.dfa.ui.home.fragments.cases.CasesFragment
 import com.dfa.ui.home.fragments.photos.presenter.PhotosPresenter
 import com.dfa.ui.home.fragments.photos.presenter.PhotosPresenterImpl
 import com.dfa.utils.Constants
-import com.dfa.utils.InternetUtils
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
 import com.dfa.utils.Utilities.showProgress
@@ -53,21 +52,11 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
         super.onResume()
         if (isFirst) {
             request = GetPhotosRequest("photos")
-            var internetUtils= InternetUtils()
-            if (internetUtils.isOnline(activity!!)) {
-                showProgress(activity!!)
-                authorizationToken =
-                    PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
-                presenter.getPhotos(authorizationToken, request)
-                isFirst = false
-            } else {
-                Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
-            }
-        }
-        else
-        {
-            checkVisibility()
-
+            showProgress(activity!!)
+            authorizationToken =
+                PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+            presenter.getPhotos(authorizationToken, request)
+            isFirst = false
         }
     }
 
@@ -123,36 +112,17 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
         GeneralPublicHomeFragment.change = 1
     }
 
-
-    fun checkVisibility()
-    {
-
-        if (photos.size>0) {
-            tvRecord?.visibility = View.GONE
-            rvPhotos?.visibility = View.VISIBLE
-            itemsswipetorefresh?.visibility = View.VISIBLE
-
-        } else {
-            tvRecord?.visibility = View.VISIBLE
-            rvPhotos?.visibility = View.GONE
-            itemsswipetorefresh?.visibility = View.GONE
-
-        }
-    }
     override fun showGetPhotosResponse(response: GetPhotosResponse) {
         Utilities.dismissProgress()
         photos = response.data!!
         adapter.changeList(photos.toMutableList())
-        if (photos.size>0) {
+        if (photos.isNotEmpty()) {
             tvRecord?.visibility = View.GONE
             rvPhotos?.visibility = View.VISIBLE
-            itemsswipetorefresh?.visibility = View.VISIBLE
 
         } else {
             tvRecord?.visibility = View.VISIBLE
             rvPhotos?.visibility = View.GONE
-            itemsswipetorefresh?.visibility = View.GONE
-
         }
     }
     override fun getPhotosFailure(error: String) {
