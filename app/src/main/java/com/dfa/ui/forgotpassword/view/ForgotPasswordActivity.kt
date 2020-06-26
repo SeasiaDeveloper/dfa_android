@@ -67,12 +67,15 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
                 } else {
                     if (clicked_from.equals("signup", ignoreCase = true)) {
 
-                        val mobile: String = edit_mobile_number.getText().toString().trim()
-                        val intent = Intent(this, OtpVerificationActivity::class.java)
-                        intent.putExtra("mobile", mobile)
-                        intent.putExtra("intent_from", clicked_from)
-                        intent.putExtra("phoneNo", edit_mobile_number.text.toString())
-                        startActivity(intent)
+                        if (isInternetAvailable()) {
+                            showProgress()
+                            val request = VerifyUserRequest(
+                                edit_mobile_number.text.toString()
+                            )
+                            presenter.verifyForMobileNumberExistsOrNot(request)
+                        } else {
+                            Utilities.showMessage(this, getString(R.string.no_internet_connection))
+                        }
 
                     } else if (clicked_from.equals("forgotPassword", ignoreCase = true)) {
 
@@ -89,8 +92,6 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
                     } else {
                         // do something
                     }
-
-
                 }
             }
         }
@@ -103,7 +104,7 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
 
     override fun onVerifyUserSuccess(verifyUserResponse: VerifyUserResponse) {
         dismissProgress()
-       // Utilities.showMessage(this, verifyUserResponse.message)
+        // Utilities.showMessage(this, verifyUserResponse.message)
         val mobile: String = edit_mobile_number.getText().toString().trim()
         val intent = Intent(this, OtpVerificationActivity::class.java)
         intent.putExtra("mobile", mobile)
@@ -111,6 +112,21 @@ class ForgotPasswordActivity : BaseActivity(), View.OnClickListener, ForgotPassw
         intent.putExtra("userId", verifyUserResponse.data.toString())
         startActivity(intent)
 
+    }
+
+    override fun numberExistsAlready(verifyUserResponse: VerifyUserResponse) {
+        dismissProgress()
+        Utilities.showMessage(this, "Number Exists Already")
+    }
+
+    override fun numberDoesNotExistAlready(error: String) {
+        dismissProgress()
+        val mobile: String = edit_mobile_number.getText().toString().trim()
+        val intent = Intent(this, OtpVerificationActivity::class.java)
+        intent.putExtra("mobile", mobile)
+        intent.putExtra("intent_from", clicked_from)
+        intent.putExtra("phoneNo", edit_mobile_number.text.toString())
+        startActivity(intent)
     }
 
     override fun showServerError(error: String) {

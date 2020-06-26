@@ -21,6 +21,18 @@ class ForgotPasswordPresenterImpl(private var forgotPasswordView: ForgotPassword
         forgotPasswordView.onVerifyUserFailure(error)
     }
 
+    override fun numberExistsAlready(verifyUserResponse: VerifyUserResponse) {
+        forgotPasswordView.numberExistsAlready(verifyUserResponse)
+    }
+
+    override fun numberDoesnotExist(error: String) {
+        forgotPasswordView.numberDoesNotExistAlready(error)
+    }
+
+    override fun verifyForMobileNumberExistsOrNot(verfiPasswordRequest: VerifyUserRequest) {
+        forgotPasswordModel.hitMobileNumberExistsApi(verfiPasswordRequest)
+    }
+
     override fun showError(error: String) {
         forgotPasswordView.showServerError(error)
     }

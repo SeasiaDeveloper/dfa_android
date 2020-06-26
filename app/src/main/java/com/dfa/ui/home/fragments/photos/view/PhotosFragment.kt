@@ -25,6 +25,7 @@ import com.dfa.ui.home.fragments.cases.CasesFragment
 import com.dfa.ui.home.fragments.photos.presenter.PhotosPresenter
 import com.dfa.ui.home.fragments.photos.presenter.PhotosPresenterImpl
 import com.dfa.utils.Constants
+import com.dfa.utils.InternetUtils
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
 import com.dfa.utils.Utilities.showProgress
@@ -52,11 +53,16 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
         super.onResume()
         if (isFirst) {
             request = GetPhotosRequest("photos")
-            showProgress(activity!!)
-            authorizationToken =
-                PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
-            presenter.getPhotos(authorizationToken, request)
-            isFirst = false
+            var internetUtils= InternetUtils()
+            if (internetUtils.isOnline(activity!!)) {
+                showProgress(activity!!)
+                authorizationToken =
+                    PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+                presenter.getPhotos(authorizationToken, request)
+                isFirst = false
+            } else {
+                Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
+            }
         }
     }
 

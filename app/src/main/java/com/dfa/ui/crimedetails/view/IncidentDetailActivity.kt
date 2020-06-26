@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.dfa.R
 import com.dfa.adapters.CasesAdapter
 import com.dfa.adapters.StatusAdapter
+import com.dfa.application.MyApplication
 import com.dfa.base.BaseActivity
 import com.dfa.customviews.CenteredToolbar
 import com.dfa.databinding.DialogChangeStatusBinding
@@ -35,6 +36,7 @@ import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
 import com.dfa.utils.algo.DirectionApiAsyncTask
 import kotlinx.android.synthetic.main.activity_incident_detail.*
+import kotlinx.android.synthetic.main.item_case.view.*
 
 class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, AsyncResponse,
     OnCaseItemClickListener {
@@ -201,6 +203,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         }
         spTypesOfCrime.text = getCrimeDetailsResponse.data.get(0).crime_type
         spStatusOfCrime.text = getCrimeDetailsResponse.data.get(0).status
+        setColor(spStatusOfCrime, getCrimeDetailsResponse.data.get(0).status!!.toLowerCase())
 
         if (!getCrimeDetailsResponse.data.get(0).urgency.isNullOrEmpty()) {
             sb_steps_5.setIndicatorTextDecimalFormat(getCrimeDetailsResponse.data.get(0).urgency)
@@ -534,6 +537,20 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
 
     override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
         //nothing to do
+    }
+
+
+    fun setColor( textView:com.dfa.customviews.CustomtextView,data:String)
+    {
+        when(data)
+        {
+            "unassigned"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.red));
+            "approved"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.yellow));
+            "accepted"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.blue));
+            "accept"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.blue));
+            "resolved"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.green));
+            "unauthentic"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.grey));
+        }
     }
 
 

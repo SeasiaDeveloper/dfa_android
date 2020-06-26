@@ -8,4 +8,7 @@ interface ForgotPassworPresenter : BasePresenter {
     fun hitVerifyUserApi(verfiPasswordRequest: VerifyUserRequest);
     fun onVerfiyUserSuccess(verifyUserResponse: VerifyUserResponse)
     fun onVerifyUserFailure(error: String)
+    fun numberExistsAlready(verifyUserResponse: VerifyUserResponse)
+    fun numberDoesnotExist(error: String)
+    fun verifyForMobileNumberExistsOrNot(verfiPasswordRequest: VerifyUserRequest)
 }

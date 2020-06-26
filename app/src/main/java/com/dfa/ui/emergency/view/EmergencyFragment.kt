@@ -23,6 +23,7 @@ import com.dfa.pojo.response.EmergencyDataResponse
 import com.dfa.ui.emergency.presenter.EmegencyFragmentPresenterImpl
 import com.dfa.ui.emergency.presenter.EmergencyFragmentPresenter
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
+import com.dfa.utils.InternetUtils
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
 import com.dfa.utils.Utilities.dismissProgress
@@ -50,13 +51,14 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     override fun onResume() {
         super.onResume()
         if (isFirst) {
-            //if (isInternetAvailable()) {
+            var internetUtils= InternetUtils()
+            if (internetUtils.isOnline(activity!!)) {
                 showProgress(mContext)
                 presenter.hitDistricApi()
                 isFirst = false
-           /* } else {
+            } else {
                 Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
-            }*/
+            }
         } else {
             if (staticDistValueList?.data!!.size > 0) {
                 getDistrictDropDown(staticDistValueList!!)
@@ -145,7 +147,8 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
                   // Display the selected item text on text view
                   "Spinner selected : ${parent.getItemAtPosition(position)}"
                   if (position != 0) {
-                      //  if (isInternetAvailable()) {
+                      var internetUtils= InternetUtils()
+                      if (internetUtils.isOnline(activity!!)) {
                       showProgress(mContext)
                       var authorizationToken =
                           PreferenceHandler.readString(
@@ -155,9 +158,9 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
                           )
                       var request = EmergencyDataRequest(response.data.get(position - 1).id)
                       presenter.hitEmergencyApi(request, authorizationToken)
-                      /* } else {
+                       } else {
                         Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
-                    }*/
+                    }
                   } else {
                       var mList: ArrayList<EmergencyDataResponse.Data> = ArrayList()
                       emergencyDetailsAdapter.changeList(mList)

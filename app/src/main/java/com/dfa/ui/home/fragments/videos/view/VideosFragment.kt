@@ -26,6 +26,7 @@ import com.dfa.ui.home.fragments.photos.view.OnClickOfVideoAndPhoto
 import com.dfa.ui.home.fragments.videos.presenter.VideoPresenter
 import com.dfa.ui.home.fragments.videos.presenter.VideosPresenterImpl
 import com.dfa.utils.Constants
+import com.dfa.utils.InternetUtils
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_videos.*
@@ -51,11 +52,16 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
         super.onResume()
         if (isFirst) {
             request = GetPhotosRequest("videos")
-            Utilities.showProgress(activity!!)
-            authorizationToken =
-                PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
-            presenter.getVideos(authorizationToken, request)
-            isFirst=false
+            var internetUtils= InternetUtils()
+            if (internetUtils.isOnline(activity!!)) {
+                Utilities.showProgress(activity!!)
+                authorizationToken =
+                    PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+                presenter.getVideos(authorizationToken, request)
+                isFirst = false
+            } else {
+                Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
+            }
         }
     }
 

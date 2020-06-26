@@ -48,7 +48,7 @@ class UpdatePasswordActivity : BaseActivity(), ChangePasswordView {
             } else if (TextUtils.isEmpty(confirm_password.text.toString())) {
                 Utilities.showMessage(this, "Please confirm Password")
             } else if (!new_password.text.toString().equals(confirm_password.text.toString())) {
-                Utilities.showMessage(this, "Mismatch Passwords")
+                Utilities.showMessage(this, "New and Confirm Password should be same")
             } else {
                 if (isInternetAvailable()) {
                     showProgress()

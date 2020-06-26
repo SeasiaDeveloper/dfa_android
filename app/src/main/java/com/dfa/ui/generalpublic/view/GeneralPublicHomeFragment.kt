@@ -407,7 +407,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                         .error(R.drawable.user)
                     try {
                         imgProfile.setImageResource(0)
-                        Glide.with(activity!!).load(jsondata.data.profile_pic).apply(options1).into(imgProfile)
+                        Glide.with(activity!!).load(jsondata.data.profile_pic).apply(options1)
+                            .into(imgProfile)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -786,14 +787,19 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
         // setProfilePic()
         fromIncidentDetailScreen = 0
-        MyCasesActivity.isfirst=true
+        MyCasesActivity.isfirst = true
     }
 
     fun doApiCall() {
         val casesRequest =
             CasesRequest("1", "", "-1", "1", "10")  //type = -1 for fetching both cases and posts
-        Utilities.showProgress(mContext)
-        presenter.getComplaints(casesRequest, token, type)
+        var internetUtils=InternetUtils()
+        if (internetUtils.isOnline(activity!!)) {
+            Utilities.showProgress(mContext)
+            presenter.getComplaints(casesRequest, token, type)
+        } else {
+            Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
+        }
 
     }
 
@@ -865,8 +871,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         // Utilities.showProgress(mContext)
         complaintIdTobeLiked = complaintsData.id
         //when to change like status
-     /*   adapter?.notifyParticularItem(complaintIdTobeLiked!!,)
-        isLike = true*/
+        /*   adapter?.notifyParticularItem(complaintIdTobeLiked!!,)
+           isLike = true*/
 
         val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
         if (token!!.isEmpty()) {
@@ -879,7 +885,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     //refresh the list after like status is changed
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
-       // Utilities.showMessage(mContext, responseObject.message!!)
+        // Utilities.showMessage(mContext, responseObject.message!!)
         isLike = true
         val casesRequest =
             CasesRequest("1", "", "-1", "1", "10") //type = -1 for fetching all the data
@@ -911,8 +917,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         pageCount = page
         val casesRequest =
             CasesRequest("1", "", "-1", page.toString(), "10" /*totalItemsCount.toString()*/)
-        presenter.getComplaints(casesRequest, token, type)
-        progressBar.visibility = View.VISIBLE
+        var internetUtils=InternetUtils()
+        if (internetUtils.isOnline(activity!!)) {
+            Utilities.showProgress(mContext)
+            presenter.getComplaints(casesRequest, token, type)
+            progressBar.visibility = View.VISIBLE
+        }else {
+            Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
+        }
     }
 
 }

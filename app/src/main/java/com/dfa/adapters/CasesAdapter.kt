@@ -1094,10 +1094,6 @@ class CasesAdapter(
                "accept"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.blue));
                "resolved"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.green));
                "unauthentic"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.grey));
-
-
-
-
            }
 
         }
