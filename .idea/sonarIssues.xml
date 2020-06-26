@@ -13,52 +13,27 @@
             <set />
           </value>
         </entry>
-        <entry key="$USER_HOME$/.gradle/caches/transforms-2/files-2.1/a3509cb743a10a7a7eea5df484c34703/res/values/values.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../DigitalVehicleRequest/app/src/main/java/com/swaraj/digitalvehicle/customviews/CenteredToolbar.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../FleetManagement/app/src/main/java/com/example/fleet/utils/BaseActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/build.gradle">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/adapters/CasesAdapter.kt">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/apis/ApiClient.kt">
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/apis/CallRetrofitApi.kt">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/ui/crimedetails/view/IncidentDetailActivity.kt">
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/pojo/request/ComplaintRequest.kt">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/ui/emergency/view/EmergencyFragment.kt">
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/pojo/response/PStationsListResponse.java">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/ui/generalpublic/DownloadTask.java">
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/pojo/response/PStationsListResponse.kt">
           <value>
             <set />
           </value>
@@ -68,7 +43,32 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/ui/generalpublic/VideoPlayerActivity.kt">
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/ui/generalpublic/model/PublicModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/ui/generalpublic/presenter/PublicComplaintPresenter.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/ui/generalpublic/presenter/PublicComplaintPresenterImpl.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/ui/generalpublic/view/GeneralPublicHomeFragment.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/ui/generalpublic/view/PublicComplaintView.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/ui/home/fragments/home/view/HomeActivity.kt">
           <value>
             <set />
           </value>
@@ -83,372 +83,7 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/dfa/utils/UnsafeOkHttpGlideModule.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/adapters/BindingAdapters.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/apis/ApiClient.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/apis/CallRetrofitApi.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/application/MyApplication.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/base/BaseActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/base/presenter/BasePresenter.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/base/view/BaseView.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/customviews/CenteredToolbar.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/fragments/PhotoDialogFragment.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/fragments/model/FragmentModel.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/listeners/OnListItemClickListener.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/listeners/OnMarkStatusClickListener.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/pojo/ComplaintRequest.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/pojo/request/ComplaintRequest.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/pojo/request/NGORequest.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/pojo/request/PoliceFormDataRequest.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/pojo/request/PoliceStatusRequest.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/pojo/response/ComplaintResponse.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/pojo/response/GetComplaintsResponse.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/pojo/response/GetPoliceFormData.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/pojo/response/NGOResponse.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/DashboardActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/SplashActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/dashboard/DashboardActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/dashboard/PassCodeActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/drugs/DrugsActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/generalpublic/GeneralPublicActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/generalpublic/model/PublicModel.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/generalpublic/presenter/PublicComplaintPresenter.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/generalpublic/presenter/PublicComplaintPresenterImpl.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/generalpublic/presenter/PublicPresenter.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/generalpublic/presenter/PublicPresenterImpl.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/generalpublic/view/GeneralPublicHomeActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/generalpublic/view/IncidentDetailActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/generalpublic/view/PublicComplaintView.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/generalpublic/view/PublicView.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/ngo/DrugsActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/ngo/NGOActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/ngo/NGODetailActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/ngo/NGOFormDetailActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/ngo/adapter/GeneralComplaintsListAdapter.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/ngo/ngoform/NGOFormDetailActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/ngo/ngoform/presenter/NGOFormPresenter.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/ngo/ngoform/view/NGOFormView.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/ngo/view/NgoView.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/ngoform/NGOFormDetailActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/ngoform/model/NGOFormModel.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/ngoform/presenter/NGOFormPresenter.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/ngoform/presenter/NGOFormPresenterImpl.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/ngoform/view/NGOFormView.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/police/PoliceActivity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/police/adapter/NgoDetailsForPoliceAdapter.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/police/model/PoliceModel.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/police/presenter/PolicePresenter.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/police/presenter/PolicePresenterImpl.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/ui/police/view/PoliceView.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/utils/BindingUtils.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/utils/Constants.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/utils/FontStyle.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/utils/GpsUtils.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/utils/PreferenceHandler.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/ngo/utils/Utilities.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/drawable/green_bordered_button.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/drawable/grey_bg.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/drawable/ic_edit_back.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/drawable/ic_expand_more_black_24dp.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/drawable/thumb_stroke.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/activity_dashboard.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/activity_drugs.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/activity_incident_detail.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/activity_ngo_detail.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/activity_passcode.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/activity_police.xml">
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/activity_contact_us.xml">
           <value>
             <set />
           </value>
@@ -458,87 +93,12 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/activity_public_home.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/activity_splash.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/dialog_change_status.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/dialog_image_choice.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/fragment_image_dialog_view.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/general_complaints_listing_items.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/item_case.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/layout_custom_alert.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/ngo_details_to_police_listing.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/toolbar_layout.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/values/array.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/values/colors.xml">
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/fragment_public_home.xml">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/values/styles.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/values/xml/provider_paths.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/build.gradle">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="D:/GoodsDelivery/Android/GoodsDelivery/app/src/main/res/values/strings.xml">
           <value>
             <set />
           </value>

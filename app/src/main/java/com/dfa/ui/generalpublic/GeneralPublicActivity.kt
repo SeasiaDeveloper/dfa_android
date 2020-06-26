@@ -1348,8 +1348,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         EmergencyFragment.staticDistValueList = response
 
         val distValueList = ArrayList<String>()
-
-
+        spPolice.visibility=View.GONE
         distValueList.add("Please select district")
 
         for (i in 0..response.data.size - 1) {
@@ -1448,20 +1447,33 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     "Spinner selected : ${parent.getItemAtPosition(position)}"
                     if (position != 0) {
                         police_id = pstationResponse!!.data?.get(position - 1)?.id.toString()
-                        if (mediaType.equals("videos")) {
-                            if (pathOfImages.size > 0) {
-                                if (!pathOfImages.get(0).isEmpty()
-                                ) {
 
-                                    if (File(pathOfImages.get(0)).length() > 5000) {
-                                        videoCompressorCustom(pathOfImages)
-                                    } else {
-                                        complaintsPresenter.checkValidations(
-                                            1,
-                                            pathOfImages,
-                                            etDescription.text.toString()
-                                        )
+                        if (etDescription.text.toString().trim() == "") {
+                            Utilities.showMessage(this@GeneralPublicActivity, "Please enter description")
+
+                        }
+                        else {
+                            if (mediaType.equals("videos")) {
+                                if (pathOfImages.size > 0) {
+                                    if (!pathOfImages.get(0).isEmpty()
+                                    ) {
+
+                                        if (File(pathOfImages.get(0)).length() > 5000) {
+                                            videoCompressorCustom(pathOfImages)
+                                        } else {
+                                            complaintsPresenter.checkValidations(
+                                                1,
+                                                pathOfImages,
+                                                etDescription.text.toString()
+                                            )
+                                        }
                                     }
+                                } else {
+                                    complaintsPresenter.checkValidations(
+                                        1,
+                                        pathOfImages,
+                                        etDescription.text.toString()
+                                    )
                                 }
                             } else {
                                 complaintsPresenter.checkValidations(
@@ -1470,13 +1482,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                                     etDescription.text.toString()
                                 )
                             }
-                        } else {
-                            complaintsPresenter.checkValidations(
-                                1,
-                                pathOfImages,
-                                etDescription.text.toString()
-                            )
                         }
+
                     }
 
                 }
