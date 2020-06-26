@@ -436,9 +436,10 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
         if (hitType == "foreground") {
            // newCompaintsButton!!.visibility = View.GONE
-            complaints = response.data!!
 
-            if (complaints.isNotEmpty()) {
+
+            if (response.data!!.isNotEmpty()) {
+                complaints = response.data!!
                 if (tvRecord != null) {
                     tvRecord.visibility = View.GONE
                     rvPublic.visibility = View.VISIBLE
@@ -485,6 +486,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 if (pageCount == 1) {
                     tvRecord.visibility = View.VISIBLE
                     rvPublic.visibility = View.GONE
+               // }
 //                } else {
 ////                    if (complaints.size == 0) {
 ////                        tvRecord.visibility = View.VISIBLE
@@ -800,6 +802,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             /* adapter?.clear()
              endlessScrollListener?.resetState()
              doApiCall()*/
+
+            print(tvRecord.visibility)
+
             change = 0
         } else {
             if (fromIncidentDetailScreen == 0) {
