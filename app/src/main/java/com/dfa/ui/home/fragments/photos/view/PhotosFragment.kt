@@ -33,7 +33,6 @@ import kotlinx.android.synthetic.main.fragment_photos.itemsswipetorefresh
 import kotlinx.android.synthetic.main.fragment_photos.tvRecord
 
 class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
-
     private lateinit var adapter: PhotosAdapter
     private var photos: List<GetPhotosResponse.Data> = mutableListOf()
     lateinit var request: GetPhotosRequest
