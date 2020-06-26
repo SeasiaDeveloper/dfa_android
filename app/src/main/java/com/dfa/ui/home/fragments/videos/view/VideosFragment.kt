@@ -30,7 +30,6 @@ import com.dfa.utils.InternetUtils
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
 import kotlinx.android.synthetic.main.fragment_videos.*
-import kotlinx.android.synthetic.main.fragment_videos.itemsswipetorefresh
 
 class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
     private lateinit var adapter: VideosAdapter
@@ -52,7 +51,7 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
         super.onResume()
         if (isFirst) {
             request = GetPhotosRequest("videos")
-            var internetUtils= InternetUtils()
+            var internetUtils = InternetUtils()
             if (internetUtils.isOnline(activity!!)) {
                 Utilities.showProgress(activity!!)
                 authorizationToken =
@@ -112,13 +111,16 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
         Utilities.dismissProgress()
         videos = response.data!!
         adapter.changeList(videos.toMutableList())
-        if (videos.isNotEmpty()) {
+        if (videos.size>0) {
             tvRecordVideos?.visibility = View.GONE
             rvVideos?.visibility = View.VISIBLE
+            itemsswipetorefresh?.visibility = View.VISIBLE
 
         } else {
             tvRecordVideos?.visibility = View.VISIBLE
             rvVideos?.visibility = View.GONE
+            itemsswipetorefresh?.visibility = View.GONE
+
         }
     }
 

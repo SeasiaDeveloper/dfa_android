@@ -434,6 +434,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 if (tvRecord != null) {
                     tvRecord.visibility = View.GONE
                     rvPublic.visibility = View.VISIBLE
+                    dataView.visibility = View.VISIBLE
 
                     if (!isLike) {
                         if (commentChange == 0 && !whenDeleteCall) {
@@ -477,10 +478,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 if (pageCount == 1) {
                     tvRecord.visibility = View.VISIBLE
                     rvPublic.visibility = View.GONE
+                    dataView.visibility = View.GONE
+
                 } else {
                     if (complaints.size == 0) {
                         tvRecord.visibility = View.VISIBLE
                         rvPublic.visibility = View.GONE
+                        dataView.visibility = View.GONE
+
                     }
                 }
                 progressBar.visibility = View.GONE

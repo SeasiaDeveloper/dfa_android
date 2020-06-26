@@ -122,13 +122,16 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
         Utilities.dismissProgress()
         photos = response.data!!
         adapter.changeList(photos.toMutableList())
-        if (photos.isNotEmpty()) {
+        if (photos.size>0) {
             tvRecord?.visibility = View.GONE
             rvPhotos?.visibility = View.VISIBLE
+            itemsswipetorefresh?.visibility = View.VISIBLE
 
         } else {
             tvRecord?.visibility = View.VISIBLE
             rvPhotos?.visibility = View.GONE
+            itemsswipetorefresh?.visibility = View.GONE
+
         }
     }
 
