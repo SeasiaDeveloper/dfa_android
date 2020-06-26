@@ -319,7 +319,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
             R.id.btnSubmitParticular -> {
 
-
                 if (etDescription.text.toString().trim() == "") {
                     Utilities.showMessage(this, "Please enter description")
 
@@ -495,34 +494,48 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
             if (lengthBeforeCom > 500000 && lengthBeforeCom < 70000000) {
 
-                VideoCompress.compressVideoMedium(video.get(0), outPath, object :
-                    VideoCompress.CompressListener {
-                    override fun onStart() {
-                        Log.e("Compressing", "Compress Start")
-                        progressDialog.setCancelable(false)
-                        progressDialog.setMessage("Processing Video...")
-                        progressDialog.show()
-                    }
 
+                if(lengthBeforeCom> 500000  && lengthBeforeCom<= 1000000)
+                {
+                    pathOfImages = ArrayList()
+                    pathOfImages.add(video.get(0))
+                    complaintsPresenter.checkValidations(
+                        1,
+                        pathOfImages,
+                        etDescription.text.toString()
+                    )
+                }
 
-                    override fun onSuccess() {
+                else {
 
-                        try {
-                            if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
-                        } catch (e: IllegalArgumentException) { // Handle or log or ignore
-
-                        } catch (e: java.lang.Exception) { // Handle or log or ignore
-
+                    VideoCompress.compressVideoMedium(video.get(0), outPath, object :
+                        VideoCompress.CompressListener {
+                        override fun onStart() {
+                            Log.e("Compressing", "Compress Start")
+                            progressDialog.setCancelable(false)
+                            progressDialog.setMessage("Processing Video...")
+                            progressDialog.show()
                         }
 
+
+                        override fun onSuccess() {
+
+                            try {
+                                if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
+                            } catch (e: IllegalArgumentException) { // Handle or log or ignore
+
+                            } catch (e: java.lang.Exception) { // Handle or log or ignore
+
+                            }
+
 //                        if (File(outPath).length() <= 50000000) {
-                        pathOfImages = ArrayList()
-                        pathOfImages.add(outPath)
-                        complaintsPresenter.checkValidations(
-                            1,
-                            pathOfImages,
-                            etDescription.text.toString()
-                        )
+                            pathOfImages = ArrayList()
+                            pathOfImages.add(outPath)
+                            complaintsPresenter.checkValidations(
+                                1,
+                                pathOfImages,
+                                etDescription.text.toString()
+                            )
 //                        } else {
 //                            Toast.makeText(
 //                                this@GeneralPublicActivity,
@@ -530,25 +543,26 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 //                                Toast.LENGTH_LONG
 //                            ).show()
 //                        }
-                    }
+                        }
 
-                    override fun onFail() {
-                        Log.e("Compressing", "Compress Failed!")
-                        try {
-                            if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
-                        } catch (e: IllegalArgumentException) { // Handle or log or ignore
+                        override fun onFail() {
+                            Log.e("Compressing", "Compress Failed!")
+                            try {
+                                if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
+                            } catch (e: IllegalArgumentException) { // Handle or log or ignore
 
-                        } catch (e: java.lang.Exception) { // Handle or log or ignore
+                            } catch (e: java.lang.Exception) { // Handle or log or ignore
+
+                            }
+                        }
+
+                        override fun onProgress(percent: Float) {
+                            progressDialog.setMessage("Compressing video " + percent.toInt() + "%")
+                            Log.e("Compressing", percent.toString())
 
                         }
-                    }
-
-                    override fun onProgress(percent: Float) {
-                        progressDialog.setMessage("Compressing video " + percent.toInt() + "%")
-                        Log.e("Compressing", percent.toString())
-
-                    }
-                })
+                    })
+                }
 
             } else {
                 Toast.makeText(this, "Video size should be 500 KB-70 MB ", Toast.LENGTH_LONG).show()
@@ -1213,7 +1227,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             lattitude = "0"
             longitude = "0"
         } else {
-            if (lattitude.equals("") || longitude.equals("")) {
+            if (lattitude.equals("") || longitude.equals("")|| lattitude.equals("0")) {
 
 
                 if (ActivityCompat.checkSelfPermission(
