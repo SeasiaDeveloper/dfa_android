@@ -4,19 +4,12 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
 import android.view.*
 import android.widget.ImageView
-import android.widget.MediaController
 import android.widget.PopupMenu
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.MenuCompat
-
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -25,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-
 import com.dfa.R
 import com.dfa.application.MyApplication
 import com.dfa.databinding.ItemCaseBinding
@@ -37,18 +29,13 @@ import com.dfa.pojo.response.UpdateStatusSuccess
 import com.dfa.ui.commentlikelist.CommentLikeUsersList
 import com.dfa.ui.comments.CommentsActivity
 import com.dfa.ui.contactus.ContactUsActivity
-
 import com.dfa.ui.generalpublic.VideoPlayerActivity
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.dfa.ui.home.fragments.home.view.HomeActivity
 import com.dfa.ui.mycases.MyCasesActivity
-import com.dfa.ui.mycases.MyCasesActivity.Companion.PERMISSION_READ_STORAGE
-import com.dfa.ui.mycases.MyCasesActivity.Companion.REQUEST_PERMISSIONS
 import com.dfa.ui.profile.ProfileActivity
-import com.dfa.utils.CheckRuntimePermissions
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
-import kotlinx.android.synthetic.main.activity_public.*
 import kotlinx.android.synthetic.main.item_case.view.*
 
 
@@ -389,58 +376,58 @@ class CasesAdapter(
                     .error(R.drawable.noimage)
 
 
-               if(item.media_type.equals("photos")){
-                   if (item.media_list != null && item.media_list.isNotEmpty()) {
-                       itemView.imgMediaPost.visibility = View.VISIBLE
-                       itemView.videoThumbNialParent.visibility = View.GONE
-                       val mediaUrl: String = item.media_list[0]
-                       try {
-                           Glide.with(context).asBitmap().load(mediaUrl).apply(options)
-                               .into(itemView.imgMediaPost)
-                       } catch (e: Exception) {
-                           e.printStackTrace()
-                       }
-                   } else {
-                       itemView.imgMediaPost.visibility = View.GONE
-                   }
+                if (item.media_type.equals("photos")) {
+                    if (item.media_list != null && item.media_list.isNotEmpty()) {
+                        itemView.imgMediaPost.visibility = View.VISIBLE
+                        itemView.videoThumbNialParent.visibility = View.GONE
+                        val mediaUrl: String = item.media_list[0]
+                        try {
+                            Glide.with(context).asBitmap().load(mediaUrl).apply(options)
+                                .into(itemView.imgMediaPost)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    } else {
+                        itemView.imgMediaPost.visibility = View.GONE
+                    }
 
-               } else if(item.media_type.equals("videos")){
-                   if (item.media_list != null && item.media_list.isNotEmpty()) {
-                       itemView.imgMediaPost.visibility = View.GONE
-                       itemView.videoThumbNialParent.visibility = View.VISIBLE
-                       val options = RequestOptions()
-                       val mediaUrl: String = item.media_list[0]
+                } else if (item.media_type.equals("videos")) {
+                    if (item.media_list != null && item.media_list.isNotEmpty()) {
+                        itemView.imgMediaPost.visibility = View.GONE
+                        itemView.videoThumbNialParent.visibility = View.VISIBLE
+                        val options = RequestOptions()
+                        val mediaUrl: String = item.media_list[0]
 //                       Glide.with(context)
 //                           .asBitmap()
 //                           .load(mediaUrl)
 //                           .apply(options)
 //                           .into(itemView.videoThumbNial);
-                      /* Glide.with(context)
-                           .asBitmap()
-                           .load(itemView.imgMediaPost)
-                           .into(itemView.videoThumbNial);*/
+                        /* Glide.with(context)
+                             .asBitmap()
+                             .load(itemView.imgMediaPost)
+                             .into(itemView.videoThumbNial);*/
 
 
-                       Glide.with(context)
-                           .asBitmap()
-                           .load(mediaUrl)
-                           .timeout(60000)
-                           .diskCacheStrategy(DiskCacheStrategy.ALL)
-                           .placeholder(R.drawable.camera_placeholder)
-                           .error(R.drawable.camera_placeholder)
-                           .into(itemView.videoThumbNial);
+                        Glide.with(context)
+                            .asBitmap()
+                            .load(mediaUrl)
+                            .timeout(60000)
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .placeholder(R.drawable.camera_placeholder)
+                            .error(R.drawable.camera_placeholder)
+                            .into(itemView.videoThumbNial);
 
 
-                       itemView.videoThumbNialParent.setOnClickListener {
-                           val mediaUrl= item!!.media_list?.get(0)
-                           var intent=Intent(context,VideoPlayerActivity::class.java)
-                           intent.putExtra("videoPath",mediaUrl)
-                           intent.putExtra("documentId",item.id)
-                           context.startActivity(intent)
-                       }
+                        itemView.videoThumbNialParent.setOnClickListener {
+                            val mediaUrl = item!!.media_list?.get(0)
+                            var intent = Intent(context, VideoPlayerActivity::class.java)
+                            intent.putExtra("videoPath", mediaUrl)
+                            intent.putExtra("documentId", item.id)
+                            context.startActivity(intent)
+                        }
 
-                   }
-               }
+                    }
+                }
                 //btnDelete visibility
                 if (item.showDelete == 1) {
                     itemView.btnDeletePost.visibility = View.VISIBLE
@@ -560,7 +547,7 @@ class CasesAdapter(
                     .error(R.drawable.noimage)
 
 
-                if(item.media_type.equals("photos")) {
+                if (item.media_type.equals("photos")) {
                     if (item.media_list!!.isNotEmpty()) {
                         val mediaUrl: String = item.media_list[0]
                         try {
@@ -570,8 +557,7 @@ class CasesAdapter(
                             e.printStackTrace()
                         }
                     }
-                }
-                else if(item.media_type.equals("videos")){
+                } else if (item.media_type.equals("videos")) {
                     if (item.media_list != null && item.media_list.isNotEmpty()) {
                         itemView.imgComplaintMedia.visibility = View.GONE
                         itemView.videoThumbNialParent.visibility = View.VISIBLE
@@ -592,11 +578,11 @@ class CasesAdapter(
                     }
                 }
                 itemView.videoThumbNialParent.setOnClickListener {
-                        val mediaUrl= item!!.media_list?.get(0)
-                        var intent=Intent(context,VideoPlayerActivity::class.java)
-                        intent.putExtra("videoPath",mediaUrl)
-                        intent.putExtra("documentId",item.id)
-                        context.startActivity(intent)
+                    val mediaUrl = item!!.media_list?.get(0)
+                    var intent = Intent(context, VideoPlayerActivity::class.java)
+                    intent.putExtra("videoPath", mediaUrl)
+                    intent.putExtra("documentId", item.id)
+                    context.startActivity(intent)
                 }
 
                 if (item.showDelete == 1) {
@@ -707,8 +693,8 @@ class CasesAdapter(
                 //if NGO show profile image
                 if (type == 1) {
 
-                    itemView.ll_gp.visibility=View.VISIBLE
-                    itemView.ll_ngo.visibility=View.GONE
+                    itemView.ll_gp.visibility = View.VISIBLE
+                    itemView.ll_ngo.visibility = View.GONE
                     if (userDetail.profile_pic != null) {
                         try {
                             Glide.with(context).asBitmap().load(userDetail.profile_pic)
@@ -733,8 +719,8 @@ class CasesAdapter(
                 }
                 //in case of General public or police
                 else {
-                    itemView.ll_gp.visibility=View.GONE
-                    itemView.ll_ngo.visibility=View.VISIBLE
+                    itemView.ll_gp.visibility = View.GONE
+                    itemView.ll_ngo.visibility = View.VISIBLE
 
                     val options1 = RequestOptions()
                         /* .centerCrop()*/
@@ -822,9 +808,16 @@ class CasesAdapter(
                  }
 
                  val kmValue = String.format("%.2f", kmInDouble)*/
-                var distance =
-                    Utilities.calculateDistance(item.latitude, item.longitude, context)
-                itemView.location.setText("" + distance + "KM away").toString()
+
+
+                if (item.latitude == "0")
+                    itemView.location.setText(" NA   ").toString()
+                else {
+                    var distance =
+                        Utilities.calculateDistance(item.latitude, item.longitude, context)
+                    itemView.location.setText("" + distance + "KM away").toString()
+                }
+
                 itemView.location.setOnClickListener {
                     val gmmIntentUri =
                         Uri.parse("google.navigation:q=" + item.latitude + "," + item.longitude + "")
@@ -845,10 +838,10 @@ class CasesAdapter(
                 itemView.case_no.setText(item.id).toString()
 
 
-                if(item.media_type.equals("videos")){
+                if (item.media_type.equals("videos")) {
                     itemView.imgComplaintMedia.visibility = View.GONE
                     itemView.videoThumbNialParent.visibility = View.VISIBLE
-                }else{
+                } else {
                     itemView.imgComplaintMedia.visibility = View.VISIBLE
                     itemView.videoThumbNialParent.visibility = View.GONE
                 }
@@ -918,10 +911,10 @@ class CasesAdapter(
                     itemView.childExpandable.visibility = View.VISIBLE
                     itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
                     itemView.moreLess.setText(R.string.less)
-                    if(item.media_type.equals("videos")){
+                    if (item.media_type.equals("videos")) {
                         itemView.imgComplaintMedia.visibility = View.GONE
                         itemView.videoThumbNialParent.visibility = View.VISIBLE
-                    }else{
+                    } else {
                         itemView.imgComplaintMedia.visibility = View.VISIBLE
                         itemView.videoThumbNialParent.visibility = View.GONE
                     }
@@ -932,25 +925,25 @@ class CasesAdapter(
                 }
 
                 itemView.imgExpandable_linear_layout.setOnClickListener {
-                        //1st entry
-                        if (!item.isApiHit) {
-                            //call api:
-                            if (isGeneralPublicFragment) {
-                                val callMethod = fragment as GeneralPublicHomeFragment
-                                callMethod.callFirImageApi(item.id!!, adapterPosition)
-                            } else {
-                                val myCasesActivity = activity as MyCasesActivity
-                                myCasesActivity.callFirImageApi(item.id!!, adapterPosition)
-                            }
-
+                    //1st entry
+                    if (!item.isApiHit) {
+                        //call api:
+                        if (isGeneralPublicFragment) {
+                            val callMethod = fragment as GeneralPublicHomeFragment
+                            callMethod.callFirImageApi(item.id!!, adapterPosition)
                         } else {
-                            if (itemView.childExpandable.visibility == View.VISIBLE) {
-                                itemView.childExpandable.visibility = View.GONE
-                                itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
-                                item.isApiHit = false
-                                itemView.moreLess.setText(R.string.more)
-                            }
+                            val myCasesActivity = activity as MyCasesActivity
+                            myCasesActivity.callFirImageApi(item.id!!, adapterPosition)
                         }
+
+                    } else {
+                        if (itemView.childExpandable.visibility == View.VISIBLE) {
+                            itemView.childExpandable.visibility = View.GONE
+                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                            item.isApiHit = false
+                            itemView.moreLess.setText(R.string.more)
+                        }
+                    }
                 }
 
                 //added in case of more or less
@@ -978,22 +971,22 @@ class CasesAdapter(
 
             } else {
                 itemView.imgExpandable_linear_layout.setOnClickListener {
-                        if (itemView.childExpandable.visibility == View.VISIBLE) {
-                            itemView.childExpandable.visibility = View.GONE
-                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
-                            itemView.moreLess.setText(R.string.more)
+                    if (itemView.childExpandable.visibility == View.VISIBLE) {
+                        itemView.childExpandable.visibility = View.GONE
+                        itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                        itemView.moreLess.setText(R.string.more)
+                    } else {
+                        itemView.childExpandable.visibility = View.VISIBLE
+                        if (item.media_type.equals("videos")) {
+                            itemView.imgComplaintMedia.visibility = View.GONE
+                            itemView.videoThumbNialParent.visibility = View.VISIBLE
                         } else {
-                            itemView.childExpandable.visibility = View.VISIBLE
-                            if(item.media_type.equals("videos")){
-                                itemView.imgComplaintMedia.visibility = View.GONE
-                                itemView.videoThumbNialParent.visibility = View.VISIBLE
-                            }else{
-                                itemView.imgComplaintMedia.visibility = View.VISIBLE
-                                itemView.videoThumbNialParent.visibility = View.GONE
-                            }
-                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
-                            itemView.moreLess.setText(R.string.less)
+                            itemView.imgComplaintMedia.visibility = View.VISIBLE
+                            itemView.videoThumbNialParent.visibility = View.GONE
                         }
+                        itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
+                        itemView.moreLess.setText(R.string.less)
+                    }
                 }
 
                 //added for less or more
@@ -1084,17 +1077,17 @@ class CasesAdapter(
             dialog.show()
         }
 
-        fun setColor( textView:com.dfa.customviews.CustomtextView,data:String)
-        {
-           when(data)
-           {
-               "unassigned"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.red));
-               "approved"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.yellow));
-               "accepted"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.blue));
-               "accept"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.blue));
-               "resolved"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.green));
-               "unauthentic"->textView.setTextColor(MyApplication.instance.resources.getColor(R.color.grey));
-           }
+        fun setColor(textView: com.dfa.customviews.CustomtextView, data: String) {
+            when (data) {
+                "unassigned" -> textView.setTextColor(MyApplication.instance.resources.getColor(R.color.red));
+                "approved" -> textView.setTextColor(MyApplication.instance.resources.getColor(R.color.yellow));
+                "accepted" -> textView.setTextColor(MyApplication.instance.resources.getColor(R.color.blue));
+                "accept" -> textView.setTextColor(MyApplication.instance.resources.getColor(R.color.blue));
+                "resolved" -> textView.setTextColor(MyApplication.instance.resources.getColor(R.color.green));
+                "unauthentic" -> textView.setTextColor(MyApplication.instance.resources.getColor(R.color.grey));
+
+
+            }
 
         }
 
