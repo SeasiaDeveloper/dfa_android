@@ -4,9 +4,9 @@ object Constants {
     //const val BASE_URL="http://stgsp.appsndevs.com:9041/Complaint/api/"
 //    const val BASE_URL = "http://stgsp.appsndevs.com:9041/drugfree/wp-json/"
     /* staging url*/
-//    const val BASE_URL = "http://13.127.23.249/drugfree/wp-json/"
-//    const val BASE_URL_FOR_TERMS_AND_CONDITIONS = "http://13.127.23.249/drugfree/terms-conditions/"
-//    const val BASE_URL_FOR_PRIVACY_POLICY ="http://13.127.23.249/drugfree/app-privacy-policy/"
+    //const val BASE_URL = "http://13.127.23.249/drugfree/wp-json/"
+    //const val BASE_URL_FOR_TERMS_AND_CONDITIONS = "http://13.127.23.249/drugfree/terms-conditions/"
+    //const val BASE_URL_FOR_PRIVACY_POLICY ="http://13.127.23.249/drugfree/app-privacy-policy/"
     /*production url*/
 
    // const val BASE_URL = "http://13.127.23.249/drugfree/wp-json/"

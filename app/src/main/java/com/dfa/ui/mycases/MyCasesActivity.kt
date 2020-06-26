@@ -51,11 +51,6 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     lateinit var fragment: Fragment
     var positionOfFir: Int? = null
 
-
-
-
-
-
     override fun onStatusClick(statusId: String) {
         this.statusId = statusId
     }
