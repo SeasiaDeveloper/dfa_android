@@ -480,13 +480,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                     rvPublic.visibility = View.GONE
                     dataView.visibility = View.GONE
 
-                } else {
-                    if (complaints.size == 0) {
-                        tvRecord.visibility = View.VISIBLE
-                        rvPublic.visibility = View.GONE
-                        dataView.visibility = View.GONE
+                }
+                else {
+                      /*  if (complaints.size == 0) {
+                            tvRecord.visibility = View.VISIBLE
+                            rvPublic.visibility = View.GONE
+                            dataView.visibility = View.GONE
 
-                    }
+                        }*/
                 }
                 progressBar.visibility = View.GONE
             }
