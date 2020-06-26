@@ -45,7 +45,10 @@ import com.dfa.ui.home.fragments.cases.view.CasesView
 import com.dfa.ui.home.fragments.home.view.HomeActivity
 import com.dfa.ui.login.view.LoginActivity
 import com.dfa.ui.mycases.MyCasesActivity
-import com.dfa.utils.*
+import com.dfa.utils.CompressImageUtilities
+import com.dfa.utils.Constants
+import com.dfa.utils.PreferenceHandler
+import com.dfa.utils.Utilities
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_public_home.*
@@ -185,7 +188,10 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-       // newCompaintsButton = binding.extFab;
+        rvPublic.visibility=View.VISIBLE
+        tvRecord.visibility=View.GONE
+
+        // newCompaintsButton = binding.extFab;
         //swipeRefresh.setOnRefreshListener(this)
         fragment = this
         setAdapter()
@@ -434,7 +440,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 if (tvRecord != null) {
                     tvRecord.visibility = View.GONE
                     rvPublic.visibility = View.VISIBLE
-                   // dataView.visibility = View.VISIBLE
 
                     if (!isLike) {
                         if (commentChange == 0 && !whenDeleteCall) {
@@ -477,17 +482,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             } else {
                 if (pageCount == 1) {
                     tvRecord.visibility = View.VISIBLE
-                   // rvPublic.visibility = View.GONE
-                   // dataView.visibility = View.GONE
-                }
+                    rvPublic.visibility = View.GONE
 //                } else {
-//                    if (complaints.size == 0) {
-//                        tvRecord.visibility = View.VISIBLE
-//                        rvPublic.visibility = View.GONE
-//                        dataView.visibility = View.GONE
-//
-//                    }
+////                    if (complaints.size == 0) {
+////                        tvRecord.visibility = View.VISIBLE
+////                        rvPublic.visibility = View.GONE
+////                    }
 //                }
+                    }
                 progressBar.visibility = View.GONE
             }
 
@@ -796,18 +798,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             /* adapter?.clear()
              endlessScrollListener?.resetState()
              doApiCall()*/
-//            if(complaints.size>0) {
-//                tvRecord.visibility = View.GONE
-//                rvPublic.visibility = View.VISIBLE
-//                dataView.visibility = View.VISIBLE
-//            }
-//            else
-//            {
-//                tvRecord.visibility = View.VISIBLE
-//                dataView.visibility = View.GONE
-//                rvPublic.visibility = View.GONE
-//
-//            }
             change = 0
         } else {
             if (fromIncidentDetailScreen == 0) {
@@ -838,13 +828,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         hitType = "foreground"
         val casesRequest =
             CasesRequest("1", "", "-1", "1", "10")  //type = -1 for fetching both cases and posts
-        var internetUtils=InternetUtils()
-        if (internetUtils.isOnline(activity!!)) {
-            Utilities.showProgress(mContext)
-            presenter.getComplaints(casesRequest, token, type)
-        } else {
-            Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
-        }
+        Utilities.showProgress(mContext)
+        presenter.getComplaints(casesRequest, token, type)
 
     }
 
@@ -972,14 +957,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         pageCount = page
         val casesRequest =
             CasesRequest("1", "", "-1", page.toString(), "10" /*totalItemsCount.toString()*/)
-        var internetUtils= InternetUtils()
-        if (internetUtils.isOnline(activity!!)) {
-            Utilities.showProgress(mContext)
-            presenter.getComplaints(casesRequest, token, type)
-            progressBar.visibility = View.VISIBLE
-        }else {
-            Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
-        }
+        presenter.getComplaints(casesRequest, token, type)
+        progressBar.visibility = View.VISIBLE
     }
 
 

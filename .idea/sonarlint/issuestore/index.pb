@@ -79,8 +79,6 @@ X
 (app/src/main/res/layout/guest_dialog.xml,b\8\b8aef9f609625b330d65926cf72cf7a72bf52a75
 u
 Eapp/src/main/java/com/dfa/ui/home/fragments/home/view/HomeActivity.kt,a\3\a346fd45092998cdf3269327a0e9bc1a0f8d7798
-`
-0app/src/main/res/layout/fragment_public_home.xml,0\6\06c7b59ac702a5db1630ae1767999c7ecb683715
 y
 Iapp/src/main/java/com/dfa/ui/home/fragments/photos/view/PhotosFragment.kt,b\9\b9188b4e0e3b9f8980315388bb5507f3e6c53e90
 y
