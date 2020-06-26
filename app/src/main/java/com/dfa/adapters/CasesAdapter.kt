@@ -528,9 +528,7 @@ class CasesAdapter(
                     )
                 itemView.expandable_Level.text = /*"Level " + */item.urgency
 
-                if (item.status.equals("Unassigned") && !item.info.toString()
-                        .isEmpty() && item.info != null
-                ) {
+                if (item.status.equals("Unassigned") && !item.info.toString().isEmpty() && item.info != null) {
                     itemView.layout_info.visibility = View.VISIBLE
                     itemView.expandable_DescriptionNgo.visibility = View.VISIBLE
                     itemView.expandable_DescriptionNgo.text = item.info.toString()
@@ -755,10 +753,7 @@ class CasesAdapter(
                 itemView.layoutStatus.visibility = View.VISIBLE
                 itemView.txtCrimeType.text = item.crime_type
                 itemView.txtStatus.text = item.status
-                if (activity is HomeActivity) setColor(
-                    itemView.txtStatus,
-                    item.status.toString().toLowerCase()
-                )
+                if(activity is HomeActivity) setColor(itemView.txtStatus,item.status.toString().toLowerCase())
                 itemView.txtUrgencyTitle.text = context.getString(R.string.urgency_level)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     itemView.txtUrgencyTitle.setTextColor(
@@ -952,27 +947,27 @@ class CasesAdapter(
                 }
 
                 //added in case of more or less
-                /* itemView.moreLess.setOnClickListener {
-                         //1st entry
-                         if (!item.isApiHit) {
-                             //call api:
-                             if (isGeneralPublicFragment) {
-                                 val callMethod = fragment as GeneralPublicHomeFragment
-                                 callMethod.callFirImageApi(item.id!!, adapterPosition)
-                             } else {
-                                 val myCasesActivity = activity as MyCasesActivity
-                                 myCasesActivity.callFirImageApi(item.id!!, adapterPosition)
-                             }
+               /* itemView.moreLess.setOnClickListener {
+                        //1st entry
+                        if (!item.isApiHit) {
+                            //call api:
+                            if (isGeneralPublicFragment) {
+                                val callMethod = fragment as GeneralPublicHomeFragment
+                                callMethod.callFirImageApi(item.id!!, adapterPosition)
+                            } else {
+                                val myCasesActivity = activity as MyCasesActivity
+                                myCasesActivity.callFirImageApi(item.id!!, adapterPosition)
+                            }
 
-                         } else {
-                             if (itemView.childExpandable.visibility == View.VISIBLE) {
-                                 itemView.childExpandable.visibility = View.GONE
-                                 itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
-                                 item.isApiHit = false
-                                 itemView.moreLess.setText(R.string.more)
-                             }
-                         }
-                 }*/
+                        } else {
+                            if (itemView.childExpandable.visibility == View.VISIBLE) {
+                                itemView.childExpandable.visibility = View.GONE
+                                itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                                item.isApiHit = false
+                                itemView.moreLess.setText(R.string.more)
+                            }
+                        }
+                }*/
 
             } else {
                 itemView.imgExpandable_linear_layout.setOnClickListener {
@@ -995,24 +990,24 @@ class CasesAdapter(
                 }
 
                 //added for less or more
-                /* itemView.moreLess.setOnClickListener {
-                         if (itemView.childExpandable.visibility == View.VISIBLE) {
-                             itemView.childExpandable.visibility = View.GONE
-                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
-                             itemView.moreLess.setText(R.string.more)
-                         } else {
-                             if(item.media_type.equals("videos")){
-                                 itemView.imgComplaintMedia.visibility = View.GONE
-                                 itemView.videoThumbNialParent.visibility = View.VISIBLE
-                             }else{
-                                 itemView.imgComplaintMedia.visibility = View.VISIBLE
-                                 itemView.videoThumbNialParent.visibility = View.GONE
-                             }
-                             itemView.childExpandable.visibility = View.VISIBLE
-                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
-                             itemView.moreLess.setText(R.string.less)
-                         }
-                 }*/
+               /* itemView.moreLess.setOnClickListener {
+                        if (itemView.childExpandable.visibility == View.VISIBLE) {
+                            itemView.childExpandable.visibility = View.GONE
+                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                            itemView.moreLess.setText(R.string.more)
+                        } else {
+                            if(item.media_type.equals("videos")){
+                                itemView.imgComplaintMedia.visibility = View.GONE
+                                itemView.videoThumbNialParent.visibility = View.VISIBLE
+                            }else{
+                                itemView.imgComplaintMedia.visibility = View.VISIBLE
+                                itemView.videoThumbNialParent.visibility = View.GONE
+                            }
+                            itemView.childExpandable.visibility = View.VISIBLE
+                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
+                            itemView.moreLess.setText(R.string.less)
+                        }
+                }*/
             }
         }
 

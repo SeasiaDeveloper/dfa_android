@@ -79,15 +79,15 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
     }
 
     override fun onEmptyEmailId() {
-        Utilities.showMessage(this, "Enter Email Id or Mobile Number")
+        Utilities.showMessage(this, "Please Enter Mobile Number")
     }
 
     override fun onInvalidEmailId() {
-        Utilities.showMessage(this, "Enter valid email id")
+        Utilities.showMessage(this, "Enter valid Mobile Number")
     }
 
     override fun onEmptyPassword() {
-        Utilities.showMessage(this, "Enter Password First")
+        Utilities.showMessage(this, "Please Enter Password")
     }
 
     override fun onInvalidNumber() {

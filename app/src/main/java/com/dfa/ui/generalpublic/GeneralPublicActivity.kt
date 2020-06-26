@@ -1284,8 +1284,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 range,
                 pathOfImages.toArray(array),
                 etDescription.text.toString().trim(),
-                lattitude,
-                longitude,
+                "0",
+                "0",
                 mediaType!!,
                 address,
                 police_id

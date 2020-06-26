@@ -824,8 +824,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         hitType = "foreground"
         val casesRequest =
             CasesRequest("1", "", "-1", "1", "10")  //type = -1 for fetching both cases and posts
-        Utilities.showProgress(mContext)
-        presenter.getComplaints(casesRequest, token, type)
+        var internetUtils=InternetUtils()
+        if (internetUtils.isOnline(activity!!)) {
+            Utilities.showProgress(mContext)
+            presenter.getComplaints(casesRequest, token, type)
+        } else {
+            Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
+        }
 
     }
 
@@ -953,8 +958,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         pageCount = page
         val casesRequest =
             CasesRequest("1", "", "-1", page.toString(), "10" /*totalItemsCount.toString()*/)
-        presenter.getComplaints(casesRequest, token, type)
-        progressBar.visibility = View.VISIBLE
+        var internetUtils=InternetUtils()
+        if (internetUtils.isOnline(activity!!)) {
+            Utilities.showProgress(mContext)
+            presenter.getComplaints(casesRequest, token, type)
+            progressBar.visibility = View.VISIBLE
+        }else {
+            Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
+        }
     }
 
 
