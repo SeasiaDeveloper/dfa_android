@@ -810,7 +810,7 @@ class CasesAdapter(
                  val kmValue = String.format("%.2f", kmInDouble)*/
 
 
-                if (item.latitude == "0")
+                if (item.latitude == "0" || item.latitude=="" )
                     itemView.location.setText(" NA   ").toString()
                 else {
                     var distance =
