@@ -1,78 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:background="@drawable/white_round_corner"
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/white_round_corner">
+
     <RelativeLayout
-        android:layout_marginTop="@dimen/_5sdp"
         android:id="@+id/relative_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp">
+        android:layout_height="@dimen/_60sdp"
+        android:layout_marginTop="@dimen/_5sdp">
 
         <ImageView
-            android:layout_marginLeft="10dp"
-            android:src="@drawable/app_icon"
-            android:layout_width="80dp"
             android:id="@+id/iv_delete"
-            android:layout_height="80dp"/>
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/app_icon" />
 
         <com.dfa.customviews.CustomTextViewheading
-            android:text="@string/app_name"
-            android:textStyle="bold"
-            android:layout_alignParentRight="true"
-            android:textColor="@color/black"
             android:id="@+id/std_name"
-
-            android:textSize="@dimen/_12ssp"
-            android:layout_toRightOf="@+id/iv_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_marginLeft="@dimen/_6sdp"
+
             android:layout_marginTop="@dimen/_5sdp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <com.dfa.customviews.CustomTextViewheading
-            android:text="@string/if_you_want_to_do_action_you_should_login"
-            android:layout_below="@+id/std_name"
-            android:textSize="@dimen/_12ssp"
-
             android:layout_toRightOf="@+id/iv_delete"
-            android:layout_marginLeft="@dimen/_6sdp"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            android:textStyle="bold" />
+
+        <com.dfa.customviews.CustomTextViewheading
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/std_name"
+            android:layout_marginLeft="@dimen/_6sdp"
+            android:layout_toRightOf="@+id/iv_delete"
+            android:text="@string/if_you_want_to_do_action_you_should_login"
+            android:textSize="@dimen/_12ssp" />
     </RelativeLayout>
+
     <View
-        android:layout_centerInParent="true"
-        android:background="#EDE7E7"
+        android:id="@+id/view1"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp"
+        android:layout_below="@+id/relative_layout"
+        android:layout_marginTop="15dp"
+        android:background="#EDE7E7" />
 
     <RelativeLayout
-        android:layout_below="@+id/relative_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_60sdp">
+        android:layout_height="@dimen/_60sdp"
+        android:layout_below="@+id/view1">
 
         <com.dfa.customviews.CustomTextViewheading
             android:id="@+id/tv_cancel"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="40dp"
-            android:layout_marginTop="5dp"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/_25sdp"
+            android:layout_marginTop="5dp"
             android:background="@drawable/delete_shape"
             android:gravity="center"
-            android:layout_marginLeft="@dimen/_20sdp"
             android:text="Cancel"
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp" />
 
         <com.dfa.customviews.CustomTextViewheading
+            android:id="@+id/tv_delete"
             android:layout_width="@dimen/_90sdp"
             android:layout_height="40dp"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="5dp"
             android:layout_centerVertical="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="@dimen/_25sdp"
             android:background="@drawable/button_green_bg"
             android:gravity="center"
-            android:id="@+id/tv_delete"
-            android:layout_marginRight="@dimen/_20sdp"
             android:text="@string/login"
             android:textColor="@android:color/white"
             android:textSize="@dimen/_12ssp" />
