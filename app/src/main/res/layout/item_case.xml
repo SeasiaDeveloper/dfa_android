@@ -29,53 +29,6 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/ll_ngo"
-                    android:layout_width="match_parent"
-                    android:layout_height="90dp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <de.hdodenhof.circleimageview.CircleImageView
-                            android:id="@+id/olpiceLogo"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_50sdp"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/_4sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_marginBottom="@dimen/_5sdp"
-                            android:layout_weight="0.1"
-                            android:src="@drawable/ap_police" />
-
-                        <com.dfa.customviews.CustomTextViewheading
-                            android:id="@+id/tvHeading"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_weight="0.3"
-                            android:gravity="center"
-                            android:text="@string/cases_heading"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/_10ssp"
-                            app:font="@{`bold`}" />
-
-                        <ImageView
-                            android:id="@+id/ngoLogo"
-                            android:layout_width="@dimen/_50sdp"
-                            android:layout_height="@dimen/_50sdp"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="@dimen/_4sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
-                            android:layout_marginBottom="@dimen/_5sdp"
-                            android:layout_weight="0.1"
-                            android:src="@drawable/app_icon" />
-
-
-                    </LinearLayout>
-                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -83,6 +36,54 @@
                     android:layout_marginEnd="@dimen/_4sdp"
                     android:orientation="horizontal"
                     android:weightSum="2">
+
+                    <LinearLayout
+                        android:id="@+id/ll_ngo"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <de.hdodenhof.circleimageview.CircleImageView
+                                android:id="@+id/olpiceLogo"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_50sdp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/_4sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:layout_marginBottom="@dimen/_5sdp"
+                                android:layout_weight="0.1"
+                                android:src="@drawable/ap_police" />
+
+                            <com.dfa.customviews.CustomTextViewheading
+                                android:id="@+id/tvHeading"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_weight="0.3"
+                                android:gravity="center"
+                                android:text="@string/cases_heading"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/_10ssp"
+                                app:font="@{`bold`}" />
+
+                            <ImageView
+                                android:id="@+id/ngoLogo"
+                                android:layout_width="@dimen/_50sdp"
+                                android:layout_height="@dimen/_50sdp"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="@dimen/_4sdp"
+                                android:layout_marginTop="@dimen/_5sdp"
+                                android:layout_marginBottom="@dimen/_5sdp"
+                                android:layout_weight="0.1"
+                                android:src="@drawable/app_icon" />
+
+
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="0dp"

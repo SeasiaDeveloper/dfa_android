@@ -166,6 +166,8 @@ class ProfileActivity : BaseActivity(), ProfileView {
             if (jsondata.data?.adhar_number != null) {
                 prevAdhaarValue = jsondata.data?.adhar_number!!
                 adhaarNo = jsondata.data?.adhar_number!!
+            }else{
+                prevAdhaarValue=""
             }
 
             //  if(jsondata.data?.adhar_number!! != null)

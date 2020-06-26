@@ -312,7 +312,7 @@
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
-                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_marginBottom="@dimen/_20sdp"
                     android:background="@drawable/button_green_bg"
                     android:gravity="center"
                     android:padding="@dimen/_10sdp"
