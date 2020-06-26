@@ -5,7 +5,8 @@
     <LinearLayout
         android:id="@+id/contactuslayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_height="match_parent"
         android:layout_marginTop="@dimen/_10sdp"
         android:orientation="vertical">
 
@@ -40,7 +41,7 @@
                         android:layout_width="@dimen/_120sdp"
                         android:layout_height="@dimen/_120sdp"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/_2sdp"
+                        android:layout_marginTop="@dimen/_5sdp"
                         android:src="@drawable/pc_logo"
                         app:civ_border_color="@color/black" />
 
@@ -107,11 +108,11 @@
 
                     <ImageView
                         android:id="@+id/imgProfile"
-                        android:layout_width="@dimen/_100sdp"
+                        android:layout_width="@dimen/_105sdp"
                         android:layout_height="@dimen/_90sdp"
                         android:layout_gravity="center"
                         android:padding="@dimen/_4sdp"
-                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_15sdp"
                         android:paddingTop="3dp"
                         android:scaleType="fitXY"
                         android:src="@drawable/layer"
@@ -225,7 +226,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
                             android:layout_marginStart="@dimen/_12sdp"
-                            android:layout_marginTop="@dimen/_5sdp"
+                            android:layout_marginTop="@dimen/_10sdp"
                             android:layout_marginEnd="@dimen/_12sdp"
                             android:layout_marginBottom="@dimen/_5sdp"
                             android:background="@drawable/button_green_bg"

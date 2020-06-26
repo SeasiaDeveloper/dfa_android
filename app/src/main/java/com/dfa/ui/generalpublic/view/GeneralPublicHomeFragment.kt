@@ -45,10 +45,7 @@ import com.dfa.ui.home.fragments.cases.view.CasesView
 import com.dfa.ui.home.fragments.home.view.HomeActivity
 import com.dfa.ui.login.view.LoginActivity
 import com.dfa.ui.mycases.MyCasesActivity
-import com.dfa.utils.CompressImageUtilities
-import com.dfa.utils.Constants
-import com.dfa.utils.PreferenceHandler
-import com.dfa.utils.Utilities
+import com.dfa.utils.*
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_public_home.*
@@ -958,7 +955,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         pageCount = page
         val casesRequest =
             CasesRequest("1", "", "-1", page.toString(), "10" /*totalItemsCount.toString()*/)
-        var internetUtils=InternetUtils()
+        var internetUtils= InternetUtils()
         if (internetUtils.isOnline(activity!!)) {
             Utilities.showProgress(mContext)
             presenter.getComplaints(casesRequest, token, type)
