@@ -284,10 +284,10 @@ override fun setupUI() {
 fun setTabAdapter() {
 
     val adapter = TabLayoutAdapter(supportFragmentManager)
-    /*  if (!genPubHomeFrag.isAdded) {
+      if (!genPubHomeFrag.isAdded) {
           adapter.addFragment(genPubHomeFrag, "Home")
-      }*/
-    adapter.addFragment(genPubHomeFrag, "Home")
+      }
+    //adapter.addFragment(genPubHomeFrag, "Home")
     adapter.addFragment(EmergencyFragment(), "Emergency")
     //adapter.addFragment(CasesFragment(), "Cases")
     adapter.addFragment(PhotosFragment(), "Photos")

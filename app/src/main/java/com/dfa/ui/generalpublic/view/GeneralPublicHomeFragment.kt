@@ -45,10 +45,7 @@ import com.dfa.ui.home.fragments.cases.view.CasesView
 import com.dfa.ui.home.fragments.home.view.HomeActivity
 import com.dfa.ui.login.view.LoginActivity
 import com.dfa.ui.mycases.MyCasesActivity
-import com.dfa.utils.CompressImageUtilities
-import com.dfa.utils.Constants
-import com.dfa.utils.PreferenceHandler
-import com.dfa.utils.Utilities
+import com.dfa.utils.*
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_public_home.*
@@ -146,8 +143,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun refreshList() {
         val casesRequest =
             CasesRequest("1", "", "-1", "1", "10") //type = -1 for fetching all the data
-        Utilities.showProgress(mContext)
-        presenter.getComplaints(casesRequest, token, type)
+        var internetUtils= InternetUtils()
+        if (internetUtils.isOnline(activity!!)) {
+            Utilities.showProgress(mContext)
+            presenter.getComplaints(casesRequest, token, type)
+        }else{
+            Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
+        }
     }
 
     private var complaints: List<GetCasesResponse.Data> = mutableListOf()
@@ -828,8 +830,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         hitType = "foreground"
         val casesRequest =
             CasesRequest("1", "", "-1", "1", "10")  //type = -1 for fetching both cases and posts
-        Utilities.showProgress(mContext)
-        presenter.getComplaints(casesRequest, token, type)
+        var internetUtils= InternetUtils()
+        if (internetUtils.isOnline(activity!!)) {
+            Utilities.showProgress(mContext)
+            presenter.getComplaints(casesRequest, token, type)
+        }else{
+            Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
+        }
 
     }
 
