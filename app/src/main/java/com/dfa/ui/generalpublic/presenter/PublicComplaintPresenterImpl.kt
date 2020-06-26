@@ -3,7 +3,9 @@ package com.dfa.ui.generalpublic.presenter
 import android.content.Context
 import com.dfa.pojo.request.ComplaintRequest
 import com.dfa.pojo.response.ComplaintResponse
+import com.dfa.pojo.response.DistResponse
 import com.dfa.pojo.response.GetCrimeTypesResponse
+import com.dfa.pojo.response.PStationsListResponse
 import com.dfa.ui.generalpublic.model.PublicModel
 import com.dfa.ui.generalpublic.view.PublicComplaintView
 
@@ -15,6 +17,7 @@ class PublicComplaintPresenterImpl(private var complaintsView: PublicComplaintVi
     override fun onEmptyLevel() {
         complaintsView.showEmptyLevelError()
     }
+
 
     override fun onEmptyImage() {
         complaintsView.showEmptyImageError()
@@ -50,6 +53,26 @@ class PublicComplaintPresenterImpl(private var complaintsView: PublicComplaintVi
 
     override fun onSaveDetailsFailed(error: String) {
         complaintsView.showServerError(error)
+    }
+
+    override fun districtsSuccess(response: DistResponse) {
+        complaintsView.getDistrictsSuccess(response)
+    }
+
+    override fun hitDistricApi() {
+        complaintsModel.getDist()
+
+    }
+
+    override fun stationsSuccess(response: PStationsListResponse) {
+        complaintsView.getpStationSuccess(response)
+
+    }
+
+
+    override fun hitpstationApi(distId:String) {
+        complaintsModel.getpStation(distId)
+
     }
 
     override fun saveDetailsRequest(token: String?, request: ComplaintRequest,context: Context) {

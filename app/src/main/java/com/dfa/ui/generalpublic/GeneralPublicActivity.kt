@@ -27,7 +27,6 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewConfiguration
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.MediaController
@@ -45,7 +44,10 @@ import com.dfa.customviews.CenteredToolbar
 import com.dfa.databinding.DialogImageChoiceBinding
 import com.dfa.pojo.request.ComplaintRequest
 import com.dfa.pojo.response.ComplaintResponse
+import com.dfa.pojo.response.DistResponse
 import com.dfa.pojo.response.GetCrimeTypesResponse
+import com.dfa.pojo.response.PStationsListResponse
+import com.dfa.ui.emergency.view.EmergencyFragment
 import com.dfa.ui.generalpublic.presenter.GetReportCrimeAlertDialog
 import com.dfa.ui.generalpublic.presenter.PublicComplaintPresenter
 import com.dfa.ui.generalpublic.presenter.PublicComplaintPresenterImpl
@@ -99,15 +101,15 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     var network_enabled: Boolean = false
     private val REQUEST_PERMISSIONS_GALLERY_VIDEO = 2
     private var isPermissionDialogRequired = true
-
-
+    var police_id = ""
+    private var districtList = ArrayList<DistResponse>()
     val PERMISSION_READ_STORAGE = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.CAMERA
     )
     val REQUEST_PERMISSIONS = 1
-
+    var pstationResponse: PStationsListResponse? = null
 
     private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
     override fun getLayout(): Int {
@@ -206,6 +208,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
         sb_steps_5.setOnRangeChangedListener(this)
         btnSubmit.setOnClickListener(this)
+        btnSubmitParticular.setOnClickListener(this)
+
     }
 
     override fun handleKeyboard(): View {
@@ -272,11 +276,13 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
             R.id.btnSubmit -> {
 
-                if(etDescription.text.toString().trim()=="") {
-               Utilities.showMessage(this,"Please enter description")
+                police_id = ""
+                spDistrict.visibility = View.GONE
+                spPolice.visibility = View.GONE
+                if (etDescription.text.toString().trim() == "") {
+                    Utilities.showMessage(this, "Please enter description")
 
-                }
-                else {
+                } else {
 
 
                     if (mediaType.equals("videos")) {
@@ -310,6 +316,58 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     }
                 }
             }
+
+            R.id.btnSubmitParticular -> {
+
+
+                if (etDescription.text.toString().trim() == "") {
+                    Utilities.showMessage(this, "Please enter description")
+
+                } else if (pathOfImages.size == 0) {
+
+                    Utilities.showMessage(this, getString(R.string.please_select_media))
+
+
+                } else {
+                    spDistrict.visibility = View.VISIBLE
+                    scroll_view.post(Runnable { scroll_view.fullScroll(View.FOCUS_DOWN) })
+                    if (mediaType.equals("videos")) {
+                        if (pathOfImages.size > 0) {
+                            if (!pathOfImages.get(0).isEmpty()
+                            ) {
+
+                                if (File(pathOfImages.get(0)).length() > 5000) {
+                                    videoCompressorCustom(pathOfImages)
+                                    getDistrictList()
+                                } else {
+
+                                    getDistrictList()
+//                                    complaintsPresenter.checkValidations(
+//                                        1,
+//                                        pathOfImages,
+//                                        etDescription.text.toString()
+//                                    )
+                                }
+                            }
+                        } else {
+                            getDistrictList()
+//                            complaintsPresenter.checkValidations(
+//                                1,
+//                                pathOfImages,
+//                                etDescription.text.toString()
+//                            )
+                        }
+                    } else {
+                        getDistrictList()
+//                        complaintsPresenter.checkValidations(
+//                            1,
+//                            pathOfImages,
+//                            etDescription.text.toString()
+//                        )
+                    }
+                }
+            }
+
             R.id.clear_image -> {
                 pathOfImages = ArrayList()
                 imageview_layout.visibility = View.GONE
@@ -325,6 +383,15 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 }
             }
         }
+    }
+
+
+    private fun getDistrictList() {
+
+        if (districtList.size == 0) {
+            Utilities.showProgress(this)
+            complaintsPresenter.hitDistricApi()
+        } else getDistrictDropDown(districtList[0])
     }
 
 
@@ -426,7 +493,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             var lengthBeforeCom = File(video.get(0)).length()
             println(lengthBeforeCom)
 
-            if (lengthBeforeCom > 1000000 && lengthBeforeCom < 80000000) {
+            if (lengthBeforeCom > 500000 && lengthBeforeCom < 70000000) {
 
                 VideoCompress.compressVideoMedium(video.get(0), outPath, object :
                     VideoCompress.CompressListener {
@@ -448,21 +515,21 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                         }
 
-                        if (File(outPath).length() <= 50000000) {
-                            pathOfImages = ArrayList()
-                            pathOfImages.add(outPath)
-                            complaintsPresenter.checkValidations(
-                                1,
-                                pathOfImages,
-                                etDescription.text.toString()
-                            )
-                        } else {
-                            Toast.makeText(
-                                this@GeneralPublicActivity,
-                                "video size is very large",
-                                Toast.LENGTH_LONG
-                            ).show()
-                        }
+//                        if (File(outPath).length() <= 50000000) {
+                        pathOfImages = ArrayList()
+                        pathOfImages.add(outPath)
+                        complaintsPresenter.checkValidations(
+                            1,
+                            pathOfImages,
+                            etDescription.text.toString()
+                        )
+//                        } else {
+//                            Toast.makeText(
+//                                this@GeneralPublicActivity,
+//                                "video size is very large",
+//                                Toast.LENGTH_LONG
+//                            ).show()
+//                        }
                     }
 
                     override fun onFail() {
@@ -484,7 +551,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 })
 
             } else {
-                Toast.makeText(this, "Video size should be 1-70 MB ", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Video size should be 500 KB-70 MB ", Toast.LENGTH_LONG).show()
+
+
             }
         } else {
             Toast.makeText(this, "video is very short", Toast.LENGTH_LONG).show()
@@ -1118,6 +1187,17 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         //GeneralPublicHomeFragment.change = 1
         GeneralPublicHomeFragment.changeThroughIncidentScreen = 1
         finish()
+
+        val fdelete = File(pathOfImages.get(0))
+        if (fdelete.exists()) {
+            if (fdelete.delete()) {
+                //System.out.println("file Deleted :" + uri.getPath())
+            } else {
+                //System.out.println("file not Deleted :" + uri.getPath())
+            }
+        }
+
+
     }
 
     override fun showEmptyImageError() {
@@ -1129,55 +1209,64 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     override fun onValidationSuccess() {
         dismissProgress()
 
-        if (lattitude.equals("") || longitude.equals("")) {
-            if (ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_FINE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
+        if (police_id != "") {
+            lattitude = "0"
+            longitude = "0"
+        } else {
+            if (lattitude.equals("") || longitude.equals("")) {
+
+
+                if (ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                var location = locationManager.getLastKnownLocation(provider);
+
+                // Initialize the location fields
+                if (location != null) {
+                    //System.out.println("Provider " + provider + " has been selected.");
+                    val latti = location.latitude
+                    val longi = location.longitude
+                    lattitude = (latti).toString()
+                    longitude = (longi).toString()
+                    PreferenceHandler.writeString(
+                        this@GeneralPublicActivity,
+                        PreferenceHandler.LAT,
+                        lattitude
+                    )
+                    PreferenceHandler.writeString(
+                        this@GeneralPublicActivity,
+                        PreferenceHandler.LNG,
+                        longitude
+                    )
+                    address = Utilities.getAddressFromLatLong(
+                        lattitude.toDouble(),
+                        longitude.toDouble(),
+                        this@GeneralPublicActivity
+                    )
+                }
             }
-            var location = locationManager.getLastKnownLocation(provider);
 
-            // Initialize the location fields
-            if (location != null) {
-                //System.out.println("Provider " + provider + " has been selected.");
-                val latti = location.latitude
-                val longi = location.longitude
-                lattitude = (latti).toString()
-                longitude = (longi).toString()
-                PreferenceHandler.writeString(
-                    this@GeneralPublicActivity,
-                    PreferenceHandler.LAT,
-                    lattitude
-                )
-                PreferenceHandler.writeString(
-                    this@GeneralPublicActivity,
-                    PreferenceHandler.LNG,
-                    longitude
-                )
-                address = Utilities.getAddressFromLatLong(
-                    lattitude.toDouble(),
-                    longitude.toDouble(),
-                    this@GeneralPublicActivity
-                )
+
+
+            if (lattitude.equals("")) {
+                askForGPS()
             }
-        }
 
-        if (lattitude.equals("")) {
-            askForGPS()
         }
-
         com.dfa.utils.alert.AlertDialog.reportCrimeAlertDialog(this, this)
     }
 
@@ -1198,7 +1287,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 lattitude,
                 longitude,
                 mediaType!!,
-                address
+                address,
+                police_id
             )
             complaintsPresenter.saveDetailsRequest(
                 authorizationToken,
@@ -1240,6 +1330,166 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         dismissProgress()
         Utilities.showMessage(this, getString(R.string.crime_types_error))
     }
+
+    override fun getDistrictsSuccess(response: DistResponse) {
+        Utilities.dismissProgress()
+        districtList.add(response)
+        getDistrictDropDown(response)
+    }
+
+    override fun getpStationSuccess(response: PStationsListResponse) {
+        dismissProgress()
+        //districtList.add(response)
+        getStationDropDown(response)
+    }
+
+
+    fun getDistrictDropDown(response: DistResponse) {
+        EmergencyFragment.staticDistValueList = response
+
+        val distValueList = ArrayList<String>()
+
+
+        distValueList.add("Please select district")
+
+        for (i in 0..response.data.size - 1) {
+            distValueList.add(response.data.get(i).name)
+        }
+
+        // var list_of_items = arrayOf(distValueList)
+        // val distArray = distValueList.toArray(arrayOfNulls<String>(distValueList.size))
+        val adapter = ArrayAdapter(
+            this,
+            R.layout.view_spinner_item, distValueList
+        )
+
+        adapter.setDropDownViewResource(R.layout.view_spinner_item)
+        spDistrict.setAdapter(adapter)
+
+        try {
+
+
+            spDistrict.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    // Display the selected item text on text view
+                    "Spinner selected : ${parent.getItemAtPosition(position)}"
+                    if (position != 0) {
+
+                        if (isInternetAvailable()) {
+                            showProgress()
+                            complaintsPresenter.hitpstationApi(response.data.get(position - 1).id)
+                        } else {
+                            Utilities.showMessage(
+                                this@GeneralPublicActivity,
+                                getString(R.string.no_internet_connection)
+                            )
+                        }
+//                    } else {
+//                        var mList: ArrayList<EmergencyDataResponse.Data> = ArrayList()
+//                        emergencyDetailsAdapter.changeList(mList)
+//                    }
+                    }
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Another interface callback
+                }
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    fun getStationDropDown(response: PStationsListResponse) {
+        val distValueList = ArrayList<String>()
+        pstationResponse = response
+
+        if (response.data?.size == 0) {
+            spPolice.visibility = View.GONE
+            Utilities.showMessage(this, "No police station available in selected district")
+        } else {
+            spPolice.visibility = View.VISIBLE
+            scroll_view.post(Runnable { scroll_view.fullScroll(View.FOCUS_DOWN) })
+
+        }
+
+        distValueList.add("Please select police station")
+
+        for (i in 0..response.data?.size!! - 1) {
+            distValueList.add(response.data?.get(i)?.name.toString())
+        }
+
+        // var list_of_items = arrayOf(distValueList)
+        // val distArray = distValueList.toArray(arrayOfNulls<String>(distValueList.size))
+        val adapter = ArrayAdapter(
+            this,
+            R.layout.view_spinner_item, distValueList
+        )
+
+        adapter.setDropDownViewResource(R.layout.view_spinner_item)
+        spPolice.setAdapter(adapter)
+
+        try {
+
+
+            spPolice.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    // Display the selected item text on text view
+                    "Spinner selected : ${parent.getItemAtPosition(position)}"
+                    if (position != 0) {
+                        police_id = pstationResponse!!.data?.get(position - 1)?.id.toString()
+                        if (mediaType.equals("videos")) {
+                            if (pathOfImages.size > 0) {
+                                if (!pathOfImages.get(0).isEmpty()
+                                ) {
+
+                                    if (File(pathOfImages.get(0)).length() > 5000) {
+                                        videoCompressorCustom(pathOfImages)
+                                    } else {
+                                        complaintsPresenter.checkValidations(
+                                            1,
+                                            pathOfImages,
+                                            etDescription.text.toString()
+                                        )
+                                    }
+                                }
+                            } else {
+                                complaintsPresenter.checkValidations(
+                                    1,
+                                    pathOfImages,
+                                    etDescription.text.toString()
+                                )
+                            }
+                        } else {
+                            complaintsPresenter.checkValidations(
+                                1,
+                                pathOfImages,
+                                etDescription.text.toString()
+                            )
+                        }
+                    }
+
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Another interface callback
+                }
+            }
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+    }
+
 
     override fun showServerError(error: String) {
         dismissProgress()

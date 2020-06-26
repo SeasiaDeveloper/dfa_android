@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -22,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.google.gson.GsonBuilder
 import com.dfa.R
 import com.dfa.adapters.CasesAdapter
 import com.dfa.adapters.StatusAdapter
@@ -45,7 +45,12 @@ import com.dfa.ui.home.fragments.cases.view.CasesView
 import com.dfa.ui.home.fragments.home.view.HomeActivity
 import com.dfa.ui.login.view.LoginActivity
 import com.dfa.ui.mycases.MyCasesActivity
-import com.dfa.utils.*
+import com.dfa.utils.CompressImageUtilities
+import com.dfa.utils.Constants
+import com.dfa.utils.PreferenceHandler
+import com.dfa.utils.Utilities
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_public_home.*
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
@@ -56,20 +61,17 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     lateinit var mContext: Context
     private var IMAGE_REQ_CODE = 101
     private var path: String = ""
-    private var imageUri: Uri? = null
-    private var imageUrl: String? = null
     private var authorizationToken: String? = ""
     private var media_type: String? = ""
     private var token: String = ""
     var isFirst = true
     var guestUser = ""
     var type = ""
+    var hitType = "foreground"
     var firComplaintId: String = ""
     var horizontalLayoutManager: LinearLayoutManager? = null
 
     //pagination
-    var page: String = "0"
-    var perPage: String = "0"
     var endlessScrollListener: EndlessRecyclerViewScrollListenerImplementation? = null
     var pageCount: Int = 1
     var deleteItemposition: Int? = null
@@ -79,6 +81,12 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     var adapterActionPosition: Int? = null
     var fragment: Fragment? = null
     var positionOfFir: Int? = null
+//    var newCompaintsButton: ExtendedFloatingActionButton? = null
+
+
+
+
+
 
     override fun onClick(item: Any, position: Int) {
         Utilities.showProgress(mContext)
@@ -180,6 +188,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+       // newCompaintsButton = binding.extFab;
         //swipeRefresh.setOnRefreshListener(this)
         fragment = this
         setAdapter()
@@ -407,7 +416,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                         .error(R.drawable.user)
                     try {
                         imgProfile.setImageResource(0)
-                        Glide.with(activity!!).load(jsondata.data.profile_pic).apply(options1).into(imgProfile)
+                        Glide.with(activity!!).load(jsondata.data.profile_pic).apply(options1)
+                            .into(imgProfile)
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -418,65 +428,86 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
         Utilities.dismissProgress()
-        complaints = response.data!!
-        if (complaints.isNotEmpty()) {
-            if (tvRecord != null) {
-                tvRecord.visibility = View.GONE
-                rvPublic.visibility = View.VISIBLE
 
-                if (!isLike) {
-                    if (commentChange == 0 && !whenDeleteCall) {
-                        if (pageCount == 1) {
-                            adapter?.clear()
-                            adapter?.setList(response.data.toMutableList()) //now
-                        } else {
-                            progressBar.visibility = View.GONE
-                            adapter?.addDataInMyCases(
-                                horizontalLayoutManager!!,
-                                complaints.toMutableList()
-                            )
-                            //adapter?.setList(response.data.toMutableList())
-                        }
-                    } else {
-                        if (whenDeleteCall) {
-                            adapter?.removeAt(deleteItemposition!!)
-                            whenDeleteCall = false
-                        } else {
+        if (hitType == "foreground") {
+           // newCompaintsButton!!.visibility = View.GONE
+            complaints = response.data!!
+
+            if (complaints.isNotEmpty()) {
+                if (tvRecord != null) {
+                    tvRecord.visibility = View.GONE
+                    rvPublic.visibility = View.VISIBLE
+
+                    if (!isLike) {
+                        if (commentChange == 0 && !whenDeleteCall) {
                             if (pageCount == 1) {
                                 adapter?.clear()
                                 adapter?.setList(response.data.toMutableList()) //now
                             } else {
-                                adapter?.notifyParticularItemWithComment(
-                                    commentChange.toString(),
-                                    response.data, commentsCount
+                                progressBar.visibility = View.GONE
+                                adapter?.addDataInMyCases(
+                                    horizontalLayoutManager!!,
+                                    complaints.toMutableList()
                                 )
+                                //adapter?.setList(response.data.toMutableList())
                             }
-                            commentsCount = 0
-                            commentChange = 0
+                        } else {
+                            if (whenDeleteCall) {
+                                adapter?.removeAt(deleteItemposition!!)
+                                whenDeleteCall = false
+                            } else {
+                                if (pageCount == 1) {
+                                    adapter?.clear()
+                                    adapter?.setList(response.data.toMutableList()) //now
+                                } else {
+                                    adapter?.notifyParticularItemWithComment(
+                                        commentChange.toString(),
+                                        response.data, commentsCount
+                                    )
+                                }
+                                commentsCount = 0
+                                commentChange = 0
+                            }
                         }
+                    } else {
+                        //when to change like status
+                        adapter?.notifyParticularItem(complaintIdTobeLiked!!, response.data)
+                        isLike = false
                     }
-                } else {
-                    //when to change like status
-                    adapter?.notifyParticularItem(complaintIdTobeLiked!!, response.data)
-                    isLike = false
+                    //change = 1
                 }
-                //change = 1
-            }
-        } else {
-            if (pageCount == 1) {
-                tvRecord.visibility = View.VISIBLE
-                rvPublic.visibility = View.GONE
             } else {
-                if (complaints.size == 0) {
+                if (pageCount == 1) {
                     tvRecord.visibility = View.VISIBLE
                     rvPublic.visibility = View.GONE
+                } else {
+                    if (complaints.size == 0) {
+                        tvRecord.visibility = View.VISIBLE
+                        rvPublic.visibility = View.GONE
+                    }
                 }
+                progressBar.visibility = View.GONE
             }
-            progressBar.visibility = View.GONE
-        }
 
-        setProfilePic()
+            setProfilePic()
+        } else {
+            var new = 0;
+            for (element in response.data!!) {
+
+                val datat = complaints.filter { it.id.toString().contains(element.id.toString()) }
+                if (datat.size == 0) new = 1
+
+            }
+
+
+            if (new == 1) {
+                //newCompaintsButton!!.visibility = View.VISIBLE
+
+            }
+
+        }
     }
+
 
     override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String, pos: Int) {
         when (actionType) {
@@ -786,13 +817,24 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
         // setProfilePic()
         fromIncidentDetailScreen = 0
-        MyCasesActivity.isfirst=true
+        MyCasesActivity.isfirst = true
     }
 
     fun doApiCall() {
+        hitType = "foreground"
         val casesRequest =
             CasesRequest("1", "", "-1", "1", "10")  //type = -1 for fetching both cases and posts
         Utilities.showProgress(mContext)
+        presenter.getComplaints(casesRequest, token, type)
+
+    }
+
+
+    fun doBackgroundRefresh() {
+        hitType = "background"
+        val casesRequest =
+            CasesRequest("1", "", "-1", "1", "10")  //type = -1 for fetching both cases and posts
+        // Utilities.showProgress(mContext)
         presenter.getComplaints(casesRequest, token, type)
 
     }
@@ -865,8 +907,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         // Utilities.showProgress(mContext)
         complaintIdTobeLiked = complaintsData.id
         //when to change like status
-     /*   adapter?.notifyParticularItem(complaintIdTobeLiked!!,)
-        isLike = true*/
+        /*   adapter?.notifyParticularItem(complaintIdTobeLiked!!,)
+           isLike = true*/
 
         val token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")
         if (token!!.isEmpty()) {
@@ -879,7 +921,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     //refresh the list after like status is changed
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
-       // Utilities.showMessage(mContext, responseObject.message!!)
+        // Utilities.showMessage(mContext, responseObject.message!!)
         isLike = true
         val casesRequest =
             CasesRequest("1", "", "-1", "1", "10") //type = -1 for fetching all the data
@@ -914,5 +956,42 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         presenter.getComplaints(casesRequest, token, type)
         progressBar.visibility = View.VISIBLE
     }
+
+
+
+
+    //BAckground Task for referehing
+
+
+
+
+
+//     class someTask() : AsyncTask<Void, Void, String>() {
+//
+//
+//
+//
+//
+//        override fun doInBackground(vararg params: Void?): String? {
+//           doBackgroundRefresh()
+//            return ""
+//        }
+//
+//        override fun onPreExecute() {
+//            super.onPreExecute()
+//
+//        }
+//
+//        override fun onPostExecute(result: String?) {
+//            super.onPostExecute(result)
+//
+//        }
+//    }
+//
+
+
+
+
+
 
 }

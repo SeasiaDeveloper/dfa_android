@@ -229,6 +229,17 @@
                 android:layout_height="match_parent"
                 android:paddingTop="@dimen/_10sdp">
 
+<!--                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
+<!--                    android:id="@+id/extFab"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_margin="20dp"-->
+<!--                    android:visibility="gone"-->
+<!--                    android:layout_centerHorizontal="true"-->
+<!--                    android:text="New Complaints"-->
+<!--                    app:icon="@android:drawable/ic_delete"/>-->
+
+
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/itemsswipetorefresh"
                     android:layout_width="wrap_content"

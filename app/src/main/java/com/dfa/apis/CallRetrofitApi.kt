@@ -68,6 +68,12 @@ interface CallRetrofitApi {
     @GET("wp/v2/districts")
     fun getDist(): Call<DistResponse>
 
+    @Multipart
+    @POST("jwt-auth/v1/district_police")
+    fun getPStation(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<PStationsListResponse>
+
+
+
     @GET("jwt-auth/v1/crime_types")
     fun getCrimeTypesList(@Header("Authorization") authorization: String?): Call<GetCrimeTypesResponse>
 

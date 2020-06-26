@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.view.View
-import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.dfa.R
@@ -13,7 +12,10 @@ import com.dfa.customviews.CenteredToolbar
 import com.dfa.listeners.OnCaseItemClickListener
 import com.dfa.listeners.StatusListener
 import com.dfa.pojo.request.PoliceDetailrequest
-import com.dfa.pojo.response.*
+import com.dfa.pojo.response.GetCasesResponse
+import com.dfa.pojo.response.GetCrimeDetailsResponse
+import com.dfa.pojo.response.GetStatusResponse
+import com.dfa.pojo.response.UpdateStatusSuccess
 import com.dfa.ui.generalpublic.VideoPlayerActivity
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.dfa.ui.home.fragments.cases.CasesFragment
@@ -42,7 +44,11 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
         finish()
     }
 
-    override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String,position:Int) {
+    override fun onItemClick(
+        complaintsData: GetCasesResponse.Data,
+        actionType: String,
+        position: Int
+    ) {
         when (actionType) {
             "location" -> {
                 val gmmIntentUri =
@@ -140,14 +146,14 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
          }
  */
 
-      /*  imgExpandable.setOnClickListener {
-            if (image_video_layout.isVisible) {
-                image_video_layout.visibility = View.GONE
-            } else {
-                image_video_layout.visibility = View.VISIBLE
-            }
+        /*  imgExpandable.setOnClickListener {
+              if (image_video_layout.isVisible) {
+                  image_video_layout.visibility = View.GONE
+              } else {
+                  image_video_layout.visibility = View.VISIBLE
+              }
 
-        }*/
+          }*/
 
     }
 
@@ -160,8 +166,7 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
 
         if (!getCrimeDetailsResponse.data?.get(0)?.info.isNullOrEmpty()) {
             editDescription.setText(getCrimeDetailsResponse.data?.get(0)?.info)
-        }
-        else{
+        } else {
             tvDescription.visibility = View.GONE
             editDescription.visibility = View.GONE
         }
@@ -188,7 +193,6 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
             try {
                 Glide.with(this).setDefaultRequestOptions(requestOptions)
                     .load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0))
-                    .placeholder(R.drawable.grey_bg)
                     .into(imgView)
                 ivVideoIcon.visibility = View.VISIBLE
 
@@ -198,8 +202,11 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
 
             ivVideoIcon.setOnClickListener {
                 intent = Intent(this, VideoPlayerActivity::class.java)
-                intent!!.putExtra("videoPath",getCrimeDetailsResponse?.data?.get(0)?.media_list?.get(0)?.toString())
-                intent!!.putExtra("documentId",getCrimeDetailsResponse?.data?.get(0)?.id)
+                intent!!.putExtra(
+                    "videoPath",
+                    getCrimeDetailsResponse?.data?.get(0)?.media_list?.get(0)?.toString()
+                )
+                intent!!.putExtra("documentId", getCrimeDetailsResponse?.data?.get(0)?.id)
                 startActivity(intent)
             }
         } else {

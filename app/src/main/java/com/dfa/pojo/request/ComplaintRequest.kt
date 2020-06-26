@@ -12,5 +12,7 @@ data class ComplaintRequest(
     val lat: String,
     var lng: String,
     val mediaType: String,
-    val address:String
+    val address:String,
+    var police_id: String
+
 )
