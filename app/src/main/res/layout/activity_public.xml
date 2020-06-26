@@ -285,7 +285,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_marginTop="@dimen/_15sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_10sdp"
                     android:background="@drawable/button_green_bg"
@@ -294,6 +294,16 @@
                     android:text="@string/submit_nearest_police"
                     android:textColor="@color/white"
                     android:textSize="@dimen/_12ssp" />
+
+                <com.dfa.customviews.CustomtextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:text="OR"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_14ssp" />
+
 
                 <com.dfa.customviews.CustomtextView
                     android:id="@+id/btnSubmitParticular"
@@ -319,6 +329,7 @@
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
+                    android:layout_marginBottom="@dimen/_5sdp"
                     android:background="@drawable/bg_spinner" />
 
 
@@ -330,7 +341,7 @@
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
                     android:layout_marginBottom="@dimen/_15sdp"
-                    android:layout_marginEnd="@dimen/_18sdp"
+                    android:layout_marginEnd="@dimen/_12sdp"
                     android:background="@drawable/bg_spinner" />
 
 
