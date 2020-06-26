@@ -62,6 +62,11 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
                 Utilities.showMessage(activity!!, getString(R.string.no_internet_connection))
             }
         }
+        else
+        {
+            checkVisibility()
+
+        }
     }
 
 
@@ -105,6 +110,21 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
         adapter = VideosAdapter(activity!!, videos.toMutableList(), this)
         rvVideos.adapter = adapter
 
+    }
+
+    fun checkVisibility()
+    {
+        if (videos.size>0) {
+            tvRecordVideos?.visibility = View.GONE
+            rvVideos?.visibility = View.VISIBLE
+            itemsswipetorefresh?.visibility = View.VISIBLE
+
+        } else {
+            tvRecordVideos?.visibility = View.VISIBLE
+            rvVideos?.visibility = View.GONE
+            itemsswipetorefresh?.visibility = View.GONE
+
+        }
     }
 
     override fun showGetVideosResponse(response: GetPhotosResponse) {
