@@ -1,0 +1,14 @@
+
+Lkotlin:S1481÷".Remove this unused "knownName" local variable.(„Ê—åøÿÿÿÿ
+Mkotlin:S1481ö"/Remove this unused "postalCode" local variable.(§³¡èùÿÿÿÿ
+<kotlin:S125"Remove this commented out code.(Èöî€þÿÿÿÿ
+okotlin:S117×"RRename this local variable to match the regular expression "^[_a-z][a-zA-Z0-9]*$".(çÆÄ¿ûÿÿÿÿ
+Bkotlin:S1481ó")Remove this unused "city" local variable.(Ç‘×À
+skotlin:S2068×"U"PASSWORD" detected in this expression, review this potentially hardcoded credential.(çÆÄ¿ûÿÿÿÿ
+Hkotlin:S1481ô"*Remove this unused "state" local variable.(¸È ˜þÿÿÿÿ
+7kotlin:S125í"Remove this commented out code.(¿ùè
+Ekotlin:S1481õ",Remove this unused "country" local variable.(†Þª‰
+7kotlin:S125ù"Remove this commented out code.(œïýÈ
+<kotlin:S125÷"Remove this commented out code.(ŸãåÊúÿÿÿÿ
+<kotlin:S125À"Remove this commented out code.(ô÷ÔÚùÿÿÿÿ
+7kotlin:S125…"Remove this commented out code.(„§ñ£

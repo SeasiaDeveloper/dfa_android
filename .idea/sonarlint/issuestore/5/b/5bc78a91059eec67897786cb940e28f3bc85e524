@@ -1,0 +1,55 @@
+
+˜
+java:S1186„"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(“–ış
+W
+java:S4830 "@Enable server certificate validation on this SSL/TLS connection.(”Ê•¡
+>
+java:S1604r"(Make this anonymous inner class a lambda(„ÑñŒ
+f
+java:S1104#"PMake task a static final constant or non-public and provide accessors if needed.(§„¡û
+D
+java:S1659%".Declare "downloadFileName" on a separate line.(âÇ¨ğ
+M
+java:S1068&"2Remove this unused "progressDialog" private field.(·á…Çùÿÿÿÿ
+F
+java:S1068*"+Remove this unused "pStatus" private field.(¿šÊúÿÿÿÿÿ
+7
+java:S30108"!Remove this assignment of "task".(ë„Œ•
+H
+java:S4423¨",Change this code to use a stronger protocol.(êßö ûÿÿÿÿ
+˜
+java:S1186 "€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(”Ê•¡
+X	java:S899Ô"BDo something with the "boolean" value returned by "createNewFile".(´ÂÖÙ
+?
+java:S1604‚"(Make this anonymous inner class a lambda(„ÑñŒ
+S	java:S106`"9Replace this use of System.out or System.err by a logger.(÷´„ùÿÿÿÿ
+W	java:S125Å"<This block of commented-out lines of code should be removed.(àêéÖşÿÿÿÿ
+R	java:S125Ã"<This block of commented-out lines of code should be removed.(´ÌúŸ
+R	java:S125ï"<This block of commented-out lines of code should be removed.(ÚÆ’ã
+?
+java:S1148ì"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+S	java:S106~"9Replace this use of System.out or System.err by a logger.(Æÿ‘Êûÿÿÿÿ
+V	java:S125l"<This block of commented-out lines of code should be removed.(ö´Š§ÿÿÿÿÿ
+W	java:S125Á"<This block of commented-out lines of code should be removed.(¾­–Îûÿÿÿÿ
+>
+java:S1148}"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+=
+java:S1168™"&Return an empty array instead of null.(¥¹ï
+
+java:S1186œ"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹„Á¦ÿÿÿÿÿ
+@
+java:S1444#"*Make this "public static task" field final(§„¡û
+—
+java:S1186t"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(“–ış
+W	java:S125á"<This block of commented-out lines of code should be removed.(ù÷ò·ûÿÿÿÿ
+\
+java:S4830œ"@Enable server certificate validation on this SSL/TLS connection.(¹„Á¦ÿÿÿÿÿ
+O	java:S106ë"9Replace this use of System.out or System.err by a logger.(¹ŞŠÊ
+V	java:S125C"<This block of commented-out lines of code should be removed.(†äÎíÿÿÿÿÿ
+Q
+java:S1141§"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ
+T	java:S106¬"9Replace this use of System.out or System.err by a logger.(ë¾šÇşÿÿÿÿ
+j
+java:S2095Ø"NUse try-with-resources or close this "FileOutputStream" in a "finally" clause.(ŠÊŒƒùÿÿÿÿ
+8
+java:S1116î"Remove this empty statement.(Åñ­õşÿÿÿÿ
