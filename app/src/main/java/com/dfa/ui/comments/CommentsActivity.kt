@@ -19,9 +19,6 @@ import com.dfa.ui.comments.presenter.CommentsPresenter
 import com.dfa.ui.comments.presenter.CommentsPresenterImplClass
 import com.dfa.ui.comments.view.CommentsView
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
-import com.dfa.ui.home.fragments.cases.CasesFragment
-import com.dfa.ui.home.fragments.cases.CasesFragment.Companion.change
-import com.dfa.ui.home.fragments.cases.CasesFragment.Companion.commentChange
 import com.dfa.ui.mycases.MyCasesActivity
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
@@ -56,9 +53,7 @@ class CommentsActivity : AppCompatActivity(), CommentsView {
         }
         GeneralPublicHomeFragment.change = 0
         GeneralPublicHomeFragment.fromIncidentDetailScreen = 0
-        CasesFragment.fromIncidentDetailScreen = 0
         MyCasesActivity.change = 0
-        change = 0
         val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
         val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
         if (jsondata != null) {
@@ -101,7 +96,6 @@ class CommentsActivity : AppCompatActivity(), CommentsView {
             rvComments.visibility = View.VISIBLE
             rvComments.adapter = CommentsAdapter(this, commentsList.toMutableList())
             MyCasesActivity.commentsCount = rvComments.adapter?.itemCount!!
-            CasesFragment.commentsCount = rvComments.adapter?.itemCount!!
             GeneralPublicHomeFragment.commentsCount = rvComments.adapter?.itemCount!!
         } else {
             tvRecord.visibility = View.VISIBLE
@@ -115,7 +109,6 @@ class CommentsActivity : AppCompatActivity(), CommentsView {
         //refresh the list
         presenter.fetchComments(id, token)
         //change = 1
-        commentChange = id.toInt()
         GeneralPublicHomeFragment.commentChange = id.toInt()
         //MyCasesActivity.change=1
         MyCasesActivity.commentChange = id.toInt()

@@ -29,7 +29,6 @@ import com.dfa.utils.Utilities
 import com.dfa.utils.Utilities.dismissProgress
 import com.dfa.utils.Utilities.showProgress
 import kotlinx.android.synthetic.main.fragment_emergency.*
-import java.lang.Exception
 
 class EmergencyFragment : Fragment(), EmergencyFragmentView {
     private var presenter: EmergencyFragmentPresenter = EmegencyFragmentPresenterImpl(this)
@@ -46,12 +45,13 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
         var fromIncidentDetailScreen = 0
         var commentsCount = 0
         var staticDistValueList: DistResponse? = null
+        var noChnage = false
     }
 
     override fun onResume() {
         super.onResume()
         if (isFirst) {
-            var internetUtils= InternetUtils()
+            var internetUtils = InternetUtils()
             if (internetUtils.isOnline(activity!!)) {
                 showProgress(mContext)
                 presenter.hitDistricApi()
@@ -60,9 +60,10 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
                 Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
             }
         } else {
-            if (staticDistValueList?.data!!.size > 0) {
+            if (staticDistValueList?.data!!.size > 0 && noChnage==false) {
                 getDistrictDropDown(staticDistValueList!!)
             }
+
         }
     }
 
@@ -134,49 +135,49 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
         adapter.setDropDownViewResource(R.layout.view_spinner_item)
         spDistrict.setAdapter(adapter)
 
-      try {
+        try {
 
 
-          spDistrict.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-              override fun onItemSelected(
-                  parent: AdapterView<*>,
-                  view: View?,
-                  position: Int,
-                  id: Long
-              ) {
-                  // Display the selected item text on text view
-                  "Spinner selected : ${parent.getItemAtPosition(position)}"
-                  if (position != 0) {
-                      var internetUtils= InternetUtils()
-                      if (internetUtils.isOnline(activity!!)) {
-                      showProgress(mContext)
-                      var authorizationToken =
-                          PreferenceHandler.readString(
-                              mContext,
-                              PreferenceHandler.AUTHORIZATION,
-                              ""
-                          )
-                      var request = EmergencyDataRequest(response.data.get(position - 1).id)
-                      presenter.hitEmergencyApi(request, authorizationToken)
-                       } else {
-                        Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
+            spDistrict.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    // Display the selected item text on text view
+                    "Spinner selected : ${parent.getItemAtPosition(position)}"
+                    if (position != 0) {
+                        var internetUtils = InternetUtils()
+                        if (internetUtils.isOnline(activity!!)) {
+                            showProgress(mContext)
+                            var authorizationToken =
+                                PreferenceHandler.readString(
+                                    mContext,
+                                    PreferenceHandler.AUTHORIZATION,
+                                    ""
+                                )
+                            var request = EmergencyDataRequest(response.data.get(position - 1).id)
+                            presenter.hitEmergencyApi(request, authorizationToken)
+                        } else {
+                            Utilities.showMessage(
+                                mContext,
+                                getString(R.string.no_internet_connection)
+                            )
+                        }
+                    } else {
+                        var mList: ArrayList<EmergencyDataResponse.Data> = ArrayList()
+                        emergencyDetailsAdapter.changeList(mList)
                     }
-                  } else {
-                      var mList: ArrayList<EmergencyDataResponse.Data> = ArrayList()
-                      emergencyDetailsAdapter.changeList(mList)
-                  }
-              }
+                }
 
-              override fun onNothingSelected(parent: AdapterView<*>) {
-                  // Another interface callback
-              }
-          }
-      }
-
-      catch (e:Exception)
-      {
-          e.printStackTrace()
-      }
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Another interface callback
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
     override fun onAttach(context: Context) {
@@ -269,21 +270,21 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     /*
  * method to check internet connection
  * */
-   /* fun isInternetAvailable(): Boolean {
-        val connectivityManager =
-            activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val nw = connectivityManager.activeNetwork ?: return false
-            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
-            return when {
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                else -> false
-            }
-        } else {
-            val nwInfo = connectivityManager.activeNetworkInfo ?: return false
-            return nwInfo.isConnected
-        }
-    }*/
+    /* fun isInternetAvailable(): Boolean {
+         val connectivityManager =
+             activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+             val nw = connectivityManager.activeNetwork ?: return false
+             val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
+             return when {
+                 actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                 actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                 else -> false
+             }
+         } else {
+             val nwInfo = connectivityManager.activeNetworkInfo ?: return false
+             return nwInfo.isConnected
+         }
+     }*/
 
 }

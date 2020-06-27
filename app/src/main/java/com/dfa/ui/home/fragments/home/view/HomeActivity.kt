@@ -36,6 +36,7 @@ import com.dfa.adapters.TabLayoutAdapter
 import com.dfa.base.BaseActivity
 import com.dfa.customviews.CustomTextViewheading
 import com.dfa.customviews.CustomtextView
+import com.dfa.databinding.LayoutAcceptRejectAlertBinding
 import com.dfa.listeners.AdharNoListener
 import com.dfa.pojo.response.*
 import com.dfa.ui.contactus.ContactUsActivity
@@ -60,8 +61,10 @@ import com.dfa.utils.*
 import com.dfa.utils.alert.AlertDialog
 import com.dfa.utils.GpsUtils
 import kotlinx.android.synthetic.main.home_activity.*
+import kotlinx.android.synthetic.main.item_case.view.*
 import kotlinx.android.synthetic.main.nav_action.*
 import kotlinx.android.synthetic.main.nav_header.*
+import java.lang.Double.parseDouble
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
     GetLogoutDialogCallbacks, LocationListenerCallback, AdharNoListener {
@@ -160,35 +163,48 @@ private val refreshReceiver = object : BroadcastReceiver() {
 }
 
 fun displayAcceptRejDialog(notificationResponse: NotificationResponse) {
+    lateinit var dialog: android.app.AlertDialog
+
+    val builder = android.app.AlertDialog.Builder(this@HomeActivity)
     val binding =
         DataBindingUtil.inflate<ViewDataBinding>(
             LayoutInflater.from(this@HomeActivity),
             R.layout.layout_accept_reject_alert,
             null,
             false
+        ) as LayoutAcceptRejectAlertBinding
+
+//    (dialog.findViewById(R.id.txtComplainerContact) as TextView).text =
+//        notificationResponse.username
+
+
+    binding.txtComplaintTime.text =
+
+        Utilities.changeDateFormat(notificationResponse.report_data!!) + " " + Utilities.changeTimeFormat(
+            notificationResponse.report_time!!
         )
+    binding.txtCrimeType.text =
+        notificationResponse.crime_type
 
-    val dialog = Dialog(this@HomeActivity)
-    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-    dialog.setContentView(binding.root)
+    binding.txtUrgencyValue.text =
+        "Level "+ notificationResponse.urgency
 
-    (dialog.findViewById(R.id.txtComplainerContact) as TextView).text =
-        notificationResponse.username
-    (dialog.findViewById(R.id.txtComplaintDate) as TextView).text =
-        notificationResponse.report_data
-    (dialog.findViewById(R.id.txtComplaintTime) as TextView).text =
-        notificationResponse.report_time
-    if (!notificationResponse.description.equals("") && notificationResponse.description != null) {
-        (dialog.findViewById(R.id.layout_desc) as LinearLayout).visibility = View.VISIBLE
-        (dialog.findViewById(R.id.txtDescription) as TextView).text =
-            notificationResponse.description
-    } else {
-        (dialog.findViewById(R.id.layout_desc) as LinearLayout).visibility = View.GONE
+
+
+
+    if ( notificationResponse.latitude == null  || notificationResponse.latitude == "0" || notificationResponse.latitude=="" || notificationResponse.latitude == ""  )
+       binding.txtlocationValue.text  ="NA"
+
+    else {
+        binding.txtlocationValue.text =
+        Utilities.getAddressFromLatLong(parseDouble(notificationResponse.latitude+""),parseDouble(notificationResponse.longitude+""),this)
     }
 
-    val acceptButton = dialog.findViewById(R.id.btnAccept) as CustomtextView
-    val rejectButton = dialog.findViewById(R.id.btnReject) as CustomtextView
-    val openButton = dialog.findViewById(R.id.btnOpen) as CustomtextView
+
+
+    val acceptButton = binding.btnAccept
+    val rejectButton =binding.btnReject
+    val openButton = binding.btnOpen
 
     acceptButton.setOnClickListener {
         //accept = 4
@@ -230,7 +246,12 @@ fun displayAcceptRejDialog(notificationResponse: NotificationResponse) {
         startActivity(intent)
         dialog.dismiss()
     }
+
+    builder.setView(binding.root)
+    dialog = builder.create()
     dialog.show()
+
+
 }
 
 override fun setupUI() {
@@ -439,7 +460,13 @@ private fun askForGPS() {
 
 private fun loadNavHeader(getProfileResponse: GetProfileResponse) { // name, wegbsite
     if (getProfileResponse.data != null) {
-        textName.setText(getProfileResponse.data?.first_name + " " + getProfileResponse.data?.middle_name + " " + getProfileResponse.data?.last_name)
+
+var data=getProfileResponse.data
+       var middleName=""
+         if(data.middle_name.toString()!="" &&  data.middle_name.toString()!="null")
+            middleName =data.middle_name.toString()
+
+        textName.setText(getProfileResponse.data?.first_name + " " + middleName + " " + getProfileResponse.data?.last_name)
     }
     if (authorizationToken!!.isEmpty()) {
         userInfo.visibility = View.GONE
@@ -775,7 +802,9 @@ override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
 }
 
 override fun adhaarSavedSuccess(responseObject: SignupResponse) {
-    Utilities.showMessage(this, responseObject.message)
+   // Utilities.showMessage(this, responseObject.message)
+    Utilities.showMessage(this, "Aadhaar card added successfully")
+
     val value = PreferenceHandler.readString(this, PreferenceHandler.PROFILE_JSON, "")
     val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
     jsondata.data?.adhar_number = responseObject.data.adhar_number //add adhar no

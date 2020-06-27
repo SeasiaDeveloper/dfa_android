@@ -10,12 +10,14 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.view.View
+import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.MediaController
 import android.widget.Toast
 import android.widget.VideoView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.marginTop
 import com.bumptech.glide.Glide
 import com.dfa.R
 import com.dfa.base.BaseActivity
@@ -49,6 +51,7 @@ class VideoPlayerActivity : BaseActivity() {
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
+
 
         askPermissionScanner()
     }
@@ -135,6 +138,9 @@ class VideoPlayerActivity : BaseActivity() {
             runOnUiThread {
                 if (percentage != 0) {
                     circleProgress.setProgress(percentage, true);
+                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+
+                    // circleProgress.marginTop=4px
                 }
             }
             dialog1 = dialog

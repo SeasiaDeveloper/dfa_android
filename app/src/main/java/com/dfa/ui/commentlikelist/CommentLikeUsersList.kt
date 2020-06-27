@@ -16,7 +16,6 @@ import com.dfa.ui.commentlikelist.presenter.CommentLikeUsersPresenter
 import com.dfa.ui.commentlikelist.presenter.CommentLikeUsersPresImpl
 import com.dfa.ui.commentlikelist.view.CommentLikeUserView
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
-import com.dfa.ui.home.fragments.cases.CasesFragment
 import com.dfa.ui.mycases.MyCasesActivity
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
@@ -59,9 +58,7 @@ class CommentLikeUsersList : AppCompatActivity(), CommentLikeUserView {
         }
         GeneralPublicHomeFragment.change = 0
         GeneralPublicHomeFragment.fromIncidentDetailScreen = 0
-        CasesFragment.fromIncidentDetailScreen = 0
         MyCasesActivity.change = 0
-        CasesFragment.change = 0
 
         val linearLayoutManager = LinearLayoutManager(this@CommentLikeUsersList, RecyclerView.VERTICAL, false)
         rvComments.layoutManager = linearLayoutManager

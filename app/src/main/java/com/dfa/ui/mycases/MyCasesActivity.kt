@@ -50,7 +50,8 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     var actionChanged: Boolean = false
     lateinit var fragment: Fragment
     var positionOfFir: Int? = null
-
+    private var complaintIdTobeLikedPosition=-1
+    private var limit="20"
 
 
 
@@ -64,7 +65,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         if (!search) {
             pageCount = page
             val casesRequest =
-                CasesRequest("0", "", "0", page.toString(), "10")//*totalItemsCount.toString()*//*)
+                CasesRequest("0", "", "0", page.toString(), limit)//*totalItemsCount.toString()*//*)
             presenter.getComplaints(casesRequest, token, type)
             progressBar.visibility = View.VISIBLE
         }
@@ -87,7 +88,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     }
 
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
-    private var complaints: List<GetCasesResponse.Data> = mutableListOf()
+    private var complaints= ArrayList<GetCasesResponse.Data>()
     lateinit var casesRequest: CasesRequest
     var token: String = ""
     private var statusId = "-1"
@@ -105,7 +106,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         var commentChange = 0
         var fromIncidentDetailScreen = 1
         var commentsCount = 0
-        var firstSavedList: MutableList<GetCasesResponse.Data> = mutableListOf()
+        var firstSavedList= ArrayList<GetCasesResponse.Data>()
 
         val PERMISSION_READ_STORAGE = arrayOf(
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -200,7 +201,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     fun setAdapter() {
         adapter = CasesAdapter(
             this,
-            complaints.toMutableList(),
+            complaints,
             this,
             type.toInt(),
             this,
@@ -229,7 +230,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         casesRequest = CasesRequest(
             "0",
             etSearch.text.toString(),
-            "0", "1", "10"
+            "0", "1", limit
         ) //all = "0"  my cases and for fetching all the cases which are of type = 0
         Utilities.showProgress(this)
         presenter.getComplaints(casesRequest, token, type)
@@ -243,47 +244,25 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             isFirst = false
         }
 
-        complaints = response.data!!
-        if (complaints.isNotEmpty()) {
+        if (response.data!!.isNotEmpty())
+
+        {
+            if (pageCount == 1) {
+                adapter?.clear()
+                complaints = response.data!!
+                adapter?.setList(complaints)
+                adapter?.notifyDataSetChanged()//now
+
+            } else {
+                complaints.addAll(response.data!!)
+                adapter?.notifyDataSetChanged()
+
+            }
+
             tvRecord.visibility = View.GONE
             rvPublic.visibility = View.VISIBLE
             swipeView.visibility = View.VISIBLE
-            if (!isLike) {
-                if (commentChange == 0 && !whenDeleteCall) {
-                    if (pageCount == 1) {
-                        //   adapter?.clear()
-                        adapter?.setList(response.data.toMutableList()) //now
-                    } else {
-                        if (search /*&& pageCount==1*/) {
-                            //     adapter?.clear()
-                            adapter?.setList(response.data.toMutableList()) //now
-                        } else {
-                            adapter?.addDataInMyCases(
-                                horizontalLayoutManager,
-                                complaints.toMutableList()
-                            )
-                            progressBar.visibility = View.GONE
-                        }
-                        //adapter?.setList(response.data.toMutableList())
-                    }
-                } else {
-                    if (whenDeleteCall) {
-                        adapter?.removeAt(deleteItemposition!!)
-                        whenDeleteCall = false
-                    } else {
-                        adapter?.notifyParticularItemWithComment(
-                            commentChange.toString(),
-                            response.data, commentsCount
-                        )
-                        commentsCount = 0
-                        commentChange = 0
-                    }
-                }
-            } else {
-                //when to change like status
-                adapter?.notifyParticularItem(complaintIdTobeLiked!!, response.data)
-                isLike = false
-            }
+
             //change = 1
         } else {
             if (pageCount == 1) {
@@ -310,7 +289,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                 casesRequest = CasesRequest(
                     "0",
                     etSearch.text.toString(),
-                    "0", "1", "30"
+                    "0", "1", limit
                 ) //all = "1" for fetching all the cases whose type = 0
 
                 Utilities.showProgress(this@MyCasesActivity)
@@ -329,7 +308,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                     casesRequest = CasesRequest(
                         "0",
                         etSearch.text.toString(),
-                        "0", "1", "30"
+                        "0", "1", limit
                     ) //all = "1" for fetching all the cases whose type = 0
 
                     Utilities.showProgress(this@MyCasesActivity)
@@ -404,9 +383,10 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     }
 
     //changing the like status
-    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
+    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data,position: Int) {
         // Utilities.showProgress(mContext)
         complaintIdTobeLiked = complaintsData.id
+        complaintIdTobeLikedPosition=position
 
         //when to change like status
         /*adapter?.notifyParticularItem(complaintIdTobeLiked!!)
@@ -428,14 +408,32 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         // Utilities.showMessage(this, responseObject.message!!)
         isLike = true
-        val casesRequest = CasesRequest(
-            "0",
-            "",
-            "0", "1", "10"
-        ) //all = 0 for only my cases;type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token, type)
-        GeneralPublicHomeFragment.changeThroughIncidentScreen =
-            1 // so that list on Home gets refreshed after change in status
+        var like=
+            Integer.parseInt(complaints.get(complaintIdTobeLikedPosition).like_count.toString())
+
+
+        if(complaints.get(complaintIdTobeLikedPosition).is_liked==0) {
+            complaints.get(complaintIdTobeLikedPosition).like_count = (like + 1).toString()
+            complaints.get(complaintIdTobeLikedPosition).is_liked = 1
+
+        }
+
+        else
+        {
+            complaints.get(complaintIdTobeLikedPosition).like_count =  (like - 1).toString()
+            complaints.get(complaintIdTobeLikedPosition).is_liked = 0
+        }
+
+        adapter?.notifyDataSetChanged()
+
+//        val casesRequest = CasesRequest(
+//            "0",
+//            "",
+//            "0", "1", "10"
+//        ) //all = 0 for only my cases;type = -1 for fetching all the data
+//        presenter.getComplaints(casesRequest, token, type)
+//        GeneralPublicHomeFragment.changeThroughIncidentScreen =
+//            1 // so that list on Home gets refreshed after change in status
     }
 
     //to delete my case
@@ -446,7 +444,9 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     //refreshing the list after deletion
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.dismissProgress()
-        adapter?.removeAt(deleteItemposition!!)
+        deleteItemposition?.let { complaints.removeAt(it) }
+        adapter?.notifyDataSetChanged()
+        //adapter?.removeAt(deleteItemposition!!)
         /*  whenDeleteCall = true
           val casesRequest = CasesRequest(
               "0", "", "0", "1", "5"

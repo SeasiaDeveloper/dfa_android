@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.dfa.R
+import com.dfa.ui.emergency.view.EmergencyFragment
 
 class PhoneNumberAdapter (
     var context: Activity,
@@ -69,6 +70,7 @@ class PhoneNumberAdapter (
                     // for ActivityCompat#requestPermissions for more details.
                     return@setOnClickListener
                 }
+                EmergencyFragment.noChnage=true
                 context.startActivity(intent)
             }
         }

@@ -308,7 +308,8 @@ class SignupActivity : BaseActivity(), SignupView {
 
     override fun showResponse(response: SignupResponse) {
         dismissProgress()
-        Utilities.showMessage(this, response.message)
+        //Utilities.showMessage(this, response.message)
+        Utilities.showMessage(this,"GPU registered successfully")
         PreferenceHandler.writeString(
             this,
             PreferenceHandler.AUTHORIZATION,

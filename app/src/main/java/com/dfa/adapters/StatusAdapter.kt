@@ -51,8 +51,13 @@ class StatusAdapter(
         ) {
             radioBtn = itemView.radioBtn
             this.index = index
+            var itemName = item.name
 
-            itemView.radioBtn.text = item.name
+            if (item.name.toLowerCase() == "approved" || item.name.toLowerCase() == "approve")
+                itemName = "Approve"
+
+
+            itemView.radioBtn.text = itemName
             itemView.radioBtn.setOnClickListener {
 
                 listener.onStatusClick(item.id)

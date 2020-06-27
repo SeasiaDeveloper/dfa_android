@@ -26,7 +26,6 @@ import com.dfa.ui.crimedetails.presenter.CrimeDetailsPresenterImpl
 import com.dfa.ui.generalpublic.VideoPlayerActivity
 import com.dfa.ui.generalpublic.view.AsyncResponse
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
-import com.dfa.ui.home.fragments.cases.CasesFragment
 import com.dfa.ui.imagevideo.ImageVideoScreen
 import com.dfa.ui.mycases.MyCasesActivity
 import com.dfa.ui.ngoform.view.NGOFormView
@@ -67,8 +66,6 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         }
         GeneralPublicHomeFragment.fromIncidentDetailScreen = 1
         GeneralPublicHomeFragment.change = 0
-        CasesFragment.change = 0
-        CasesFragment.fromIncidentDetailScreen = 1
         MyCasesActivity.change = 0
         MyCasesActivity.fromIncidentDetailScreen = 1
         type = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "")!!
@@ -512,7 +509,6 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
             adapter?.notifyActionData(responseObject.data!!)
         }
         GeneralPublicHomeFragment.changeThroughIncidentScreen = 1
-        CasesFragment.change = 1
     }
 
     override fun onItemClick(
@@ -535,7 +531,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         //nothing to do
     }
 
-    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
+    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data,position: Int) {
         //nothing to do
     }
 

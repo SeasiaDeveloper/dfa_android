@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dfa.R
 import com.dfa.pojo.response.EmergencyDataResponse
+import com.dfa.ui.emergency.view.EmergencyFragment
 import com.dfa.utils.Utilities
 import kotlin.random.Random
 

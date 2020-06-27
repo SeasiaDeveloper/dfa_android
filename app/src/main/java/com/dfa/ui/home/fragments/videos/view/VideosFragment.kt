@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.dfa.R
 import com.dfa.adapters.VideosAdapter
 import com.dfa.customviews.GridSpacingItemDecoration
@@ -20,8 +21,8 @@ import com.dfa.pojo.request.GetPhotosRequest
 import com.dfa.pojo.response.GetCrimeDetailsResponse
 import com.dfa.pojo.response.GetPhotosResponse
 import com.dfa.ui.crimedetails.view.IncidentDetailActivity
+import com.dfa.ui.emergency.view.EmergencyFragment
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
-import com.dfa.ui.home.fragments.cases.CasesFragment
 import com.dfa.ui.home.fragments.photos.view.OnClickOfVideoAndPhoto
 import com.dfa.ui.home.fragments.videos.presenter.VideoPresenter
 import com.dfa.ui.home.fragments.videos.presenter.VideosPresenterImpl
@@ -49,6 +50,8 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
 
     override fun onResume() {
         super.onResume()
+        EmergencyFragment.noChnage=false
+
         if (isFirst) {
             request = GetPhotosRequest("videos")
             Utilities.showProgress(activity!!)
@@ -57,13 +60,16 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
             presenter.getVideos(authorizationToken, request)
             isFirst=false
         }
+        else
+        {
+            checkVisiibilty()
+        }
+
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setAdapter()
-
+    fun pullToRefreshSettings(itemsswipetorefresh:SwipeRefreshLayout)
+    {
         itemsswipetorefresh.setProgressBackgroundColorSchemeColor(
             ContextCompat.getColor(
                 activity!!,
@@ -77,10 +83,16 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
             itemsswipetorefresh.isRefreshing = false
         }
     }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setAdapter()
+        pullToRefreshSettings(itemsswipetorefresh)
+        pullToRefreshSettings(norecordrefresh)
+
+    }
 
     override fun onPause() {
         super.onPause()
-        CasesFragment.change = 1
         GeneralPublicHomeFragment.change = 1
     }
 
@@ -102,18 +114,24 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
 
     }
 
+
+    fun checkVisiibilty()
+    {
+        if (videos.isNotEmpty()) {
+            itemsswipetorefresh?.visibility = View.VISIBLE
+            norecordrefresh?.visibility = View.GONE
+
+        } else {
+            norecordrefresh?.visibility = View.VISIBLE
+            itemsswipetorefresh?.visibility = View.GONE
+        }
+    }
+
     override fun showGetVideosResponse(response: GetPhotosResponse) {
         Utilities.dismissProgress()
         videos = response.data!!
         adapter.changeList(videos.toMutableList())
-        if (videos.isNotEmpty()) {
-            tvRecordVideos?.visibility = View.GONE
-            rvVideos?.visibility = View.VISIBLE
-
-        } else {
-            tvRecordVideos?.visibility = View.VISIBLE
-            rvVideos?.visibility = View.GONE
-        }
+         checkVisiibilty()
     }
 
     override fun getVideosFailure(error: String) {

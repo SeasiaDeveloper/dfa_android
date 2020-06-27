@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.dfa.R
 import com.dfa.adapters.PhotosAdapter
 import com.dfa.customviews.GridSpacingItemDecoration
@@ -20,8 +21,8 @@ import com.dfa.pojo.request.GetPhotosRequest
 import com.dfa.pojo.response.GetCrimeDetailsResponse
 import com.dfa.pojo.response.GetPhotosResponse
 import com.dfa.ui.crimedetails.view.IncidentDetailActivity
+import com.dfa.ui.emergency.view.EmergencyFragment
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
-import com.dfa.ui.home.fragments.cases.CasesFragment
 import com.dfa.ui.home.fragments.photos.presenter.PhotosPresenter
 import com.dfa.ui.home.fragments.photos.presenter.PhotosPresenterImpl
 import com.dfa.utils.Constants
@@ -50,6 +51,7 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
 
     override fun onResume() {
         super.onResume()
+       // EmergencyFragment.noChnage=false
         if (isFirst) {
             request = GetPhotosRequest("photos")
             showProgress(activity!!)
@@ -58,18 +60,15 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
             presenter.getPhotos(authorizationToken, request)
             isFirst = false
         }
+        else
+        {
+            checkVisiibilty()
+        }
     }
 
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        setAdapter()
-       /* request = GetPhotosRequest("photos")
-        showProgress(activity!!)
-        val authorizationToken =
-            PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
-        presenter.getPhotos(authorizationToken, request)*/
-
+    fun pullToRefreshSettings(itemsswipetorefresh: SwipeRefreshLayout)
+    {
         itemsswipetorefresh.setProgressBackgroundColorSchemeColor(
             ContextCompat.getColor(
                 activity!!,
@@ -85,6 +84,21 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
             itemsswipetorefresh.isRefreshing = false
 
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setAdapter()
+        pullToRefreshSettings(itemsswipetorefresh)
+        pullToRefreshSettings(norecordrefresh)
+
+        /* request = GetPhotosRequest("photos")
+         showProgress(activity!!)
+         val authorizationToken =
+             PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
+         presenter.getPhotos(authorizationToken, request)*/
+
+
     }
 
     private fun setAdapter() {
@@ -108,22 +122,27 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
 
     override fun onPause() {
         super.onPause()
-        CasesFragment.change = 1
         GeneralPublicHomeFragment.change = 1
+    }
+
+    fun checkVisiibilty()
+    {
+
+        if (photos.isNotEmpty()) {
+            norecordrefresh?.visibility = View.GONE
+            itemsswipetorefresh?.visibility = View.VISIBLE
+
+        } else {
+            itemsswipetorefresh?.visibility = View.GONE
+            norecordrefresh?.visibility = View.VISIBLE
+        }
     }
 
     override fun showGetPhotosResponse(response: GetPhotosResponse) {
         Utilities.dismissProgress()
         photos = response.data!!
         adapter.changeList(photos.toMutableList())
-        if (photos.isNotEmpty()) {
-            tvRecord?.visibility = View.GONE
-            rvPhotos?.visibility = View.VISIBLE
-
-        } else {
-            tvRecord?.visibility = View.VISIBLE
-            rvPhotos?.visibility = View.GONE
-        }
+        checkVisiibilty()
     }
 
     override fun getPhotosFailure(error: String) {

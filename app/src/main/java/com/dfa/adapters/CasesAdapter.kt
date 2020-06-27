@@ -41,7 +41,7 @@ import kotlinx.android.synthetic.main.item_case.view.*
 
 class CasesAdapter(
     var context: Context,
-    var mList: MutableList<GetCasesResponse.Data>,
+    var mList: ArrayList<GetCasesResponse.Data>,
     private var listener: OnCaseItemClickListener,
     private var type: Int, private var alertDialogListener: AlertDialogListener,
     var activity: Activity,
@@ -76,22 +76,22 @@ class CasesAdapter(
         notifyItemChanged(position)
     }
 
-    fun updateList(list: MutableList<GetCasesResponse.Data>) {
+    fun updateList(list: ArrayList<GetCasesResponse.Data>) {
         this.mList = list
         notifyDataSetChanged()
     }
 
-    fun performSearch(searchedText: String) {
-        var searchedList = mutableListOf<GetCasesResponse.Data>()
-        for (i in 0..this.mList.size - 1) {
-            if (this.mList.get(i).id!!.contains(searchedText)) {
-                searchedList.add(this.mList.get(i))
-            }
-        }
-        this.mList = ArrayList()
-        this.mList.addAll(searchedList)
-        notifyDataSetChanged()
-    }
+//    fun performSearch(searchedText: String) {
+//        var searchedList = mutableListOf<GetCasesResponse.Data>()
+//        for (i in 0..this.mList.size - 1) {
+//            if (this.mList.get(i).id!!.contains(searchedText)) {
+//                searchedList.add(this.mList.get(i))
+//            }
+//        }
+//        this.mList = ArrayList()
+//        this.mList.addAll(searchedList)
+//        notifyDataSetChanged()
+//    }
 
     fun notifyPublicHomeActionData(listItems: Array<UpdateStatusSuccess.Data>, statusId: String) {
         val data = listItems[0]
@@ -226,13 +226,7 @@ class CasesAdapter(
         }
     }
 
-    fun addDataInMyCases(
-        mLayoutManager: LinearLayoutManager,
-        listItems: MutableList<GetCasesResponse.Data>
-    ) {
-        this.mList.addAll(listItems)
-        notifyDataSetChanged()
-    }
+
 
     fun clear() {
         val size: Int = mList.size
@@ -261,7 +255,7 @@ class CasesAdapter(
     }
 
 
-    fun setList(mList: MutableList<GetCasesResponse.Data>) {
+    fun setList(mList: ArrayList<GetCasesResponse.Data>) {
         this.mList = mList
         notifyDataSetChanged()
     }
@@ -356,6 +350,18 @@ class CasesAdapter(
                     DisplayLargeImage(context, userDetail, options)
                 }
             }
+            else
+            {
+                try {
+                    Glide.with(context).asBitmap().load(R.drawable.user).apply(options)
+                        .into(itemView.imgPostProfile)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+
+            }
+
+
             if (item.type == "1") {
                 itemView.layout_post.visibility = View.VISIBLE
                 itemView.layoutListItem.visibility = View.GONE
@@ -459,17 +465,17 @@ class CasesAdapter(
                 }
 
                 itemView.layout_like_post.setOnClickListener {
-                    if (itemView.img_like_red_post.visibility == View.GONE) {
-                        itemView.img_like_red_post.visibility = View.VISIBLE
-                        itemView.img_like_post.visibility = View.GONE
-                        item.is_liked = 1 //the post is liked
-                    } else {
-                        itemView.img_like_post.visibility = View.VISIBLE
-                        itemView.img_like_red_post.visibility = View.GONE
-                        item.is_liked = 0 //the post is disliked
-                    }
+//                    if (itemView.img_like_red_post.visibility == View.GONE) {
+//                        itemView.img_like_red_post.visibility = View.VISIBLE
+//                        itemView.img_like_post.visibility = View.GONE
+//                        item.is_liked = 1 //the post is liked
+//                    } else {
+//                        itemView.img_like_post.visibility = View.VISIBLE
+//                        itemView.img_like_red_post.visibility = View.GONE
+//                        item.is_liked = 0 //the post is disliked
+//                    }
 
-                    listener.changeLikeStatus(item)
+                    listener.changeLikeStatus(item,position)
                 }
 
                 itemView.layout_like_post.setOnLongClickListener {
@@ -616,17 +622,17 @@ class CasesAdapter(
 
                 itemView.layout_like.setOnClickListener {
                     if (!token!!.isEmpty()) {
-                        if (itemView.img_like_red.visibility == View.GONE) {
-                            itemView.img_like_red.visibility = View.VISIBLE
-                            itemView.img_like.visibility = View.GONE
-                            item.is_liked = 1 //the post is liked
-                        } else {
-                            itemView.img_like.visibility = View.VISIBLE
-                            itemView.img_like_red.visibility = View.GONE
-                            item.is_liked = 0 //the post is disliked
-                        }
+//                        if (itemView.img_like_red.visibility == View.GONE) {
+//                            itemView.img_like_red.visibility = View.VISIBLE
+//                            itemView.img_like.visibility = View.GONE
+//                            item.is_liked = 1 //the post is liked
+//                        } else {
+//                            itemView.img_like.visibility = View.VISIBLE
+//                            itemView.img_like_red.visibility = View.GONE
+//                            item.is_liked = 0 //the post is disliked
+//                        }
 
-                        listener.changeLikeStatus(item)
+                        listener.changeLikeStatus(item,position)
                     } else {
                         com.dfa.utils.alert.AlertDialog.guesDialog(context)
                     }
@@ -705,6 +711,16 @@ class CasesAdapter(
                         }
                     }
 
+                    else
+                    {
+                        try {
+                            Glide.with(context).load(R.drawable.user)
+                                .apply(options1)
+                                .into(itemView.imgCrime)
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
                     itemView.imgCrime.setOnClickListener {
                         //show enlarged image
                         DisplayLargeImage(context, userDetail, options)
@@ -752,7 +768,11 @@ class CasesAdapter(
                 itemView.layoutCrimeType.visibility = View.VISIBLE
                 itemView.layoutStatus.visibility = View.VISIBLE
                 itemView.txtCrimeType.text = item.crime_type
-                itemView.txtStatus.text = item.status
+
+                var itemName=item.status
+                if(itemName?.toLowerCase()=="accept" || itemName?.toLowerCase()=="accepted")
+                    itemName="Accepted"
+                itemView.txtStatus.text = itemName
                 if(activity is HomeActivity) setColor(itemView.txtStatus,item.status.toString().toLowerCase())
                 itemView.txtUrgencyTitle.text = context.getString(R.string.urgency_level)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

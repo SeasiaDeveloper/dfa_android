@@ -8,18 +8,19 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
-import android.os.AsyncTask
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -36,9 +37,9 @@ import com.dfa.pojo.request.CreatePostRequest
 import com.dfa.pojo.request.CrimeDetailsRequest
 import com.dfa.pojo.response.*
 import com.dfa.ui.comments.CommentsActivity
+import com.dfa.ui.emergency.view.EmergencyFragment
 import com.dfa.ui.generalpublic.GeneralPublicActivity
 import com.dfa.ui.generalpublic.pagination.EndlessRecyclerViewScrollListenerImplementation
-import com.dfa.ui.home.fragments.cases.CasesFragment
 import com.dfa.ui.home.fragments.cases.presenter.CasesPresenter
 import com.dfa.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.dfa.ui.home.fragments.cases.view.CasesView
@@ -49,9 +50,14 @@ import com.dfa.utils.CompressImageUtilities
 import com.dfa.utils.Constants
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
 import com.google.gson.GsonBuilder
+import kotlinx.android.synthetic.main.fragment_photos.*
 import kotlinx.android.synthetic.main.fragment_public_home.*
+import kotlinx.android.synthetic.main.fragment_public_home.itemsswipetorefresh
+import kotlinx.android.synthetic.main.fragment_public_home.norecordrefresh
+import kotlinx.android.synthetic.main.fragment_public_home.tvRecord
+import kotlinx.android.synthetic.main.item_case.*
+import java.lang.Integer.parseInt
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     OnCaseItemClickListener, AlertDialogListener,
@@ -70,7 +76,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     var hitType = "foreground"
     var firComplaintId: String = ""
     var horizontalLayoutManager: LinearLayoutManager? = null
-
     //pagination
     var endlessScrollListener: EndlessRecyclerViewScrollListenerImplementation? = null
     var pageCount: Int = 1
@@ -81,6 +86,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     var adapterActionPosition: Int? = null
     var fragment: Fragment? = null
     var positionOfFir: Int? = null
+    private var limit="10"
+    private var complaintIdTobeLikedPosition=-1
 //    var newCompaintsButton: ExtendedFloatingActionButton? = null
 
 
@@ -145,12 +152,12 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     fun refreshList() {
         val casesRequest =
-            CasesRequest("1", "", "-1", "1", "10") //type = -1 for fetching all the data
+            CasesRequest("1", "", "-1", "1", limit) //type = -1 for fetching all the data
         Utilities.showProgress(mContext)
         presenter.getComplaints(casesRequest, token, type)
     }
 
-    private var complaints: List<GetCasesResponse.Data> = mutableListOf()
+    private var complaints= ArrayList<GetCasesResponse.Data>()
     private var adapter: CasesAdapter? = null
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
     private var statusId = "-1"
@@ -168,7 +175,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun setAdapter() {
         adapter = CasesAdapter(
             mContext,
-            complaints.toMutableList(),
+            complaints,
             this,
             type.toInt(),
             this,
@@ -188,8 +195,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-        rvPublic.visibility=View.VISIBLE
-        tvRecord.visibility=View.GONE
+        itemsswipetorefresh.visibility=View.VISIBLE
+        norecordrefresh.visibility=View.GONE
 
         // newCompaintsButton = binding.extFab;
         //swipeRefresh.setOnRefreshListener(this)
@@ -241,6 +248,16 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             }
 
         }
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -300,6 +317,22 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 galleryIntent()
         }
 
+
+
+        pullToRefreshSettings(itemsswipetorefresh)
+        pullToRefreshSettings(norecordrefresh)
+
+        /*  */
+        rvPublic.setOnClickListener {
+            layoutAddPost.visibility = View.VISIBLE
+            layoutPost.visibility = View.GONE
+        }
+
+    }
+
+
+    private fun pullToRefreshSettings(itemsswipetorefresh : SwipeRefreshLayout)
+    {
         itemsswipetorefresh.setProgressBackgroundColorSchemeColor(
             ContextCompat.getColor(
                 activity!!,
@@ -320,14 +353,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             //  itemsrv.adapter = adapter
             itemsswipetorefresh.isRefreshing = false
         }
-        /*  */
-        rvPublic.setOnClickListener {
-            layoutAddPost.visibility = View.VISIBLE
-            layoutPost.visibility = View.GONE
-        }
-
     }
-
     private fun galleryIntent() {
         val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         pickIntent.type = "image/*" //"image/* video/*"
@@ -432,58 +458,33 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
         Utilities.dismissProgress()
 
+        pageCount++
         if (hitType == "foreground") {
            // newCompaintsButton!!.visibility = View.GONE
+            progressBar.visibility = View.GONE
 
 
             if (response.data!!.isNotEmpty()) {
-                complaints = response.data!!
-                if (tvRecord != null) {
-                    tvRecord.visibility = View.GONE
-                    rvPublic.visibility = View.VISIBLE
+                if(pageCount==1)
+                {  adapter?.clear()
+                complaints = response.data
+                    adapter?.setList(complaints)
+                    adapter?.notifyDataSetChanged()//now
 
-                    if (!isLike) {
-                        if (commentChange == 0 && !whenDeleteCall) {
-                            if (pageCount == 1) {
-                                adapter?.clear()
-                                adapter?.setList(response.data.toMutableList()) //now
-                            } else {
-                                progressBar.visibility = View.GONE
-                                adapter?.addDataInMyCases(
-                                    horizontalLayoutManager!!,
-                                    complaints.toMutableList()
-                                )
-                                //adapter?.setList(response.data.toMutableList())
-                            }
-                        } else {
-                            if (whenDeleteCall) {
-                                adapter?.removeAt(deleteItemposition!!)
-                                whenDeleteCall = false
-                            } else {
-                                if (pageCount == 1) {
-                                    adapter?.clear()
-                                    adapter?.setList(response.data.toMutableList()) //now
-                                } else {
-                                    adapter?.notifyParticularItemWithComment(
-                                        commentChange.toString(),
-                                        response.data, commentsCount
-                                    )
-                                }
-                                commentsCount = 0
-                                commentChange = 0
-                            }
-                        }
-                    } else {
-                        //when to change like status
-                        adapter?.notifyParticularItem(complaintIdTobeLiked!!, response.data)
-                        isLike = false
-                    }
-                    //change = 1
                 }
+                else {
+                    complaints.addAll(response.data)
+                   adapter?.notifyDataSetChanged()
+
+                }
+                    norecordrefresh.visibility = View.GONE
+                    itemsswipetorefresh.visibility = View.VISIBLE
+
             } else {
                 if (pageCount == 1) {
-                    tvRecord.visibility = View.VISIBLE
-                    rvPublic.visibility = View.GONE
+                    norecordrefresh.visibility = View.VISIBLE
+                    itemsswipetorefresh.visibility = View.GONE
+                    complaints=response.data
                // }
 //                } else {
 ////                    if (complaints.size == 0) {
@@ -782,8 +783,22 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
     }
 
+    fun checkVisibilty()
+    {
+        if (complaints.isNotEmpty()) {
+            norecordrefresh?.visibility = View.GONE
+            itemsswipetorefresh?.visibility = View.VISIBLE
+
+        } else {
+            itemsswipetorefresh?.visibility = View.GONE
+            norecordrefresh?.visibility = View.VISIBLE
+        }
+
+    }
+
     override fun onResume() {  //isfirst // !isfirst //
         super.onResume()
+        //EmergencyFragment.noChnage=false
 
         val profile_image =
             PreferenceHandler.readString(activity!!, PreferenceHandler.PROFILE_IMAGE, "")
@@ -801,8 +816,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
              endlessScrollListener?.resetState()
              doApiCall()*/
 
-            print(tvRecord.visibility)
-
+   checkVisibilty()
             change = 0
         } else {
             if (fromIncidentDetailScreen == 0) {
@@ -832,21 +846,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun doApiCall() {
         hitType = "foreground"
         val casesRequest =
-            CasesRequest("1", "", "-1", "1", "10")  //type = -1 for fetching both cases and posts
+            CasesRequest("1", "", "-1", pageCount.toString(), limit)  //type = -1 for fetching both cases and posts
         Utilities.showProgress(mContext)
         presenter.getComplaints(casesRequest, token, type)
 
     }
 
 
-    fun doBackgroundRefresh() {
-        hitType = "background"
-        val casesRequest =
-            CasesRequest("1", "", "-1", "1", "10")  //type = -1 for fetching both cases and posts
-        // Utilities.showProgress(mContext)
-        presenter.getComplaints(casesRequest, token, type)
-
-    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -857,7 +863,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun onPause() {
         super.onPause()
-        CasesFragment.change = 1
     }
 
     override fun onPostAdded(responseObject: CreatePostResponse) {
@@ -879,8 +884,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
         path = ""
         Utilities.showMessage(mContext, responseObject.message!!)
+        pageCount=1
         val casesRequest =
-            CasesRequest("1", "", "-1", "1", "10") //type = -1 for fetching all the data
+            CasesRequest("1", "", "-1", pageCount.toString(), limit) //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
     }
 
@@ -892,7 +898,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     //refresh the list after deletion
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
         Utilities.dismissProgress()
-        adapter?.removeAt(deleteItemposition!!)
+        deleteItemposition?.let { complaints.removeAt(it) }
+        adapter?.notifyDataSetChanged()
         /* whenDeleteCall = true
          val casesRequest =
              CasesRequest("1", "", "-1", "1", "5") //type = -1 for fetching all the data
@@ -912,9 +919,10 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }*/
 
     //changes the like status
-    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
+    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data,position: Int) {
         // Utilities.showProgress(mContext)
         complaintIdTobeLiked = complaintsData.id
+        complaintIdTobeLikedPosition=position
         //when to change like status
         /*   adapter?.notifyParticularItem(complaintIdTobeLiked!!,)
            isLike = true*/
@@ -932,9 +940,25 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         // Utilities.showMessage(mContext, responseObject.message!!)
         isLike = true
-        val casesRequest =
-            CasesRequest("1", "", "-1", "1", "10") //type = -1 for fetching all the data
-        presenter.getComplaints(casesRequest, token, type)
+        var like=parseInt(complaints.get(complaintIdTobeLikedPosition).like_count.toString())
+
+
+       if(complaints.get(complaintIdTobeLikedPosition).is_liked==0) {
+           complaints.get(complaintIdTobeLikedPosition).like_count = (like + 1).toString()
+           complaints.get(complaintIdTobeLikedPosition).is_liked = 1
+
+       }
+
+        else
+       {
+           complaints.get(complaintIdTobeLikedPosition).like_count =  (like - 1).toString()
+           complaints.get(complaintIdTobeLikedPosition).is_liked = 0
+       }
+
+        adapter?.notifyDataSetChanged()
+       // val casesRequest =
+          //  CasesRequest("1", "", "-1", pageCount.toString(), limit) //type = -1 for fetching all the data
+       // presenter.getComplaints(casesRequest, token, type)
     }
 
     override fun adharNoListener(adhaarNo: String) {
@@ -959,9 +983,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-        pageCount = page
+       // pageCount = page
         val casesRequest =
-            CasesRequest("1", "", "-1", page.toString(), "10" /*totalItemsCount.toString()*/)
+            CasesRequest("1", "", "-1", pageCount.toString(), limit /*totalItemsCount.toString()*/)
         presenter.getComplaints(casesRequest, token, type)
         progressBar.visibility = View.VISIBLE
     }

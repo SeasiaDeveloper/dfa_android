@@ -9,7 +9,7 @@ interface OnCaseItemClickListener {
     fun onDeleteItem(complaintsData: GetCasesResponse.Data)
 
     //to change the like status
-    fun changeLikeStatus(complaintsData: GetCasesResponse.Data)
+    fun changeLikeStatus(complaintsData: GetCasesResponse.Data,position: Int)
 
     fun onStatusClick(statusId: String)
 }

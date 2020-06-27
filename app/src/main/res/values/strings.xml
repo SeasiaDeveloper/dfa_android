@@ -89,7 +89,7 @@
     <string name="enter_first_name">First name</string>
     <string name="first_estrick">First name <font fgcolor="#006600">*</font></string>
     <string name="enter_middle_name">Middle name</string>
-    <string name="middle_estrick">Middle name <font fgcolor="#006600">*</font></string>
+    <string name="middle_estrick">Middle name</string>
     <string name="enter_last_name">Last name</string>
     <string name="last_estrick">Last name <font fgcolor="#006600">*</font></string>
     <string name="select_district">Select District</string>
@@ -189,11 +189,11 @@
     <string name="location_string">Location String</string>
     <string name="location_message">Location message</string>
     <string name="location_title">Location Title</string>
-    <string name="crime_type">Crime Type:</string>
+    <string name="crime_type">Crime type :</string>
     <string name="state">State:</string>
-    <string name="urgency">Urgency:</string>
+    <string name="urgency">Urgency :</string>
     <string name="urgency_level">Urgency Level:  </string>
-    <string name="urgency_level_title">Urgency:</string>
+    <string name="urgency_level_title">Urgency :</string>
 
     <string name="launch_activity">Launch activity</string>
     <string name="location_unknown">Location unknown</string>
@@ -208,6 +208,7 @@
     <string name="accept">Accept</string>
     <string name="complaint_time">Complaint Time: </string>
     <string name="complaint_date">Complaint Date: </string>
+    <string name="date_time">Date &amp; Time : </string>
     <string name="complainer_contact">Complainer Contact: </string>
     <string name="new_complaint">New Complaint</string>
     <string name="reject">Reject</string>
@@ -264,5 +265,6 @@
     <string name="police_secondline">Police Head Quarter,Chimpu,</string>
     <string name="police_thirdline">Itanagar, Govt. of AP</string>
     <string name="police_fourthline">Email:sp.ndps@gmail.com</string>
+    <string name="crime_location">Crime location : </string>
 
 </resources>

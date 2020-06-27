@@ -17,7 +17,6 @@ import com.dfa.pojo.request.PoliceDetailrequest
 import com.dfa.pojo.response.*
 import com.dfa.ui.generalpublic.VideoPlayerActivity
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
-import com.dfa.ui.home.fragments.cases.CasesFragment
 import com.dfa.ui.policedetail.presenter.PoliceDetailPresenter
 import com.dfa.ui.policedetail.presenter.PoliceDetailPresenterImpl
 import com.dfa.utils.Constants
@@ -39,7 +38,6 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
         //refresh the back fragment
         GeneralPublicHomeFragment.changeThroughIncidentScreen = 1
 
-        CasesFragment.change = 1
         finish()
     }
 
@@ -59,7 +57,7 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
         //do nothing
     }
 
-    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data) {
+    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data,position: Int) {
         //do nothing
     }
 

@@ -108,9 +108,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.CAMERA
     )
+    private var changeMedia=0
     val REQUEST_PERMISSIONS = 1
     var pstationResponse: PStationsListResponse? = null
-
     private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
     override fun getLayout(): Int {
         return R.layout.activity_public
@@ -318,7 +318,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
 
             R.id.btnSubmitParticular -> {
-
                 if (etDescription.text.toString().trim() == "") {
                     Utilities.showMessage(this, "Please enter description")
 
@@ -330,40 +329,41 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 } else {
                     spDistrict.visibility = View.VISIBLE
                     scroll_view.post(Runnable { scroll_view.fullScroll(View.FOCUS_DOWN) })
-                    if (mediaType.equals("videos")) {
-                        if (pathOfImages.size > 0) {
-                            if (!pathOfImages.get(0).isEmpty()
-                            ) {
-
-                                if (File(pathOfImages.get(0)).length() > 5000) {
-                                    videoCompressorCustom(pathOfImages)
-                                    getDistrictList()
-                                } else {
-
-                                    getDistrictList()
-//                                    complaintsPresenter.checkValidations(
-//                                        1,
-//                                        pathOfImages,
-//                                        etDescription.text.toString()
-//                                    )
-                                }
-                            }
-                        } else {
-                            getDistrictList()
-//                            complaintsPresenter.checkValidations(
-//                                1,
-//                                pathOfImages,
-//                                etDescription.text.toString()
-//                            )
-                        }
-                    } else {
-                        getDistrictList()
-//                        complaintsPresenter.checkValidations(
-//                            1,
-//                            pathOfImages,
-//                            etDescription.text.toString()
-//                        )
-                    }
+                    getDistrictList()
+//                    if (mediaType.equals("videos")) {
+//                        if (pathOfImages.size > 0) {
+//                            if (!pathOfImages.get(0).isEmpty()
+//                            ) {
+//
+//                                if (File(pathOfImages.get(0)).length() > 5000) {
+//                                    videoCompressorCustom(pathOfImages)
+//                                    getDistrictList()
+//                                } else {
+//
+//                                    getDistrictList()
+////                                    complaintsPresenter.checkValidations(
+////                                        1,
+////                                        pathOfImages,
+////                                        etDescription.text.toString()
+////                                    )
+//                                }
+//                            }
+//                        } else {
+//                            getDistrictList()
+////                            complaintsPresenter.checkValidations(
+////                                1,
+////                                pathOfImages,
+////                                etDescription.text.toString()
+////                            )
+//                        }
+//                    } else {
+//                        getDistrictList()
+////                        complaintsPresenter.checkValidations(
+////                            1,
+////                            pathOfImages,
+////                            etDescription.text.toString()
+////                        )
+//                    }
                 }
             }
 
@@ -482,7 +482,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
             var outPath =
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).absolutePath + File.separator + "VID_" + SimpleDateFormat(
-                    "yyyyMMdd_HHmmss",
+                    "yyyyMMdd",
                     getLocale()
                 ).format(Date()) + ".mp4";
 
@@ -508,34 +508,45 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                 else {
 
-                    VideoCompress.compressVideoMedium(video.get(0), outPath, object :
-                        VideoCompress.CompressListener {
-                        override fun onStart() {
-                            Log.e("Compressing", "Compress Start")
-                            progressDialog.setCancelable(false)
-                            progressDialog.setMessage("Processing Video...")
-                            progressDialog.show()
-                        }
+                    if (File(outPath).exists() && changeMedia==1) {
+changeMedia=0
+                        pathOfImages = ArrayList()
+                        pathOfImages.add(outPath)
+                        complaintsPresenter.checkValidations(
+                            1,
+                            pathOfImages,
+                            etDescription.text.toString()
+                        )
 
-
-                        override fun onSuccess() {
-
-                            try {
-                                if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
-                            } catch (e: IllegalArgumentException) { // Handle or log or ignore
-
-                            } catch (e: java.lang.Exception) { // Handle or log or ignore
-
+                    } else {
+                        VideoCompress.compressVideoMedium(video.get(0), outPath, object :
+                            VideoCompress.CompressListener {
+                            override fun onStart() {
+                                Log.e("Compressing", "Compress Start")
+                                progressDialog.setCancelable(false)
+                                progressDialog.setMessage("Processing Video...")
+                                progressDialog.show()
                             }
 
+
+                            override fun onSuccess() {
+                                changeMedia=1
+                                try {
+                                    if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
+                                } catch (e: IllegalArgumentException) { // Handle or log or ignore
+
+                                } catch (e: java.lang.Exception) { // Handle or log or ignore
+
+                                }
+
 //                        if (File(outPath).length() <= 50000000) {
-                            pathOfImages = ArrayList()
-                            pathOfImages.add(outPath)
-                            complaintsPresenter.checkValidations(
-                                1,
-                                pathOfImages,
-                                etDescription.text.toString()
-                            )
+                                pathOfImages = ArrayList()
+                                pathOfImages.add(outPath)
+                                complaintsPresenter.checkValidations(
+                                    1,
+                                    pathOfImages,
+                                    etDescription.text.toString()
+                                )
 //                        } else {
 //                            Toast.makeText(
 //                                this@GeneralPublicActivity,
@@ -543,25 +554,26 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 //                                Toast.LENGTH_LONG
 //                            ).show()
 //                        }
-                        }
+                            }
 
-                        override fun onFail() {
-                            Log.e("Compressing", "Compress Failed!")
-                            try {
-                                if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
-                            } catch (e: IllegalArgumentException) { // Handle or log or ignore
+                            override fun onFail() {
+                                Log.e("Compressing", "Compress Failed!")
+                                try {
+                                    if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
+                                } catch (e: IllegalArgumentException) { // Handle or log or ignore
 
-                            } catch (e: java.lang.Exception) { // Handle or log or ignore
+                                } catch (e: java.lang.Exception) { // Handle or log or ignore
+
+                                }
+                            }
+
+                            override fun onProgress(percent: Float) {
+                                progressDialog.setMessage("Compressing video " + percent.toInt() + "%")
+                                Log.e("Compressing", percent.toString())
 
                             }
-                        }
-
-                        override fun onProgress(percent: Float) {
-                            progressDialog.setMessage("Compressing video " + percent.toInt() + "%")
-                            Log.e("Compressing", percent.toString())
-
-                        }
-                    })
+                        })
+                    }
                 }
 
             } else {
@@ -695,6 +707,15 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         val intent = Intent()
         intent.type = "image/*"    //"image/* video/*"
         intent.action = Intent.ACTION_GET_CONTENT
+        val scanIntent =
+            Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+        scanIntent.data = Uri.fromFile(
+
+                    Environment.getExternalStorageDirectory()
+        )
+        sendBroadcast(scanIntent)
+
+        intent.putExtra("android.content.extra.SHOW_ADVANCED", true);
         startActivityForResult(Intent.createChooser(intent, "Select File"), IMAGE_MULTIPLE)
     }
 
@@ -1055,6 +1076,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     path = FileUtils.getPath(this, newPathString)
                     pathOfImages = ArrayList<String>()
                     pathOfImages.add(path)
+
                     // }
 
                 }
@@ -1067,6 +1089,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
             if (intent?.data != null) {
 
+                changeMedia=0
 
                 // String selectedVideoPath = getAbsolutePath(this, data.getData());
 
@@ -1078,21 +1101,30 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                 if (imagePath != null) {
 
-                    val retriever =
-                        MediaMetadataRetriever()
-                    retriever.setDataSource(this, imagePath)
-                    val time =
-                        retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
-                    val timeInMillisec = time.toLong()
-                    retriever.release()
+                    try {
 
-                    if (timeInMillisec >= 5000) {
 
-                        val intent = Intent(this, TrimmerActivity::class.java)
-                        intent.putExtra("path", FileUtils.getPath(this, imagePath))
-                        startActivityForResult(intent, 5)
-                    } else {
-                        Toast.makeText(this, "Video length is too short", Toast.LENGTH_LONG).show()
+                        val retriever =
+                            MediaMetadataRetriever()
+                        retriever.setDataSource(this, imagePath)
+                        val time =
+                            retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)
+                        val timeInMillisec = time.toLong()
+                        retriever.release()
+
+                        if (timeInMillisec >= 5000) {
+
+                            val intent = Intent(this, TrimmerActivity::class.java)
+                            intent.putExtra("path", FileUtils.getPath(this, imagePath))
+                            startActivityForResult(intent, 5)
+                        } else {
+                            Toast.makeText(this, "Video length is too short", Toast.LENGTH_LONG)
+                                .show()
+                        }
+                    }
+                    catch(e:Exception)
+                    {
+print(e.printStackTrace())
                     }
                 }
 
@@ -1137,6 +1169,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             path = getRealPathFromURI(videoUri!!)
             pathOfImages = ArrayList()
             pathOfImages.add(path)
+            changeMedia=0
             showVideo(path)
         }
     }
@@ -1205,9 +1238,17 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         val fdelete = File(pathOfImages.get(0))
         if (fdelete.exists()) {
             if (fdelete.delete()) {
-                //System.out.println("file Deleted :" + uri.getPath())
+               System.out.println("file Deleted :" + pathOfImages.get(0))
+                val scanIntent =
+                    Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+                scanIntent.data = Uri.fromFile(
+
+                    Environment.getExternalStorageDirectory()
+                )
+                sendBroadcast(scanIntent)
+
             } else {
-                //System.out.println("file not Deleted :" + uri.getPath())
+                System.out.println("file not Deleted :" + pathOfImages.get(0))
             }
         }
 
@@ -1223,12 +1264,13 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     override fun onValidationSuccess() {
         dismissProgress()
 
+
+
         if (police_id != "") {
             lattitude = "0"
             longitude = "0"
         } else {
-            lattitude = ""
-            longitude = ""
+
             if (lattitude.equals("") || longitude.equals("")) {
 
 
@@ -1293,26 +1335,36 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         }
         val array = arrayOfNulls<String>(pathOfImages.size)
 
-        if (isInternetAvailable()) {
-            showProgress()
-            val request = ComplaintRequest(
-                id!!, //crimeType
-                range,
-                pathOfImages.toArray(array),
-                etDescription.text.toString().trim(),
-                lattitude,
-                longitude,
-                mediaType!!,
-                address,
-                police_id
-            )
-            complaintsPresenter.saveDetailsRequest(
-                authorizationToken,
-                request,
-                this@GeneralPublicActivity
-            )
-        } else {
-            Utilities.showMessage(this, getString(R.string.no_internet_connection))
+
+
+
+         if(police_id=="" && lattitude=="") {
+        Utilities.showMessage(this,"Unable to fetch Location, Please try again")
+
+        }
+        else {
+
+            if (isInternetAvailable()) {
+                showProgress()
+                val request = ComplaintRequest(
+                    id!!, //crimeType
+                    range,
+                    pathOfImages.toArray(array),
+                    etDescription.text.toString().trim(),
+                    lattitude,
+                    longitude,
+                    mediaType!!,
+                    address,
+                    police_id
+                )
+                complaintsPresenter.saveDetailsRequest(
+                    authorizationToken,
+                    request,
+                    this@GeneralPublicActivity
+                )
+            } else {
+                Utilities.showMessage(this, getString(R.string.no_internet_connection))
+            }
         }
     }
 

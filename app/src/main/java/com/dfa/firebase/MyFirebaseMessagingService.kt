@@ -37,6 +37,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             notificationResponse.report_time = remoteMessage.data.get("report_time")
             notificationResponse.username = remoteMessage.data.get("username")
             notificationResponse.is_notify = remoteMessage.data.get("is_notify")
+            notificationResponse.crime_type = remoteMessage.data.get("crime_type")
+            notificationResponse.latitude = remoteMessage.data.get("latitude")
+            notificationResponse.longitude = remoteMessage.data.get("longitude")
+            notificationResponse.urgency = remoteMessage.data.get("urgency")
+
             showNotification("DFA App", notificationResponse)
         }
     }

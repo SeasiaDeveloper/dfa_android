@@ -245,13 +245,42 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent">
 
+
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rvPublic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingBottom="@dimen/_20sdp"
                         />
+
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
+
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/norecordrefresh"
+                    android:layout_width="wrap_content"
+                    android:visibility="gone"
+                    android:layout_height="match_parent">
+                    <com.dfa.customviews.CustomtextView
+                        android:id="@+id/tvRecord"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:text="@string/no_record_found" />
+
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+
+
+
+
+
+
+
 
                 <ProgressBar
                     android:id="@+id/progressBar"
@@ -267,13 +296,6 @@
             </RelativeLayout>
             <!--</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
 
-            <com.dfa.customviews.CustomtextView
-                android:id="@+id/tvRecord"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:text="@string/no_record_found" />
 
         </LinearLayout>
 
