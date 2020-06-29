@@ -48,6 +48,8 @@ class VideoPlayerActivity : BaseActivity() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.video_player)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
         (toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_button)
+
+        var btn = (toolbarLayout as CenteredToolbar)
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
@@ -138,7 +140,6 @@ class VideoPlayerActivity : BaseActivity() {
             runOnUiThread {
                 if (percentage != 0) {
                     circleProgress.setProgress(percentage, true);
-                    getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
 
                     // circleProgress.marginTop=4px
                 }

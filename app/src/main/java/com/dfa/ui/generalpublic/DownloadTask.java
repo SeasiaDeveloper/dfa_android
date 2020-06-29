@@ -61,6 +61,8 @@ public class DownloadTask {
         File apkStorage = null;
         File outputFile = null;
 
+
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -73,6 +75,7 @@ public class DownloadTask {
                 dialog = new Dialog(context);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.setContentView(R.layout.circle_download_progress);
                 dialog.setCanceledOnTouchOutside(false);
@@ -91,6 +94,7 @@ public class DownloadTask {
                     }
 
                 });
+               // dialog.setCanceledOnTouchOutside(true);
 
             } catch (Exception e) {
                 System.out.println("EXCEPTION2>>>>>>>>>>>>>>>>" + e);

@@ -295,6 +295,11 @@ override fun setupUI() {
         notificationResponse.description = getIntent().getExtras()?.getString("description")
         notificationResponse.complaint_id = getIntent().getExtras()?.getString("complaint_id")
         notificationResponse.is_notify = getIntent().getExtras()?.getString("is_notify")
+        notificationResponse.urgency = getIntent().getExtras()?.getString("urgency")
+        notificationResponse.latitude = getIntent().getExtras()?.getString("latitude")
+        notificationResponse.longitude = getIntent().getExtras()?.getString("longitude")
+        notificationResponse.crime_type = getIntent().getExtras()?.getString("crime_type")
+
         displayAcceptRejDialog(notificationResponse)
     }
 

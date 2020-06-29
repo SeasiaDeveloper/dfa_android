@@ -57,6 +57,7 @@ class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
     }
 
     private fun showWebView() {
+        Utilities.showProgress(this@TermsAndConditionActivity)
         val html = Constants.BASE_URL_FOR_TERMS_AND_CONDITIONS
         val mimeType = "text/html"
         val encoding = "UTF-8"
@@ -72,7 +73,7 @@ class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
             }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-                Utilities.showProgress(this@TermsAndConditionActivity)
+               //
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {

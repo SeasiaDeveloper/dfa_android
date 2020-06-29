@@ -846,7 +846,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun doApiCall() {
         hitType = "foreground"
         val casesRequest =
-            CasesRequest("1", "", "-1", pageCount.toString(), limit)  //type = -1 for fetching both cases and posts
+            CasesRequest("1", "", "-1", "1", limit)  //type = -1 for fetching both cases and posts
         Utilities.showProgress(mContext)
         presenter.getComplaints(casesRequest, token, type)
 
