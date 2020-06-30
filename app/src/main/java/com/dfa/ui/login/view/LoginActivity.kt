@@ -127,6 +127,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
                 PreferenceHandler.USER_ROLE,
                 loginResponse?.user_role.toString()
             )
+
+
+            PreferenceHandler.writeString(
+                this,
+                PreferenceHandler.STATION_ID,
+                loginResponse?.police_station_id.toString()
+            )
+
             Utilities.showMessage(this, getString(R.string.login_message))
             finish()
             val intent = Intent(this, HomeActivity::class.java) //GeneralPublicActivity

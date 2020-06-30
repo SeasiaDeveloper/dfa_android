@@ -13,7 +13,6 @@ import androidx.core.view.MenuCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -227,7 +226,6 @@ class CasesAdapter(
     }
 
 
-
     fun clear() {
         val size: Int = mList.size
         mList.clear()
@@ -349,9 +347,7 @@ class CasesAdapter(
                     //show enlarged image
                     DisplayLargeImage(context, userDetail, options)
                 }
-            }
-            else
-            {
+            } else {
                 try {
                     Glide.with(context).asBitmap().load(R.drawable.user).apply(options)
                         .into(itemView.imgPostProfile)
@@ -475,7 +471,7 @@ class CasesAdapter(
 //                        item.is_liked = 0 //the post is disliked
 //                    }
 
-                    listener.changeLikeStatus(item,position)
+                    listener.changeLikeStatus(item, position)
                 }
 
                 itemView.layout_like_post.setOnLongClickListener {
@@ -534,7 +530,9 @@ class CasesAdapter(
                     )
                 itemView.expandable_Level.text = /*"Level " + */item.urgency
 
-                if (item.status.equals("Unassigned") && !item.info.toString().isEmpty() && item.info != null) {
+                if (item.status.equals("Unassigned") && !item.info.toString()
+                        .isEmpty() && item.info != null
+                ) {
                     itemView.layout_info.visibility = View.VISIBLE
                     itemView.expandable_DescriptionNgo.visibility = View.VISIBLE
                     itemView.expandable_DescriptionNgo.text = item.info.toString()
@@ -632,7 +630,7 @@ class CasesAdapter(
 //                            item.is_liked = 0 //the post is disliked
 //                        }
 
-                        listener.changeLikeStatus(item,position)
+                        listener.changeLikeStatus(item, position)
                     } else {
                         com.dfa.utils.alert.AlertDialog.guesDialog(context)
                     }
@@ -709,10 +707,7 @@ class CasesAdapter(
                         } catch (e: Exception) {
                             e.printStackTrace()
                         }
-                    }
-
-                    else
-                    {
+                    } else {
                         try {
                             Glide.with(context).load(R.drawable.user)
                                 .apply(options1)
@@ -763,17 +758,27 @@ class CasesAdapter(
                     itemView.layoutContact.visibility = View.VISIBLE
                 }
 
+
+
                 itemView.action_complaint.visibility = View.VISIBLE
+
 
                 itemView.layoutCrimeType.visibility = View.VISIBLE
                 itemView.layoutStatus.visibility = View.VISIBLE
                 itemView.txtCrimeType.text = item.crime_type
 
-                var itemName=item.status
-                if(itemName?.toLowerCase()=="accept" || itemName?.toLowerCase()=="accepted")
-                    itemName="Accepted"
+                var itemName = item.status
+                if (itemName?.toLowerCase() == "accept" || itemName?.toLowerCase() == "accepted")
+                    itemName = "Accepted"
+                if (itemName?.toLowerCase() == "reject" || itemName?.toLowerCase() == "rejected")
+                    itemName = "Rejected"
+
+
                 itemView.txtStatus.text = itemName
-                if(activity is HomeActivity) setColor(itemView.txtStatus,item.status.toString().toLowerCase())
+                if (activity is HomeActivity) setColor(
+                    itemView.txtStatus,
+                    item.status.toString().toLowerCase()
+                )
                 itemView.txtUrgencyTitle.text = context.getString(R.string.urgency_level)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     itemView.txtUrgencyTitle.setTextColor(
@@ -802,7 +807,18 @@ class CasesAdapter(
                     if (item.is_assigned.equals("1")) {
                         itemView.action_complaint.visibility = View.VISIBLE
                     } else {
-                        itemView.action_complaint.visibility = View.GONE
+
+                        var stationId = PreferenceHandler.readString(
+                            context,
+                            PreferenceHandler.STATION_ID,
+                            ""
+                        )!!
+
+                        if (item.police_station_id?.toString().equals(stationId))
+                            itemView.action_complaint.visibility = View.VISIBLE
+                        else
+                            itemView.action_complaint.visibility = View.GONE
+
                     }
                     itemView.layoutContact.visibility = View.GONE
                     //itemView.imgComplaintMedia.visibility = View.VISIBLE
@@ -812,7 +828,13 @@ class CasesAdapter(
                     itemView.action_complaint.setOnClickListener {
                         listener.onItemClick(item, "action", adapterPosition)
                     }
-                    itemView.action_complaint.visibility = View.VISIBLE
+                    //itemView.action_complaint.visibility = View.VISIBLE
+                    if (type == 1 && (item.status?.toLowerCase() == "unassigned"))
+                        itemView.action_complaint.visibility = View.VISIBLE
+                    else {
+                        itemView.action_complaint.visibility = View.GONE
+                    }
+
 
                     //itemView.imgComplaintMedia.visibility = View.VISIBLE
                     //itemView.action_complaint.setText(item.status)
@@ -830,7 +852,7 @@ class CasesAdapter(
                  val kmValue = String.format("%.2f", kmInDouble)*/
 
 
-                if (item.latitude == "0" || item.latitude=="" )
+                if (item.latitude == "0" || item.latitude == "")
                     itemView.location.setText(" NA   ").toString()
                 else {
                     var distance =
@@ -967,27 +989,27 @@ class CasesAdapter(
                 }
 
                 //added in case of more or less
-               /* itemView.moreLess.setOnClickListener {
-                        //1st entry
-                        if (!item.isApiHit) {
-                            //call api:
-                            if (isGeneralPublicFragment) {
-                                val callMethod = fragment as GeneralPublicHomeFragment
-                                callMethod.callFirImageApi(item.id!!, adapterPosition)
-                            } else {
-                                val myCasesActivity = activity as MyCasesActivity
-                                myCasesActivity.callFirImageApi(item.id!!, adapterPosition)
-                            }
+                /* itemView.moreLess.setOnClickListener {
+                         //1st entry
+                         if (!item.isApiHit) {
+                             //call api:
+                             if (isGeneralPublicFragment) {
+                                 val callMethod = fragment as GeneralPublicHomeFragment
+                                 callMethod.callFirImageApi(item.id!!, adapterPosition)
+                             } else {
+                                 val myCasesActivity = activity as MyCasesActivity
+                                 myCasesActivity.callFirImageApi(item.id!!, adapterPosition)
+                             }
 
-                        } else {
-                            if (itemView.childExpandable.visibility == View.VISIBLE) {
-                                itemView.childExpandable.visibility = View.GONE
-                                itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
-                                item.isApiHit = false
-                                itemView.moreLess.setText(R.string.more)
-                            }
-                        }
-                }*/
+                         } else {
+                             if (itemView.childExpandable.visibility == View.VISIBLE) {
+                                 itemView.childExpandable.visibility = View.GONE
+                                 itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                                 item.isApiHit = false
+                                 itemView.moreLess.setText(R.string.more)
+                             }
+                         }
+                 }*/
 
             } else {
                 itemView.imgExpandable_linear_layout.setOnClickListener {
@@ -1010,24 +1032,24 @@ class CasesAdapter(
                 }
 
                 //added for less or more
-               /* itemView.moreLess.setOnClickListener {
-                        if (itemView.childExpandable.visibility == View.VISIBLE) {
-                            itemView.childExpandable.visibility = View.GONE
-                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
-                            itemView.moreLess.setText(R.string.more)
-                        } else {
-                            if(item.media_type.equals("videos")){
-                                itemView.imgComplaintMedia.visibility = View.GONE
-                                itemView.videoThumbNialParent.visibility = View.VISIBLE
-                            }else{
-                                itemView.imgComplaintMedia.visibility = View.VISIBLE
-                                itemView.videoThumbNialParent.visibility = View.GONE
-                            }
-                            itemView.childExpandable.visibility = View.VISIBLE
-                            itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
-                            itemView.moreLess.setText(R.string.less)
-                        }
-                }*/
+                /* itemView.moreLess.setOnClickListener {
+                         if (itemView.childExpandable.visibility == View.VISIBLE) {
+                             itemView.childExpandable.visibility = View.GONE
+                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
+                             itemView.moreLess.setText(R.string.more)
+                         } else {
+                             if(item.media_type.equals("videos")){
+                                 itemView.imgComplaintMedia.visibility = View.GONE
+                                 itemView.videoThumbNialParent.visibility = View.VISIBLE
+                             }else{
+                                 itemView.imgComplaintMedia.visibility = View.VISIBLE
+                                 itemView.videoThumbNialParent.visibility = View.GONE
+                             }
+                             itemView.childExpandable.visibility = View.VISIBLE
+                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
+                             itemView.moreLess.setText(R.string.less)
+                         }
+                 }*/
             }
         }
 

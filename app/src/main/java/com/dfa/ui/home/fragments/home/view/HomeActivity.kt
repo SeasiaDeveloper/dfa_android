@@ -217,7 +217,7 @@ fun displayAcceptRejDialog(notificationResponse: NotificationResponse) {
         )
         dialog.dismiss()
         try {
-            genPubHomeFrag.refreshList()
+            //genPubHomeFrag.refreshList()
         } catch (e: Exception) {
             e.printStackTrace()
         }

@@ -20,6 +20,7 @@ object PreferenceHandler {
     const val LONGITUDE = "longitude"
     const val APP_URL = "app_url"
     const val USER_FULLNAME = "user_fullname"
+    const val STATION_ID = "station_id"
 
     const val NGO_CONTACT_NO = "ngo_contactNumber"
     const val NGO_NAME = "ngo_name"

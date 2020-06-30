@@ -113,3 +113,9 @@ P
 Napp/src/main/java/com/dfa/ui/termsConditions/view/TermsAndConditionActivity.kt,8\c\8c9f902888ec6eb8bf876db5624879b5e675d8e8
 q
 Aapp/src/main/java/com/dfa/ui/generalpublic/VideoPlayerActivity.kt,f\e\fe2f07466a0a2a2af22d8dfdd00f3d722eb86fa6
+{
+Kapp/src/main/java/com/dfa/ui/home/fragments/home/presenter/HomePresenter.kt,f\a\fa678293fff19340d9e567b1392e47d6bfb1bfd1
+
+Oapp/src/main/java/com/dfa/ui/home/fragments/home/presenter/HomePresenterImpl.kt,0\0\00306e1313ef30998062ee773651d599ae30339f
+s
+Capp/src/main/java/com/dfa/ui/home/fragments/home/model/HomeModel.kt,d\5\d5db48ba399dd4bbd19025a4fffa8c3894d3060c

@@ -27,6 +27,7 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.MediaController
@@ -139,19 +140,11 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             isPermissionDialogRequired = false
         }
 
-
-        /*  var isLocationPermission = Utilities.checkPermissions(this)
-          if (!isLocationPermission) {
-              requestPermissions(this)
-          }*/
-
-        //  getLocation()
-
-        //GeneralPublicHomeFragment.fromIncidentDetailScreen=1
-
-        // GeneralPublicHomeFragment.change = 0
         GeneralPublicHomeFragment.changeThroughIncidentScreen = 0
         clear_image.setOnClickListener(this)
+
+
+
 
         /* scroll_view.setOnTouchListener(object : View.OnTouchListener {
              var startClickTime: Long = 0
@@ -1189,6 +1182,16 @@ print(e.printStackTrace())
         })
 
         videoView.setOnClickListener(this)
+
+
+        scroll_view.getViewTreeObserver()
+            .addOnScrollChangedListener(object : ViewTreeObserver.OnScrollChangedListener {
+                override fun onScrollChanged() {
+                    mediaControls.hide()
+                }
+            })
+
+
 
     }
 

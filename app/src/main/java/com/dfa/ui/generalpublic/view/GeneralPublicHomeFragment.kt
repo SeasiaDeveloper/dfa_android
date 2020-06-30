@@ -459,7 +459,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
         Utilities.dismissProgress()
 
-        pageCount++
+
         if (hitType == "foreground") {
            // newCompaintsButton!!.visibility = View.GONE
             progressBar.visibility = View.GONE
@@ -586,6 +586,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                     }
                 }
                 var data = GetStatusResponse("", 0, list)
+
+
                 showStatusDialog("", data)
             }
 
@@ -716,7 +718,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         actionChanged = true
         if (responseObject.data!!.size != 0) {
             /*updated by Navjeet for remove rejected item from list*/
+
+            if(statusId=="0")
+            complaints.get(adapterActionPosition!!).status="Approved"
+            if(statusId=="1") complaints.get(adapterActionPosition!!).status="Rejected"
+            adapter?.notifyDataSetChanged()
             adapter?.notifyPublicHomeActionData(responseObject.data, statusId)
+
             //   adapter?.notifyActionData(responseObject.data)
         }
         // }
