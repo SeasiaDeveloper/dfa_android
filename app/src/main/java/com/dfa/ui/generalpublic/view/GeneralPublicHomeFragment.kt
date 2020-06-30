@@ -151,6 +151,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     fun refreshList() {
+        pageCount=1
         val casesRequest =
             CasesRequest("1", "", "-1", "1", limit) //type = -1 for fetching all the data
         Utilities.showProgress(mContext)
@@ -973,7 +974,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     override fun adhaarSavedSuccess(responseObject: SignupResponse) {
-        Utilities.showMessage(mContext, responseObject.message)
+       // Utilities.showMessage(mContext, responseObject.message)
+        Utilities.showMessage(mContext, "Aadhaar card added successfully")
         val value = PreferenceHandler.readString(mContext, PreferenceHandler.PROFILE_JSON, "")
         val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
         jsondata.data?.adhar_number = responseObject.data.adhar_number //add adhar no

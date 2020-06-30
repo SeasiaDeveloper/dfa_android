@@ -4,9 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.view.View
-import android.webkit.WebChromeClient
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import com.dfa.R
 import com.dfa.base.BaseActivity
 import com.dfa.customviews.CenteredToolbar
@@ -57,7 +55,6 @@ class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
     }
 
     private fun showWebView() {
-        Utilities.showProgress(this@TermsAndConditionActivity)
         val html = Constants.BASE_URL_FOR_TERMS_AND_CONDITIONS
         val mimeType = "text/html"
         val encoding = "UTF-8"
@@ -73,12 +70,23 @@ class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
             }
 
             override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
-               //
+                Utilities.showProgress(this@TermsAndConditionActivity)
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
                 Utilities.dismissProgress()
             }
+
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
+                super.onReceivedError(view, request, error)
+                Utilities.dismissProgress()
+                Utilities.showMessage(this@TermsAndConditionActivity,error.toString())
+            }
+
         })
         wv_terms_activity.loadUrl(html)
     }

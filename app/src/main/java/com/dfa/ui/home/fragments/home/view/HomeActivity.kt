@@ -187,7 +187,7 @@ fun displayAcceptRejDialog(notificationResponse: NotificationResponse) {
         notificationResponse.crime_type
 
     binding.txtUrgencyValue.text =
-        "Level "+ notificationResponse.urgency
+         notificationResponse.urgency
 
 
 

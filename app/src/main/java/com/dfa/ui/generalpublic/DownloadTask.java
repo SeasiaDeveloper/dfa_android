@@ -74,8 +74,8 @@ public class DownloadTask {
             try {
                 dialog = new Dialog(context);
                 dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-                dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+                  dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
+                //dialog.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
                 dialog.setContentView(R.layout.circle_download_progress);
                 dialog.setCanceledOnTouchOutside(false);
@@ -94,7 +94,7 @@ public class DownloadTask {
                     }
 
                 });
-               // dialog.setCanceledOnTouchOutside(true);
+                dialog.setCanceledOnTouchOutside(true);
 
             } catch (Exception e) {
                 System.out.println("EXCEPTION2>>>>>>>>>>>>>>>>" + e);

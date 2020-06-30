@@ -109,3 +109,7 @@ p
 @app/src/main/java/com/dfa/firebase/MyFirebaseMessagingService.kt,d\2\d20d13effb4d95abdfe1d092d9d198c2198a5e52
 P
  app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+~
+Napp/src/main/java/com/dfa/ui/termsConditions/view/TermsAndConditionActivity.kt,8\c\8c9f902888ec6eb8bf876db5624879b5e675d8e8
+q
+Aapp/src/main/java/com/dfa/ui/generalpublic/VideoPlayerActivity.kt,f\e\fe2f07466a0a2a2af22d8dfdd00f3d722eb86fa6
