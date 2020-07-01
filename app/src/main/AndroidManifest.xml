@@ -15,6 +15,9 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_LOGS"
+        tools:ignore="ProtectedPermissions" />
+
     <protected-broadcast android:name="android.intent.action.MEDIA_MOUNTED" />
     <uses-feature android:name="android.hardware.camera" />
 
@@ -86,7 +89,8 @@
         <activity
             android:name=".ui.dashboard.DashboardFragment"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"
+            tools:ignore="Instantiatable" />
         <activity
             android:name=".ui.generalpublic.GeneralPublicActivity"
             android:screenOrientation="portrait"
@@ -125,7 +129,8 @@
         <activity
             android:name="ui.generalpublic.view.GeneralPublicHomeFragment"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden"
+            tools:ignore="MissingClass" />
         <activity
             android:name=".ui.home.fragments.home.view.HomeActivity"
             android:exported="true"

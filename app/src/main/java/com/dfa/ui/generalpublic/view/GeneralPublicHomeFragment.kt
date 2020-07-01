@@ -170,6 +170,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupUI()
+
     }
 
 
@@ -340,6 +341,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 R.color.colorDarkGreen
             )
         )
+
+
         itemsswipetorefresh.setColorSchemeColors(Color.WHITE)
         itemsswipetorefresh.setDistanceToTriggerSync(500)
 
@@ -348,6 +351,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             adapter?.clear()
             endlessScrollListener?.resetState()
             doApiCall()
+           //var k=1/0
+
             // itemsCells.clear()
             // setItemsData()
             // adapter = Items_RVAdapter(itemsCells)

@@ -10,19 +10,16 @@ import android.net.Uri
 import android.os.Build
 import android.os.Environment
 import android.view.View
-import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.MediaController
 import android.widget.Toast
 import android.widget.VideoView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginTop
 import com.bumptech.glide.Glide
 import com.dfa.R
 import com.dfa.base.BaseActivity
 import com.dfa.customviews.CenteredToolbar
-import com.dfa.utils.Utilities
 import com.vaibhavlakhera.circularprogressview.CircularProgressView
 import kotlinx.android.synthetic.main.activity_video_player.*
 import java.io.File
@@ -37,6 +34,7 @@ class VideoPlayerActivity : BaseActivity() {
     var mPath = ""
     var videoView: VideoView? = null
     var thumbImage: ImageView? = null
+    var retry = 0
 
 
     override fun getLayout(): Int {
@@ -54,7 +52,7 @@ class VideoPlayerActivity : BaseActivity() {
             onBackPressed()
         }
 
-
+        retry = 0
         askPermissionScanner()
     }
 
@@ -206,14 +204,23 @@ class VideoPlayerActivity : BaseActivity() {
                             "DFA/" + documentId
                         )
                         fileName.delete()
-                       Toast.makeText(this@VideoPlayerActivity, "Can't play this video", Toast.LENGTH_LONG).show()
 
-//                        DownloadTask(
-//                            this@VideoPlayerActivity,
-//                            mPath,
-//                            documentId,
-//                            this@VideoPlayerActivity
-//                        )
+                        if (retry > 3) {
+                            retry = 0
+                            Toast.makeText(
+                                this@VideoPlayerActivity,
+                                "Can't play this video",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        } else {
+                            retry++
+                            DownloadTask(
+                                this@VideoPlayerActivity,
+                                mPath,
+                                documentId,
+                                this@VideoPlayerActivity
+                            )
+                        }
                     }
                     return true
                 }

@@ -487,7 +487,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             if (lengthBeforeCom > 200000 && lengthBeforeCom < 70000000) {
 
 
-                if(lengthBeforeCom> 100000  && lengthBeforeCom<= 1000000)
+                if(lengthBeforeCom> 100000  && lengthBeforeCom<= 5000000)
                 {
                     pathOfImages = ArrayList()
                     pathOfImages.add(video.get(0))

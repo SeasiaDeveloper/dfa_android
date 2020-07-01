@@ -203,6 +203,7 @@
     <string name="settings">Settings</string>
     <string name="request_location_updates">Request location updates</string>
     <string name="remove_location_updates">Remove location updates</string>
+    <string name="crash_toast_text">App crashes, send Report</string>
 
     <string name="location_updated">Location Updated: %1$s</string>
     <string name="accept">Accept</string>
