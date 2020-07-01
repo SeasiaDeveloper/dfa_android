@@ -16,7 +16,6 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <protected-broadcast android:name="android.intent.action.MEDIA_MOUNTED" />
-
     <uses-feature android:name="android.hardware.camera" />
 
     <application
@@ -195,9 +194,11 @@
               android:exported="true"
               android:foregroundServiceType="location" />
         -->
+        <!--            android:authorities="${applicationId}.provider"-->
+
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
+            android:authorities="com.dfango.android.fileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data

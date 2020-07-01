@@ -18,10 +18,7 @@ import android.location.LocationManager
 import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.net.Uri
-import android.os.Build
-import android.os.Bundle
-import android.os.CountDownTimer
-import android.os.Environment
+import android.os.*
 import android.provider.DocumentsContract
 import android.provider.MediaStore
 import android.util.Log
@@ -57,6 +54,7 @@ import com.dfa.ui.generalpublic.view.PublicComplaintView
 import com.dfa.ui.login.view.LoginActivity
 import com.dfa.utils.*
 import com.dfa.utils.Constants.GPS_REQUEST
+import com.dfa.utils.FileUtils
 import com.dfa.utils.RealPathUtil.getCapturedImage
 import com.dfa.utils.Utilities.PERMISSION_ID
 import com.dfa.utils.Utilities.PERMISSION_ID_CAMERA
@@ -103,6 +101,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private val REQUEST_PERMISSIONS_GALLERY_VIDEO = 2
     private var isPermissionDialogRequired = true
     var police_id = ""
+    private var tempPath=""
     private var districtList = ArrayList<DistResponse>()
     val PERMISSION_READ_STORAGE = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -485,10 +484,10 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             var lengthBeforeCom = File(video.get(0)).length()
             println(lengthBeforeCom)
 
-            if (lengthBeforeCom > 500000 && lengthBeforeCom < 70000000) {
+            if (lengthBeforeCom > 200000 && lengthBeforeCom < 70000000) {
 
 
-                if(lengthBeforeCom> 500000  && lengthBeforeCom<= 1000000)
+                if(lengthBeforeCom> 100000  && lengthBeforeCom<= 1000000)
                 {
                     pathOfImages = ArrayList()
                     pathOfImages.add(video.get(0))
@@ -570,7 +569,7 @@ changeMedia=0
                 }
 
             } else {
-                Toast.makeText(this, "Video size should be 500 KB-70 MB ", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Video size should be 200 KB-70 MB ", Toast.LENGTH_LONG).show()
 
 
             }
@@ -727,6 +726,93 @@ changeMedia=0
     /**
      * Capture image from camera
      */
+
+
+
+
+/*
+
+
+    var tempPath = ""
+
+
+
+    fun camera() {
+
+        if (CheckRuntimePermissions.checkMashMallowPermissions(
+                baseActivity,
+                PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS
+            )
+        ) {
+            val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            if (cameraIntent.resolveActivity(this!!.packageManager) != null) {
+                var photoFile: File? = null
+                try {
+                    photoFile = createImageFile()
+                } catch (ex: IOException) {
+                }
+                if (photoFile != null) {
+                    val builder = StrictMode.VmPolicy.Builder()
+                    StrictMode.setVmPolicy(builder.build())
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile))
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST)
+                }
+            }
+        }
+    }
+
+
+
+
+
+    @SuppressLint("SimpleDateFormat")
+    @Throws(IOException::class)
+    private fun createImageFile(): File {
+        // Create an image file name
+        val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val imageFileName = "JPEG_" + timeStamp + "_"
+        val storageDir = Environment.getExternalStoragePublicDirectory(
+            Environment.DIRECTORY_PICTURES
+        )
+        val image = File.createTempFile(
+            imageFileName, // prefix
+            ".jpg", // suffix
+            storageDir      // directory
+        )
+
+        // Save a file: path for use with ACTION_VIEW intents
+        tempPath = "file:" + image.absolutePath
+        return image
+    }
+
+
+
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+
+        if (requestCode === CAMERA_REQUEST && resultCode === Activity.RESULT_OK) {
+
+            var imageUri = FileUtils.getPath(this, Uri.parse(tempPath))
+            var intent = Intent(this, CroppedActivity::class.java)
+            intent.putExtra("imagePath", imageUri)
+            startActivityForResult(intent, 127)
+
+
+        }
+
+    }
+    */
+
+
+
+
+
+
+
+
     private fun dispatchTakePictureIntent() {
         var takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -739,14 +825,23 @@ changeMedia=0
                 // Error occurred while creating the File
             }
             if (photoFile != null) {
-                var photoURI = FileProvider.getUriForFile(
-                    this,
-                    "com.dfango.android" + ".provider",
-                    photoFile
-                )
-                mPhotoFile = photoFile
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                startActivityForResult(takePictureIntent, REQUEST_CAMERA)
+                try {
+//                    var photoURI = FileProvider.getUriForFile(
+//                        this,
+//                        "com.dfango.android" + ".provider",
+//                        photoFile
+//                    )
+                    mPhotoFile = photoFile
+                    val builder = StrictMode.VmPolicy.Builder()
+                    StrictMode.setVmPolicy(builder.build())
+                    //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,  Uri.fromFile(photoFile))
+                    startActivityForResult(takePictureIntent, REQUEST_CAMERA)
+                }
+                catch(e:Exception)
+                {
+                    println(e.printStackTrace())
+                }
             }
         }
     }
@@ -757,6 +852,8 @@ changeMedia=0
         var mFileName = "JPEG_" + timeStamp + "_"
         var storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         var mFile = File.createTempFile(mFileName, ".jpg", storageDir)
+        tempPath = "file:" + mFile.absolutePath
+
         return mFile
     }
 
@@ -1049,6 +1146,8 @@ changeMedia=0
                      file = File(getRealPathFromURI(tempUri))
                      path = getRealPathFromURI(tempUri)*/
 
+              //  var tempUri = FileUtils.getPath(this,mPhotoFile)
+
                 val tempUri = Uri.fromFile(mPhotoFile)
                 imageview_layout.visibility = View.VISIBLE
                 imgView.visibility = View.VISIBLE
@@ -1068,7 +1167,8 @@ changeMedia=0
                     val options = RequestOptions()
                         /* .centerCrop()*/
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    Glide.with(this).asBitmap().load(bitmap).into(imgView)
+                    Glide.with(this).asBitmap().load(bitmapToByte(bitmap)).into(imgView)
+
                     var newPathString = getImageUri(this, bitmap)
                     path = FileUtils.getPath(this, newPathString)
                     pathOfImages = ArrayList<String>()
@@ -1171,6 +1271,11 @@ print(e.printStackTrace())
         }
     }
 
+    private fun bitmapToByte(bitmap: Bitmap): ByteArray? {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+        return stream.toByteArray()
+    }
     fun showVideo(videoUri: String) {
         mediaControls = MediaController(this@GeneralPublicActivity)
         mediaControls.visibility = View.VISIBLE
