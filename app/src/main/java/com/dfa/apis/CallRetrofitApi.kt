@@ -43,6 +43,12 @@ interface CallRetrofitApi {
     @POST("jwt-auth/v1/token")
     fun login(@PartMap params: HashMap<String, RequestBody>): Call<LoginResponse>
 
+
+    @POST("jwt-auth/v1/user_logout")
+    fun logout(@Header("Authorization") authorization:String): Call<CommonResponse>
+
+
+
     @POST("wp/v2/user/change-password")
     fun changePassword(@Body changePasswordRequest: ChangePasswordRequest): Call<ChangePasswordResponse>
 

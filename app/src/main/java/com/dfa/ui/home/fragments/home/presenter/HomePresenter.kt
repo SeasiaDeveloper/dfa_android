@@ -14,4 +14,7 @@ interface HomePresenter : BasePresenter {
     fun updateStatus(token: String, complaintId: String, statusId: String)
     fun statusUpdationSuccess(responseObject: UpdateStatusSuccess)
     fun adhaarSavedSuccess(responseObject: SignupResponse)
+    fun onLogoutSuccess(responseObject: CommonResponse)
+    fun logout(token: String)
+
 }

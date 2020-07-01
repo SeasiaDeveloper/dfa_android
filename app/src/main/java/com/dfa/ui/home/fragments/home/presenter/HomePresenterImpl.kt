@@ -15,6 +15,10 @@ class HomePresenterImpl(private var homeView: HomeView) :
         homeModel.saveAdhaarNo(token,adhaarNo)
     }
 
+    override fun logout(token:String) {
+        homeModel.logout(token)
+    }
+
     override fun postLocationSuccess(postLocation: PostLocationResponse) {
         homeView.onPostLocationSucess(postLocation)
     }
@@ -51,5 +55,10 @@ class HomePresenterImpl(private var homeView: HomeView) :
 
     override fun adhaarSavedSuccess(responseObject: SignupResponse) {
         homeView.adhaarSavedSuccess(responseObject)
+    }
+
+    override fun onLogoutSuccess(responseObject: CommonResponse) {
+        homeView.onLogoutSuccess(responseObject)
+
     }
 }

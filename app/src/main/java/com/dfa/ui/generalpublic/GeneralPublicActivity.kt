@@ -1061,11 +1061,15 @@ changeMedia=0
 
 
                 if (bitmap != null) {
-                    val requiredImage =
-                        RealPathUtil.imageRotateIfRequired(mPhotoFile?.absolutePath!!, bitmap)
-                    imgView.setImageBitmap(requiredImage)
+//                    val requiredImage =
+//                        RealPathUtil.imageRotateIfRequired(mPhotoFile?.absolutePath!!, bitmap)
+                   // imgView.setImageBitmap(requiredImage)
                     //path = mPhotoFile?.absolutePath!!
-                    var newPathString = getImageUri(this, requiredImage)
+                    val options = RequestOptions()
+                        /* .centerCrop()*/
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    Glide.with(this).asBitmap().load(bitmap).into(imgView)
+                    var newPathString = getImageUri(this, bitmap)
                     path = FileUtils.getPath(this, newPathString)
                     pathOfImages = ArrayList<String>()
                     pathOfImages.add(path)

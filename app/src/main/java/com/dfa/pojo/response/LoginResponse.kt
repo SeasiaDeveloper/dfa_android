@@ -8,6 +8,7 @@ data class LoginResponse(
     val user_role: String,
     val police_station_id:String="00",
     val message:String
+
 )
 /*  {
       "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9zdGdzcC5hcHBzbmRldnMuY29tOjkwNDFcL2RydWdmcmVlIiwiaWF0IjoxNTg1MDYxMTYxLCJuYmYiOjE1ODUwNjExNjEsImV4cCI6MTU4NTY2NTk2MSwiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMSJ9fX0.gYEcxbxxMEdgU3RvZkcXR7I1pHDwAzgP2ski2YLEv3M",

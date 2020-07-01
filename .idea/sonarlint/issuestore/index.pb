@@ -119,3 +119,17 @@ Kapp/src/main/java/com/dfa/ui/home/fragments/home/presenter/HomePresenter.kt,f\
 Oapp/src/main/java/com/dfa/ui/home/fragments/home/presenter/HomePresenterImpl.kt,0\0\00306e1313ef30998062ee773651d599ae30339f
 s
 Capp/src/main/java/com/dfa/ui/home/fragments/home/model/HomeModel.kt,d\5\d5db48ba399dd4bbd19025a4fffa8c3894d3060c
+n
+>app/src/main/java/com/dfa/ui/login/presenter/LoginPresenter.kt,c\f\cfded104f23e861ba7a8ce36d72c98603cbcc6f0
+f
+6app/src/main/java/com/dfa/pojo/request/CasesRequest.kt,a\1\a1956382add311f7b77524c15abd48764b138402
+g
+7app/src/main/java/com/dfa/ui/mycases/MyCasesActivity.kt,0\5\056cab3de55bb24fef67f95e6a88370d4631e1a1
+e
+5app/src/main/java/com/dfa/ui/police/PoliceActivity.kt,f\5\f54923caf752f71aaa231354d19bc51a63e2ac18
+h
+8app/src/main/java/com/dfa/pojo/response/LoginResponse.kt,2\7\2797513a51de5fc8657b24249125c029a59b874d
+h
+8app/src/main/java/com/dfa/ui/login/view/LoginActivity.kt,d\9\d9d633c653d10241717d69f116bd3bdae725d1b1
+d
+4app/src/main/java/com/dfa/utils/PreferenceHandler.kt,d\1\d1ef2667a1b1eac9fdbb74a522f81ef8d2d67e6f

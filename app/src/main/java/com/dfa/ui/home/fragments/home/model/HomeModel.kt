@@ -5,6 +5,7 @@ import com.dfa.apis.CallRetrofitApi
 import com.dfa.pojo.response.*
 import com.dfa.ui.home.fragments.home.presenter.HomePresenter
 import com.dfa.utils.Constants
+import com.dfa.utils.Utilities
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -45,6 +46,36 @@ class HomeModel(private var homePresenter: HomePresenter) {
             }
         })
     }
+
+    fun logout(token: String) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        retrofitApi.logout(token).enqueue(object :
+            Callback<CommonResponse> {
+            override fun onFailure(call: Call<CommonResponse>, t: Throwable) {
+                homePresenter.showError(t.message + "")
+            }
+
+            override fun onResponse(
+                call: Call<CommonResponse>,
+                response: Response<CommonResponse>
+            ) {
+                val responseObject = response.body()
+                if (responseObject != null) {
+                    if (responseObject.code == 200) {
+                        homePresenter.onLogoutSuccess(responseObject)
+                    } else {
+                        homePresenter.showError(
+                            response.body()?.message ?: Constants.SERVER_ERROR
+                        )
+                    }
+                } else {
+                    homePresenter.showError(Constants.SERVER_ERROR)
+                }
+            }
+        })
+    }
+
+
 
     fun getPostLocationData(token:String?,latitude:String,longitude:String) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)

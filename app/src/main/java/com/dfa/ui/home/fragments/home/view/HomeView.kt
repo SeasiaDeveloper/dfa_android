@@ -1,9 +1,6 @@
 package com.dfa.ui.home.fragments.home.view
 
-import com.dfa.pojo.response.GetProfileResponse
-import com.dfa.pojo.response.PostLocationResponse
-import com.dfa.pojo.response.SignupResponse
-import com.dfa.pojo.response.UpdateStatusSuccess
+import com.dfa.pojo.response.*
 
 interface HomeView {
     fun onGetProfileSucess(getProfileResponse: GetProfileResponse)
@@ -13,4 +10,5 @@ interface HomeView {
     fun onPostLocationFailure(error: String)
     fun statusUpdationSuccess(responseObject: UpdateStatusSuccess)
     fun adhaarSavedSuccess(responseObject: SignupResponse)
+   fun onLogoutSuccess(responseObject: CommonResponse)
 }

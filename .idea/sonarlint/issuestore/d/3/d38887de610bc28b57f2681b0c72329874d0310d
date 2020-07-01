@@ -1,32 +1,30 @@
 
-7kotlin:S125ª"Remove this commented out code.(Ù¶á‘
-Ckotlin:S125Í"Remove this commented out code.(ë­âĞúÿÿÿÿ8è±›°¯.
-Ckotlin:S125Ö"Remove this commented out code.(õ¦¹şÿÿÿÿ8‹¹„ü®.
-7kotlin:S125”"Remove this commented out code.(Ãªù
-Vkotlin:S1144Š"=Remove this unused private "getCaptureImageOutputUri" method.(ØÏÀÓ
-7kotlin:S125ş"Remove this commented out code.(–±Ù
-Kkotlin:S1481÷"2Remove this unused "ountDownTimer" local variable.(Î±Êµ
-xkotlin:S1186ı"ZAdd a nested comment explaining why this function is empty or complete the implementation.(÷’Õ…üÿÿÿÿ
-Pkotlin:S1135…
+Ckotlin:S125Ù"Remove this commented out code.(õ¦¹şÿÿÿÿ8‹¹„ü®.
+7kotlin:S125£"Remove this commented out code.(Ù¶á‘
+Ckotlin:S125•"Remove this commented out code.(õ¦¹şÿÿÿÿ8›‰ı®.
+<kotlin:S125Ì"Remove this commented out code.(éœ€‚ûÿÿÿÿ
+ykotlin:S1192”"YDefine a constant instead of duplicating this literal "Please enter description" 3 times.(ÙÖÙà8ú™ü‚¯.
+Ckotlin:S125Æ"Remove this commented out code.(ë­âĞúÿÿÿÿ8è±›°¯.
+Fkotlin:S108‚	")Either remove or fill this block of code.(¿ŞŞÓüÿÿÿÿ
+Kkotlin:S1481ğ"2Remove this unused "ountDownTimer" local variable.(Î±Êµ
+<kotlin:S125İ"Remove this commented out code.(‰öâ§üÿÿÿÿ
+Vkotlin:S1144ƒ"=Remove this unused private "getCaptureImageOutputUri" method.(ØÏÀÓ
+xkotlin:S1186ù"ZAdd a nested comment explaining why this function is empty or complete the implementation.(ï€¹İúÿÿÿÿ
+Pkotlin:S1135ˆ
 "2Complete the task associated to this TODO comment.(áÃæùÿÿÿÿ
-<kotlin:S125´"Remove this commented out code.(Ñã’¾ûÿÿÿÿ
-7kotlin:S125¤"Remove this commented out code.(ˆúØş
-Fkotlin:S108‰	")Either remove or fill this block of code.(¿ŞŞÓüÿÿÿÿ
-xkotlin:S1186€"ZAdd a nested comment explaining why this function is empty or complete the implementation.(ï€¹İúÿÿÿÿ
-7kotlin:S125„"Remove this commented out code.(Ôæµ
-xkotlin:S1186ø"ZAdd a nested comment explaining why this function is empty or complete the implementation.(ÀœØŸÿÿÿÿÿ
-xkotlin:S1186ƒ"ZAdd a nested comment explaining why this function is empty or complete the implementation.(ÈúÌ–øÿÿÿÿ
-ykotlin:S1192›"YDefine a constant instead of duplicating this literal "Please enter description" 3 times.(ÙÖÙà8ú™ü‚¯.
-xkotlin:S1186º	"ZAdd a nested comment explaining why this function is empty or complete the implementation.(ÿî…„üÿÿÿÿ
-<kotlin:S125ä"Remove this commented out code.(‰öâ§üÿÿÿÿ
-Skotlin:S1172Ô"5Remove this unused function parameter "requestCode1".(¢ÂÍçùÿÿÿÿ
-7kotlin:S125ˆ"Remove this commented out code.(ŸÚä´
-<kotlin:S125Š"Remove this commented out code.(Ñã’¾ûÿÿÿÿ
-7kotlin:S125"Remove this commented out code.(À¢ãÓ
-7kotlin:S125é"Remove this commented out code.(õµª
-Ckotlin:S125’"Remove this commented out code.(õ¦¹şÿÿÿÿ8›‰ı®.
-Ukotlin:S1144Ò"=Remove this unused private "getMarshmallowPermission" method.(Ò¬Ür
-<kotlin:S125Ó"Remove this commented out code.(éœ€‚ûÿÿÿÿ
-Fkotlin:S108ş")Either remove or fill this block of code.(ÍÖ¥ºÿÿÿÿÿ
-Lkotlin:S1481¯".Remove this unused "byteArray" local variable.(¡ìÇşÿÿÿÿ
-xkotlin:S1186Ê	"ZAdd a nested comment explaining why this function is empty or complete the implementation.(îã©¦ÿÿÿÿÿ
+7kotlin:S125"Remove this commented out code.(ˆúØş
+Lkotlin:S1481¨".Remove this unused "byteArray" local variable.(¡ìÇşÿÿÿÿ
+<kotlin:S125‹"Remove this commented out code.(Ñã’¾ûÿÿÿÿ
+Skotlin:S1172Í"5Remove this unused function parameter "requestCode1".(¢ÂÍçùÿÿÿÿ
+7kotlin:S125â"Remove this commented out code.(õµª
+7kotlin:S125"Remove this commented out code.(ŸÚä´
+Ukotlin:S1144Ë"=Remove this unused private "getMarshmallowPermission" method.(Ò¬Ür
+xkotlin:S1186Í	"ZAdd a nested comment explaining why this function is empty or complete the implementation.(îã©¦ÿÿÿÿÿ
+7kotlin:S125ı"Remove this commented out code.(Ôæµ
+7kotlin:S125÷"Remove this commented out code.(–±Ù
+xkotlin:S1186ö"ZAdd a nested comment explaining why this function is empty or complete the implementation.(÷’Õ…üÿÿÿÿ
+xkotlin:S1186ü"ZAdd a nested comment explaining why this function is empty or complete the implementation.(ÈúÌ–øÿÿÿÿ
+Fkotlin:S108÷")Either remove or fill this block of code.(ÍÖ¥ºÿÿÿÿÿ
+<kotlin:S125­"Remove this commented out code.(Ñã’¾ûÿÿÿÿ
+xkotlin:S1186½	"ZAdd a nested comment explaining why this function is empty or complete the implementation.(ÿî…„üÿÿÿÿ
+xkotlin:S1186ñ"ZAdd a nested comment explaining why this function is empty or complete the implementation.(ÀœØŸÿÿÿÿÿ
