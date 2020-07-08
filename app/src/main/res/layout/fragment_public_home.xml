@@ -250,13 +250,9 @@
                         android:id="@+id/rvPublic"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/_20sdp"
-                        />
+                        android:paddingBottom="@dimen/_5sdp" />
 
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-
-
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/norecordrefresh"
@@ -299,13 +295,33 @@
 
         </LinearLayout>
 
-      <androidx.appcompat.widget.AppCompatImageView
+
+        <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/imgAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
+            android:backgroundTint="@color/green"
+            android:padding="@dimen/_10sdp"
+            android:layout_gravity="bottom|center"
             android:layout_margin="@dimen/_30sdp"
-            android:src="@drawable/add_icon" />
+            android:text="@string/report_a_new_case"
+            android:textSize="@dimen/_13ssp"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            app:font="@{`semibold`}"
+            android:theme="@style/MaterialTheme"
+            android:drawableTint="@color/white"
+            android:drawableLeft="@drawable/ic_baseline_add_24"
+           />
+
+
+<!--      <androidx.appcompat.widget.AppCompatImageView-->
+<!--            android:id="@+id/imgAdd"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="bottom|right"-->
+<!--            android:layout_margin="@dimen/_30sdp"-->
+<!--            android:src="@drawable/add_icon" />-->
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

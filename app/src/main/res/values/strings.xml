@@ -267,5 +267,6 @@
     <string name="police_thirdline">Itanagar, Govt. of AP</string>
     <string name="police_fourthline">Email:sp.ndps@gmail.com</string>
     <string name="crime_location">Crime location : </string>
+    <string name="report_a_new_case"> Report a new case</string>
 
 </resources>

@@ -167,7 +167,7 @@ class VideoPlayerActivity : BaseActivity() {
             val myUri = Uri.parse(videoPath)
             getWindow().setFormat(PixelFormat.TRANSLUCENT);
             mediaController = MediaController(this)
-            //   mediaController.setAnchorView(videoView)
+            //   mediaController.setAnchorView(videoView)General
             mediaController!!.setAnchorView(videoView);
             mediaController!!.setMediaPlayer(videoView);
             videoView!!.setMediaController(mediaController)
@@ -205,7 +205,7 @@ class VideoPlayerActivity : BaseActivity() {
                         )
                         fileName.delete()
 
-                        if (retry > 3) {
+                        if (retry > 1) {
                             retry = 0
                             Toast.makeText(
                                 this@VideoPlayerActivity,

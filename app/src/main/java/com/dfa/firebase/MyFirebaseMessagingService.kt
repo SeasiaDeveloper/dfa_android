@@ -5,15 +5,18 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.RingtoneManager
+import android.media.AudioManager
+import android.media.MediaPlayer
+import android.net.Uri
 import android.util.Log
 import androidx.core.app.NotificationCompat
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.firebase.messaging.RemoteMessage
 import com.dfa.R
+import com.dfa.application.MyApplication
 import com.dfa.pojo.response.NotificationResponse
 import com.dfa.ui.home.fragments.home.view.HomeActivity
 import com.dfa.utils.PreferenceHandler
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     val TAG = "FirebaseMessagingService"
@@ -55,8 +58,12 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             PendingIntent.FLAG_UPDATE_CURRENT
                     or PendingIntent.FLAG_ONE_SHOT
         )
+        val soundUri  = Uri.parse("android.resource://"
+                + MyApplication.instance.getPackageName() + "/" + R.raw.siren);
+      //  val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
 
-        val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
+
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.app_icon)
             .setContentTitle("DFA ")
@@ -64,6 +71,30 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setSound(soundUri)
             .setContentIntent(pendingIntent)
+
+//               val mp: MediaPlayer = MediaPlayer.create(applicationContext, R.raw.siren)
+//        //mp.setVolume(0.8F, 0.8F);
+//
+//        mp.start()
+//        mp.setOnCompletionListener(object : MediaPlayer.OnCompletionListener {
+//            override fun onCompletion(mediaPlayer: MediaPlayer?) {
+//                mp.start()
+//            }
+//        })
+//
+//
+//        val th = Thread(Runnable {
+//            try {
+//                Thread.sleep(5000) //30000 is for 30 seconds, 1 sec =1000
+//                if (mp.isPlaying()) mp.setLooping(false)
+//                mp.stop() // for stopping the ringtone
+//            } catch (e: InterruptedException) {
+//                e.printStackTrace()
+//            }
+//        })
+//        th.start()
+
+
 
         val notificationManager =
             getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -74,4 +105,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         refreshChatIntent.putExtra("notificationResponse", obj)
         sendBroadcast(refreshChatIntent)
     }
+
+
 }

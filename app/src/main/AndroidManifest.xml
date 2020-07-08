@@ -37,7 +37,14 @@
         <activity android:name=".ui.commentlikelist.CommentLikeUsersList" />
 
         <service android:name=".utils.ForegroundService" />
-
+        <receiver
+            android:name=".firebase.NotificationReceiver"
+            android:exported="true"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+            </intent-filter>
+        </receiver>
         <activity android:name=".ui.OtpVerification.view.OtpVerificationActivity" />
         <activity
             android:name=".ui.SplashActivity"
