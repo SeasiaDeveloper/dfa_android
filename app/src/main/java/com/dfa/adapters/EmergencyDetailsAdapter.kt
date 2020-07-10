@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dfa.R
 import com.dfa.pojo.response.EmergencyDataResponse
-import com.dfa.ui.emergency.view.EmergencyFragment
-import com.dfa.utils.Utilities
+import java.lang.Double.parseDouble
+import java.text.DecimalFormat
 import kotlin.random.Random
 
 class EmergencyDetailsAdapter(
@@ -70,8 +70,11 @@ class EmergencyDetailsAdapter(
             val min = 20
             val max = 30
             val random: Int = Random.nextInt(max - min + 1) + min
-            var distance =Utilities.calculateDistance(item.latitude,item.longitude,context)
-            txtDistance.text = distance.toString()+" "+context.getString(R.string.km_away)
+           // var distance =Utilities.calculateDistance(item.latitude,item.longitude,context)
+            val df = DecimalFormat("####0.00")
+            var distance=df.format(parseDouble(item.distance_in_km.toString()))
+
+            txtDistance.text =distance+" "+context.getString(R.string.km_away)
 
             // Initializing an ArrayAdapter
             val contactsList = ArrayList<String>()

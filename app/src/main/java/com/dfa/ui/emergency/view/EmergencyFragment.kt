@@ -113,9 +113,37 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
                 RECORD_REQUEST_CODE
             )
         }
+        callApi()
         setEmergencyAdapter()
+
     }
 
+    fun callApi()
+    {
+
+
+        var internetUtils = InternetUtils()
+        if (internetUtils.isOnline(activity!!)) {
+            showProgress(mContext)
+            var authorizationToken =
+                PreferenceHandler.readString(
+                    mContext,
+                    PreferenceHandler.AUTHORIZATION,
+                    ""
+                )
+            val latitude = PreferenceHandler.readString(mContext, PreferenceHandler.LATITUDE, "").toString()
+            val longitude = PreferenceHandler.readString(mContext, PreferenceHandler.LONGITUDE, "").toString()
+            var request = EmergencyDataRequest("",latitude,longitude)
+
+           if(latitude!="" && latitude!="null")
+            presenter.hitEmergencyApi(request, authorizationToken)
+        } else {
+            Utilities.showMessage(
+                mContext,
+                getString(R.string.no_internet_connection)
+            )
+        }
+    }
     fun getDistrictDropDown(response: DistResponse) {
         staticDistValueList = response
 
@@ -157,7 +185,10 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
                                     PreferenceHandler.AUTHORIZATION,
                                     ""
                                 )
-                            var request = EmergencyDataRequest(response.data.get(position - 1).id)
+                            val latitude = PreferenceHandler.readString(mContext, PreferenceHandler.LATITUDE, "").toString()
+                            val longitude = PreferenceHandler.readString(mContext, PreferenceHandler.LONGITUDE, "").toString()
+
+                            var request = EmergencyDataRequest(response.data.get(position - 1).id,latitude,longitude)
                             presenter.hitEmergencyApi(request, authorizationToken)
                         } else {
                             Utilities.showMessage(
@@ -165,10 +196,11 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
                                 getString(R.string.no_internet_connection)
                             )
                         }
-                    } else {
-                        var mList: ArrayList<EmergencyDataResponse.Data> = ArrayList()
-                        emergencyDetailsAdapter.changeList(mList)
-                    }
+                   }
+//                    else {
+////                        var mList: ArrayList<EmergencyDataResponse.Data> = ArrayList()
+////                        emergencyDetailsAdapter.changeList(mList)
+////                    }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -242,11 +274,11 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
 
     override fun getEmergencyDataSuccess(myEarningsResponse: EmergencyDataResponse) {
         dismissProgress()
-        if (myEarningsResponse.data!!.size > 0) {
+        if (myEarningsResponse.data!!.size > 0 ) {
             emergencyDetailsAdapter.changeList(myEarningsResponse.data!!)
         } else {
             emergencyDetailsAdapter.changeList(myEarningsResponse.data!!)
-            Utilities.showMessage(mContext, "No data found corresponding to the selected District.")
+           if(isFirst==false) Utilities.showMessage(mContext, "No data found corresponding to the selected District.")
         }
 
     }

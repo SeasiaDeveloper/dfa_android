@@ -2,11 +2,15 @@ package com.dfa.ui.emergency.model
 
 import com.dfa.apis.ApiClient
 import com.dfa.apis.CallRetrofitApi
+import com.dfa.application.MyApplication
 import com.dfa.pojo.request.EmergencyDataRequest
 import com.dfa.pojo.response.DistResponse
 import com.dfa.pojo.response.EmergencyDataResponse
 import com.dfa.ui.emergency.presenter.EmergencyFragmentPresenter
 import com.dfa.utils.Constants
+import com.dfa.utils.PreferenceHandler
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,7 +20,13 @@ class EmergencyFragmentModel(private var emergencyFragmentPresenter: EmergencyFr
 
     fun hitEmergencyApi(request: EmergencyDataRequest, token: String?) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
-        retrofitApi.getEmergencyData(token, request.distId!!).enqueue(object :
+
+
+        val map = HashMap<String, RequestBody>()
+        map["distId"] = toRequestBody(request.distId)
+        map["latitude"] = toRequestBody(request.latitude)
+        map["longitude"] = toRequestBody(request.longitude)
+        retrofitApi.getEmergencyData(token, map).enqueue(object :
             Callback<EmergencyDataResponse> {
             override fun onFailure(call: Call<EmergencyDataResponse>, t: Throwable) {
                 if (t is SocketTimeoutException) {
@@ -46,6 +56,9 @@ class EmergencyFragmentModel(private var emergencyFragmentPresenter: EmergencyFr
         })
     }
 
+    private fun toRequestBody(value: String): RequestBody {
+        return RequestBody.create(MediaType.parse("application/json"), value)
+    }
     fun getDist() {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         retrofitApi.getDist().enqueue(object : Callback<DistResponse> {

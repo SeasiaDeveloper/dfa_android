@@ -19,5 +19,6 @@ import java.io.Serializable
         val id: String? = null
         val district_id: String? = null
         val longitude: String? = null
+        val distance_in_km: String? = null
     }
 }
