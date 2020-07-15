@@ -257,7 +257,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
 
             //in case of NGO
             if (type.equals("1")) {
-                layout_action.visibility = View.VISIBLE
+               // layout_action.visibility = View.VISIBLE
                 action_complaint.setOnClickListener {
                     /*  if (getCrimeDetailsResponse.data.get(0).status != null) currentStatus = getCrimeDetailsResponse.data.get(0).status!!
                       //hit api based on role

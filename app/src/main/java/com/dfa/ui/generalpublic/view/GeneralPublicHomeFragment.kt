@@ -344,7 +344,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
 
         itemsswipetorefresh.setColorSchemeColors(Color.WHITE)
-        itemsswipetorefresh.setDistanceToTriggerSync(500)
+        itemsswipetorefresh.setDistanceToTriggerSync(300)
 
         itemsswipetorefresh.setOnRefreshListener {
             pageCount = 1
@@ -858,11 +858,19 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     fun doApiCall() {
-        hitType = "foreground"
-        val casesRequest =
-            CasesRequest("1", "", "-1", "1", limit)  //type = -1 for fetching both cases and posts
-        Utilities.showProgress(mContext)
-        presenter.getComplaints(casesRequest, token, type)
+        if (Utilities.isInternetAvailableDialog(mContext)) {
+            hitType = "foreground"
+            val casesRequest =
+                CasesRequest(
+                    "1",
+                    "",
+                    "-1",
+                    "1",
+                    limit
+                )  //type = -1 for fetching both cases and posts
+            Utilities.showProgress(mContext)
+            presenter.getComplaints(casesRequest, token, type)
+        }
 
     }
 

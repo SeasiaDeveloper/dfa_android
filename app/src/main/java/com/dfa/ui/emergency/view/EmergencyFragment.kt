@@ -62,6 +62,8 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
         } else {
             if (staticDistValueList?.data!!.size > 0 && noChnage==false) {
                 getDistrictDropDown(staticDistValueList!!)
+                emergencyDetailsAdapter.changeList(emergencyDetailList)
+
             }
 
         }
@@ -146,7 +148,6 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     }
     fun getDistrictDropDown(response: DistResponse) {
         staticDistValueList = response
-
         val distValueList = ArrayList<String>()
         distValueList.add("Please select district")
         for (i in 0..response.data.size - 1) {
@@ -275,6 +276,7 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     override fun getEmergencyDataSuccess(myEarningsResponse: EmergencyDataResponse) {
         dismissProgress()
         if (myEarningsResponse.data!!.size > 0 ) {
+            if(isFirst) emergencyDetailList=myEarningsResponse.data
             emergencyDetailsAdapter.changeList(myEarningsResponse.data!!)
         } else {
             emergencyDetailsAdapter.changeList(myEarningsResponse.data!!)

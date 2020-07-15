@@ -84,7 +84,7 @@ class TermsAndConditionActivity : BaseActivity(), TermsConditionsView {
             ) {
                 super.onReceivedError(view, request, error)
                 Utilities.dismissProgress()
-                Utilities.showMessage(this@TermsAndConditionActivity,error.toString())
+               // Utilities.showMessage(this@TermsAndConditionActivity,error.toString())
             }
 
         })

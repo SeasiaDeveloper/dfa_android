@@ -31,7 +31,6 @@ import android.widget.MediaController
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
-import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -40,6 +39,7 @@ import com.dfa.R
 import com.dfa.base.BaseActivity
 import com.dfa.customviews.CenteredToolbar
 import com.dfa.databinding.DialogImageChoiceBinding
+import com.dfa.maps.FusedLocationClass
 import com.dfa.pojo.request.ComplaintRequest
 import com.dfa.pojo.response.ComplaintResponse
 import com.dfa.pojo.response.DistResponse
@@ -58,6 +58,7 @@ import com.dfa.utils.FileUtils
 import com.dfa.utils.RealPathUtil.getCapturedImage
 import com.dfa.utils.Utilities.PERMISSION_ID
 import com.dfa.utils.Utilities.PERMISSION_ID_CAMERA
+import com.google.android.gms.maps.GoogleMap
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.vincent.videocompressor.VideoCompress
@@ -101,20 +102,56 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private val REQUEST_PERMISSIONS_GALLERY_VIDEO = 2
     private var isPermissionDialogRequired = true
     var police_id = ""
-    private var tempPath=""
+    private var tempPath = ""
     private var districtList = ArrayList<DistResponse>()
     val PERMISSION_READ_STORAGE = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
         Manifest.permission.CAMERA
     )
-    private var changeMedia=0
+    private var changeMedia = 0
     val REQUEST_PERMISSIONS = 1
     var pstationResponse: PStationsListResponse? = null
     private lateinit var getCrimeTypesResponse: GetCrimeTypesResponse
+    private val mGoogleMap: GoogleMap? = null
+    private var mFusedLocationClass: FusedLocationClass? = null
+    private var mLocation: Location? = null
+    private var mHandler: Handler? = null
+
+    private val mRunnable: Runnable = object : Runnable {
+        override fun run() {
+            if (mFusedLocationClass != null) {
+                mLocation = mFusedLocationClass?.getLastLocation(this@GeneralPublicActivity)
+                if (mLocation != null) {
+                    val mAddress: String = Utilities.getAddressFromLatLong(
+
+                        mLocation!!.getLatitude(),
+                        mLocation!!.getLongitude(),
+                       this@GeneralPublicActivity
+                    )
+                    lattitude = mLocation!!.getLatitude().toString() + ""
+                    longitude = mLocation!!.getLongitude().toString() + ""
+//                    Toast.makeText(
+//                       this@GeneralPublicActivity,
+//                        lattitude + "---" + longitude,
+//                        Toast.LENGTH_LONG
+//                    ).show()
+                    val TAG = "HomeActivity"
+                    Log.d(TAG, "get_current_address: $mAddress")
+                    lattitude = mLocation!!.getLatitude().toString() + ""
+                    longitude = mLocation!!.getLongitude().toString() + ""
+                    mHandler!!.removeCallbacks(this)
+                } else mHandler!!.postDelayed(this, 500)
+            } else mHandler!!.postDelayed(this, 500)
+        }
+    }
+
+
     override fun getLayout(): Int {
         return R.layout.activity_public
     }
+
+
 
     override fun onResume() {
         super.onResume()
@@ -141,8 +178,9 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
         GeneralPublicHomeFragment.changeThroughIncidentScreen = 0
         clear_image.setOnClickListener(this)
-
-
+        mFusedLocationClass = FusedLocationClass(this)
+        mHandler = Handler()
+        mHandler!!.postDelayed(mRunnable, 500)
 
 
         /* scroll_view.setOnTouchListener(object : View.OnTouchListener {
@@ -487,8 +525,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             if (lengthBeforeCom > 200000 && lengthBeforeCom < 70000000) {
 
 
-                if(lengthBeforeCom> 100000  && lengthBeforeCom<= 5000000)
-                {
+                if (lengthBeforeCom > 100000 && lengthBeforeCom <= 5000000) {
                     pathOfImages = ArrayList()
                     pathOfImages.add(video.get(0))
                     complaintsPresenter.checkValidations(
@@ -496,12 +533,10 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         pathOfImages,
                         etDescription.text.toString()
                     )
-                }
+                } else {
 
-                else {
-
-                    if (File(outPath).exists() && changeMedia==1) {
-changeMedia=0
+                    if (File(outPath).exists() && changeMedia == 1) {
+                        changeMedia = 0
                         pathOfImages = ArrayList()
                         pathOfImages.add(outPath)
                         complaintsPresenter.checkValidations(
@@ -522,7 +557,7 @@ changeMedia=0
 
 
                             override fun onSuccess() {
-                                changeMedia=1
+                                changeMedia = 1
                                 try {
                                     if (progressDialog != null && progressDialog.isShowing) progressDialog.dismiss()
                                 } catch (e: IllegalArgumentException) { // Handle or log or ignore
@@ -703,7 +738,7 @@ changeMedia=0
             Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
         scanIntent.data = Uri.fromFile(
 
-                    Environment.getExternalStorageDirectory()
+            Environment.getExternalStorageDirectory()
         )
         sendBroadcast(scanIntent)
 
@@ -726,8 +761,6 @@ changeMedia=0
     /**
      * Capture image from camera
      */
-
-
 
 
 /*
@@ -835,11 +868,9 @@ changeMedia=0
                     val builder = StrictMode.VmPolicy.Builder()
                     StrictMode.setVmPolicy(builder.build())
                     //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,  Uri.fromFile(photoFile))
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile))
                     startActivityForResult(takePictureIntent, REQUEST_CAMERA)
-                }
-                catch(e:Exception)
-                {
+                } catch (e: Exception) {
                     println(e.printStackTrace())
                 }
             }
@@ -954,13 +985,20 @@ changeMedia=0
             Utilities.requestPermissions(this)
         else
             try {
+                mHandler!!.postDelayed(mRunnable, 500)
+
                 // Request location updates
-                locationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER,
-                    0L,
-                    0f,
-                    mLocationListener
-                )
+//                locationManager.requestLocationUpdates(
+//                    LocationManager.NETWORK_PROVIDER,
+//                    0L,
+//                    0f,
+//                    mLocationListener
+//                )
+//
+//                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0L,0f,mLocationListener);
+//
+
+
             } catch (ex: SecurityException) {
                 Log.d("myTag", "Security Exception, no location available")
             }
@@ -979,41 +1017,6 @@ changeMedia=0
         } else false
     }
 
-    private val mLocationListener = object : LocationListener {
-        override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
-        }
-
-        override fun onProviderEnabled(p0: String?) {
-        }
-
-        override fun onProviderDisabled(p0: String?) {
-        }
-
-        override fun onLocationChanged(location: Location) {
-            //your code here
-            if (location != null) {
-                val latti = location.latitude
-                val longi = location.longitude
-                lattitude = (latti).toString()
-                longitude = (longi).toString()
-                PreferenceHandler.writeString(
-                    this@GeneralPublicActivity,
-                    PreferenceHandler.LAT,
-                    lattitude
-                )
-                PreferenceHandler.writeString(
-                    this@GeneralPublicActivity,
-                    PreferenceHandler.LNG,
-                    longitude
-                )
-                address = Utilities.getAddressFromLatLong(
-                    lattitude.toDouble(),
-                    longitude.toDouble(),
-                    this@GeneralPublicActivity
-                )
-            }
-        }
-    }
 
     fun imageCompressor(selectedImage: Uri): Bitmap {
 
@@ -1146,7 +1149,7 @@ changeMedia=0
                      file = File(getRealPathFromURI(tempUri))
                      path = getRealPathFromURI(tempUri)*/
 
-              //  var tempUri = FileUtils.getPath(this,mPhotoFile)
+                //  var tempUri = FileUtils.getPath(this,mPhotoFile)
 
                 val tempUri = Uri.fromFile(mPhotoFile)
                 imageview_layout.visibility = View.VISIBLE
@@ -1162,7 +1165,7 @@ changeMedia=0
                 if (bitmap != null) {
 //                    val requiredImage =
 //                        RealPathUtil.imageRotateIfRequired(mPhotoFile?.absolutePath!!, bitmap)
-                   // imgView.setImageBitmap(requiredImage)
+                    // imgView.setImageBitmap(requiredImage)
                     //path = mPhotoFile?.absolutePath!!
                     val options = RequestOptions()
                         /* .centerCrop()*/
@@ -1186,7 +1189,7 @@ changeMedia=0
 
             if (intent?.data != null) {
 
-                changeMedia=0
+                changeMedia = 0
 
                 // String selectedVideoPath = getAbsolutePath(this, data.getData());
 
@@ -1218,10 +1221,8 @@ changeMedia=0
                             Toast.makeText(this, "Video length is too short", Toast.LENGTH_LONG)
                                 .show()
                         }
-                    }
-                    catch(e:Exception)
-                    {
-print(e.printStackTrace())
+                    } catch (e: Exception) {
+                        print(e.printStackTrace())
                     }
                 }
 
@@ -1266,7 +1267,7 @@ print(e.printStackTrace())
             path = getRealPathFromURI(videoUri!!)
             pathOfImages = ArrayList()
             pathOfImages.add(path)
-            changeMedia=0
+            changeMedia = 0
             showVideo(path)
         }
     }
@@ -1276,6 +1277,7 @@ print(e.printStackTrace())
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
         return stream.toByteArray()
     }
+
     fun showVideo(videoUri: String) {
         mediaControls = MediaController(this@GeneralPublicActivity)
         mediaControls.visibility = View.VISIBLE
@@ -1299,7 +1301,6 @@ print(e.printStackTrace())
                     mediaControls.hide()
                 }
             })
-
 
 
     }
@@ -1350,7 +1351,7 @@ print(e.printStackTrace())
         val fdelete = File(pathOfImages.get(0))
         if (fdelete.exists()) {
             if (fdelete.delete()) {
-               System.out.println("file Deleted :" + pathOfImages.get(0))
+                System.out.println("file Deleted :" + pathOfImages.get(0))
                 val scanIntent =
                     Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
                 scanIntent.data = Uri.fromFile(
@@ -1381,6 +1382,8 @@ print(e.printStackTrace())
         if (police_id != "") {
             lattitude = "0"
             longitude = "0"
+            com.dfa.utils.alert.AlertDialog.reportCrimeAlertDialog(this, this)
+
         } else {
 
             if (lattitude.equals("") || longitude.equals("")) {
@@ -1403,41 +1406,58 @@ print(e.printStackTrace())
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
-                var location = locationManager.getLastKnownLocation(provider);
 
-                // Initialize the location fields
-                if (location != null) {
-                    //System.out.println("Provider " + provider + " has been selected.");
-                    val latti = location.latitude
-                    val longi = location.longitude
-                    lattitude = (latti).toString()
-                    longitude = (longi).toString()
-                    PreferenceHandler.writeString(
-                        this@GeneralPublicActivity,
-                        PreferenceHandler.LAT,
-                        lattitude
+                if (lattitude.equals("")) {
+                    askForGPS()
+
+                    val handler = Handler()
+                    handler.postDelayed(
+                        {
+                            //var location = locationManager.getLastKnownLocation(provider);
+                            mLocation = mFusedLocationClass?.getLastLocation(this@GeneralPublicActivity)
+
+                            // Initialize the location fields
+                            if (mLocation != null) {
+                                //System.out.println("Provider " + provider + " has been selected.");
+                                val latti = mLocation!!.latitude
+                                val longi = mLocation!!.longitude
+                                lattitude = (latti).toString()
+                                longitude = (longi).toString()
+                                PreferenceHandler.writeString(
+                                    this@GeneralPublicActivity,
+                                    PreferenceHandler.LAT,
+                                    lattitude
+                                )
+                                PreferenceHandler.writeString(
+                                    this@GeneralPublicActivity,
+                                    PreferenceHandler.LNG,
+                                    longitude
+                                )
+                                address = Utilities.getAddressFromLatLong(
+                                    lattitude.toDouble(),
+                                    longitude.toDouble(),
+                                    this@GeneralPublicActivity
+                                )
+
+
+                                com.dfa.utils.alert.AlertDialog.reportCrimeAlertDialog(this, this)
+
+                            }
+                            else   Utilities.showMessage(this, "Unable to get Location, Please try again")
+
+                        },
+                        3000
                     )
-                    PreferenceHandler.writeString(
-                        this@GeneralPublicActivity,
-                        PreferenceHandler.LNG,
-                        longitude
-                    )
-                    address = Utilities.getAddressFromLatLong(
-                        lattitude.toDouble(),
-                        longitude.toDouble(),
-                        this@GeneralPublicActivity
-                    )
+
+
                 }
+
+
             }
 
-
-
-            if (lattitude.equals("")) {
-                askForGPS()
-            }
+           else  com.dfa.utils.alert.AlertDialog.reportCrimeAlertDialog(this, this)
 
         }
-        com.dfa.utils.alert.AlertDialog.reportCrimeAlertDialog(this, this)
     }
 
     override fun getCallback() {
@@ -1449,12 +1469,10 @@ print(e.printStackTrace())
 
 
 
+        if (police_id == "" && lattitude == "") {
+            Utilities.showMessage(this, "Unable to fetch Location, Please try again")
 
-         if(police_id=="" && lattitude=="") {
-        Utilities.showMessage(this,"Unable to fetch Location, Please try again")
-
-        }
-        else {
+        } else {
 
             if (isInternetAvailable()) {
                 showProgress()
@@ -1528,7 +1546,7 @@ print(e.printStackTrace())
         EmergencyFragment.staticDistValueList = response
 
         val distValueList = ArrayList<String>()
-        spPolice.visibility=View.GONE
+        spPolice.visibility = View.GONE
         distValueList.add("Please select district")
 
         for (i in 0..response.data.size - 1) {
@@ -1629,10 +1647,12 @@ print(e.printStackTrace())
                         police_id = pstationResponse!!.data?.get(position - 1)?.id.toString()
 
                         if (etDescription.text.toString().trim() == "") {
-                            Utilities.showMessage(this@GeneralPublicActivity, "Please enter description")
+                            Utilities.showMessage(
+                                this@GeneralPublicActivity,
+                                "Please enter description"
+                            )
 
-                        }
-                        else {
+                        } else {
                             if (mediaType.equals("videos")) {
                                 if (pathOfImages.size > 0) {
                                     if (!pathOfImages.get(0).isEmpty()

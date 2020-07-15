@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.dfa.R
 import com.dfa.adapters.VideosAdapter
+import com.dfa.application.MyApplication
 import com.dfa.customviews.GridSpacingItemDecoration
 import com.dfa.pojo.request.GetPhotosRequest
 import com.dfa.pojo.response.GetCrimeDetailsResponse
@@ -54,10 +55,13 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
 
         if (isFirst) {
             request = GetPhotosRequest("videos")
-            Utilities.showProgress(activity!!)
+            if (Utilities.isInternetAvailableDialog(MyApplication.instance)) {
+
+                Utilities.showProgress(activity!!)
             authorizationToken =
                 PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
-            presenter.getVideos(authorizationToken, request)
+                presenter.getVideos(authorizationToken, request)
+            }
             isFirst=false
         }
         else
@@ -79,7 +83,9 @@ class VideosFragment : Fragment(), VideosView, OnClickOfVideoAndPhoto {
         itemsswipetorefresh.setColorSchemeColors(Color.WHITE)
 
         itemsswipetorefresh.setOnRefreshListener {
-            presenter.getVideos(authorizationToken, request)
+            if (Utilities.isInternetAvailableDialog(MyApplication.instance)) {
+                presenter.getVideos(authorizationToken, request)
+            }
             itemsswipetorefresh.isRefreshing = false
         }
     }

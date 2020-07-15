@@ -12,6 +12,8 @@ import android.graphics.Matrix
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
 import android.net.ParseException
 import android.net.Uri
 import android.os.Build
@@ -35,6 +37,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.dfa.R
 import com.dfa.adapters.StatusAdapter
+import com.dfa.application.MyApplication
 import com.dfa.listeners.AdharNoListener
 import com.dfa.listeners.AlertDialogListener
 import com.dfa.listeners.OnCaseItemClickListener
@@ -467,6 +470,26 @@ object Utilities {
             }
         } catch (e: Exception) {
             Log.e("", e.message!!)
+        }
+    }
+
+
+
+
+    fun isInternetAvailableDialog(context:Context): Boolean {
+        val cm = MyApplication.instance.applicationContext
+            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var activeNetwork : NetworkInfo? = null
+        activeNetwork = cm.activeNetworkInfo
+
+        return if (activeNetwork != null && activeNetwork.isConnectedOrConnecting) {
+            activeNetwork != null && activeNetwork.isConnectedOrConnecting
+        } else {
+
+           showMessage(context, context.getString(R.string.no_internet_connection))
+            //showToastWarning(MyApplication.instance.getString(R.string.no_internet_connection))
+            // Toast.makeText(MyApplication.getInstance().getApplicationContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
+            false
         }
     }
 

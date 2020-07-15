@@ -143,7 +143,7 @@ class HomeModel(private var homePresenter: HomePresenter) {
     fun saveAdhaarNo(token: String, adhaarNo: String) {
         //hit api
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
-        val map = HashMap<String, RequestBody>()
+         val map = HashMap<String, RequestBody>()
         map["adhar_number"] = toRequestBody(adhaarNo)
         retrofitApi.updateProfileWithoutImage(map, token)
             .enqueue(object : Callback<SignupResponse> {

@@ -44,7 +44,6 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     var endlessScrollListener: EndlessRecyclerViewScrollListenerImplementation? = null
     var isLike: Boolean = false
     var complaintIdTobeLiked: String? = null
-    var whenDeleteCall: Boolean = false
     var deleteItemposition: Int? = null
     lateinit var horizontalLayoutManager: LinearLayoutManager
     var actionChanged: Boolean = false
@@ -128,6 +127,8 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     }
 
     private fun myCasesApiCall() {
+
+        if (isInternetAvailable()) {
         casesRequest = CasesRequest(
             "0",
             etSearch.text.toString(),
@@ -138,6 +139,9 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         Utilities.showProgress(this@MyCasesActivity)
         //hit api with search variable
         presenter.getComplaints(casesRequest, token, type)
+        } else {
+            Utilities.showMessage(this, getString(R.string.no_internet_connection))
+        }
     }
 
     override fun onPause() {
@@ -227,13 +231,18 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     }
 
     fun doApiCall() {
-        casesRequest = CasesRequest(
-            "0",
-            etSearch.text.toString(),
-            "0", "1", limit
-        ) //all = "0"  my cases and for fetching all the cases which are of type = 0
-        Utilities.showProgress(this)
-        presenter.getComplaints(casesRequest, token, type)
+        if (isInternetAvailable()) {
+            casesRequest = CasesRequest(
+                "0",
+                etSearch.text.toString(),
+                "0", "1", limit
+            ) //all = "0"  my cases and for fetching all the cases which are of type = 0
+            Utilities.showProgress(this)
+            presenter.getComplaints(casesRequest, token, type)
+        }
+        else {
+            Utilities.showMessage(this, getString(R.string.no_internet_connection))
+        }
     }
 
     //displays my cases list on the view

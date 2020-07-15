@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.dfa.R
 import com.dfa.adapters.PhotosAdapter
+import com.dfa.application.MyApplication
 import com.dfa.customviews.GridSpacingItemDecoration
 import com.dfa.pojo.request.GetPhotosRequest
 import com.dfa.pojo.response.GetCrimeDetailsResponse
@@ -54,10 +55,12 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
        // EmergencyFragment.noChnage=false
         if (isFirst) {
             request = GetPhotosRequest("photos")
-            showProgress(activity!!)
+            if (Utilities.isInternetAvailableDialog(MyApplication.instance)) {
+                showProgress(activity!!)
             authorizationToken =
                 PreferenceHandler.readString(activity!!, PreferenceHandler.AUTHORIZATION, "")
-            presenter.getPhotos(authorizationToken, request)
+                presenter.getPhotos(authorizationToken, request)
+            }
             isFirst = false
         }
         else
@@ -79,8 +82,10 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
 
         itemsswipetorefresh.setOnRefreshListener {
             //pageCount = 0
-            photos.toMutableList().clear()
-            presenter.getPhotos(authorizationToken, request)
+            if (Utilities.isInternetAvailableDialog(MyApplication.instance)) {
+                photos.toMutableList().clear()
+                presenter.getPhotos(authorizationToken, request)
+            }
             itemsswipetorefresh.isRefreshing = false
 
         }
@@ -195,22 +200,7 @@ class PhotosFragment : Fragment(), PhotosView, OnClickOfVideoAndPhoto {
     /*
   * method to check internet connection
   * */
-    fun isInternetAvailable(): Boolean {
-        val connectivityManager =
-            activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val nw = connectivityManager.activeNetwork ?: return false
-            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
-            return when {
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
-                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
-                else -> false
-            }
-        } else {
-            val nwInfo = connectivityManager.activeNetworkInfo ?: return false
-            return nwInfo.isConnected
-        }
-    }
+
 
 
 

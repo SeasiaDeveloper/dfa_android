@@ -14,6 +14,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -34,6 +35,7 @@ import com.dfa.adapters.TabLayoutAdapter
 import com.dfa.base.BaseActivity
 import com.dfa.databinding.LayoutAcceptRejectAlertBinding
 import com.dfa.listeners.AdharNoListener
+import com.dfa.maps.FusedLocationClass
 import com.dfa.pojo.request.EmergencyDataRequest
 import com.dfa.pojo.response.*
 import com.dfa.ui.contactus.ContactUsActivity
@@ -82,6 +84,48 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     var gps_enabled: Boolean = false
     lateinit var getProfileresponse: GetProfileResponse
     //   lateinit var btnLogin:CustomtextView
+
+    private var mFusedLocationClass: FusedLocationClass? = null
+    private var mLocation: Location? = null
+    private var mHandler: Handler? = null
+
+    private val mRunnable: Runnable = object : Runnable {
+        override fun run() {
+            if (mFusedLocationClass != null) {
+                mLocation = mFusedLocationClass?.getLastLocation(this@HomeActivity)
+                if (mLocation != null) {
+                    val mAddress: String = Utilities.getAddressFromLatLong(
+
+                        mLocation!!.getLatitude(),
+                        mLocation!!.getLongitude(),
+                        this@HomeActivity
+                    )
+                    var lattitude = mLocation!!.getLatitude().toString() + ""
+                    var longitude = mLocation!!.getLongitude().toString() + ""
+                    val TAG = "HomeActivity"
+                    PreferenceHandler.writeString(
+                        this@HomeActivity,
+                        PreferenceHandler.LATITUDE,
+                        lattitude
+                    )
+                    PreferenceHandler.writeString(
+                        this@HomeActivity,
+                        PreferenceHandler.LONGITUDE,
+                        longitude
+                    )
+//                    Toast.makeText(
+//                        this@HomeActivity,
+//                        lattitude + "---" + longitude,
+//                        Toast.LENGTH_LONG
+//                    ).show()
+                    mHandler!!.removeCallbacks(this)
+                } else mHandler!!.postDelayed(this, 500)
+            } else mHandler!!.postDelayed(this, 500)
+        }
+    }
+
+
+
 
     override fun getLayout(): Int {
         return R.layout.home_activity
@@ -304,6 +348,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
 
         setTabAdapter()
+        mFusedLocationClass = FusedLocationClass(this)
+        mHandler = Handler()
+        mHandler!!.postDelayed(mRunnable, 500)
     }
 
     @SuppressLint("SetTextI18n")
@@ -356,53 +403,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
     }
 
-    private val mLocationListener = object : LocationListener {
-        override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
-        }
-
-        override fun onProviderEnabled(p0: String?) {
-        }
-
-        override fun onProviderDisabled(p0: String?) {
-        }
-
-        override fun onLocationChanged(location: Location) {
-            //your code here
-            if (location != null) {
-                val latti = location.latitude
-                val longi = location.longitude
-                var lattitude = (latti).toString()
-                var longitude = (longi).toString()
-                PreferenceHandler.writeString(
-                    this@HomeActivity,
-                    PreferenceHandler.LATITUDE,
-                    lattitude
-                )
-                PreferenceHandler.writeString(
-                    this@HomeActivity,
-                    PreferenceHandler.LONGITUDE,
-                    longitude
-                )
-
-            }
-        }
-    }
-
     private fun getLocation() {
         if (!Utilities.checkPermissions(this))
             Utilities.requestPermissions(this)
-        else
-            try {
-                // Request location updates
-                locationManager.requestLocationUpdates(
-                    LocationManager.NETWORK_PROVIDER,
-                    0L,
-                    0f,
-                    mLocationListener
-                )
-            } catch (ex: SecurityException) {
-                Log.d("myTag", "Security Exception, no location available")
-            }
+
     }
 
     //checking location

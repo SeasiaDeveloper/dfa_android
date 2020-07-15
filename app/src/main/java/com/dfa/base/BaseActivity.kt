@@ -3,6 +3,7 @@ package com.dfa.base
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.NetworkInfo
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -10,6 +11,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.dfa.R
+import com.dfa.application.MyApplication
 import com.kaopiz.kprogresshud.KProgressHUD
 import com.dfa.utils.Utilities
 
@@ -59,6 +62,26 @@ abstract class BaseActivity:AppCompatActivity() {
             return nwInfo.isConnected
         }
     }
+
+
+
+    fun isInternetAvailableDialog(): Boolean {
+        val cm = MyApplication.instance.applicationContext
+            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var activeNetwork : NetworkInfo? = null
+        activeNetwork = cm.activeNetworkInfo
+
+        return if (activeNetwork != null && activeNetwork.isConnectedOrConnecting) {
+            activeNetwork != null && activeNetwork.isConnectedOrConnecting
+        } else {
+
+            Utilities.showMessage(this, getString(R.string.no_internet_connection))
+            //showToastWarning(MyApplication.instance.getString(R.string.no_internet_connection))
+            // Toast.makeText(MyApplication.getInstance().getApplicationContext(), R.string.internet_connection, Toast.LENGTH_SHORT).show();
+            false
+        }
+    }
+
 
     /*
      * method to show show progress
