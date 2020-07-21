@@ -50,11 +50,14 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
 
     override fun onResume() {
         super.onResume()
+
+        if(emergencyDetailList.size==0)
+         presenter.hitDistricApi()
+
         if (isFirst) {
             var internetUtils = InternetUtils()
             if (internetUtils.isOnline(activity!!)) {
                 showProgress(mContext)
-                presenter.hitDistricApi()
                 isFirst = false
             } else {
                 Utilities.showMessage(mContext, getString(R.string.no_internet_connection))

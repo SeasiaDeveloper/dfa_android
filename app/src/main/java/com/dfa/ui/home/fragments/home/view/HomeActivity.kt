@@ -1,10 +1,7 @@
 package com.dfa.ui.home.fragments.home.view
 
 import android.annotation.SuppressLint
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
@@ -12,6 +9,8 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -32,7 +31,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.dfa.R
 import com.dfa.adapters.TabLayoutAdapter
+import com.dfa.application.GetVersionCode
+import com.dfa.application.MyApplication
 import com.dfa.base.BaseActivity
+import com.dfa.databinding.DialogUpdateVersionBinding
 import com.dfa.databinding.LayoutAcceptRejectAlertBinding
 import com.dfa.listeners.AdharNoListener
 import com.dfa.maps.FusedLocationClass
@@ -64,6 +66,7 @@ import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.nav_action.*
 import kotlinx.android.synthetic.main.nav_header.*
 import okhttp3.internal.Util
+import org.jsoup.Jsoup
 import java.lang.Double.parseDouble
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
@@ -149,7 +152,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
-
         if (menuItem != null && menuItem!!.isChecked) menuItem!!.isChecked = false
 
         if (!isGPS && !isPermissionDialogRequired) {
@@ -351,6 +353,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         mFusedLocationClass = FusedLocationClass(this)
         mHandler = Handler()
         mHandler!!.postDelayed(mRunnable, 500)
+        GetVersionCode(this).execute()
+
     }
 
     @SuppressLint("SetTextI18n")

@@ -268,5 +268,8 @@
     <string name="police_fourthline">Email:sp.ndps@gmail.com</string>
     <string name="crime_location">Crime location : </string>
     <string name="report_a_new_case"> Report a new case</string>
+    <string name="new_version">New version</string>
+    <string name="new_version_text">To use this application, you need to upgrade it to the latest version available on Google Play</string>
+    <string name="update_now">update now</string>
 
 </resources>

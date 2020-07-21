@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+
+       <com.dfa.customviews.CustomTextViewheading
+            android:layout_width="wrap_content"
+           android:id="@+id/newVersion"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:text="@string/new_version"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_13ssp"
+            app:font="@{`bold`}" />
+
+
+
+        <com.dfa.customviews.CustomTextViewheading
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_7sdp"
+            android:padding="@dimen/_5sdp"
+            android:text="@string/new_version_text"
+            android:textColor="@color/grey"
+            android:textSize="@dimen/_12ssp"
+            app:font="@{`regular`}" />
+
+
+
+
+       <com.dfa.customviews.CustomTextViewheading
+            android:id="@+id/btnDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+           android:textAllCaps="true"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:text="@string/update_now"
+            android:textColor="@color/green"
+            android:textSize="@dimen/_12ssp"
+            app:font="@{`semibold`}" />
+
+    </LinearLayout>
+</layout>

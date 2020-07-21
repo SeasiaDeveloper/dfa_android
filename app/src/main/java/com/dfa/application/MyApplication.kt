@@ -1,10 +1,15 @@
 package com.dfa.application
 
+import android.os.AsyncTask
+import android.util.Log
+import android.widget.Toast
 import androidx.multidex.MultiDex
 import androidx.multidex.MultiDexApplication
 import com.dfa.R
 import com.dfa.utils.FontStyle
 import com.google.firebase.FirebaseApp
+import org.jsoup.Jsoup
+
 //import org.acra.ACRA
 //import org.acra.ReportField
 //import org.acra.ReportingInteractionMode
@@ -20,6 +25,7 @@ import com.google.firebase.FirebaseApp
 
 class MyApplication : MultiDexApplication() {
     private var customFontFamily: FontStyle? = null
+    var currentVersion=""
     override fun onCreate() {
         super.onCreate()
         instance = this
