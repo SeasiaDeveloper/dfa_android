@@ -766,7 +766,13 @@ class CasesAdapter(
                 itemView.layoutStatus.visibility = View.VISIBLE
                 itemView.layoutPoliceStation.visibility = View.VISIBLE
                 itemView.txtCrimeType.text = item.crime_type
-                itemView.txtPoliceStation.text = item.stationName
+
+
+                if(item.stationName==null || item.stationName!!.isEmpty()){
+                    itemView.txtPoliceStation.text = "NA"
+                } else{
+                    itemView.txtPoliceStation.text = item.stationName
+                }
 
                 var itemName = item.status
                 if (itemName?.toLowerCase() == "accept" || itemName?.toLowerCase() == "accepted")
