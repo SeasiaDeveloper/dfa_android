@@ -485,7 +485,8 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
             "action" -> {
                 complaintId = complaintsData.id!!
-                if (complaintsData.status != null) currentStatus = complaintsData.status!!
+                if (complaintsData.status != null)
+                    currentStatus = complaintsData.status!!
                 //Utilities.showProgress(this@MyCasesActivity)
                 //hit api based on role
                 //presenter.fetchStatusList(token, type)
@@ -529,7 +530,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                     } else {
                         item1 = GetStatusDataBean("8", "Unauthentic", false)
                     }
-
+                    list.add(item1)
 
                     if (currentStatus.equals("Assign (to my suborodinate officer)")) {
                         item1 = GetStatusDataBean("9", "Assign (to my suborodinate officer)", true)
@@ -634,6 +635,9 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         if (responseObject.data!!.size != 0) {
             adapter?.notifyActionData(responseObject.data)
         }
+      //  showProgress()
+      //  myCasesApiCall()
+
         // }
     }
 

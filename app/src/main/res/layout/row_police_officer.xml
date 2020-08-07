@@ -20,7 +20,7 @@
     <com.dfa.customviews.CustomtextView
         android:layout_marginLeft="@dimen/_10sdp"
         android:id="@+id/officerName"
-        android:textSize="14sp"
+        android:textSize="@dimen/sp_14"
         android:textColor="@color/black"
         android:layout_toRightOf="@+id/selectedImg"
         android:layout_width="wrap_content"

@@ -682,7 +682,7 @@ class CasesAdapter(
 
                     sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Drug Free Arunachal")
                  //   sharingIntent.putExtra(Intent.EXTRA_TEXT, "Hi, Your friend $username shared you FIR complaint from Drug Free Arunachal app. To see detail, open\n https://drugfreearunachal.org/home?id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
-                    sharingIntent.putExtra(Intent.EXTRA_TEXT, "https://drugfreearunachal.org/complaint-details?complaint_id?id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
+                    sharingIntent.putExtra(Intent.EXTRA_TEXT, "https://drugfreearunachal.org/complaint-details?complaint_id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
                     )
                     context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
                 }
@@ -815,8 +815,9 @@ class CasesAdapter(
                             ""
                         )!!
 
-                        if (item.police_station_id?.toString().equals(stationId))
+                        if (item.police_station_id?.toString().equals(stationId) && !item.status!!.toLowerCase().equals("accept"))
                             itemView.action_complaint.visibility = View.VISIBLE
+
                         else
                             itemView.action_complaint.visibility = View.GONE
 

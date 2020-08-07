@@ -1,20 +1,28 @@
 package com.dfa.ui.policedetail.view
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
+import android.view.LayoutInflater
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.dfa.R
+import com.dfa.adapters.StatusAdapter
 import com.dfa.base.BaseActivity
 import com.dfa.customviews.CenteredToolbar
 import com.dfa.listeners.OnCaseItemClickListener
 import com.dfa.listeners.StatusListener
 import com.dfa.pojo.request.PoliceDetailrequest
 import com.dfa.pojo.response.*
+import com.dfa.ui.generalpublic.PoliceOfficerActivity
+import com.dfa.ui.generalpublic.PoliceStationActivity
 import com.dfa.ui.generalpublic.VideoPlayerActivity
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.dfa.ui.policedetail.presenter.PoliceDetailPresenter
@@ -41,6 +49,8 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
         finish()
     }
 
+    var token=""
+    var currentStatus=""
     override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String,position:Int) {
         when (actionType) {
             "location" -> {
@@ -86,11 +96,154 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {
         try {
             Utilities.dismissProgress()
-            Utilities.showStatusDialog("", responseObject, this, this, this)
+         //   Utilities.showStatusDialog("", responseObject, this, this, this)
+
+
+            if (responseObject.data != null)
+
+             currentStatus= status
+
+             //   currentStatus = complaintsData.status!!
+            //Utilities.showProgress(this@MyCasesActivity)
+            //hit api based on role
+            //presenter.fetchStatusList(token, type)
+            var list: ArrayList<GetStatusDataBean> = ArrayList()
+            var item1: GetStatusDataBean
+
+                if (currentStatus.equals("Accept")) {
+                    item1 = GetStatusDataBean("4", "Accept", true)
+                } else {
+                    item1 = GetStatusDataBean("4", "Accept", false)
+                }
+                list.add(item1)
+                if (currentStatus.equals("Reject")) {
+                    item1 = GetStatusDataBean("6", "Reject", true)
+                } else {
+                    item1 = GetStatusDataBean("6", "Reject", false)
+                }
+                list.add(item1)
+                if (currentStatus.equals("Resolved")) {
+                    item1 = GetStatusDataBean("7", "Resolved", true)
+                } else {
+                    item1 = GetStatusDataBean("7", "Resolved", false)
+                }
+                list.add(item1)
+                if (currentStatus.equals("Unauthentic")) {
+                    item1 = GetStatusDataBean("8", "Unauthentic", true)
+                } else {
+                    item1 = GetStatusDataBean("8", "Unauthentic", false)
+                }
+                list.add(item1)
+
+                if (currentStatus.equals("Assign (to my suborodinate officer)")) {
+                    item1 = GetStatusDataBean("9", "Assign (to my suborodinate officer)", true)
+                } else {
+                    item1 = GetStatusDataBean("9", "Assign (to my suborodinate officer)", false)
+                }
+                list.add(item1)
+                if (currentStatus.equals("Transfer (to other jurisdicational police station)")) {
+                    item1 = GetStatusDataBean(
+                        "10",
+                        "Transfer (to other jurisdicational police station)",
+                        true
+                    )
+                } else {
+                    item1 = GetStatusDataBean(
+                        "10",
+                        "Transfer (to other jurisdicational police station)",
+                        false
+                    )
+                }
+                list.add(item1)
+
+
+
+            for (element in list) {
+                if (element.name.equals(currentStatus)) {
+                    element.isChecked = true
+                } else {
+                    element.isChecked = false
+                }
+            }
+            var data = GetStatusResponse("", 0, list)
+            showStatusDialog("", data)
+
+
         } catch (e: Exception) {
             e.printStackTrace()
         }
     }
+
+
+    private fun showStatusDialog(description: String, responseObject: GetStatusResponse) {
+        lateinit var dialog: AlertDialog
+        val builder = AlertDialog.Builder(this)
+        val binding = DataBindingUtil.inflate(
+            LayoutInflater.from(this),
+            R.layout.dialog_change_status,
+            null,
+            false
+        ) as com.dfa.databinding.DialogChangeStatusBinding
+        // Inflate and set the layout for the dialog
+        if (!description.equals("null") && !description.equals("")) binding.etDescription.setText(
+            description
+        )
+
+        val mStatusList = responseObject.data.toMutableList()
+        for (status in mStatusList) {
+            if (status.isChecked) {
+                statusId = status.id
+            }
+        }
+
+        //display the list on the screen
+        val statusAdapter = StatusAdapter(this, responseObject.data.toMutableList(), this)
+        val horizontalLayoutManager = LinearLayoutManager(this, RecyclerView.VERTICAL, false)
+        binding.rvStatus?.layoutManager = horizontalLayoutManager
+        binding.rvStatus?.adapter = statusAdapter
+        binding.btnDone.setOnClickListener {
+            if (statusId == "-1") {
+                Utilities.showMessage(
+                    this@PoliceIncidentDetailScreen,
+                    getString(R.string.select_option_validation)
+                )
+            }
+            else if (statusId.equals("9")) {
+                var intent=Intent(this, PoliceOfficerActivity::class.java)
+                intent.putExtra("token",token)
+                intent.putExtra("complaintId",complaintId)
+                startActivity(intent)
+                dialog.dismiss()
+
+            } else if (statusId.equals("10")) {
+                var intent=Intent(this, PoliceStationActivity::class.java)
+                intent.putExtra("token",token)
+                intent.putExtra("complaintId",complaintId)
+                startActivity(intent)
+                dialog.dismiss()
+
+            }
+
+            else {
+                Utilities.showProgress(this@PoliceIncidentDetailScreen)
+                //hit status update api
+                crimePresenter.updateStatus(
+                    token,
+                    complaintId,
+                    statusId,
+                    binding.etDescription.text.toString()
+                )
+                dialog.dismiss()
+            }
+        }
+
+        builder.setView(binding.root)
+        dialog = builder.create()
+        dialog.show()
+    }
+
+
+
 
     // private var ngoPresenter: NGOFormPresenter = NGOFormPresenterImpl(this)
     private var crimePresenter: PoliceDetailPresenter = PoliceDetailPresenterImpl(this)
@@ -99,6 +252,7 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
     private lateinit var getCrimeDetailsResponse: GetCrimeDetailsResponse
     private var isKnowPostOrComplaint: String? = null
     private var statusId = "-1"
+    var status=""
 
     override fun getLayout(): Int {
         return R.layout.police_detail_layout
@@ -111,6 +265,9 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
+
+        token = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")!!
+
         // complaintsData = intent.getSerializableExtra(Constants.PUBLIC_COMPLAINT_DATA) as GetComplaintsResponse.Data
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
         complaintId = intent.getStringExtra(Constants.PUBLIC_COMPLAINT_DATA)
@@ -155,6 +312,7 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
 
         spTypesOfCrime.text = getCrimeDetailsResponse.data?.get(0)?.crime_type
         spStatusOfCrime.text = getCrimeDetailsResponse.data?.get(0)?.status
+        status=getCrimeDetailsResponse.data?.get(0)?.status!!
         level.text = getCrimeDetailsResponse.data?.get(0)?.urgency
 
         if (!getCrimeDetailsResponse.data?.get(0)?.info.isNullOrEmpty()) {

@@ -23,19 +23,19 @@
                 android:layout_height="wrap_content">
                 <com.dfa.customviews.CustomtextView
                     android:textColor="@color/black"
-                    android:text="police station: "
-                    android:textSize="14sp"
+                    android:text=""
+                    android:textSize="@dimen/sp_14"
                     android:id="@+id/tvName"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
                 <com.dfa.customviews.CustomtextView
-                    android:text="km"
+                    android:text=""
                     android:visibility="gone"
                     android:textColor="@color/black"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_alignParentRight="true"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/sp_14"
                     android:id="@+id/tvDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -48,10 +48,10 @@
                     android:layout_height="wrap_content"/>
 
                 <com.dfa.customviews.CustomtextView
-                    android:text="adddress: "
+                    android:text=""
                     android:layout_toLeftOf="@+id/selectedImg"
                     android:layout_below="@+id/tvName"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/sp_14"
                     android:maxLines="2"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:id="@+id/tvAddress"

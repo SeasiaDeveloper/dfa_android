@@ -18,7 +18,7 @@
         android:layout_below="@+id/toolbarLayout"
         android:layout_marginRight="@dimen/_20sdp"
         android:layout_marginLeft="@dimen/_20sdp"
-        android:layout_marginBottom="@dimen/_25sdp"
+        android:layout_marginBottom="@dimen/_60sdp"
         android:id="@+id/recyclerViewPolice"
         android:layout_height="wrap_content"/>
 
