@@ -13,7 +13,6 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -37,8 +36,9 @@ import com.dfa.pojo.request.CreatePostRequest
 import com.dfa.pojo.request.CrimeDetailsRequest
 import com.dfa.pojo.response.*
 import com.dfa.ui.comments.CommentsActivity
-import com.dfa.ui.emergency.view.EmergencyFragment
 import com.dfa.ui.generalpublic.GeneralPublicActivity
+import com.dfa.ui.generalpublic.PoliceOfficerActivity
+import com.dfa.ui.generalpublic.PoliceStationActivity
 import com.dfa.ui.generalpublic.pagination.EndlessRecyclerViewScrollListenerImplementation
 import com.dfa.ui.home.fragments.cases.presenter.CasesPresenter
 import com.dfa.ui.home.fragments.cases.presenter.CasesPresenterImplClass
@@ -51,12 +51,7 @@ import com.dfa.utils.Constants
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
 import com.google.gson.GsonBuilder
-import kotlinx.android.synthetic.main.fragment_photos.*
 import kotlinx.android.synthetic.main.fragment_public_home.*
-import kotlinx.android.synthetic.main.fragment_public_home.itemsswipetorefresh
-import kotlinx.android.synthetic.main.fragment_public_home.norecordrefresh
-import kotlinx.android.synthetic.main.fragment_public_home.tvRecord
-import kotlinx.android.synthetic.main.item_case.*
 import java.lang.Integer.parseInt
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
@@ -76,6 +71,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     var hitType = "foreground"
     var firComplaintId: String = ""
     var horizontalLayoutManager: LinearLayoutManager? = null
+
     //pagination
     var endlessScrollListener: EndlessRecyclerViewScrollListenerImplementation? = null
     var pageCount: Int = 1
@@ -86,14 +82,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     var adapterActionPosition: Int? = null
     var fragment: Fragment? = null
     var positionOfFir: Int? = null
-    private var limit="10"
-    private var complaintIdTobeLikedPosition=-1
+    private var limit = "10"
+    private var complaintIdTobeLikedPosition = -1
 //    var newCompaintsButton: ExtendedFloatingActionButton? = null
-
-
-
-
-
 
     override fun onClick(item: Any, position: Int) {
         Utilities.showProgress(mContext)
@@ -151,14 +142,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     fun refreshList() {
-        pageCount=1
+        pageCount = 1
         val casesRequest =
             CasesRequest("1", "", "-1", "1", limit) //type = -1 for fetching all the data
         Utilities.showProgress(mContext)
         presenter.getComplaints(casesRequest, token, type)
     }
 
-    private var complaints= ArrayList<GetCasesResponse.Data>()
+    private var complaints = ArrayList<GetCasesResponse.Data>()
     private var adapter: CasesAdapter? = null
     private var presenter: CasesPresenter = CasesPresenterImplClass(this)
     private var statusId = "-1"
@@ -197,8 +188,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun setupUI() {
         (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
         (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-        itemsswipetorefresh.visibility=View.VISIBLE
-        norecordrefresh.visibility=View.GONE
+        itemsswipetorefresh.visibility = View.VISIBLE
+        norecordrefresh.visibility = View.GONE
 
         // newCompaintsButton = binding.extFab;
         //swipeRefresh.setOnRefreshListener(this)
@@ -333,8 +324,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
 
-    private fun pullToRefreshSettings(itemsswipetorefresh : SwipeRefreshLayout)
-    {
+    private fun pullToRefreshSettings(itemsswipetorefresh: SwipeRefreshLayout) {
         itemsswipetorefresh.setProgressBackgroundColorSchemeColor(
             ContextCompat.getColor(
                 activity!!,
@@ -351,7 +341,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             adapter?.clear()
             endlessScrollListener?.resetState()
             doApiCall()
-           //var k=1/0
+            //var k=1/0
 
             // itemsCells.clear()
             // setItemsData()
@@ -360,6 +350,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             itemsswipetorefresh.isRefreshing = false
         }
     }
+
     private fun galleryIntent() {
         val pickIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         pickIntent.type = "image/*" //"image/* video/*"
@@ -466,39 +457,38 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
 
         if (hitType == "foreground") {
-           // newCompaintsButton!!.visibility = View.GONE
+            // newCompaintsButton!!.visibility = View.GONE
             progressBar.visibility = View.GONE
 
 
             if (response.data!!.isNotEmpty()) {
-                if(pageCount==1)
-                {  adapter?.clear()
-                complaints = response.data
+                if (pageCount == 1) {
+                    adapter?.clear()
+                    complaints = response.data
                     adapter?.setList(complaints)
                     adapter?.notifyDataSetChanged()//now
 
-                }
-                else {
+                } else {
                     complaints.addAll(response.data)
-                   adapter?.notifyDataSetChanged()
+                    adapter?.notifyDataSetChanged()
 
                 }
-                    norecordrefresh.visibility = View.GONE
-                    itemsswipetorefresh.visibility = View.VISIBLE
+                norecordrefresh.visibility = View.GONE
+                itemsswipetorefresh.visibility = View.VISIBLE
 
             } else {
                 if (pageCount == 1) {
                     norecordrefresh.visibility = View.VISIBLE
                     itemsswipetorefresh.visibility = View.GONE
-                    complaints=response.data
-               // }
+                    complaints = response.data
+                    // }
 //                } else {
 ////                    if (complaints.size == 0) {
 ////                        tvRecord.visibility = View.VISIBLE
 ////                        rvPublic.visibility = View.GONE
 ////                    }
 //                }
-                    }
+                }
                 progressBar.visibility = View.GONE
             }
 
@@ -578,6 +568,27 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                         item1 = GetStatusDataBean("8", "Unauthentic", true)
                     } else {
                         item1 = GetStatusDataBean("8", "Unauthentic", false)
+                    }
+                    list.add(item1)
+
+                    if (currentStatus.equals("Assign (to my suborodinate officer)")) {
+                        item1 = GetStatusDataBean("9", "Assign (to my suborodinate officer)", true)
+                    } else {
+                        item1 = GetStatusDataBean("9", "Assign (to my suborodinate officer)", false)
+                    }
+                    list.add(item1)
+                    if (currentStatus.equals("Transfer (to other jurisdicational police station)")) {
+                        item1 = GetStatusDataBean(
+                            "10",
+                            "Transfer (to other jurisdicational police station)",
+                            true
+                        )
+                    } else {
+                        item1 = GetStatusDataBean(
+                            "10",
+                            "Transfer (to other jurisdicational police station)",
+                            false
+                        )
                     }
                     list.add(item1)
                 }
@@ -689,6 +700,18 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
             if (statusId == "-1") {
                 Utilities.showMessage(mContext, getString(R.string.select_option_validation))
+            } else if (statusId.equals("9")) {
+               var intent=Intent(this.activity, PoliceOfficerActivity::class.java)
+                intent.putExtra("token",token)
+                intent.putExtra("complaintId",complaintId)
+                startActivity(intent)
+                dialog.dismiss()
+            } else if (statusId.equals("10")) {
+                var intent=Intent(this.activity, PoliceStationActivity::class.java)
+                intent.putExtra("token",token)
+                intent.putExtra("complaintId",complaintId)
+                startActivity(intent)
+                dialog.dismiss()
             } else {
                 //hit status update api
                 Utilities.showProgress(mContext)
@@ -724,9 +747,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         if (responseObject.data!!.size != 0) {
             /*updated by Navjeet for remove rejected item from list*/
 
-            if(statusId=="0")
-            complaints.get(adapterActionPosition!!).status="Approved"
-            if(statusId=="1") complaints.get(adapterActionPosition!!).status="Rejected"
+            if (statusId == "0")
+                complaints.get(adapterActionPosition!!).status = "Approved"
+            if (statusId == "1") complaints.get(adapterActionPosition!!).status = "Rejected"
             adapter?.notifyDataSetChanged()
             adapter?.notifyPublicHomeActionData(responseObject.data, statusId)
 
@@ -797,8 +820,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
     }
 
-    fun checkVisibilty()
-    {
+    fun checkVisibilty() {
         if (complaints.isNotEmpty()) {
             norecordrefresh?.visibility = View.GONE
             itemsswipetorefresh?.visibility = View.VISIBLE
@@ -830,7 +852,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
              endlessScrollListener?.resetState()
              doApiCall()*/
 
-   checkVisibilty()
+            checkVisibilty()
             change = 0
         } else {
             if (fromIncidentDetailScreen == 0) {
@@ -875,7 +897,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context
@@ -906,9 +927,15 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
         path = ""
         Utilities.showMessage(mContext, responseObject.message!!)
-        pageCount=1
+        pageCount = 1
         val casesRequest =
-            CasesRequest("1", "", "-1", pageCount.toString(), limit) //type = -1 for fetching all the data
+            CasesRequest(
+                "1",
+                "",
+                "-1",
+                pageCount.toString(),
+                limit
+            ) //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
     }
 
@@ -941,10 +968,10 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }*/
 
     //changes the like status
-    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data,position: Int) {
+    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data, position: Int) {
         // Utilities.showProgress(mContext)
         complaintIdTobeLiked = complaintsData.id
-        complaintIdTobeLikedPosition=position
+        complaintIdTobeLikedPosition = position
         //when to change like status
         /*   adapter?.notifyParticularItem(complaintIdTobeLiked!!,)
            isLike = true*/
@@ -962,25 +989,22 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
         // Utilities.showMessage(mContext, responseObject.message!!)
         isLike = true
-        var like=parseInt(complaints.get(complaintIdTobeLikedPosition).like_count.toString())
+        var like = parseInt(complaints.get(complaintIdTobeLikedPosition).like_count.toString())
 
 
-       if(complaints.get(complaintIdTobeLikedPosition).is_liked==0) {
-           complaints.get(complaintIdTobeLikedPosition).like_count = (like + 1).toString()
-           complaints.get(complaintIdTobeLikedPosition).is_liked = 1
+        if (complaints.get(complaintIdTobeLikedPosition).is_liked == 0) {
+            complaints.get(complaintIdTobeLikedPosition).like_count = (like + 1).toString()
+            complaints.get(complaintIdTobeLikedPosition).is_liked = 1
 
-       }
-
-        else
-       {
-           complaints.get(complaintIdTobeLikedPosition).like_count =  (like - 1).toString()
-           complaints.get(complaintIdTobeLikedPosition).is_liked = 0
-       }
+        } else {
+            complaints.get(complaintIdTobeLikedPosition).like_count = (like - 1).toString()
+            complaints.get(complaintIdTobeLikedPosition).is_liked = 0
+        }
 
         adapter?.notifyDataSetChanged()
-       // val casesRequest =
-          //  CasesRequest("1", "", "-1", pageCount.toString(), limit) //type = -1 for fetching all the data
-       // presenter.getComplaints(casesRequest, token, type)
+        // val casesRequest =
+        //  CasesRequest("1", "", "-1", pageCount.toString(), limit) //type = -1 for fetching all the data
+        // presenter.getComplaints(casesRequest, token, type)
     }
 
     override fun adharNoListener(adhaarNo: String) {
@@ -995,7 +1019,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     override fun adhaarSavedSuccess(responseObject: SignupResponse) {
-       // Utilities.showMessage(mContext, responseObject.message)
+        // Utilities.showMessage(mContext, responseObject.message)
         Utilities.showMessage(mContext, "Aadhaar card added successfully")
         val value = PreferenceHandler.readString(mContext, PreferenceHandler.PROFILE_JSON, "")
         val jsondata = GsonBuilder().create().fromJson(value, GetProfileResponse::class.java)
@@ -1006,7 +1030,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
     override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-       // pageCount = page
+        // pageCount = page
         val casesRequest =
             CasesRequest("1", "", "-1", pageCount.toString(), limit /*totalItemsCount.toString()*/)
         presenter.getComplaints(casesRequest, token, type)
@@ -1014,12 +1038,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     }
 
 
-
-
     //BAckground Task for referehing
-
-
-
 
 
 //     class someTask() : AsyncTask<Void, Void, String>() {
@@ -1044,10 +1063,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 //        }
 //    }
 //
-
-
-
-
 
 
 }

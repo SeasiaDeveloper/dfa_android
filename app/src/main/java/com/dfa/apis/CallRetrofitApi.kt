@@ -1,5 +1,7 @@
 package com.dfa.apis
 
+import com.dfa.pojo.request.AddPoliceStationInput
+import com.dfa.pojo.request.AssignedOfficerInput
 import com.dfa.pojo.request.ChangePasswordRequest
 import com.dfa.pojo.request.UpdatePasswordRequest
 import com.dfa.pojo.response.*
@@ -149,6 +151,19 @@ interface CallRetrofitApi {
 
     @GET("terms-conditions/") //wp/v2/user/get_terms_condition
     fun get_terms_condition(@Header("Authorization") authorization: String?): Call<GetTermsConditionsResponse>
+
+    @GET("jwt-auth/v1/subordinate_officer")
+    fun getPoliceOfficer(@Header("Authorization") authorization: String?): Call<PoliceOfficerResponse>
+
+    @POST("jwt-auth/v1/assign_complaint_to_police_officer")
+    fun assignedOfficer(@Header("Authorization") authorization: String?,@Body changePasswordRequest: AssignedOfficerInput): Call<AssignOfficedResponse>
+
+
+    @POST("jwt-auth/v1/assign_complaint_to_police_station")
+    fun addPoliceStation(@Header("Authorization") authorization: String?,@Body changePasswordRequest: AddPoliceStationInput): Call<AddPoliceComplainResponse>
+
+    @GET("jwt-auth/v1/nearest_policestations")
+    fun getPoliceStation(@Header("Authorization") authorization: String?): Call<PoliceStationResponse>
 
     @GET("jwt-auth/v1/comment_list")
     fun getComments(@Header("Authorization") authorization: String?, @Query("complaint_id") id: Int): Call<GetCommentsResponse>

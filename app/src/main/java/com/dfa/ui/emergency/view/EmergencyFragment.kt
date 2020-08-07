@@ -51,21 +51,28 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     override fun onResume() {
         super.onResume()
 
+        if(staticDistValueList?.data?.size==0)
+            presenter.hitDistricApi()
+
         if(emergencyDetailList.size==0)
-         presenter.hitDistricApi()
+            callApi()
 
         if (isFirst) {
             var internetUtils = InternetUtils()
             if (internetUtils.isOnline(activity!!)) {
-                showProgress(mContext)
+                //showProgress(mContext)
+                presenter.hitDistricApi()
+
                 isFirst = false
             } else {
                 Utilities.showMessage(mContext, getString(R.string.no_internet_connection))
             }
         } else {
-            if (staticDistValueList?.data!!.size > 0 && noChnage==false) {
+
+
+            if (staticDistValueList?.data!=null && (staticDistValueList?.data!!.size> 0) && noChnage==false) {
                 getDistrictDropDown(staticDistValueList!!)
-                emergencyDetailsAdapter.changeList(emergencyDetailList)
+                // emergencyDetailsAdapter.changeList(emergencyDetailList)
 
             }
 
@@ -140,8 +147,8 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
             val longitude = PreferenceHandler.readString(mContext, PreferenceHandler.LONGITUDE, "").toString()
             var request = EmergencyDataRequest("",latitude,longitude)
 
-           if(latitude!="" && latitude!="null")
-            presenter.hitEmergencyApi(request, authorizationToken)
+            if(latitude!="" && latitude!="null")
+                presenter.hitEmergencyApi(request, authorizationToken)
         } else {
             Utilities.showMessage(
                 mContext,
@@ -200,7 +207,7 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
                                 getString(R.string.no_internet_connection)
                             )
                         }
-                   }
+                    }
 //                    else {
 ////                        var mList: ArrayList<EmergencyDataResponse.Data> = ArrayList()
 ////                        emergencyDetailsAdapter.changeList(mList)
@@ -279,11 +286,13 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     override fun getEmergencyDataSuccess(myEarningsResponse: EmergencyDataResponse) {
         dismissProgress()
         if (myEarningsResponse.data!!.size > 0 ) {
+
+
             if(isFirst) emergencyDetailList=myEarningsResponse.data
             emergencyDetailsAdapter.changeList(myEarningsResponse.data!!)
         } else {
             emergencyDetailsAdapter.changeList(myEarningsResponse.data!!)
-           if(isFirst==false) Utilities.showMessage(mContext, "No data found corresponding to the selected District.")
+            if(isFirst==false) Utilities.showMessage(mContext, "No data found corresponding to the selected District.")
         }
 
     }

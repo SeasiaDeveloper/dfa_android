@@ -6,7 +6,7 @@
     <string name="drug_free_ngo" translatable="false">Drug Free NGO</string>
     <string name="dashboard">Home</string>
     <string name="toolbar_general_public">Public</string>
-    <string name="types_of_crime">Types Of Crime</string>
+    <string name="types_of_crime">Select types of crime</string>
     <string name="user_name">User Name</string>
     <string name="email">Email</string>
     <string name="contact_no">Contact No</string>
@@ -39,6 +39,9 @@
     <string name="home">Home</string>
     <string name="name">Name</string>
     <string name="report_incident">Report Incident</string>
+    <string name="police_station">Police Station</string>
+    <string name="police_stations">Police Stations</string>
+    <string name="police_officer">Police Officer</string>
     <string name="incident_detail">Incident Description</string>
     <string name="enter_comment">Please enter comment</string>
     <string name="username">Name:</string>
@@ -191,6 +194,7 @@
     <string name="location_title">Location Title</string>
     <string name="crime_type">Crime type :</string>
     <string name="state">State:</string>
+    <string name="police_station1">Police Station:</string>
     <string name="urgency">Urgency :</string>
     <string name="urgency_level">Urgency Level:  </string>
     <string name="urgency_level_title">Urgency :</string>
@@ -271,5 +275,8 @@
     <string name="new_version">New version</string>
     <string name="new_version_text">To use this application, you need to upgrade it to the latest version available on Google Play</string>
     <string name="update_now">update now</string>
+    <string name="use_app_without_registration">Use app without registration</string>
+    <string name="please_select_officer">Please select officer</string>
+    <string name="please_select_station">Please select police station</string>
 
 </resources>

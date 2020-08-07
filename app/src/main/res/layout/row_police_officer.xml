@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:padding="@dimen/_10sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/selectedImg"
+        android:src="@drawable/ic_unselected"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <com.dfa.customviews.CustomtextView
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:id="@+id/officerName"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_toRightOf="@+id/selectedImg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
+</RelativeLayout>
+</layout>

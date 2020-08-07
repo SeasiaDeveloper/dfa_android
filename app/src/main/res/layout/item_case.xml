@@ -309,6 +309,34 @@
                                     tools:text="Reject" />
                             </LinearLayout>
 
+
+                            <LinearLayout
+                                android:id="@+id/layoutPoliceStation"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <com.dfa.customviews.CustomTextViewheading
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="27dp"
+                                    android:layout_marginStart="@dimen/_6sdp"
+                                    android:text="@string/police_station1"
+                                    android:textColor="@color/grey_text"
+                                    android:textStyle="bold" />
+
+                                <com.dfa.customviews.CustomtextView
+                                    android:id="@+id/txtPoliceStation"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/_4sdp"
+                                    android:layout_marginEnd="@dimen/_4sdp"
+                                    android:layout_marginBottom="@dimen/_5sdp"
+                                    android:textColor="@color/grey_text"
+                                    android:textSize="@dimen/_12ssp"
+                                    tools:text="Reject" />
+                            </LinearLayout>
+
+
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

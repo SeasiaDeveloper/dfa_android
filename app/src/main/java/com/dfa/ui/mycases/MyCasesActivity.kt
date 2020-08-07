@@ -27,6 +27,8 @@ import com.dfa.pojo.request.CasesRequest
 import com.dfa.pojo.request.CrimeDetailsRequest
 import com.dfa.pojo.response.*
 import com.dfa.ui.comments.CommentsActivity
+import com.dfa.ui.generalpublic.PoliceOfficerActivity
+import com.dfa.ui.generalpublic.PoliceStationActivity
 import com.dfa.ui.generalpublic.pagination.EndlessRecyclerViewScrollListenerImplementation
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.dfa.ui.home.fragments.cases.presenter.CasesPresenter
@@ -527,6 +529,27 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                     } else {
                         item1 = GetStatusDataBean("8", "Unauthentic", false)
                     }
+
+
+                    if (currentStatus.equals("Assign (to my suborodinate officer)")) {
+                        item1 = GetStatusDataBean("9", "Assign (to my suborodinate officer)", true)
+                    } else {
+                        item1 = GetStatusDataBean("9", "Assign (to my suborodinate officer)", false)
+                    }
+                    list.add(item1)
+                    if (currentStatus.equals("Transfer (to other jurisdicational police station)")) {
+                        item1 = GetStatusDataBean(
+                            "10",
+                            "Transfer (to other jurisdicational police station)",
+                            true
+                        )
+                    } else {
+                        item1 = GetStatusDataBean(
+                            "10",
+                            "Transfer (to other jurisdicational police station)",
+                            false
+                        )
+                    }
                     list.add(item1)
                 }
 
@@ -664,7 +687,24 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                     this@MyCasesActivity,
                     getString(R.string.select_option_validation)
                 )
-            } else {
+            }
+            else if (statusId.equals("9")) {
+                var intent=Intent(this, PoliceOfficerActivity::class.java)
+                intent.putExtra("token",token)
+                intent.putExtra("complaintId",complaintId)
+                startActivity(intent)
+                dialog.dismiss()
+
+            } else if (statusId.equals("10")) {
+                var intent=Intent(this, PoliceStationActivity::class.java)
+                intent.putExtra("token",token)
+                intent.putExtra("complaintId",complaintId)
+                startActivity(intent)
+                dialog.dismiss()
+
+            }
+
+            else {
                 Utilities.showProgress(this@MyCasesActivity)
                 //hit status update api
                 presenter.updateStatus(

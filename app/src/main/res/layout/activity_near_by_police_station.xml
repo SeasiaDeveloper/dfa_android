@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/publicParentLayout"
+    android:layout_height="match_parent"
+    tools:context="com.dfa.ui.generalpublic.NearByPoliceStationActivity">
+
+
+    <include
+        android:id="@+id/toolbarLayout"
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+
+
+    <LinearLayout
+        android:layout_centerInParent="true"
+         android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+
+    <com.dfa.customviews.CustomtextView
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:background="@drawable/button_green_bg"
+        android:gravity="center"
+        android:padding="@dimen/_10sdp"
+        android:text="@string/submit_nearest_police"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12ssp" />
+
+    <com.dfa.customviews.CustomtextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:text="OR"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14ssp" />
+
+
+    <com.dfa.customviews.CustomtextView
+        android:id="@+id/btnSubmitParticular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:background="@drawable/button_green_bg"
+        android:gravity="center"
+        android:padding="@dimen/_10sdp"
+        android:text="@string/submit_particular_police"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12ssp" />
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spDistrict"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:layout_marginBottom="@dimen/_5sdp"
+            android:background="@drawable/bg_spinner" />
+
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spPolice"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_12sdp"
+            android:layout_marginTop="@dimen/_6sdp"
+            android:layout_marginBottom="@dimen/_15sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:background="@drawable/bg_spinner" />
+
+    </LinearLayout>
+</RelativeLayout>
+</layout>

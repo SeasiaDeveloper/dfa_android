@@ -37,27 +37,28 @@ var context=context1
         }
     }
 
-    protected override fun onPostExecute(onlineVersion: String) {
-        var currentVersion = MyApplication.instance.getPackageManager().getPackageInfo(
-            MyApplication.instance.getPackageName(), 0
-        ).versionName;
-        super.onPostExecute(onlineVersion)
-        Log.d(
-            "update",
-            "Current version " + currentVersion + "playstore version " + onlineVersion
-        )
-        if (onlineVersion != null && !onlineVersion.isEmpty()) {
-            if (java.lang.Float.valueOf(currentVersion) < java.lang.Float.valueOf(onlineVersion)) {
+     protected override fun onPostExecute(onlineVersion: String) {
+         var currentVersion = MyApplication.instance.getPackageManager().getPackageInfo(
+             MyApplication.instance.getPackageName(), 0
+         ).versionName;
+         super.onPostExecute(onlineVersion)
+         Log.d(
+             "update",
+             "Current version " + currentVersion + "playstore version " + onlineVersion
+         )
+         if (!onlineVersion.equals("null") && onlineVersion != null && !onlineVersion.isEmpty()) {
+             if (java.lang.Float.valueOf(currentVersion) < java.lang.Float.valueOf(onlineVersion)) {
 
-                showVersionUpdateDialog(onlineVersion)
-
-
-            }
-        }
-    }
+                 showVersionUpdateDialog(onlineVersion)
 
 
-    private fun showVersionUpdateDialog(newVersion:String) {
+             }
+         }
+     }
+
+
+
+     private fun showVersionUpdateDialog(newVersion:String) {
         lateinit var dialog: android.app.AlertDialog
         val builder = android.app.AlertDialog.Builder(context)
         val binding = DataBindingUtil.inflate(

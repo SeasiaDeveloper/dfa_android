@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:id="@+id/parentLayout"
+    android:layout_height="match_parent"
+    tools:context="com.dfa.ui.generalpublic.PoliceOfficerActivity">
+    <include
+        android:id="@+id/toolbarLayout"
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="wrap_content"
+        android:layout_marginTop="@dimen/_5sdp"
+        android:layout_below="@+id/toolbarLayout"
+        android:layout_marginRight="@dimen/_20sdp"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginBottom="@dimen/_25sdp"
+        android:id="@+id/recyclerViewPolice"
+        android:layout_height="wrap_content"/>
+
+    <com.dfa.customviews.CustomtextView
+        android:id="@+id/btnSubmitOfficer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/_12sdp"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginEnd="@dimen/_12sdp"
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:background="@drawable/button_green_bg"
+        android:gravity="center"
+
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/_10sdp"
+        android:text="@string/submit"
+        android:textColor="@color/white"
+        android:textSize="@dimen/_12ssp" />
+
+    <TextView
+        android:textSize="@dimen/_12sdp"
+        android:text="@string/no_record_found"
+        android:layout_centerInParent="true"
+        android:id="@+id/noRecordFound"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+</RelativeLayout>
+</layout>

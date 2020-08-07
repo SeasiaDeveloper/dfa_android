@@ -24,6 +24,7 @@ class GetCasesResponse : Serializable {
         val info: String? = null
         val report_data: String? = null
         val police_station_id:String?=null
+        val stationName:String?=null
         val report_time: String? = null
         val crime_type_id: String? = null
         val urgency: String? = null

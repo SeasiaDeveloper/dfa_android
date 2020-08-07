@@ -681,9 +681,8 @@ class CasesAdapter(
                     sharingIntent.type = "text/plain"
 
                     sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Drug Free Arunachal")
-                    sharingIntent.putExtra(
-                        Intent.EXTRA_TEXT,
-                        "Hi, Your friend $username shared you FIR complaint from Drug Free Arunachal app. To see detail, open\n www.drugfreearunachal.org/home?id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
+                 //   sharingIntent.putExtra(Intent.EXTRA_TEXT, "Hi, Your friend $username shared you FIR complaint from Drug Free Arunachal app. To see detail, open\n https://drugfreearunachal.org/home?id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
+                    sharingIntent.putExtra(Intent.EXTRA_TEXT, "https://drugfreearunachal.org/complaint-details?complaint_id?id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
                     )
                     context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
                 }
@@ -765,7 +764,9 @@ class CasesAdapter(
 
                 itemView.layoutCrimeType.visibility = View.VISIBLE
                 itemView.layoutStatus.visibility = View.VISIBLE
+                itemView.layoutPoliceStation.visibility = View.VISIBLE
                 itemView.txtCrimeType.text = item.crime_type
+                itemView.txtPoliceStation.text = item.stationName
 
                 var itemName = item.status
                 if (itemName?.toLowerCase() == "accept" || itemName?.toLowerCase() == "accepted")
@@ -891,6 +892,7 @@ class CasesAdapter(
                 itemView.layoutContact.visibility = View.GONE
                 itemView.action_complaint.visibility = View.GONE
                 itemView.layoutCrimeType.visibility = View.GONE
+                itemView.layoutPoliceStation.visibility = View.GONE
                 itemView.layoutStatus.visibility = View.GONE
                 itemView.txtUrgencyTitle.text = context.getString(R.string.urgency_level)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

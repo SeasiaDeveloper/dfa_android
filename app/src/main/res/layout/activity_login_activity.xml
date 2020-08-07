@@ -164,7 +164,7 @@
                     android:paddingEnd="@dimen/_15ssp"
                     android:paddingBottom="@dimen/_10sdp"
                     android:textSize="@dimen/_12ssp"
-                    android:text="SIGN UP"
+                    android:text="REGISTER AS NEW USER"
                     android:textColor="@color/white" />
 
                 <com.dfa.customviews.CustomTextViewheading
@@ -178,9 +178,10 @@
                     android:gravity="center"
                     android:paddingStart="@dimen/_15ssp"
                     android:paddingTop="@dimen/_10sdp"
+                    app:textAllCaps="false"
                     android:paddingEnd="@dimen/_15ssp"
                     android:paddingBottom="@dimen/_10sdp"
-                    android:text="GUEST"
+                    android:text="@string/use_app_without_registration"
                     android:textSize="@dimen/_12ssp"
                     android:textColor="@color/white" />
 

@@ -5,7 +5,6 @@ import android.annotation.TargetApi
 import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog
-import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -14,7 +13,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
 import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
@@ -37,11 +35,9 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.dfa.R
-import com.dfa.application.MyApplication
 import com.dfa.base.BaseActivity
 import com.dfa.customviews.CenteredToolbar
 import com.dfa.databinding.DialogImageChoiceBinding
-import com.dfa.databinding.DialogUpdateVersionBinding
 import com.dfa.maps.FusedLocationClass
 import com.dfa.pojo.request.ComplaintRequest
 import com.dfa.pojo.response.ComplaintResponse
@@ -91,6 +87,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private var mediaType: String? = null
     private var SELECT_VIDEOS: Int = 2
     private var SELECT_VIDEOS_KITKAT: Int = 2
+    var id: String? = null
     private var CAMERA_REQUEST_CODE_VEDIO: Int = 3
     private lateinit var mediaControls: MediaController
     private var provider: String = ""
@@ -130,7 +127,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                         mLocation!!.getLatitude(),
                         mLocation!!.getLongitude(),
-                       this@GeneralPublicActivity
+                        this@GeneralPublicActivity
                     )
                     lattitude = mLocation!!.getLatitude().toString() + ""
                     longitude = mLocation!!.getLongitude().toString() + ""
@@ -153,7 +150,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     override fun getLayout(): Int {
         return R.layout.activity_public
     }
-
 
 
     override fun onResume() {
@@ -270,6 +266,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             }
 
             R.id.img_delete -> {
+                mediaType=null
                 path = ""
                 pathOfImages = ArrayList()
                 mediaControls.visibility = View.GONE
@@ -308,7 +305,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
             }
             R.id.btnSubmit -> {
-
+                id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
                 police_id = ""
                 spDistrict.visibility = View.GONE
                 spPolice.visibility = View.GONE
@@ -316,8 +313,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     Utilities.showMessage(this, "Please enter description")
 
                 } else {
-
-
                     if (mediaType.equals("videos")) {
                         if (pathOfImages.size > 0) {
                             if (!pathOfImages.get(0).isEmpty()
@@ -326,43 +321,67 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                                 if (File(pathOfImages.get(0)).length() > 5000) {
                                     videoCompressorCustom(pathOfImages)
                                 } else {
-                                    complaintsPresenter.checkValidations(
-                                        1,
-                                        pathOfImages,
-                                        etDescription.text.toString()
-                                    )
+
+//                                    complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                                    id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
+                                    var intent = Intent(this, NearByPoliceStationActivity::class.java)
+                                    intent.putStringArrayListExtra("pathOfImages", pathOfImages)
+                                    intent.putExtra("mediaType", mediaType)
+                                    intent.putExtra("range", "" + range)
+                                    intent.putExtra("id", id)
+                                    intent.putExtra("changeMedia", ""+changeMedia)
+                                    intent.putExtra("etDescription", etDescription.text.toString())
+                                    startActivity(intent)
+
                                 }
                             }
                         } else {
-                            complaintsPresenter.checkValidations(
-                                1,
-                                pathOfImages,
-                                etDescription.text.toString()
-                            )
+                           // complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                            id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
+                            var intent = Intent(this, NearByPoliceStationActivity::class.java)
+                            intent.putStringArrayListExtra("pathOfImages", pathOfImages)
+                            intent.putExtra("mediaType", mediaType)
+                            intent.putExtra("range", "" + range)
+                            intent.putExtra("id", id)
+                            intent.putExtra("changeMedia", ""+changeMedia)
+                            intent.putExtra("etDescription", etDescription.text.toString())
+                            startActivity(intent)
+
                         }
-                    } else {
-                        complaintsPresenter.checkValidations(
-                            1,
-                            pathOfImages,
-                            etDescription.text.toString()
-                        )
+                    } else if (id == null) {
+                        Toast.makeText(this, "Please select crime type", Toast.LENGTH_LONG).show()
+                    } else if (mediaType == null) {
+                        Toast.makeText(this, "Please select media", Toast.LENGTH_LONG).show()
+                    }
+
+                    else {
+                        id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
+                        var intent = Intent(this, NearByPoliceStationActivity::class.java)
+                        intent.putStringArrayListExtra("pathOfImages", pathOfImages)
+                        intent.putExtra("mediaType", mediaType)
+                        intent.putExtra("range", "" + range)
+                        intent.putExtra("id", id)
+                        intent.putExtra("changeMedia", ""+changeMedia)
+                        intent.putExtra("etDescription", etDescription.text.toString())
+                        startActivity(intent)
+                        //   complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
                     }
                 }
             }
 
             R.id.btnSubmitParticular -> {
-                if (etDescription.text.toString().trim() == "") {
-                    Utilities.showMessage(this, "Please enter description")
-
-                } else if (pathOfImages.size == 0) {
-
-                    Utilities.showMessage(this, getString(R.string.please_select_media))
-
-
-                } else {
-                    spDistrict.visibility = View.VISIBLE
-                    scroll_view.post(Runnable { scroll_view.fullScroll(View.FOCUS_DOWN) })
-                    getDistrictList()
+//                if (etDescription.text.toString().trim() == "") {
+//                    Utilities.showMessage(this, "Please enter description")
+//
+//                } else if (pathOfImages.size == 0) {
+//
+//                    Utilities.showMessage(this, getString(R.string.please_select_media))
+//
+//
+//                } else {
+//                    spDistrict.visibility = View.VISIBLE
+//                    scroll_view.post(Runnable { scroll_view.fullScroll(View.FOCUS_DOWN) })
+//                    getDistrictList()
 //                    if (mediaType.equals("videos")) {
 //                        if (pathOfImages.size > 0) {
 //                            if (!pathOfImages.get(0).isEmpty()
@@ -397,10 +416,11 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 ////                            etDescription.text.toString()
 ////                        )
 //                    }
-                }
             }
+            //}
 
             R.id.clear_image -> {
+                mediaType=null
                 pathOfImages = ArrayList()
                 imageview_layout.visibility = View.GONE
                 val options = RequestOptions()
@@ -505,7 +525,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     }
 
 
-
     private fun videoCompressorCustom(video: ArrayList<String>) {
         if (!video.get(0).isEmpty() && File(video.get(0)).length() > 0) {
             var myDirectory = File(Environment.getExternalStorageDirectory(), "Pictures");
@@ -532,22 +551,34 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 if (lengthBeforeCom > 100000 && lengthBeforeCom <= 5000000) {
                     pathOfImages = ArrayList()
                     pathOfImages.add(video.get(0))
-                    complaintsPresenter.checkValidations(
-                        1,
-                        pathOfImages,
-                        etDescription.text.toString()
-                    )
+                   // complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                    id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
+                    var intent = Intent(this, NearByPoliceStationActivity::class.java)
+                    intent.putStringArrayListExtra("pathOfImages", pathOfImages)
+                    intent.putExtra("mediaType", mediaType)
+                    intent.putExtra("range", "" + range)
+                    intent.putExtra("id", id)
+                    intent.putExtra("changeMedia", ""+changeMedia)
+                    intent.putExtra("etDescription", etDescription.text.toString())
+                    startActivity(intent)
+
+
                 } else {
 
                     if (File(outPath).exists() && changeMedia == 1) {
                         changeMedia = 0
                         pathOfImages = ArrayList()
                         pathOfImages.add(outPath)
-                        complaintsPresenter.checkValidations(
-                            1,
-                            pathOfImages,
-                            etDescription.text.toString()
-                        )
+                    //    complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                        id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
+                        var intent = Intent(this, NearByPoliceStationActivity::class.java)
+                        intent.putStringArrayListExtra("pathOfImages", pathOfImages)
+                        intent.putExtra("mediaType", mediaType)
+                        intent.putExtra("range", "" + range)
+                        intent.putExtra("id", id)
+                        intent.putExtra("changeMedia", ""+changeMedia)
+                        intent.putExtra("etDescription", etDescription.text.toString())
+                        startActivity(intent)
 
                     } else {
                         VideoCompress.compressVideoMedium(video.get(0), outPath, object :
@@ -573,11 +604,17 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 //                        if (File(outPath).length() <= 50000000) {
                                 pathOfImages = ArrayList()
                                 pathOfImages.add(outPath)
-                                complaintsPresenter.checkValidations(
-                                    1,
-                                    pathOfImages,
-                                    etDescription.text.toString()
-                                )
+                              //  complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                                id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
+                                var intent = Intent(this@GeneralPublicActivity, NearByPoliceStationActivity::class.java)
+                                intent.putStringArrayListExtra("pathOfImages", pathOfImages)
+                                intent.putExtra("mediaType", mediaType)
+                                intent.putExtra("range", "" + range)
+                                intent.putExtra("id", id)
+                                intent.putExtra("changeMedia", ""+changeMedia)
+                                intent.putExtra("etDescription", etDescription.text.toString())
+                                startActivity(intent)
+
 //                        } else {
 //                            Toast.makeText(
 //                                this@GeneralPublicActivity,
@@ -1418,7 +1455,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     handler.postDelayed(
                         {
                             //var location = locationManager.getLastKnownLocation(provider);
-                            mLocation = mFusedLocationClass?.getLastLocation(this@GeneralPublicActivity)
+                            mLocation =
+                                mFusedLocationClass?.getLastLocation(this@GeneralPublicActivity)
 
                             // Initialize the location fields
                             if (mLocation != null) {
@@ -1446,8 +1484,10 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 
                                 com.dfa.utils.alert.AlertDialog.reportCrimeAlertDialog(this, this)
 
-                            }
-                            else   Utilities.showMessage(this, "Unable to get Location, Please try again")
+                            } else Utilities.showMessage(
+                                this,
+                                "Unable to get Location, Please try again"
+                            )
 
                         },
                         3000
@@ -1457,15 +1497,13 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 }
 
 
-            }
-
-           else  com.dfa.utils.alert.AlertDialog.reportCrimeAlertDialog(this, this)
+            } else com.dfa.utils.alert.AlertDialog.reportCrimeAlertDialog(this, this)
 
         }
     }
 
     override fun getCallback() {
-        var id: String? = null
+
         if (getCrimeTypesResponse != null) {
             id = getCrimeTypesResponse.data?.get(spTypesOfCrime.selectedItemPosition)?.id
         }
@@ -1607,6 +1645,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     }
 
     fun getStationDropDown(response: PStationsListResponse) {
+        id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
         val distValueList = ArrayList<String>()
         pstationResponse = response
 
@@ -1657,6 +1696,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                             )
 
                         } else {
+
                             if (mediaType.equals("videos")) {
                                 if (pathOfImages.size > 0) {
                                     if (!pathOfImages.get(0).isEmpty()
@@ -1665,26 +1705,47 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                                         if (File(pathOfImages.get(0)).length() > 5000) {
                                             videoCompressorCustom(pathOfImages)
                                         } else {
-                                            complaintsPresenter.checkValidations(
-                                                1,
-                                                pathOfImages,
-                                                etDescription.text.toString()
-                                            )
+
+                                          //  complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+
+
+                                            var intent = Intent(this@GeneralPublicActivity, NearByPoliceStationActivity::class.java)
+                                            intent.putStringArrayListExtra("pathOfImages", pathOfImages)
+                                            intent.putExtra("mediaType", mediaType)
+                                            intent.putExtra("range", "" + range)
+                                            intent.putExtra("id", id)
+                                            intent.putExtra("changeMedia", ""+changeMedia)
+                                            intent.putExtra("etDescription", etDescription.text.toString())
+                                            startActivity(intent)
+
                                         }
                                     }
                                 } else {
-                                    complaintsPresenter.checkValidations(
-                                        1,
-                                        pathOfImages,
-                                        etDescription.text.toString()
-                                    )
+                               //     complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+
+                                    var intent = Intent(this@GeneralPublicActivity, NearByPoliceStationActivity::class.java)
+                                    intent.putStringArrayListExtra("pathOfImages", pathOfImages)
+                                    intent.putExtra("mediaType", mediaType)
+                                    intent.putExtra("changeMedia", ""+changeMedia)
+                                    intent.putExtra("range", "" + range)
+                                    intent.putExtra("id", id)
+                                    intent.putExtra("etDescription", etDescription.text.toString())
+                                    startActivity(intent)
+
+
                                 }
                             } else {
-                                complaintsPresenter.checkValidations(
-                                    1,
-                                    pathOfImages,
-                                    etDescription.text.toString()
-                                )
+//                                complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+
+                                var intent = Intent(this@GeneralPublicActivity, NearByPoliceStationActivity::class.java)
+                                intent.putStringArrayListExtra("pathOfImages", pathOfImages)
+                                intent.putExtra("mediaType", mediaType)
+                                intent.putExtra("range", "" + range)
+                                intent.putExtra("id", id)
+                                intent.putExtra("changeMedia", ""+changeMedia)
+                                intent.putExtra("etDescription", etDescription.text.toString())
+                                startActivity(intent)
+
                             }
                         }
 

@@ -1,17 +1,18 @@
 package com.dfa.ui.generalpublic.presenter
 
+
+
 import android.content.Context
 import com.dfa.pojo.request.ComplaintRequest
 import com.dfa.pojo.response.ComplaintResponse
 import com.dfa.pojo.response.DistResponse
 import com.dfa.pojo.response.GetCrimeTypesResponse
 import com.dfa.pojo.response.PStationsListResponse
-import com.dfa.ui.generalpublic.GeneralPublicActivity
 import com.dfa.ui.generalpublic.NearByPoliceStationActivity
 import com.dfa.ui.generalpublic.model.PublicModel
 import com.dfa.ui.generalpublic.view.PublicComplaintView
 
-class PublicComplaintPresenterImpl(private var complaintsView: GeneralPublicActivity) :
+class publicComplaintPresenterNearBy(private var complaintsView: NearByPoliceStationActivity) :
     PublicComplaintPresenter {
     private var complaintsModel: PublicModel = PublicModel(this)
 
