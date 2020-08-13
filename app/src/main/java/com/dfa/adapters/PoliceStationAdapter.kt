@@ -53,11 +53,12 @@ class PoliceStationAdapter(
         ) {
 
             try {
+                itemView.tvName.setText("Police Station: "+ item.get(index).name)
                 var address=adapter.address(item.get(index).latitude!!.toDouble(),item.get(index).longitude!!.toDouble())
 
 //           //     var d=item.get(index).distance_in_km!!.toDouble()
 //                var  km=  String.format("%.2f", d)
-                itemView.tvName.setText("Police Station: "+ item.get(index).name)
+
 //                itemView.tvDistance.setText(km+"km")
                 itemView.tvAddress.setText("Address: "+address)
 
