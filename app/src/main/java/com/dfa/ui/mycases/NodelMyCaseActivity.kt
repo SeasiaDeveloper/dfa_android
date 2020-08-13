@@ -2,22 +2,24 @@ package com.dfa.ui.mycases
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.Uri
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dfa.R
-import com.dfa.adapters.CasesAdapter
+import com.dfa.adapters.NodelCaseAdapter
 import com.dfa.adapters.StatusAdapter
 import com.dfa.base.BaseActivity
 import com.dfa.customviews.CenteredToolbar
@@ -36,10 +38,16 @@ import com.dfa.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.dfa.ui.home.fragments.cases.view.CasesView
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
-import kotlinx.android.synthetic.main.activity_my_cases.*
+import kotlinx.android.synthetic.main.activity_my_cases.click_search_icon
+import kotlinx.android.synthetic.main.activity_my_cases.etSearch
+import kotlinx.android.synthetic.main.activity_my_cases.progressBar
+import kotlinx.android.synthetic.main.activity_my_cases.rvPublic
+import kotlinx.android.synthetic.main.activity_my_cases.swipeView
+import kotlinx.android.synthetic.main.activity_my_cases.toolbarLayout
+import kotlinx.android.synthetic.main.activity_my_cases.tvRecord
+import kotlinx.android.synthetic.main.activity_nodel_my_case.*
 
-
-class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener,
+class NodelMyCaseActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener,
     EndlessRecyclerViewScrollListenerImplementation.OnScrollPageChangeListener {
     //pagination
     var pageCount: Int = 1
@@ -54,8 +62,23 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     private var complaintIdTobeLikedPosition=-1
     private var limit="20"
 
+    private var presenter: CasesPresenter = CasesPresenterImplClass(this)
+    private var complaints= ArrayList<GetCasesResponse.Data>()
+    lateinit var casesRequest: CasesRequest
+    var token: String = ""
+    private var statusId = "-1"
+    private var complaintId = "-1"
+    private var currentStatus = ""
+    private var filterValse = "complaint_id"
+    var type = ""
+    private var search: Boolean = false
     private var textChanged: Boolean = false
-
+    private var isFirst1: Boolean = true
+    var firComplaintId: String = ""
+    var adapter: NodelCaseAdapter? = null
+    var inflater:LayoutInflater?=null
+    var pw:PopupWindow?=null
+    var radioGroup:RadioGroup?=null
 
 
 
@@ -67,14 +90,14 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         if (!search) {
             pageCount = page
             val casesRequest =
-                CasesRequest("0", "", "0", page.toString(), limit,"")//*totalItemsCount.toString()*//*)
+                CasesRequest("0", "", "0", page.toString(), limit,filterValse)//*totalItemsCount.toString()*//*)
             presenter.getComplaints(casesRequest, token, type)
             progressBar.visibility = View.VISIBLE
         }
     }
 
     override fun onClick(item: Any, position: Int) {
-        Utilities.showProgress(this@MyCasesActivity)
+        Utilities.showProgress(this@NodelMyCaseActivity)
         val complaintsData = item as GetCasesResponse.Data
         //delete the item based on id
         deleteItemposition = position
@@ -82,29 +105,18 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     }
 
     override fun onHide(item: Any, position: Int) {
-        Utilities.showProgress(this@MyCasesActivity)
+        Utilities.showProgress(this@NodelMyCaseActivity)
         val complaintsData = item as GetCasesResponse.Data
         //delete the item based on id
         deleteItemposition = position
         presenter.hideComplaint(token, complaintsData.id!!)
     }
 
-    private var presenter: CasesPresenter = CasesPresenterImplClass(this)
-    private var complaints= ArrayList<GetCasesResponse.Data>()
-    lateinit var casesRequest: CasesRequest
-    var token: String = ""
-    private var statusId = "-1"
-    private var complaintId = "-1"
-    private var currentStatus = ""
-    var type = ""
-    private var search: Boolean = false
-    private var isFirst: Boolean = true
-    var firComplaintId: String = ""
-    var adapter: CasesAdapter? = null
+
 
     companion object {
         var change = 0
-        var isfirst = true
+        var isFirst1 = true
         var commentChange = 0
         var fromIncidentDetailScreen = 1
         var commentsCount = 0
@@ -120,11 +132,11 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
     override fun onResume() {
         super.onResume()
-        if (isfirst) {
+        if (isFirst1) {
             if (change == 1 || commentChange != 0) {
                 pageCount = 1
                 myCasesApiCall()
-                isfirst=false
+                isFirst1=false
             }
         }
     }
@@ -132,16 +144,16 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     private fun myCasesApiCall() {
 
         if (isInternetAvailable()) {
-        casesRequest = CasesRequest(
-            "0",
-            etSearch.text.toString(),
-            "0", "1", "10"
+            casesRequest = CasesRequest(
+                "0",
+                etSearch.text.toString(),
+                "0", "1", "10"
 
-        ,"") //all = "1" for fetching all the cases whose type = 0
+                ,filterValse  ) //all = "1" for fetching all the cases whose type = 0
 
-        Utilities.showProgress(this@MyCasesActivity)
-        //hit api with search variable
-        presenter.getComplaints(casesRequest, token, type)
+            Utilities.showProgress(this@NodelMyCaseActivity)
+            //hit api with search variable
+            presenter.getComplaints(casesRequest, token, type)
         } else {
             Utilities.showMessage(this, getString(R.string.no_internet_connection))
         }
@@ -176,9 +188,9 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         rvPublic.addOnScrollListener(endlessScrollListener!!)
         endlessScrollListener?.resetState()
 
-        if (isfirst) {
+        if (isFirst1) {
             doApiCall()
-            isfirst = false
+            isFirst1 = false
         }
 
 
@@ -202,18 +214,25 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             swipeView.isRefreshing = false
         }
 
+         inflater = this.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
+        var views=inflater!!.inflate(R.layout.filter_dialog, null, false)
+        pw =  PopupWindow(views, LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, true)
+        pw!!.setOutsideTouchable(true);
+
+
+         radioGroup=views.findViewById<RadioGroup>(R.id.groupradio)
     }
 
 
     fun setAdapter() {
-        adapter = CasesAdapter(
+        adapter = NodelCaseAdapter(
             this,
             complaints,
             this,
             type.toInt(),
             this,
-            this@MyCasesActivity,
-            fragment,
+            this@NodelMyCaseActivity,
             false
         )
         horizontalLayoutManager = LinearLayoutManager(
@@ -239,7 +258,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                 "0",
                 etSearch.text.toString(),
                 "0", "1", limit
-           ,"" ) //all = "0"  my cases and for fetching all the cases which are of type = 0
+                ,filterValse ) //all = "0"  my cases and for fetching all the cases which are of type = 0
             Utilities.showProgress(this)
             presenter.getComplaints(casesRequest, token, type)
         }
@@ -251,9 +270,9 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     //displays my cases list on the view
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
         Utilities.dismissProgress()
-        if (isFirst) {
+        if (isFirst1) {
             firstSavedList = response.data!!
-            isFirst = false
+            isFirst1 = false
         }
 
         if (response.data!!.isNotEmpty())
@@ -302,9 +321,9 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                     "0",
                     etSearch.text.toString(),
                     "0", "1", limit
-                ,"") //all = "1" for fetching all the cases whose type = 0
+                    ,filterValse) //all = "1" for fetching all the cases whose type = 0
 
-                Utilities.showProgress(this@MyCasesActivity)
+                Utilities.showProgress(this@NodelMyCaseActivity)
                 //hit api with search variable
                 presenter.getComplaints(casesRequest, token, type)
             }
@@ -322,15 +341,20 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                         "0",
                         etSearch.text.toString(),
                         "0", "1", limit
-                    ,"") //all = "1" for fetching all the cases whose type = 0
+                        ,filterValse) //all = "1" for fetching all the cases whose type = 0
 
-                    Utilities.showProgress(this@MyCasesActivity)
+                    Utilities.showProgress(this@NodelMyCaseActivity)
                     //hit api with search variable
                     presenter.getComplaints(casesRequest, token, type)
                 }
                 return true
             }
         })
+
+
+        ivFilter.setOnClickListener {
+            openFilterDialog(it)
+        }
 
 
 
@@ -345,10 +369,10 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                             "0",
                             "",
                             "0", "1", limit
-                            , ""
+                            , filterValse
                         ) //all = "1" for fetching all the cases whose type = 0
 
-                        Utilities.showProgress(this@MyCasesActivity)
+                        Utilities.showProgress(this@NodelMyCaseActivity)
                         //hit api with search variable
                         presenter.getComplaints(casesRequest, token, type)
                     }
@@ -389,6 +413,72 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         })
     }
 
+
+    fun openFilterDialog(view:View?) {
+
+
+        radioGroup!!.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.btnComplaint -> {
+                    filterValse="complaint_id"
+
+                }
+                R.id.btnPoliceStation -> {
+                    filterValse="police_station"
+                }
+
+                R.id.btnDistrict -> {
+                    filterValse="district"
+                }
+            }
+        })
+
+        pw!!.showAsDropDown(view)
+
+      //  pw.showAtLocation(findViewById(R.id.main), Gravity.CENTER, 0, 0)
+       /* val dialog = Dialog(this)
+        dialog.setContentView(R.layout.filter_dialog)
+        var radioGroup=dialog.findViewById<RadioGroup>(R.id.groupradio)
+        radioGroup.setOnCheckedChangeListener(object : RadioGroup.OnCheckedChangeListener {
+          override  fun onCheckedChanged(
+                group: RadioGroup?,
+                checkedId: Int
+            ) {
+              val selectedId = radioGroup.checkedRadioButtonId
+
+              val radioButton = findViewById<View>(selectedId) as RadioButton
+
+              dialog.hide()
+            }
+        })
+
+
+        radioGroup.setOnCheckedChangeListener(RadioGroup.OnCheckedChangeListener { group, checkedId ->
+            when (checkedId) {
+                R.id.btnNone -> {
+                    Toast.makeText(this, "btnNone", Toast.LENGTH_SHORT).show()
+
+                }
+                R.id.btnComplaint -> {
+                    Toast.makeText(baseContext,"btnComplaint", Toast.LENGTH_SHORT).show()
+                }
+                R.id.btnPoliceStation -> {
+                    Toast.makeText(baseContext, "btnPoliceStation", Toast.LENGTH_SHORT).show()
+
+                }
+
+                R.id.btnDistrict -> {
+                    Toast.makeText(baseContext, "btnDistrict", Toast.LENGTH_SHORT).show()
+
+                }
+            }
+        })
+
+
+        dialog.show()*/
+    }
+
+
     //changing the like status
     override fun changeLikeStatus(complaintsData: GetCasesResponse.Data,position: Int) {
         // Utilities.showProgress(mContext)
@@ -401,7 +491,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
         val token =
             PreferenceHandler.readString(
-                this@MyCasesActivity,
+                this@NodelMyCaseActivity,
                 PreferenceHandler.AUTHORIZATION,
                 ""
             )
@@ -483,7 +573,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                 complaintId = complaintsData.id!!
                 if (complaintsData.status != null)
                     currentStatus = complaintsData.status!!
-                //Utilities.showProgress(this@MyCasesActivity)
+                //Utilities.showProgress(this@NodelMyCaseActivity)
                 //hit api based on role
                 //presenter.fetchStatusList(token, type)
                 var list: ArrayList<GetStatusDataBean> = ArrayList()
@@ -601,11 +691,11 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
     }
 
     override fun getLayout(): Int {
-        return R.layout.activity_my_cases
+        return R.layout.activity_nodel_my_case
     }
 
     override fun handleKeyboard(): View {
-        return myCasesLayout
+        return parentNodal
     }
 
     override fun adhaarSavedSuccess(responseObject: SignupResponse) {
@@ -623,7 +713,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
         /*   if(responseObject.data?.get(0)?.status!!.equals("Unauthentic") || responseObject.data.get(0).status!!.equals("Reject")){
                //refresh the list
-               Utilities.showProgress(this@MyCasesActivity)
+               Utilities.showProgress(this@NodelMyCaseActivity)
                doApiCall()
            }
            else {*/
@@ -631,8 +721,8 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         if (responseObject.data!!.size != 0) {
             adapter?.notifyActionData(responseObject.data)
         }
-      //  showProgress()
-      //  myCasesApiCall()
+        //  showProgress()
+        //  myCasesApiCall()
 
         // }
     }
@@ -684,7 +774,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         binding.btnDone.setOnClickListener {
             if (statusId == "-1") {
                 Utilities.showMessage(
-                    this@MyCasesActivity,
+                    this@NodelMyCaseActivity,
                     getString(R.string.select_option_validation)
                 )
             }
@@ -705,7 +795,7 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
             }
 
             else {
-                Utilities.showProgress(this@MyCasesActivity)
+                Utilities.showProgress(this@NodelMyCaseActivity)
                 //hit status update api
                 presenter.updateStatus(
                     token,
@@ -716,7 +806,6 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
                 dialog.dismiss()
             }
         }
-
         builder.setView(binding.root)
         dialog = builder.create()
         dialog.show()

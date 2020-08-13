@@ -77,7 +77,8 @@ class PoliceStationActivity : BaseActivity(), PoliceStationCallback,View.OnClick
             if(statonList!!.size>0){
                 binding!!.noRecordFound.visibility=View.GONE
                 binding!!.btnSubmitStation.visibility=View.VISIBLE
-                policeStationAdapter!!.setData(statonList!!)
+                //policeStationAdapter!!.setData(statonList!!)
+                setAdapter()
             } else{
                 binding!!.noRecordFound.visibility=View.VISIBLE
                 binding!!.btnSubmitStation.visibility=View.GONE

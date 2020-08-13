@@ -96,7 +96,6 @@
                     android:id="@+id/rvPublic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/_20sdp"
                     android:visibility="visible" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 

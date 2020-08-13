@@ -16,6 +16,7 @@ class GetCrimeDetailsResponse : Serializable {
         val userDetail: UserDetail? = null
 
         val latitude: String? = null
+        var transfered_to: String? = null
 
         val crime_type: String? = null
 

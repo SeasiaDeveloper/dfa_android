@@ -6,12 +6,10 @@ import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
-import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.dfa.R
 import com.dfa.adapters.StatusAdapter
@@ -49,9 +47,13 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
         finish()
     }
 
-    var token=""
-    var currentStatus=""
-    override fun onItemClick(complaintsData: GetCasesResponse.Data, actionType: String,position:Int) {
+    var token = ""
+    var currentStatus = ""
+    override fun onItemClick(
+        complaintsData: GetCasesResponse.Data,
+        actionType: String,
+        position: Int
+    ) {
         when (actionType) {
             "location" -> {
                 val gmmIntentUri =
@@ -67,7 +69,7 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
         //do nothing
     }
 
-    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data,position: Int) {
+    override fun changeLikeStatus(complaintsData: GetCasesResponse.Data, position: Int) {
         //do nothing
     }
 
@@ -96,65 +98,65 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {
         try {
             Utilities.dismissProgress()
-         //   Utilities.showStatusDialog("", responseObject, this, this, this)
+            //   Utilities.showStatusDialog("", responseObject, this, this, this)
 
 
             if (responseObject.data != null)
 
-             currentStatus= status
+                currentStatus = status
 
-             //   currentStatus = complaintsData.status!!
+            //   currentStatus = complaintsData.status!!
             //Utilities.showProgress(this@MyCasesActivity)
             //hit api based on role
             //presenter.fetchStatusList(token, type)
             var list: ArrayList<GetStatusDataBean> = ArrayList()
             var item1: GetStatusDataBean
 
-                if (currentStatus.equals("Accept")) {
-                    item1 = GetStatusDataBean("4", "Accept", true)
-                } else {
-                    item1 = GetStatusDataBean("4", "Accept", false)
-                }
-                list.add(item1)
-                if (currentStatus.equals("Reject")) {
-                    item1 = GetStatusDataBean("6", "Reject", true)
-                } else {
-                    item1 = GetStatusDataBean("6", "Reject", false)
-                }
-                list.add(item1)
-                if (currentStatus.equals("Resolved")) {
-                    item1 = GetStatusDataBean("7", "Resolved", true)
-                } else {
-                    item1 = GetStatusDataBean("7", "Resolved", false)
-                }
-                list.add(item1)
-                if (currentStatus.equals("Unauthentic")) {
-                    item1 = GetStatusDataBean("8", "Unauthentic", true)
-                } else {
-                    item1 = GetStatusDataBean("8", "Unauthentic", false)
-                }
-                list.add(item1)
+            if (currentStatus.equals("Accept")) {
+                item1 = GetStatusDataBean("4", "Accept", true)
+            } else {
+                item1 = GetStatusDataBean("4", "Accept", false)
+            }
+            list.add(item1)
+            if (currentStatus.equals("Reject")) {
+                item1 = GetStatusDataBean("6", "Reject", true)
+            } else {
+                item1 = GetStatusDataBean("6", "Reject", false)
+            }
+            list.add(item1)
+            if (currentStatus.equals("Resolved")) {
+                item1 = GetStatusDataBean("7", "Resolved", true)
+            } else {
+                item1 = GetStatusDataBean("7", "Resolved", false)
+            }
+            list.add(item1)
+            if (currentStatus.equals("Unauthentic")) {
+                item1 = GetStatusDataBean("8", "Unauthentic", true)
+            } else {
+                item1 = GetStatusDataBean("8", "Unauthentic", false)
+            }
+            list.add(item1)
 
-                if (currentStatus.equals("Assign (to my suborodinate officer)")) {
-                    item1 = GetStatusDataBean("9", "Assign (to my suborodinate officer)", true)
-                } else {
-                    item1 = GetStatusDataBean("9", "Assign (to my suborodinate officer)", false)
-                }
-                list.add(item1)
-                if (currentStatus.equals("Transfer (to other jurisdicational police station)")) {
-                    item1 = GetStatusDataBean(
-                        "10",
-                        "Transfer (to other jurisdicational police station)",
-                        true
-                    )
-                } else {
-                    item1 = GetStatusDataBean(
-                        "10",
-                        "Transfer (to other jurisdicational police station)",
-                        false
-                    )
-                }
-                list.add(item1)
+            if (currentStatus.equals("Assign (to my suborodinate officer)")) {
+                item1 = GetStatusDataBean("9", "Assign (to my suborodinate officer)", true)
+            } else {
+                item1 = GetStatusDataBean("9", "Assign (to my suborodinate officer)", false)
+            }
+            list.add(item1)
+            if (currentStatus.equals("Transfer (to other jurisdicational police station)")) {
+                item1 = GetStatusDataBean(
+                    "10",
+                    "Transfer (to other jurisdicational police station)",
+                    true
+                )
+            } else {
+                item1 = GetStatusDataBean(
+                    "10",
+                    "Transfer (to other jurisdicational police station)",
+                    false
+                )
+            }
+            list.add(item1)
 
 
 
@@ -207,24 +209,21 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
                     this@PoliceIncidentDetailScreen,
                     getString(R.string.select_option_validation)
                 )
-            }
-            else if (statusId.equals("9")) {
-                var intent=Intent(this, PoliceOfficerActivity::class.java)
-                intent.putExtra("token",token)
-                intent.putExtra("complaintId",complaintId)
+            } else if (statusId.equals("9")) {
+                var intent = Intent(this, PoliceOfficerActivity::class.java)
+                intent.putExtra("token", token)
+                intent.putExtra("complaintId", complaintId)
                 startActivity(intent)
                 dialog.dismiss()
 
             } else if (statusId.equals("10")) {
-                var intent=Intent(this, PoliceStationActivity::class.java)
-                intent.putExtra("token",token)
-                intent.putExtra("complaintId",complaintId)
+                var intent = Intent(this, PoliceStationActivity::class.java)
+                intent.putExtra("token", token)
+                intent.putExtra("complaintId", complaintId)
                 startActivity(intent)
                 dialog.dismiss()
 
-            }
-
-            else {
+            } else {
                 Utilities.showProgress(this@PoliceIncidentDetailScreen)
                 //hit status update api
                 crimePresenter.updateStatus(
@@ -243,8 +242,6 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
     }
 
 
-
-
     // private var ngoPresenter: NGOFormPresenter = NGOFormPresenterImpl(this)
     private var crimePresenter: PoliceDetailPresenter = PoliceDetailPresenterImpl(this)
     private lateinit var complaintId: String
@@ -252,7 +249,9 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
     private lateinit var getCrimeDetailsResponse: GetCrimeDetailsResponse
     private var isKnowPostOrComplaint: String? = null
     private var statusId = "-1"
-    var status=""
+    var status = ""
+    var userId = ""
+    var policeRank=""
 
     override fun getLayout(): Int {
         return R.layout.police_detail_layout
@@ -265,7 +264,8 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
-
+        userId = PreferenceHandler.readString(this, PreferenceHandler.USER_ID, "")!!
+         policeRank = PreferenceHandler.readString(this, PreferenceHandler.Rank, "")!!
         token = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")!!
 
         // complaintsData = intent.getSerializableExtra(Constants.PUBLIC_COMPLAINT_DATA) as GetComplaintsResponse.Data
@@ -296,14 +296,15 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
          }
  */
 
-      /*  imgExpandable.setOnClickListener {
-            if (image_video_layout.isVisible) {
-                image_video_layout.visibility = View.GONE
-            } else {
-                image_video_layout.visibility = View.VISIBLE
-            }
+        /*  imgExpandable.setOnClickListener {
+              if (image_video_layout.isVisible) {
+                  image_video_layout.visibility = View.GONE
+              } else {
+                  image_video_layout.visibility = View.VISIBLE
+              }
 
-        }*/
+          }*/
+
 
     }
 
@@ -312,13 +313,12 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
 
         spTypesOfCrime.text = getCrimeDetailsResponse.data?.get(0)?.crime_type
         spStatusOfCrime.text = getCrimeDetailsResponse.data?.get(0)?.status
-        status=getCrimeDetailsResponse.data?.get(0)?.status!!
+        status = getCrimeDetailsResponse.data?.get(0)?.status!!
         level.text = getCrimeDetailsResponse.data?.get(0)?.urgency
 
         if (!getCrimeDetailsResponse.data?.get(0)?.info.isNullOrEmpty()) {
             editDescription.setText(getCrimeDetailsResponse.data?.get(0)?.info)
-        }
-        else{
+        } else {
             tvDescription.visibility = View.GONE
             editDescription.visibility = View.GONE
         }
@@ -345,8 +345,10 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
 
             try {
                 Glide.with(this).setDefaultRequestOptions(requestOptions)
-                    .load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0)).placeholder(R.drawable
-                        .camera_placeholder)
+                    .load(getCrimeDetailsResponse.data?.get(0)?.media_list?.get(0)).placeholder(
+                        R.drawable
+                            .camera_placeholder
+                    )
                     .into(ivVideoIcon)
 
                 video_layout.visibility = View.VISIBLE
@@ -358,8 +360,11 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
 
             video_layout.setOnClickListener {
                 intent = Intent(this, VideoPlayerActivity::class.java)
-                intent!!.putExtra("videoPath",getCrimeDetailsResponse?.data?.get(0)?.media_list?.get(0)?.toString())
-                intent!!.putExtra("documentId",getCrimeDetailsResponse?.data?.get(0)?.id)
+                intent!!.putExtra(
+                    "videoPath",
+                    getCrimeDetailsResponse?.data?.get(0)?.media_list?.get(0)?.toString()
+                )
+                intent!!.putExtra("documentId", getCrimeDetailsResponse?.data?.get(0)?.id)
                 startActivity(intent)
             }
         } else {
@@ -385,6 +390,23 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
             }
             //open dialog to fetch status
             crimePresenter.fetchStatusList(authorizationToken!!, "2") // user role 2 is for police
+        }
+
+        if (getCrimeDetailsResponse.data!!.get(0).transfered_to != null) {
+
+            if (getCrimeDetailsResponse.data!!.get(0).transfered_to.equals(userId)) {
+                action_complaint.visibility = View.VISIBLE
+            } else {
+                action_complaint.visibility = View.GONE
+            }
+
+        } else{
+            if(policeRank.equals("1")){
+                action_complaint.visibility = View.VISIBLE
+            }
+            else {
+                action_complaint.visibility = View.GONE
+            }
         }
 
     }

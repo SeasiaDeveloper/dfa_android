@@ -12,6 +12,7 @@ class GetCasesResponse : Serializable {
         var isApiHit :Boolean = false
         val is_assigned: String? = null
         var fir_image: String?= null
+        var transfered_to: String?= null
         val fir_url:String?=null
         val fir_mile: String?=null
         val fir_km: String?=null

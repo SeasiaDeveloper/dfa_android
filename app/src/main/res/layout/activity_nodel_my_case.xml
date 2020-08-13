@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/parentNodal"
+    android:orientation="vertical"
+    tools:context="com.dfa.ui.mycases.NodelMyCaseActivity">
+    <include
+        android:id="@+id/toolbarLayout"
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_below="@+id/toolbarLayout"
+        android:id="@+id/linearParent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@color/light_grey_bg">
+
+        <!--            <com.ngo.customviews.CustomEditText-->
+        <!--                android:id="@+id/etSearch"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:layout_marginStart="@dimen/_18sdp"-->
+        <!--                android:layout_marginTop="@dimen/_18sdp"-->
+        <!--                android:layout_gravity="center_vertical"-->
+        <!--                android:drawablePadding="30dp"-->
+        <!--                android:visibility="gone"-->
+        <!--                android:drawableEnd="@drawable/ic_search_grey"-->
+        <!--                android:layout_marginEnd="@dimen/_18sdp"-->
+        <!--                android:layout_marginBottom="@dimen/_14sdp"-->
+        <!--                android:background="@drawable/shape_round_corner_grey"-->
+        <!--                android:gravity="start|center_vertical"-->
+        <!--                android:hint="@string/search"-->
+        <!--                android:imeOptions="actionDone"-->
+        <!--                android:maxLength="13"-->
+        <!--                android:padding="@dimen/_7sdp" />-->
+
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:layout_weight="0.8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_below="@+id/includeView">
+
+                <com.dfa.customviews.CustomEditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5ssp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:background="@drawable/search_shape"
+                    android:hint="@string/search"
+                    android:imeOptions="actionSearch"
+                    android:maxLines="1"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingRight="15dp"
+                    android:paddingBottom="15dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="17dp" />
+
+
+                <ImageView
+                    android:id="@+id/click_search_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="20dp"
+                    android:padding="@dimen/_10sdp"
+                    android:src="@drawable/ic_search_black_24dp" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:background="@drawable/round_corner"
+                    android:layout_weight="0.2"
+                    android:layout_gravity="center"
+                    android:id="@+id/ivFilter"
+                    android:padding="2dp"
+                    android:layout_marginTop="@dimen/_5ssp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:layout_centerInParent="true"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/iv_filter" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:layout_below="@+id/linearParent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/light_grey_bg">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvPublic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="visible" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center"
+            android:background="@android:color/transparent"
+            android:visibility="invisible"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <com.dfa.customviews.CustomtextView
+            android:id="@+id/tvRecord"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/no_record_found" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+</layout>

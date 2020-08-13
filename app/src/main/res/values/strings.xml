@@ -257,6 +257,7 @@
     <string name="gpu">GPU</string>
     <string name="ngo_user">NGO</string>
     <string name="police_user">Police</string>
+    <string name="nodel_officer_user">Nodal Officer</string>
     <string name="case_no_heading">Case No:</string>
     <string name="confirm">Confirm</string>
     <string name="agree">Agree</string>

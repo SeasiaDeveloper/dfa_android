@@ -13,6 +13,7 @@ object PreferenceHandler {
     const val PROFILE_JSON = "profileData"
     const val PROFILE_IMAGE="image"
     const val USER_ROLE = "userRole"
+    const val Rank = "rank"
     const val CONTACT_NUMBER = "contact_number"
     const val USER_ID = "userId"
     const val AUTHORIZATION = "authorization"

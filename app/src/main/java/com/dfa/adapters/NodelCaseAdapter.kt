@@ -1,5 +1,4 @@
 package com.dfa.adapters
-
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
@@ -32,24 +31,22 @@ import com.dfa.ui.generalpublic.VideoPlayerActivity
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.dfa.ui.home.fragments.home.view.HomeActivity
 import com.dfa.ui.mycases.MyCasesActivity
+import com.dfa.ui.mycases.NodelMyCaseActivity
 import com.dfa.ui.profile.ProfileActivity
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
 import kotlinx.android.synthetic.main.item_case.view.*
-
-
-class CasesAdapter(
+class NodelCaseAdapter (
     var context: Context,
     var mList: ArrayList<GetCasesResponse.Data>,
     private var listener: OnCaseItemClickListener,
     private var type: Int, private var alertDialogListener: AlertDialogListener,
     var activity: Activity,
-    var fragment: Fragment,
     var isGeneralPublicFragment: Boolean
 
 ) :
 
-    RecyclerView.Adapter<CasesAdapter.ViewHolder>() {
+    RecyclerView.Adapter<NodelCaseAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),
@@ -80,61 +77,8 @@ class CasesAdapter(
         notifyDataSetChanged()
     }
 
-//    fun performSearch(searchedText: String) {
-//        var searchedList = mutableListOf<GetCasesResponse.Data>()
-//        for (i in 0..this.mList.size - 1) {
-//            if (this.mList.get(i).id!!.contains(searchedText)) {
-//                searchedList.add(this.mList.get(i))
-//            }
-//        }
-//        this.mList = ArrayList()
-//        this.mList.addAll(searchedList)
-//        notifyDataSetChanged()
-//    }
 
-    fun notifyPublicHomeActionData(listItems: Array<UpdateStatusSuccess.Data>, statusId: String) {
-        val data = listItems[0]
-        var position: Int? = null
-        for (i in 0..this.mList.size - 1) {
-            if (listItems[0].id.equals(this.mList.get(i).id)) {
-                position = i
-                break
-            }
-        }
-        this.mList.get(position!!).status = data.status
 
-        if (statusId == "6")
-            notifyItemRemoved(position)
-        else
-            notifyItemChanged(position)
-    }
-
-    //to add comment
-    fun notifyParticularItemWithComment(
-        complaintId: String,
-        data: List<GetCasesResponse.Data>,
-        commentsCounts: Int
-    ) {
-        var commentCount: String? = ""
-        for (i in 0..this.mList.size - 1) {
-            if (complaintId.equals(this.mList.get(i).id)) {
-                for (j in 0..data.size - 1) {
-                    if (complaintId.equals(data.get(j).id)) {
-                        commentCount = data.get(j).comment_count!!.toString()
-                        break
-                    }
-                }
-                if (commentCount.equals("")) {
-                    this.mList.get(i).comment_count = commentsCounts.toString()
-                } else {
-                    this.mList.get(i).comment_count = commentCount.toString()
-                }
-
-                notifyItemChanged(i)
-                break
-            }
-        }
-    }
 
     fun notifyFirImageData(position: Int?, response: FirImageResponse, complaintId: String) {
         //GeneralPublicHomeFragment.isApiHit = true
@@ -151,81 +95,7 @@ class CasesAdapter(
             notifyItemChanged(requiredPosition)
         }
 
-
-        /* if (item.fir_image!!.isNotEmpty()) {
-             try {
-                 Glide.with(context).asBitmap().load(item.fir_image).apply(options)
-                     .into(itemView.imgFirMedia)
-             } catch (e: Exception) {
-                 e.printStackTrace()
-             }
-         }*/
     }
-
-    //for delete
-    fun removeAt(position: Int) {
-        this.mList.removeAt(position)
-        notifyItemRemoved(position)
-        notifyItemRangeChanged(position, this.mList.size)
-    }
-
-    //for like
-    fun notifyParticularItem(complaintId: String, data: List<GetCasesResponse.Data>) {
-        var likeCount: String? = ""
-        for (i in 0..this.mList.size - 1) {
-            if (complaintId.equals(this.mList.get(i).id)) {
-                for (j in 0..data.size - 1) {
-                    if (complaintId.equals(data.get(j).id)) {
-                        likeCount = data.get(j).like_count!!.toString()
-                        break
-                    }
-                }
-                if (likeCount.equals("")) {
-                    if (this.mList.get(i).is_liked!!.equals(0)) {
-                        this.mList.get(i).like_count =
-                            (this.mList.get(i).like_count?.toInt()!! - 1).toString()
-                    } else {
-                        this.mList.get(i).like_count =
-                            (this.mList.get(i).like_count?.toInt()!! + 1).toString()
-                    }
-                } else {
-                    this.mList.get(i).like_count = likeCount.toString()
-                }
-
-                notifyItemChanged(i)
-                break
-            }
-        }
-    }
-
-    fun notifyParticularItem(complaintId: String) {
-        var likeCount: String? = ""
-        for (i in 0..this.mList.size - 1) {
-            if (complaintId.equals(this.mList.get(i).id)) {
-                /*   for (j in 0..data.size - 1) {
-                       if (complaintId.equals(data.get(j).id)) {
-                           likeCount = data.get(j).like_count!!.toString()
-                           break
-                       }
-                   }*/
-                if (this.mList.get(i).is_liked!!.equals(0)) {
-                    this.mList.get(i).like_count =
-                        (this.mList.get(i).like_count?.toInt()!! + 1).toString()
-                } else {
-                    this.mList.get(i).like_count =
-                        (this.mList.get(i).like_count?.toInt()!! - 1).toString()
-                }
-                /* else {
-                     this.mList.get(i).like_count = likeCount.toString()
-                 }*/
-
-                notifyItemChanged(i)
-                break
-            }
-        }
-    }
-
-
     fun clear() {
         val size: Int = mList.size
         mList.clear()
@@ -241,7 +111,6 @@ class CasesAdapter(
             type,
             alertDialogListener,
             activity,
-            fragment,
             position,
             isGeneralPublicFragment
         )
@@ -267,7 +136,6 @@ class CasesAdapter(
             index: Int,
             listener: OnCaseItemClickListener,
             type: Int, alertDialogListener: AlertDialogListener, activity: Activity,
-            fragment: Fragment,
             position: Int,
             isGeneralPublicFragment: Boolean
         ) {
@@ -278,11 +146,11 @@ class CasesAdapter(
                 PreferenceHandler.Rank,
                 ""
             )!!
-            var userId = PreferenceHandler.readString(context, PreferenceHandler.USER_ID, "")!!
 
+            var userId = PreferenceHandler.readString(context, PreferenceHandler.USER_ID, "")!!
             val userDetail: GetCasesResponse.Data.UserDetail = item.userDetail!!
-            val username =
-                PreferenceHandler.readString(context, PreferenceHandler.USER_FULLNAME, "")
+            val username = PreferenceHandler.readString(context, PreferenceHandler.USER_FULLNAME, "")
+//            val userId = PreferenceHandler.readString(context, PreferenceHandler.USER_ID, "")
             val token =
                 PreferenceHandler.readString(context, PreferenceHandler.AUTHORIZATION, "")
 
@@ -364,7 +232,7 @@ class CasesAdapter(
             }
 
 
-                if (item.type == "1") {
+            if (item.type == "1") {
                 itemView.layout_post.visibility = View.VISIBLE
                 itemView.layoutListItem.visibility = View.GONE
 
@@ -687,7 +555,7 @@ class CasesAdapter(
                     sharingIntent.type = "text/plain"
 
                     sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Drug Free Arunachal")
-                 //   sharingIntent.putExtra(Intent.EXTRA_TEXT, "Hi, Your friend $username shared you FIR complaint from Drug Free Arunachal app. To see detail, open\n https://drugfreearunachal.org/home?id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
+                    //   sharingIntent.putExtra(Intent.EXTRA_TEXT, "Hi, Your friend $username shared you FIR complaint from Drug Free Arunachal app. To see detail, open\n https://drugfreearunachal.org/home?id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
                     sharingIntent.putExtra(Intent.EXTRA_TEXT, "https://drugfreearunachal.org/complaint-details?complaint_id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
                     )
                     context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
@@ -765,8 +633,6 @@ class CasesAdapter(
 
 
 
-//                itemView.action_complaint.visibility = View.VISIBLE
-
                // if(item!!.transfered_to!=null){
                     if(policeRank!!.equals("1") || item.transfered_to.equals(userId) ){
                         itemView.action_complaint.visibility = View.VISIBLE
@@ -776,7 +642,6 @@ class CasesAdapter(
 //                } else{
 //                    itemView.action_complaint.visibility = View.GONE
 //                }
-
                 itemView.layoutCrimeType.visibility = View.VISIBLE
                 itemView.layoutStatus.visibility = View.VISIBLE
                 itemView.layoutPoliceStation.visibility = View.VISIBLE
@@ -836,13 +701,12 @@ class CasesAdapter(
                             ""
                         )!!
 
-                        if (item.police_station_id?.toString().equals(stationId) && !item.status!!.toLowerCase().equals("accept")){
+                        if (item.police_station_id?.toString().equals(stationId) && !item.status!!.toLowerCase().equals("accept"))
                             itemView.action_complaint.visibility = View.VISIBLE
 
-                        }
-
                         else{
-                           // if(item!!.transfered_to!=null){
+
+                          //  if(item!!.transfered_to!=null){
                                 if(policeRank!!.equals("1") || item.transfered_to.equals(userId) ){
                                     itemView.action_complaint.visibility = View.VISIBLE
                                 }else{
@@ -852,8 +716,9 @@ class CasesAdapter(
 //                                itemView.action_complaint.visibility = View.GONE
 //                            }
 
-
+                          //  itemView.action_complaint.visibility = View.GONE
                         }
+
 
                     }
                     itemView.layoutContact.visibility = View.GONE
@@ -868,7 +733,6 @@ class CasesAdapter(
                     if (type == 1 && (item.status?.toLowerCase() == "unassigned"))
                         itemView.action_complaint.visibility = View.VISIBLE
                     else {
-
                        // if(item!!.transfered_to!=null){
                             if(policeRank!!.equals("1") || item.transfered_to.equals(userId) ){
                                 itemView.action_complaint.visibility = View.VISIBLE
@@ -935,8 +799,7 @@ class CasesAdapter(
                 }
 
                 itemView.layoutContact.visibility = View.GONE
-
-               // if(item!!.transfered_to!=null){
+              //  if(item!!.transfered_to!=null){
                     if(policeRank!!.equals("1") || item.transfered_to.equals(userId) ){
                         itemView.action_complaint.visibility = View.VISIBLE
                     }else{
@@ -1025,14 +888,8 @@ class CasesAdapter(
                 itemView.imgExpandable_linear_layout.setOnClickListener {
                     //1st entry
                     if (!item.isApiHit) {
-                        //call api:
-                        if (isGeneralPublicFragment) {
-                            val callMethod = fragment as GeneralPublicHomeFragment
-                            callMethod.callFirImageApi(item.id!!, adapterPosition)
-                        } else {
-                            val myCasesActivity = activity as MyCasesActivity
+                            val myCasesActivity = activity as NodelMyCaseActivity
                             myCasesActivity.callFirImageApi(item.id!!, adapterPosition)
-                        }
 
                     } else {
                         if (itemView.childExpandable.visibility == View.VISIBLE) {

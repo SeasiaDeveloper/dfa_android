@@ -144,7 +144,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun refreshList() {
         pageCount = 1
         val casesRequest =
-            CasesRequest("1", "", "-1", "1", limit) //type = -1 for fetching all the data
+            CasesRequest("1", "", "-1", "1", limit,"") //type = -1 for fetching all the data
         Utilities.showProgress(mContext)
         presenter.getComplaints(casesRequest, token, type)
     }
@@ -889,7 +889,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                     "-1",
                     "1",
                     limit
-                )  //type = -1 for fetching both cases and posts
+                ,"")  //type = -1 for fetching both cases and posts
             Utilities.showProgress(mContext)
             presenter.getComplaints(casesRequest, token, type)
         }
@@ -935,7 +935,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 "-1",
                 pageCount.toString(),
                 limit
-            ) //type = -1 for fetching all the data
+            ,"") //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
     }
 
@@ -1032,7 +1032,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
         // pageCount = page
         val casesRequest =
-            CasesRequest("1", "", "-1", pageCount.toString(), limit /*totalItemsCount.toString()*/)
+            CasesRequest("1", "", "-1", pageCount.toString(), limit /*totalItemsCount.toString()*/,"")
         presenter.getComplaints(casesRequest, token, type)
         progressBar.visibility = View.VISIBLE
     }

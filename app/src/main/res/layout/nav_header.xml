@@ -100,21 +100,21 @@
         </LinearLayout>
 
         <RelativeLayout
-            android:layout_width="@dimen/_70sdp"
+            android:layout_width="wrap_content"
             android:layout_height="@dimen/_20sdp"
             android:layout_gravity="end|bottom"
             android:layout_marginTop="@dimen/_5sdp"
+            android:background="@drawable/black_round_outer_background"
             android:layout_marginRight="@dimen/_15sdp"
             android:layout_marginBottom="@dimen/_10sdp">
 
             <com.dfa.customviews.CustomTextViewheading
                 android:id="@+id/userInfo"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/black_round_outer_background"
                 android:gravity="center"
                 android:maxLines="2"
+                android:paddingLeft="@dimen/_5sdp"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10ssp"
                 android:text="police"
@@ -125,9 +125,10 @@
                 android:id="@+id/verified_icon"
                 android:layout_width="20dp"
                 android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
                 android:layout_marginRight="@dimen/_2sdp"
                 android:padding="@dimen/_2sdp"
+                android:layout_marginLeft="@dimen/_2sdp"
+                android:layout_toRightOf="@+id/userInfo"
                 android:src="@drawable/checked"
                 android:visibility="gone" />
 

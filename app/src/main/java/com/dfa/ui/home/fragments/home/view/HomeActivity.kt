@@ -1,18 +1,17 @@
 package com.dfa.ui.home.fragments.home.view
 
 import android.annotation.SuppressLint
-import android.content.*
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
-import android.location.LocationListener
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.net.Uri
-import android.os.AsyncTask
 import android.os.Build
-import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
@@ -32,13 +31,10 @@ import com.bumptech.glide.request.RequestOptions
 import com.dfa.R
 import com.dfa.adapters.TabLayoutAdapter
 import com.dfa.application.GetVersionCode
-import com.dfa.application.MyApplication
 import com.dfa.base.BaseActivity
-import com.dfa.databinding.DialogUpdateVersionBinding
 import com.dfa.databinding.LayoutAcceptRejectAlertBinding
 import com.dfa.listeners.AdharNoListener
 import com.dfa.maps.FusedLocationClass
-import com.dfa.pojo.request.EmergencyDataRequest
 import com.dfa.pojo.response.*
 import com.dfa.ui.contactus.ContactUsActivity
 import com.dfa.ui.earnings.view.MyEarningsActivity
@@ -52,6 +48,7 @@ import com.dfa.ui.home.fragments.photos.view.PhotosFragment
 import com.dfa.ui.home.fragments.videos.view.VideosFragment
 import com.dfa.ui.login.view.LoginActivity
 import com.dfa.ui.mycases.MyCasesActivity
+import com.dfa.ui.mycases.NodelMyCaseActivity
 import com.dfa.ui.policedetail.view.PoliceIncidentDetailScreen
 import com.dfa.ui.privacy_policy.PrivacyPolicyActivity
 import com.dfa.ui.profile.ProfileActivity
@@ -65,8 +62,6 @@ import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.nav_action.*
 import kotlinx.android.synthetic.main.nav_header.*
-import okhttp3.internal.Util
-import org.jsoup.Jsoup
 import java.lang.Double.parseDouble
 
 class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener, HomeView,
@@ -83,6 +78,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private var isGPS: Boolean = false
     var isFirstTimeEntry = true
     private var provider: String = ""
+    var role = ""
     private lateinit var locationManager: LocationManager
     var gps_enabled: Boolean = false
     lateinit var getProfileresponse: GetProfileResponse
@@ -126,8 +122,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             } else mHandler!!.postDelayed(this, 500)
         }
     }
-
-
 
 
     override fun getLayout(): Int {
@@ -192,11 +186,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private val refreshReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (PreferenceHandler.readString(
-                    this@HomeActivity,
-                    PreferenceHandler.USER_ROLE,
-                    "0"
-                ).equals("2")
+            if (PreferenceHandler.readString(this@HomeActivity, PreferenceHandler.USER_ROLE, "0").equals("2") || PreferenceHandler.readString(this@HomeActivity, PreferenceHandler.USER_ROLE, "0").equals("3")
             ) {
                 val notificationResponse =
                     intent.getSerializableExtra("notificationResponse") as NotificationResponse
@@ -223,9 +213,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         binding.txtComplaintTime.text =
 
-            Utilities.changeDateFormat(notificationResponse.report_data!!) + " " + Utilities.changeTimeFormat(
-                notificationResponse.report_time!!
-            )
+            Utilities.changeDateFormat(notificationResponse.report_data!!) + " " + Utilities.changeTimeFormat(notificationResponse.report_time!!)
         binding.txtCrimeType.text =
             notificationResponse.crime_type
 
@@ -328,11 +316,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         getStartingLocation()
 
         //dialog
-        if (getIntent() != null && getIntent().getExtras() != null && (getIntent().getExtras()
-                ?.getString(
-                    "complaint_id"
-                ) != null) && getIntent().getExtras()?.getString("report_time") != "" &&
-            PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "") == "2"
+        if (getIntent() != null && getIntent().getExtras() != null && (getIntent().getExtras()?.getString("complaint_id") != null) && getIntent().getExtras()?.getString("report_time") != "" && (PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "") == "2" || PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "") == "3")
         ) {
             val notificationResponse = NotificationResponse()
             notificationResponse.username = getIntent().getExtras()?.getString("username")
@@ -486,7 +470,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             btnLogin.visibility = View.VISIBLE
         } else {
             btnLogin.visibility = View.GONE
-            val role = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")
+            role = PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "0")!!
             if (role.equals("0")) {
                 // userInfo.setText(getString(R.string.gpu))
                 if (getProfileResponse.data?.isVerified!!.equals("1")) {
@@ -507,7 +491,14 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 userInfo.setText(getString(R.string.police_user))
                 verified_icon.visibility = View.VISIBLE
                 textAddress.visibility = View.VISIBLE
+            } else if (role.equals("3")) {
+                userInfo.visibility = View.VISIBLE
+                userInfo.setText(getString(R.string.nodel_officer_user))
+                verified_icon.visibility = View.VISIBLE
+                textAddress.visibility = View.VISIBLE
             }
+
+
 
             textAddress.setText(getProfileResponse.data?.address_1)
 
@@ -582,7 +573,13 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 AlertDialog.onShowLogoutDialog(this, this)
             }
             R.id.nav_cases -> {
-                startActivity(Intent(this@HomeActivity, MyCasesActivity::class.java))
+
+                if (role.equals("3")) {
+                    startActivity(Intent(this@HomeActivity, NodelMyCaseActivity::class.java))
+
+                } else {
+                    startActivity(Intent(this@HomeActivity, MyCasesActivity::class.java))
+                }
             }
             R.id.nav_my_earning ->
                 if (!authorizationToken!!.isEmpty()) {
@@ -591,7 +588,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
                 } else {
                     com.dfa.utils.alert.AlertDialog.guesDialog(this)
-
                 }
 
 
@@ -837,7 +833,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onLogoutSuccess(responseObject: CommonResponse) {
         // ForegroundService.stopService(this)
-        Utilities.showMessage(this,responseObject.message)
+        Utilities.showMessage(this, responseObject.message)
         PreferenceHandler.clearPreferences(this)
         val intent = Intent(this, LoginActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

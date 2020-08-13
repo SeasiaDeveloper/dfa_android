@@ -35,7 +35,8 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.generalpublic.PoliceStationActivity"></activity>
+        <activity android:name=".ui.mycases.NodelMyCaseActivity"></activity>
+        <activity android:name=".ui.generalpublic.PoliceStationActivity" />
         <activity android:name=".ui.generalpublic.PoliceOfficerActivity" />
         <activity android:name=".ui.generalpublic.NearByPoliceStationActivity" />
         <activity android:name=".ui.generalpublic.VideoPlayerActivity" />

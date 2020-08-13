@@ -115,7 +115,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
     override fun onLoginSuccess(loginResponse: LoginResponse) {
         dismissProgress()
 
-        if (loginResponse.token != null) {
+       if (loginResponse.token != null) {
             PreferenceHandler.writeString(
                 this,
                 PreferenceHandler.AUTHORIZATION,
@@ -126,6 +126,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
                 this,
                 PreferenceHandler.USER_ROLE,
                 loginResponse?.user_role.toString()
+            )
+            PreferenceHandler.writeString(
+                this,
+                PreferenceHandler.Rank,
+                loginResponse?.police_rank.toString()
             )
 
 

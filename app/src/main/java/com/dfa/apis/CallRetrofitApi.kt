@@ -122,6 +122,12 @@ interface CallRetrofitApi {
     fun getMyCasesForPolice(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<GetCasesResponse>
 
     @Multipart
+    @POST("jwt-auth/v1/crime_list_nodal_officer")
+    fun getNodalUserDetail(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<GetCasesResponse>
+
+
+
+    @Multipart
     @POST("jwt-auth/v1/create_post")
     fun addPost(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>, @Part images: Array<MultipartBody.Part?>): Call<CreatePostResponse> //@Part post_pics: MultipartBody.Part
 

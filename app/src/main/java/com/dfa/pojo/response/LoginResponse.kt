@@ -6,6 +6,7 @@ data class LoginResponse(
     val user_nicename: String,
     val user_display_name: String,
     val user_role: String,
+    val police_rank: String,
     val police_station_id:String="00",
     val message:String
 

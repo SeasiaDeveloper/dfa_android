@@ -84,7 +84,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 //
 //
 //        val th = Thread(Runnable {
-//            try {
+//            try n{
 //                Thread.sleep(5000) //30000 is for 30 seconds, 1 sec =1000
 //                if (mp.isPlaying()) mp.setLooping(false)
 //                mp.stop() // for stopping the ringtone
