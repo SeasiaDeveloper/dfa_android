@@ -154,6 +154,8 @@
     <string name="nav_terms_and_conditions">Terms and Conditions</string>
     <string name="nav_logout">Logout</string>
     <string name="my_cases">My Cases</string>
+    <string name="contibure_title">Contribute by Drug Free Arunachal</string>
+    <string name="add_business">Add New Business</string>
     <string name="video_player">Video Player</string>
     <string name="add_comments">Add Comments</string>
     <string name="add_your_comment_here">Add a comment..</string>
@@ -161,6 +163,8 @@
     <string name="commented_users">Commented Users</string>
     <string name="trimming_progress">Trimming your video...</string>
     <string name="privacy_policy">Privacy Policy</string>
+    <string name="digits">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ</string>
+    <string name="alpha_mumerical">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789</string>
 
 
     <!-- Toolbar titles when navigation menu item is selected -->
@@ -279,5 +283,7 @@
     <string name="use_app_without_registration">Use app without registration</string>
     <string name="please_select_officer">Please select officer</string>
     <string name="please_select_station">Please select police station</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

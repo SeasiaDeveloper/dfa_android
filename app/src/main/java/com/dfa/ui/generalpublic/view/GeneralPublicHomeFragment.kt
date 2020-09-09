@@ -13,6 +13,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -20,13 +21,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.dfa.R
-import com.dfa.adapters.CasesAdapter
-import com.dfa.adapters.StatusAdapter
-import com.dfa.customviews.CenteredToolbar
+import com.dfa.adapters.*
 import com.dfa.databinding.FragmentPublicHomeBinding
 import com.dfa.listeners.AdharNoListener
 import com.dfa.listeners.AlertDialogListener
@@ -86,6 +86,19 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     private var complaintIdTobeLikedPosition = -1
 //    var newCompaintsButton: ExtendedFloatingActionButton? = null
 
+    var advertisAdapter: AdvertisementAdapter? = null
+    var pages = 5
+    var limit1 = 5
+    var responseObjectList: ArrayList<AdvertisementResponse.Data>? = null
+
+    private var complaints = ArrayList<GetCasesResponse.Data>()
+    private var adapter: CasesAdapter? = null
+    private var presenter: CasesPresenter = CasesPresenterImplClass(this)
+    private var statusId = "-1"
+    private var complaintId = "-1"
+    private var currentStatus = ""
+    var complaintIdTobeLiked: String? = null
+    var actionChanged: Boolean = false
     override fun onClick(item: Any, position: Int) {
         Utilities.showProgress(mContext)
         deleteItemposition = position
@@ -108,8 +121,48 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         savedInstanceState: Bundle?
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_public_home, container, false)
+        responseObjectList = ArrayList()
+
+       // val mPager: ViewPager = findViewById(R.id.pager)
+        binding.addPager.setPageTransformer(true, ZoomOutPageTransformer())
+
+
+     //   setAdvertisementAdapter()
+        callPresenter("1000")
+        pageCount=1
+        setupUI()
         return binding.root
     }
+
+
+    fun callPresenter(perPage: String) {
+        var input = AdvertisementInput()
+        input.per_page = perPage
+        input.page = "1"
+        //   Utilities.showProgress(this.activity!!)
+        presenter.advertisementInput(input)
+    }
+
+    fun setAdvertisementAdapter() {
+        val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        binding!!.rvAdvertisement.setLayoutManager(layoutManager)
+        advertisAdapter = AdvertisementAdapter(this@GeneralPublicHomeFragment, responseObjectList!!)
+        binding!!.rvAdvertisement.adapter = advertisAdapter
+
+
+//        if (endlessScrollListener == null)
+//            endlessScrollListener =
+//                EndlessRecyclerViewScrollListenerImplementation(
+//                    layoutManager,
+//                    this
+//                )
+//        else
+//            endlessScrollListener?.setmLayoutManager(layoutManager)
+//        binding!!.rvPhotos.addOnScrollListener(endlessScrollListener!!)
+//        endlessScrollListener?.resetState()
+
+    }
+
 
     //call fir image api
     fun callFirImageApi(complaintId: String, position: Int) {
@@ -125,6 +178,31 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         if (positionOfFir != null) {
             adapter?.notifyFirImageData(positionOfFir, response, firComplaintId)
         }
+    }
+
+    override fun advertisementSuccess(responseObject: AdvertisementResponse) {
+        responseObjectList = responseObject.data
+
+        if (responseObjectList!!.size > 0) {
+          //  binding.rvAdvertisement.visibility = View.VISIBLE
+            binding.addPager.visibility=View.VISIBLE
+
+            if(activity!=null){
+                binding.addPager!!.adapter =
+                    SlidingImage_Adapter(activity!!, responseObjectList)
+                binding.indicator.setViewPager( binding.addPager!!);
+
+                if(responseObjectList!!.size!=1){
+                    binding.indicator.visibility=View.VISIBLE
+                }
+            }
+
+        } else {
+            binding.rvAdvertisement.visibility = View.GONE
+            binding.addPager.visibility=View.GONE
+            binding.indicator.visibility=View.GONE
+        }
+      //  advertisAdapter!!.setData(responseObjectList!!)
     }
 
     override fun showDescError() {
@@ -144,23 +222,16 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     fun refreshList() {
         pageCount = 1
         val casesRequest =
-            CasesRequest("1", "", "-1", "1", limit,"") //type = -1 for fetching all the data
+            CasesRequest("1", "", "-1", "1", limit, "") //type = -1 for fetching all the data
         Utilities.showProgress(mContext)
         presenter.getComplaints(casesRequest, token, type)
     }
 
-    private var complaints = ArrayList<GetCasesResponse.Data>()
-    private var adapter: CasesAdapter? = null
-    private var presenter: CasesPresenter = CasesPresenterImplClass(this)
-    private var statusId = "-1"
-    private var complaintId = "-1"
-    private var currentStatus = ""
-    var complaintIdTobeLiked: String? = null
-    var actionChanged: Boolean = false
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupUI()
+
 
     }
 
@@ -180,34 +251,66 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             mContext,
             RecyclerView.VERTICAL, false
         )
-        rvPublic.setNestedScrollingEnabled(false);
-        rvPublic?.layoutManager = horizontalLayoutManager
-        rvPublic?.adapter = adapter
+        binding.rvPublic.setNestedScrollingEnabled(false);
+        binding.rvPublic?.layoutManager = horizontalLayoutManager
+        binding.rvPublic?.adapter = adapter
+        binding.rvPublic.setNestedScrollingEnabled(false);
+
+        binding.mScroll.getViewTreeObserver()
+            .addOnScrollChangedListener(object : ViewTreeObserver.OnScrollChangedListener {
+                override fun onScrollChanged() {
+                    try {
+                        val view =
+                            binding.mScroll.getChildAt(binding.mScroll.getChildCount() - 1) as View
+                        val diff: Int = view.bottom - (binding.mScroll.getHeight() + binding.mScroll
+                            .getScrollY())
+                        if (diff == 0) {
+                            pageCount = pageCount + 1
+                            val casesRequest =
+                                CasesRequest(
+                                    "1",
+                                    "",
+                                    "-1",
+                                    pageCount.toString(),
+                                    limit /*totalItemsCount.toString()*/,
+                                    ""
+                                )
+                          //  Utilities.showProgress(activity!!)
+                            presenter.getComplaints(casesRequest, token, type)
+                            progressBar.visibility = View.VISIBLE
+
+                        }
+                    } catch (e: java.lang.Exception) {
+                    }
+                }
+
+            })
+
     }
 
     fun setupUI() {
-        (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
-        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-        itemsswipetorefresh.visibility = View.VISIBLE
-        norecordrefresh.visibility = View.GONE
+//        (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
+//        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+        //itemsswipetorefresh.visibility = View.VISIBLE
+       // norecordrefresh.visibility = View.GONE
 
         // newCompaintsButton = binding.extFab;
         //swipeRefresh.setOnRefreshListener(this)
         fragment = this
         setAdapter()
-        if (endlessScrollListener == null)
-            endlessScrollListener =
-                EndlessRecyclerViewScrollListenerImplementation(
-                    horizontalLayoutManager,
-                    this
-                )
-        else
-            endlessScrollListener?.setmLayoutManager(horizontalLayoutManager)
-        rvPublic.addOnScrollListener(endlessScrollListener!!)
-        endlessScrollListener?.resetState()
-        setProfilePic()
+//        if (endlessScrollListener == null)
+//            endlessScrollListener =
+//                EndlessRecyclerViewScrollListenerImplementation(
+//                    horizontalLayoutManager,
+//                    this
+//                )
+//        else
+//            endlessScrollListener?.setmLayoutManager(horizontalLayoutManager)
+//        binding.rvPublic.addOnScrollListener(endlessScrollListener!!)
+//        endlessScrollListener?.resetState()
 
-        imgAdd.setOnClickListener(this)
+        setProfilePic()
+        binding.imgAdd.setOnClickListener(this)
         // Utilities.showProgress(mContext)
 
         /*  if (isFirst) {*/
@@ -217,7 +320,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
         //doApiCall()
 
-        dashboardParentLayout.setOnClickListener {
+        binding.dashboardParentLayout.setOnClickListener {
             if (layoutPost.visibility == View.VISIBLE) {
                 imgPost.visibility = View.GONE
                 path = ""
@@ -241,26 +344,13 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             }
 
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-        txtAddPost.setOnClickListener {
+        binding.txtAddPost.setOnClickListener {
             //show the addPost layout
             layoutAddPost.visibility = View.GONE
             layoutPost.visibility = View.VISIBLE
         }
 
-        btnPost.setOnClickListener {
+        binding.btnPost.setOnClickListener {
             if (edtPostInfo.text.toString().trim().equals("")) {
                 Utilities.showMessage(activity!!, "Please enter post title")
             } /*else if (path == null || path.equals("")) {
@@ -279,7 +369,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             }
         }
 
-        btnCancel.setOnClickListener {
+        binding.btnCancel.setOnClickListener {
             //show the addPost layout
             imgPost.visibility = View.GONE
             path = ""
@@ -300,7 +390,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             }
         }
 
-        img_attach.setOnClickListener {
+        binding.imgAttach.setOnClickListener {
             //open gallery
             val resultGallery = getMarshmallowPermission(
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -311,12 +401,17 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         }
 
 
+        try {
+            pullToRefreshSettings(itemsswipetorefresh)
+            pullToRefreshSettings(norecordrefresh)
+        }catch (e:Exception){
 
-        pullToRefreshSettings(itemsswipetorefresh)
-        pullToRefreshSettings(norecordrefresh)
+        }
+
+
 
         /*  */
-        rvPublic.setOnClickListener {
+        binding.rvPublic.setOnClickListener {
             layoutAddPost.visibility = View.VISIBLE
             layoutPost.visibility = View.GONE
         }
@@ -455,10 +550,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
         Utilities.dismissProgress()
 
+        try {
+
+
 
         if (hitType == "foreground") {
             // newCompaintsButton!!.visibility = View.GONE
-            progressBar.visibility = View.GONE
+
+               progressBar.visibility = View.GONE
 
 
             if (response.data!!.isNotEmpty()) {
@@ -473,8 +572,14 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                     adapter?.notifyDataSetChanged()
 
                 }
-                norecordrefresh.visibility = View.GONE
-                itemsswipetorefresh.visibility = View.VISIBLE
+                if (norecordrefresh != null) {
+                    norecordrefresh.visibility = View.GONE
+
+                }
+                if (itemsswipetorefresh != null) {
+                    itemsswipetorefresh.visibility = View.VISIBLE
+
+                }
 
             } else {
                 if (pageCount == 1) {
@@ -507,6 +612,10 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 //newCompaintsButton!!.visibility = View.VISIBLE
 
             }
+
+        }
+        }
+        catch (e:java.lang.Exception){
 
         }
     }
@@ -701,15 +810,15 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
             if (statusId == "-1") {
                 Utilities.showMessage(mContext, getString(R.string.select_option_validation))
             } else if (statusId.equals("9")) {
-               var intent=Intent(this.activity, PoliceOfficerActivity::class.java)
-                intent.putExtra("token",token)
-                intent.putExtra("complaintId",complaintId)
+                var intent = Intent(this.activity, PoliceOfficerActivity::class.java)
+                intent.putExtra("token", token)
+                intent.putExtra("complaintId", complaintId)
                 startActivity(intent)
                 dialog.dismiss()
             } else if (statusId.equals("10")) {
-                var intent=Intent(this.activity, PoliceStationActivity::class.java)
-                intent.putExtra("token",token)
-                intent.putExtra("complaintId",complaintId)
+                var intent = Intent(this.activity, PoliceStationActivity::class.java)
+                intent.putExtra("token", token)
+                intent.putExtra("complaintId", complaintId)
                 startActivity(intent)
                 dialog.dismiss()
             } else {
@@ -889,7 +998,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                     "-1",
                     "1",
                     limit
-                ,"")  //type = -1 for fetching both cases and posts
+                    , ""
+                )  //type = -1 for fetching both cases and posts
             Utilities.showProgress(mContext)
             presenter.getComplaints(casesRequest, token, type)
         }
@@ -935,7 +1045,8 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 "-1",
                 pageCount.toString(),
                 limit
-            ,"") //type = -1 for fetching all the data
+                , ""
+            ) //type = -1 for fetching all the data
         presenter.getComplaints(casesRequest, token, type)
     }
 
@@ -1031,10 +1142,17 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
         // pageCount = page
-        val casesRequest =
-            CasesRequest("1", "", "-1", pageCount.toString(), limit /*totalItemsCount.toString()*/,"")
-        presenter.getComplaints(casesRequest, token, type)
-        progressBar.visibility = View.VISIBLE
+//        val casesRequest =
+//            CasesRequest(
+//                "1",
+//                "",
+//                "-1",
+//                pageCount.toString(),
+//                limit /*totalItemsCount.toString()*/,
+//                ""
+//            )
+//        presenter.getComplaints(casesRequest, token, type)
+        //   progressBar.visibility = View.VISIBLE
     }
 
 

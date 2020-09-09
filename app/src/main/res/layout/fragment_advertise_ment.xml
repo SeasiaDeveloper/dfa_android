@@ -1,0 +1,17 @@
+<layout>
+
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EFEEEE"
+    tools:context="com.dfa.ui.home.fragments.AdvertiseMentFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvPhotos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>
+</layout>

@@ -2,12 +2,14 @@ package com.dfa.ui.home.fragments.cases.model
 
 import com.dfa.apis.ApiClient
 import com.dfa.apis.CallRetrofitApi
+import com.dfa.application.MyApplication
 import com.dfa.pojo.request.CasesRequest
 import com.dfa.pojo.request.CreatePostRequest
 import com.dfa.pojo.request.CrimeDetailsRequest
 import com.dfa.pojo.response.*
 import com.dfa.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.dfa.utils.Constants
+import com.dfa.utils.PreferenceHandler
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -519,4 +521,34 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                 }
             })
     }
+
+
+    fun getAdvertisement(input: AdvertisementInput) {
+        val token =
+            PreferenceHandler.readString(MyApplication.instance, PreferenceHandler.AUTHORIZATION, "")
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        retrofitApi.getDistAdvertisement(token,input).enqueue(object : Callback<AdvertisementResponse> {
+
+            override fun onResponse(call: Call<AdvertisementResponse>, response: Response<AdvertisementResponse>) {
+                val responseObject = response.body()
+                if (responseObject != null) {
+                    if (responseObject.data !=null) {
+                        presenter.advertisementSuccess(responseObject)
+                    } else {
+                        presenter.showError("Somthing went wrong")
+                    }
+                } else {
+                    presenter.showError("Server Error")
+                }
+            }
+            override fun onFailure(call: Call<AdvertisementResponse>, t: Throwable) {
+                if(t is SocketTimeoutException){
+                    presenter.showError("Socket Time error")
+                }else{
+                    presenter.showError(t.message + "")
+                }
+            }
+        })
+    }
+
 }

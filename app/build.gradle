@@ -11,8 +11,8 @@ android {
        // applicationId "com.dfango.android"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 7
-        versionName "1.6"
+        versionCode 8
+        versionName "1.7"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     dataBinding {
@@ -57,6 +57,7 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:3.12.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.12.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
@@ -82,6 +83,7 @@ dependencies {
     implementation 'com.google.maps.android:android-maps-utils:0.5'
     //implementation 'ch.acra:acra:4.8.2'
 
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
 
 
 
@@ -107,6 +109,18 @@ dependencies {
     // Add the Firebase Crashlytics SDK.
     implementation 'com.google.firebase:firebase-crashlytics:17.1.0'
     implementation 'org.jsoup:jsoup:1.8.3'
+
+    compile 'in.shadowfax:proswipebutton:1.2.2'
+
+    implementation 'jp.wasabeef:glide-transformations:3.0.1'
+
+
+    implementation 'me.relex:circleindicator:2.1.4'
+
+
+    compile 'com.ms-square:expandableTextView:0.1.4'
+
+
 
 }
 apply plugin: 'com.google.gms.google-services'

@@ -13,4 +13,6 @@ interface CasesView : BaseView {
     fun onListFetchedSuccess(responseObject: GetStatusResponse)
     fun statusUpdationSuccess(responseObject: UpdateStatusSuccess)
     fun getFirImageData(response:FirImageResponse)
+    fun advertisementSuccess(responseObject: AdvertisementResponse)
+
 }

@@ -24,4 +24,6 @@ interface CasesPresenter:BasePresenter {
     fun statusUpdationSuccess(responseObject: UpdateStatusSuccess)
     fun callFirIamageApi(token: String, complaintId: CrimeDetailsRequest)
     fun getfirImageResponse(response:FirImageResponse)
+    fun advertisementSuccess(responseObject: AdvertisementResponse)
+    fun advertisementInput(responseObject: AdvertisementInput)
 }

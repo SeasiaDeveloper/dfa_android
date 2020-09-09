@@ -35,7 +35,11 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.mycases.NodelMyCaseActivity"></activity>
+        <activity android:name=".ui.contribute.ContributeActivity"></activity>
+        <activity
+            android:name=".ui.home.fragments.marketplace.AddBusinessActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity android:name=".ui.mycases.NodelMyCaseActivity" />
         <activity android:name=".ui.generalpublic.PoliceStationActivity" />
         <activity android:name=".ui.generalpublic.PoliceOfficerActivity" />
         <activity android:name=".ui.generalpublic.NearByPoliceStationActivity" />
@@ -43,6 +47,10 @@
         <activity android:name=".ui.commentlikelist.CommentLikeUsersList" />
 
         <service android:name=".utils.ForegroundService" />
+
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
 
         <receiver
             android:name=".firebase.NotificationReceiver"
@@ -174,7 +182,6 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.login.view.LoginActivity"
-
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".ui.forgotpassword.view.ForgotPasswordActivity"

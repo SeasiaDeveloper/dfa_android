@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/parentView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.dfa.ui.home.fragments.marketplace.AddBusinessActivity">
+
+        <include
+            android:id="@+id/toolbarLayout"
+            layout="@layout/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="@dimen/dp_10"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dp_20">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="160dp"
+                    android:background="@drawable/edit_text_shape">
+
+                    <ImageView
+                        android:id="@+id/businessImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/img_placeholder" />
+
+                    <ImageView
+                        android:id="@+id/addImgButton"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:layout_margin="@dimen/dp_8"
+                        android:src="@drawable/image_add_btn" />
+                </RelativeLayout>
+
+
+                <com.dfa.customviews.CustomTextViewheading
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:text="Business Name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp_14" />
+
+                <EditText
+                    android:id="@+id/etBusinesName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:maxLength="50"
+                    android:hint="Enter the name of business organization"
+                    android:digits="@string/alpha_mumerical"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:background="@drawable/edit_text_shape"
+                    android:elevation="@dimen/dp_3"
+                    android:padding="@dimen/dp_8"
+                    android:singleLine="true"
+                    android:textSize="@dimen/dp_14" />
+
+                <com.dfa.customviews.CustomTextViewheading
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:text="Business Category"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp_14" />
+
+
+                <RelativeLayout
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:elevation="@dimen/dp_3"
+                    android:padding="@dimen/dp_5"
+                    android:background="@drawable/edit_text_shape"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Spinner
+                        android:id="@+id/spinner"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" />
+
+<!--                    <EditText-->
+<!--                        android:id="@+id/etBusinesCategories"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginLeft="@dimen/dp_5"-->
+<!--                        android:layout_marginTop="@dimen/dp_8"-->
+<!--                        android:layout_marginRight="@dimen/dp_5"-->
+<!--                        android:background="@drawable/edit_text_shape"-->
+<!--                        android:elevation="@dimen/dp_3"-->
+<!--                        android:padding="@dimen/dp_8"-->
+<!--                        android:singleLine="true"-->
+<!--                        android:textSize="@dimen/dp_14" />-->
+
+                </RelativeLayout>
+
+
+                <com.dfa.customviews.CustomTextViewheading
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:text="Full Address"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp_14" />
+
+                <EditText
+                    android:id="@+id/etAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:hint="Enter the full address of the business"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:background="@drawable/edit_text_shape"
+                    android:elevation="@dimen/dp_3"
+                    android:padding="@dimen/dp_8"
+                    android:maxLength="80"
+                    android:singleLine="true"
+                    android:textSize="@dimen/dp_14" />
+
+                <com.dfa.customviews.CustomTextViewheading
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:text="Pin Code"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp_14" />
+
+                <EditText
+                    android:id="@+id/etPin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:digits="0123456789"
+                    android:inputType="phone"
+                    android:maxLength="6"
+android:hint="Enter the pin code of the area"
+                    android:background="@drawable/edit_text_shape"
+                    android:elevation="@dimen/dp_3"
+                    android:padding="@dimen/dp_8"
+                    android:singleLine="true"
+                    android:textSize="@dimen/dp_14" />
+
+                <com.dfa.customviews.CustomTextViewheading
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:text="Contact Person Name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp_14" />
+
+                <EditText
+                    android:id="@+id/etContact"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:background="@drawable/edit_text_shape"
+                    android:elevation="@dimen/dp_3"
+                    android:padding="@dimen/dp_8"
+                    android:hint="Enter the name of contact person"
+
+                    android:maxLength="50"
+                    android:digits="@string/alpha_mumerical"
+                    android:singleLine="true"
+                    android:textSize="@dimen/dp_14" />
+
+                <com.dfa.customviews.CustomTextViewheading
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:text="Mobile Number"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp_14" />
+
+                <EditText
+                    android:id="@+id/etMobile"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:background="@drawable/edit_text_shape"
+                    android:elevation="@dimen/dp_3"
+                    android:digits="0123456789,"
+                    android:hint="Enter mobile numbers separated by comma"
+                    android:inputType="phone"
+                    android:padding="@dimen/dp_8"
+                    android:singleLine="true"
+                    android:textSize="@dimen/dp_14" />
+
+                <com.dfa.customviews.CustomTextViewheading
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:text="Latitude"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp_14" />
+
+                <EditText
+                    android:id="@+id/etLatitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:background="@drawable/edit_text_shape"
+
+                    android:elevation="@dimen/dp_3"
+                    android:enabled="false"
+                    android:padding="@dimen/dp_8"
+                    android:singleLine="true"
+                    android:textSize="@dimen/dp_14" />
+
+                <com.dfa.customviews.CustomTextViewheading
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:text="Longitude"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp_14" />
+
+                <EditText
+                    android:id="@+id/etLongitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:background="@drawable/edit_text_shape"
+                    android:elevation="@dimen/dp_3"
+                    android:textColor="@color/black"
+                    android:enabled="false"
+                    android:padding="@dimen/dp_8"
+                    android:singleLine="true"
+                    android:textSize="@dimen/dp_14" />
+
+                <com.dfa.customviews.CustomTextViewheading
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:text="Product Name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/dp_14" />
+
+                <RelativeLayout
+                    android:layout_marginLeft="@dimen/dp_5"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_5"
+                    android:layout_width="match_parent"
+                    android:padding="@dimen/dp_8"
+                    android:elevation="@dimen/dp_3"
+                    android:background="@drawable/edit_text_shape"
+                    android:layout_height="@dimen/_80sdp">
+                    <EditText
+                        android:id="@+id/etProduct"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="start"
+                        android:background="@android:color/transparent"
+                        android:maxLength="5000"
+                        android:inputType="textMultiLine"
+                        android:scrollbars="vertical"
+                        android:hint="Enter product/services/items separated be comma"
+
+                        android:textSize="@dimen/dp_14" />
+                </RelativeLayout>
+
+
+
+                <Button
+                    android:id="@+id/btnAdd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:background="@drawable/button_green_bg"
+                    android:text="Save"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_16"
+
+                    />
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+</layout>

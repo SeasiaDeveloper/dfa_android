@@ -734,6 +734,9 @@ class NodelMyCaseActivity : BaseActivity(), CasesView, OnCaseItemClickListener, 
         }
     }
 
+    override fun advertisementSuccess(responseObject: AdvertisementResponse) {
+    }
+
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {
         Utilities.dismissProgress()
         for (element in responseObject.data) {

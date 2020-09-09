@@ -1,10 +1,9 @@
 package com.dfa.apis
 
-import com.dfa.pojo.request.AddPoliceStationInput
-import com.dfa.pojo.request.AssignedOfficerInput
-import com.dfa.pojo.request.ChangePasswordRequest
-import com.dfa.pojo.request.UpdatePasswordRequest
+import com.dfa.pojo.request.*
 import com.dfa.pojo.response.*
+import com.dfa.ui.contribute.TickerInput
+import com.dfa.ui.contribute.TicketResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Call
@@ -76,9 +75,28 @@ interface CallRetrofitApi {
     @GET("wp/v2/districts")
     fun getDist(): Call<DistResponse>
 
+    @POST("jwt-auth/v1/ads_list")
+    fun getDistAdvertisement(@Header("Authorization") authorization: String?, @Body input: AdvertisementInput): Call<AdvertisementResponse>
+//    fun getDistAdvertisement(@Body input: AdvertisementInput): Call<AdvertisementResponse>
+
+
+    @POST("jwt-auth/v1/business_list")
+    fun getMarketPlace(@Header("Authorization") authorization: String?, @Body input: MarketPlaceInput): Call<MarketPlaceResponse>
+
+    @POST("jwt-auth/v1/get_tickets")
+    fun getTicketList( @Body input: TickerInput): Call<TicketResponse>
+
+
+
+    @POST("jwt-auth/v1/delete_business")
+    fun deleteBusiness(@Header("Authorization") authorization: String?, @Body input: DeleteBusinessInput): Call<DeleteBusinessResponse>
+
+
     @Multipart
     @POST("jwt-auth/v1/district_police")
     fun getPStation(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<PStationsListResponse>
+
+
 
 
 
@@ -131,6 +149,12 @@ interface CallRetrofitApi {
     @POST("jwt-auth/v1/create_post")
     fun addPost(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>, @Part images: Array<MultipartBody.Part?>): Call<CreatePostResponse> //@Part post_pics: MultipartBody.Part
 
+
+    @Multipart
+    @POST("jwt-auth/v1/add_business")
+    fun addBusiness(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>, @Part images: Array<MultipartBody.Part?>): Call<AddBusinessResponse> //@Part post_pics: MultipartBody.Part
+
+
     @Multipart
     @POST("jwt-auth/v1/create_post")
     fun addPostWithoutMedia(@Header("Authorization") authorization: String?, @PartMap params: HashMap<String, RequestBody>): Call<CreatePostResponse> //@Part post_pics: MultipartBody.Part
@@ -170,6 +194,10 @@ interface CallRetrofitApi {
 
     @GET("jwt-auth/v1/nearest_policestations")
     fun getPoliceStation(@Header("Authorization") authorization: String?): Call<PoliceStationResponse>
+
+
+    @GET("jwt-auth/v1/business_category_list")
+    fun getBusinessCategory(): Call<CategoriesListResponse>
 
     @GET("jwt-auth/v1/comment_list")
     fun getComments(@Header("Authorization") authorization: String?, @Query("complaint_id") id: Int): Call<GetCommentsResponse>

@@ -1,9 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+<!--    <androidx.viewpager.widget.ViewPager-->
+<!--        android:id="@+id/viewPager"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content">-->
+
+<!--    </androidx.viewpager.widget.ViewPager>-->
+
+    <Button
+        android:layout_width="match_parent"
+        android:text="Recent Reported Incidents"
+        android:drawableRight="@drawable/ic_right"
+        android:id="@+id/swipeView"
+        android:layout_height="wrap_content"/>
+    <FrameLayout android:id="@+id/details"
+        android:layout_below="@+id/swipeView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+    <in.shadowfax.proswipebutton.ProSwipeButton
+        android:id="@+id/awesome_btn"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        app:bg_color="@android:color/holo_blue_dark"
+        app:btn_text="Place Order" />
 
 
-</LinearLayout>
+
+
+</RelativeLayout>
+</layout>

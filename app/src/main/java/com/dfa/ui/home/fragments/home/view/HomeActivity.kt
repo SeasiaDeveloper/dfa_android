@@ -17,6 +17,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -29,6 +30,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.dfa.R
+import com.dfa.adapters.HomeTabLayoutAdapter
 import com.dfa.adapters.TabLayoutAdapter
 import com.dfa.application.GetVersionCode
 import com.dfa.base.BaseActivity
@@ -37,13 +39,17 @@ import com.dfa.listeners.AdharNoListener
 import com.dfa.maps.FusedLocationClass
 import com.dfa.pojo.response.*
 import com.dfa.ui.contactus.ContactUsActivity
+import com.dfa.ui.contribute.ContributeActivity
 import com.dfa.ui.earnings.view.MyEarningsActivity
 import com.dfa.ui.emergency.view.EmergencyFragment
 import com.dfa.ui.generalpublic.GeneralPublicActivity
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
+import com.dfa.ui.home.fragments.AdvertiseMentFragment
+import com.dfa.ui.home.fragments.HomeFragment
 import com.dfa.ui.home.fragments.cases.view.LocationListenerCallback
 import com.dfa.ui.home.fragments.home.presenter.HomePresenter
 import com.dfa.ui.home.fragments.home.presenter.HomePresenterImpl
+import com.dfa.ui.home.fragments.marketplace.MarketPlaceFragment
 import com.dfa.ui.home.fragments.photos.view.PhotosFragment
 import com.dfa.ui.home.fragments.videos.view.VideosFragment
 import com.dfa.ui.login.view.LoginActivity
@@ -58,6 +64,7 @@ import com.dfa.ui.updatepassword.view.UpdatePasswordActivity
 import com.dfa.utils.*
 import com.dfa.utils.alert.AlertDialog
 import com.google.android.material.navigation.NavigationView
+import com.google.android.material.tabs.TabLayout
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.nav_action.*
@@ -75,6 +82,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var locationCallBack: LocationListenerCallback
     private var isPermissionDialogRequired = true
     var genPubHomeFrag = GeneralPublicHomeFragment()
+//    var genPubHomeFrag = HomeFragment()
     private var isGPS: Boolean = false
     var isFirstTimeEntry = true
     private var provider: String = ""
@@ -339,6 +347,19 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         mHandler!!.postDelayed(mRunnable, 500)
         GetVersionCode(this).execute()
 
+//        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//           override fun onTabSelected(tab: TabLayout.Tab?) {
+//               if(tabs.selectedTabPosition.toString().equals("0")){
+//                   btnSwip.visibility=View.VISIBLE
+//               } else{
+//                   btnSwip.visibility=View.GONE
+//               }
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+//            override fun onTabReselected(tab: TabLayout.Tab?) {}
+//        })
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -347,15 +368,17 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val adapter = TabLayoutAdapter(supportFragmentManager)
         if (!genPubHomeFrag.isAdded) {
             adapter.addFragment(genPubHomeFrag, "Home")
+
         }
         //adapter.addFragment(genPubHomeFrag, "Home")
         adapter.addFragment(EmergencyFragment(), "Emergency")
-        //adapter.addFragment(CasesFragment(), "Cases")
-        adapter.addFragment(PhotosFragment(), "Photos")
-        adapter.addFragment(VideosFragment(), "Videos")
+//        adapter.addFragment(PhotosFragment(), "Photos")
+//        adapter.addFragment(VideosFragment(), "Videos")
+        adapter.addFragment(MarketPlaceFragment(), "Market Place")
         viewPager?.adapter = adapter
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)
+
 
         var menu = nav_view.menu
 
@@ -595,6 +618,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 startActivity(Intent(this@HomeActivity, ContactUsActivity::class.java))
             }
 
+            R.id.nav_contribute -> {
+                startActivity(Intent(this@HomeActivity, ContributeActivity::class.java))
+            }
+
             R.id.nav_invite_friends -> {
                 if (authorizationToken!!.isEmpty()) {
                     PreferenceHandler.writeString(
@@ -813,7 +840,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         Utilities.dismissProgress()
         Utilities.showMessage(this, responseObject.message.toString())
         try {
-            genPubHomeFrag.refreshList()
+//            genPubHomeFrag.refreshList()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -860,5 +887,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             return netInfo != null && netInfo.isConnectedOrConnecting
         }
     }
+
+
 
 }

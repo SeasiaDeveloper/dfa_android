@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentRight="true"
+  >
+    <RelativeLayout
+        android:id="@+id/filterLayout"
+        android:layout_alignParentRight="true"
+        android:background="#F4EFEF"
+        android:elevation="3dp"
+        android:layout_below="@+id/linearParent"
+        android:layout_width="@dimen/_170sdp"
+        android:paddingBottom="@dimen/_5sdp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <RadioGroup
+            android:layout_marginTop="@dimen/_10sdp"
+            android:id="@+id/groupradio"
+            android:layout_marginLeft="10dp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <!-- In RadioGroup create the 1 Radio Button-->
+            <!-- like this we will add some more Radio Button-->
+
+            <RadioButton
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnProduct"
+                android:padding="@dimen/_5sdp"
+                android:checked="true"
+                android:text="Product"
+                android:textSize="20dp"/>
+
+            <RadioButton
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnCategory"
+                android:text="Category"
+                android:padding="@dimen/_5sdp"
+                android:textSize="20dp"/>
+
+            <RadioButton
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnBusinessName"
+                android:text="Business Name"
+                android:padding="@dimen/_5sdp"
+                android:textSize="20dp"/>
+            <RadioButton
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/btnShopId"
+                android:text="Shop id"
+                android:padding="@dimen/_5sdp"
+                android:textSize="20dp"/>
+
+        </RadioGroup>
+
+
+    </RelativeLayout>
+</RelativeLayout>

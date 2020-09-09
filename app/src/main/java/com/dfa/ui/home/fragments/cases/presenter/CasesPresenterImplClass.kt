@@ -88,4 +88,12 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
     override fun getfirImageResponse(response:FirImageResponse) {
         view.getFirImageData(response)
     }
+
+    override fun advertisementSuccess(responseObject: AdvertisementResponse) {
+        view.advertisementSuccess(responseObject)
+    }
+
+    override fun advertisementInput(responseObject: AdvertisementInput) {
+       model.getAdvertisement(responseObject)
+    }
 }

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="350dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+
+    android:layout_gravity="center_horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/alert_dialog_shape"
+            android:orientation="vertical">
+
+            <com.dfa.customviews.CustomTextViewheading
+                android:id="@+id/tv_scan_document"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:textSize="@dimen/sp_18"
+                android:text="Select Photo"
+                android:textColor="@color/black"
+
+              />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="0.5dp"
+                android:background="@color/silver" />
+
+            <com.dfa.customviews.CustomTextViewheading
+                android:id="@+id/tvCamera"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Open Camera"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_16" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="0.5dp"
+                android:background="@color/silver" />
+
+            <com.dfa.customviews.CustomTextViewheading
+                android:id="@+id/tvGallery"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="Pick from Gallery"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_16" />
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+
+
+            android:layout_marginTop="@dimen/dp_10"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="Cancel"
+            android:background="@drawable/alert_dialog_shape"
+
+            android:textColor="@color/colorRed"
+            android:textSize="@dimen/sp_18" />
+    </LinearLayout>
+</LinearLayout>

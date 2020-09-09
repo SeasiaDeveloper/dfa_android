@@ -1,0 +1,134 @@
+<layout>
+
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#45ECEAEA"
+        tools:context="com.dfa.ui.home.fragments.marketplace.MarketPlaceFragment">
+
+        <LinearLayout
+            android:id="@+id/searchViewParent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/includeView"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.8">
+
+                <com.dfa.customviews.CustomEditText
+                    android:id="@+id/etSearch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginTop="@dimen/_5ssp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:background="@drawable/search_shape"
+                    android:hint="@string/search"
+                    android:imeOptions="actionSearch"
+                    android:maxLines="1"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="15dp"
+                    android:paddingRight="@dimen/_40sdp"
+                    android:paddingBottom="15dp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textColorHint="@android:color/darker_gray"
+                    android:textSize="17dp" />
+
+
+                <ImageView
+                    android:id="@+id/click_search_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerInParent="true"
+                    android:layout_marginRight="10dp"
+                    android:padding="@dimen/_10sdp"
+                    android:src="@drawable/ic_search_black_24dp" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/ivFilter"
+                    android:layout_width="@dimen/_30sdp"
+                    android:layout_height="@dimen/_30sdp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_5ssp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:layout_weight="0.2"
+                    android:background="@drawable/round_corner"
+                    android:padding="2dp"
+                    android:src="@drawable/iv_filter" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvMarket"
+            android:layout_width="match_parent"
+            android:layout_above="@+id/btnAddBusiness"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp_5"
+            android:layout_below="@+id/searchViewParent"
+            android:layout_marginTop="@dimen/dp_5" />
+
+        <RelativeLayout
+            android:id="@+id/btnAddBusiness"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/button_green_bg"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:visibility="gone"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_marginLeft="@dimen/dp_15"
+                android:tint="@color/white"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_plus"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"/>
+            <Button
+                android:id="@+id/btnAdd"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_16"
+                android:background="@android:color/transparent"
+                android:textAllCaps="false"
+                android:text="Add new business"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                />
+
+        </RelativeLayout>
+
+
+
+        <TextView
+            android:visibility="gone"
+            android:textSize="@dimen/sp_16"
+            android:layout_centerInParent="true"
+            android:text="@string/no_record_found"
+            android:id="@+id/tvNoRecordFound"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+</layout>

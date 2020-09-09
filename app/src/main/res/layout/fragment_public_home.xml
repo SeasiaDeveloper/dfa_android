@@ -6,6 +6,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+
+
         <LinearLayout
             android:id="@+id/dashboardParentLayout"
             android:layout_width="match_parent"
@@ -13,6 +16,15 @@
             android:layout_gravity="center"
             android:background="@color/light_grey_bg"
             android:orientation="vertical">
+
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
 
             <include
                 android:id="@+id/toolbarLayout"
@@ -219,40 +231,74 @@
                 android:text="@string/incident_heading"
                 android:textStyle="bold"
                 android:layout_gravity="center"
+                android:visibility="gone"
                 android:gravity="center"
                 android:textSize="@dimen/_14sdp"
                 android:textColor="@color/grey_text"
                 />
 
+<androidx.core.widget.NestedScrollView
+    android:id="@+id/mScroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingTop="@dimen/_10sdp">
+                android:layout_height="match_parent">
 
-<!--                <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton-->
-<!--                    android:id="@+id/extFab"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_margin="20dp"-->
-<!--                    android:visibility="gone"-->
-<!--                    android:layout_centerHorizontal="true"-->
-<!--                    android:text="New Complaints"-->
-<!--                    app:icon="@android:drawable/ic_delete"/>-->
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvAdvertisement"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:visibility="gone"
+                    android:paddingBottom="@dimen/_5sdp" />
+
+
+                <androidx.viewpager.widget.ViewPager
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/addPager"
+                    android:visibility="gone"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/_120sdp" />
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/indicator"
+                    android:layout_alignBottom="@+id/addPager"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="3dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"/>
 
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/itemsswipetorefresh"
+                    android:layout_below="@+id/addPager"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent">
 
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvPublic"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingBottom="@dimen/_5sdp" />
+<!--                    <androidx.recyclerview.widget.RecyclerView-->
+<!--                        android:id="@+id/rvPublic"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:paddingBottom="@dimen/_5sdp" />-->
 
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvPublic"
+                    android:layout_below="@+id/addPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/_5sdp" />
+
+
+
+
+
+
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/norecordrefresh"
@@ -269,15 +315,6 @@
 
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-
-
-
-
-
-
-
-
-
                 <ProgressBar
                     android:id="@+id/progressBar"
                     style="?android:attr/progressBarStyle"
@@ -290,11 +327,11 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
             </RelativeLayout>
-            <!--</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>-->
+</androidx.core.widget.NestedScrollView>
 
+            </LinearLayout>
 
         </LinearLayout>
-
 
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/imgAdd"

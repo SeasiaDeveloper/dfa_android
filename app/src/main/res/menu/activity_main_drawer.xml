@@ -50,6 +50,11 @@
             android:title="@string/contact_us" />
 
         <item
+            android:id="@+id/nav_contribute"
+            app:itemTextAppearance="@style/Style_menu"
+            android:title="Donate/Contribute" />
+
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
             app:itemTextAppearance="@style/Style_menu"

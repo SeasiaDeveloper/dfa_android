@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/parentLayout"
+    tools:context="com.dfa.ui.contribute.ContributeActivity">
+    <include
+        android:id="@+id/toolbarLayout"
+        layout="@layout/toolbar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <RelativeLayout
+        android:id="@+id/parentDonate"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_below="@+id/toolbarLayout"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:background="@drawable/search_shape"
+        android:layout_height="60dp">
+        <com.dfa.customviews.CustomEditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="@dimen/_5ssp"
+            android:layout_marginBottom="@dimen/_3sdp"
+            android:hint="Enter amount to donate (INR)"
+            android:imeOptions="actionSearch"
+            android:maxLines="1"
+            android:layout_marginLeft="@dimen/_5sdp"
+            android:padding="@dimen/dp_8"
+            android:paddingBottom="15dp"
+            android:singleLine="true"
+            android:background="@android:color/transparent"
+            android:layout_toLeftOf="@+id/donateButton"
+            android:textColor="@color/black"
+            android:textColorHint="@android:color/darker_gray"
+            android:textSize="17dp" />
+        <TextView
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_40"
+            android:layout_alignParentRight="true"
+            android:text="Donate"
+            android:id="@+id/donateButton"
+            android:paddingLeft="@dimen/dp_25"
+            android:paddingRight="@dimen/dp_25"
+            android:paddingBottom="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_10"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/green"
+            android:background="@drawable/search_shape"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_above="@+id/parentPay"
+        android:layout_margin="@dimen/dp_10"
+        android:background="@color/white"
+        android:layout_below="@+id/parentDonate"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:text="Please select from available coupon codes"
+            android:layout_marginRight="@dimen/dp_10"
+            android:gravity="center"
+            android:id="@+id/tvCoupon"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvCouponList"
+            android:layout_above="@+id/viewMore"
+            android:layout_marginTop="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_below="@+id/tvCoupon"
+            android:layout_height="match_parent"/>
+
+        <TextView
+            android:textColor="@color/green"
+            android:text="More"
+            android:id="@+id/viewMore"
+            android:drawableLeft="@drawable/ic_down_arrow"
+            android:layout_margin="@dimen/dp_5"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/parentPay"
+        android:layout_alignParentBottom="true"
+        android:layout_height="60dp"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/view"
+
+        android:layout_marginBottom="@dimen/dp_10"
+        android:background="@drawable/search_shape">
+        <TextView
+            android:textSize="@dimen/dp_16"
+            android:textColor="@color/black"
+            android:text="Total Pay: "
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp_40"
+                android:layout_alignParentRight="true"
+                android:text="Pay"
+                android:id="@+id/payButton1"
+                android:paddingLeft="@dimen/dp_25"
+                android:paddingRight="@dimen/dp_25"
+                android:paddingBottom="@dimen/dp_8"
+                android:paddingTop="@dimen/dp_8"
+                android:textColor="@color/white"
+                android:backgroundTint="@color/green"
+                android:background="@drawable/search_shape"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
+</layout>
