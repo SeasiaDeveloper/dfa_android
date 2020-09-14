@@ -120,7 +120,10 @@ dependencies {
 
     compile 'com.ms-square:expandableTextView:0.1.4'
 
+    implementation 'com.razorpay:checkout:1.5.16'
 
+    implementation 'com.github.cdflynn:checkview:v1.1'
+    implementation 'com.googlecode.libphonenumber:libphonenumber:8.4.2'
 
 }
 apply plugin: 'com.google.gms.google-services'

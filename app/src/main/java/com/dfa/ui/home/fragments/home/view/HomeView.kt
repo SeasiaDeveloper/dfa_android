@@ -11,4 +11,5 @@ interface HomeView {
     fun statusUpdationSuccess(responseObject: UpdateStatusSuccess)
     fun adhaarSavedSuccess(responseObject: SignupResponse)
    fun onLogoutSuccess(responseObject: CommonResponse)
+    fun dueAmountSuccess(responseObject: DueTicketResponse)
 }

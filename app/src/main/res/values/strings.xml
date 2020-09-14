@@ -154,7 +154,8 @@
     <string name="nav_terms_and_conditions">Terms and Conditions</string>
     <string name="nav_logout">Logout</string>
     <string name="my_cases">My Cases</string>
-    <string name="contibure_title">Contribute by Drug Free Arunachal</string>
+    <string name="contibure_title">Contribute to Drug Free Arunachal</string>
+    <string name="payment">Payment</string>
     <string name="add_business">Add New Business</string>
     <string name="video_player">Video Player</string>
     <string name="add_comments">Add Comments</string>

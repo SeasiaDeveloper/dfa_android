@@ -624,16 +624,16 @@ class NodelMyCaseActivity : BaseActivity(), CasesView, OnCaseItemClickListener, 
                         item1 = GetStatusDataBean("9", "Assign (to my suborodinate officer)", false)
                     }
                     list.add(item1)
-                    if (currentStatus.equals("Transfer (to other jurisdicational police station)")) {
+                    if (currentStatus.equals("Transfer (to other Jurisdictional police station)")) {
                         item1 = GetStatusDataBean(
                             "10",
-                            "Transfer (to other jurisdicational police station)",
+                            "Transfer (to other Jurisdictional police station)",
                             true
                         )
                     } else {
                         item1 = GetStatusDataBean(
                             "10",
-                            "Transfer (to other jurisdicational police station)",
+                            "Transfer (to other Jurisdictional police station)",
                             false
                         )
                     }

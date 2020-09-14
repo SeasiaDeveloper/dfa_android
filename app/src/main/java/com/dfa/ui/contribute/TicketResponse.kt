@@ -1,6 +1,8 @@
 package com.dfa.ui.contribute
 
-class TicketResponse {
+import java.io.Serializable
+
+class TicketResponse:Serializable {
     var next_page: String? = null
 
     var code: String? = null
@@ -14,14 +16,16 @@ class TicketResponse {
     var total_page: String? = null
 
     var message: String? = null
+    var ticket_cost: String? = null
 
     var current_page: String? = null
-    var isSelected: Boolean? = false
 
-    class Data{
+    class Data:Serializable{
         var Ticket: String? = null
 
         var BucketId: String? = null
+        var isSelected: Boolean? = false
+
 
     }
 

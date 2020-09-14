@@ -3,9 +3,6 @@ package com.dfa.ui.login.view
 import android.content.Intent
 import android.util.Log
 import android.view.View
-import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.iid.FirebaseInstanceId
-import com.google.firebase.iid.InstanceIdResult
 import com.dfa.R
 import com.dfa.base.BaseActivity
 import com.dfa.pojo.request.LoginRequest
@@ -16,6 +13,9 @@ import com.dfa.ui.login.presenter.LoginActivityPresenterImpl
 import com.dfa.ui.login.presenter.LoginPresenter
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
+import com.google.android.gms.tasks.OnSuccessListener
+import com.google.firebase.iid.FirebaseInstanceId
+import com.google.firebase.iid.InstanceIdResult
 import kotlinx.android.synthetic.main.activity_login_activity.*
 
 class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
@@ -115,11 +115,19 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
     override fun onLoginSuccess(loginResponse: LoginResponse) {
         dismissProgress()
 
-       if (loginResponse.token != null) {
+        if (loginResponse.token != null) {
             PreferenceHandler.writeString(
                 this,
                 PreferenceHandler.AUTHORIZATION,
                 "Bearer " + loginResponse.token
+            )
+            PreferenceHandler.writeString(
+                this,
+                PreferenceHandler.USER_EMAIL, loginResponse.user_email
+            )
+  PreferenceHandler.writeString(
+                this,
+                PreferenceHandler.USER_NAME, loginResponse.user_nicename
             )
 
             PreferenceHandler.writeString(
@@ -145,7 +153,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
             val intent = Intent(this, HomeActivity::class.java) //GeneralPublicActivity
             startActivity(intent)
         } else {
-            Utilities.showMessage(this, loginResponse.message/*"Username or password is incorrect"*/)
+            Utilities.showMessage(
+                this,
+                loginResponse.message/*"Username or password is incorrect"*/
+            )
         }
     }
 

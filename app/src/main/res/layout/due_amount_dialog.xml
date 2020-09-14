@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:paddingBottom="@dimen/dp_10"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rvParent"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/green">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Due Amount"
+            android:textColor="@color/white" />
+
+
+    </RelativeLayout>
+    <TextView
+        android:layout_below="@+id/rvParent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/tvDes"
+        android:textSize="@dimen/dp_14"
+        android:layout_margin="@dimen/dp_20"
+        android:text="Please deposit your due amount" />
+
+
+    <Button
+
+        android:id="@+id/btnOk"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_30"
+        android:layout_below="@+id/tvDes"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@drawable/round_corner"
+        android:backgroundTint="@color/green"
+        android:text="@string/ok"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

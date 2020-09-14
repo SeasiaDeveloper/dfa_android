@@ -21,6 +21,7 @@
         android:layout_below="@+id/toolbarLayout"
         android:layout_marginLeft="@dimen/dp_10"
         android:layout_marginRight="@dimen/dp_10"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:background="@drawable/search_shape"
         android:layout_height="60dp">
@@ -33,38 +34,44 @@
             android:hint="Enter amount to donate (INR)"
             android:imeOptions="actionSearch"
             android:maxLines="1"
+            android:visibility="gone"
             android:layout_marginLeft="@dimen/_5sdp"
             android:padding="@dimen/dp_8"
             android:paddingBottom="15dp"
             android:singleLine="true"
             android:background="@android:color/transparent"
-            android:layout_toLeftOf="@+id/donateButton"
             android:textColor="@color/black"
             android:textColorHint="@android:color/darker_gray"
             android:textSize="17dp" />
-        <TextView
-            android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/dp_40"
-            android:layout_alignParentRight="true"
-            android:text="Donate"
-            android:id="@+id/donateButton"
-            android:paddingLeft="@dimen/dp_25"
-            android:paddingRight="@dimen/dp_25"
-            android:paddingBottom="@dimen/dp_10"
-            android:paddingTop="@dimen/dp_10"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/green"
-            android:background="@drawable/search_shape"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
 
     </RelativeLayout>
+    <TextView
+        android:layout_marginRight="@dimen/dp_40"
+        android:text="Donate"
+        android:layout_margin="@dimen/dp_10"
+        android:layout_below="@+id/toolbarLayout"
+
+        android:id="@+id/donateButton"
+        android:paddingLeft="@dimen/dp_25"
+        android:drawableTint="@color/white"
+        android:paddingRight="@dimen/dp_25"
+        android:paddingBottom="@dimen/dp_10"
+        android:paddingTop="@dimen/dp_10"
+        android:gravity="center"
+        android:textSize="@dimen/dp_16"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/green"
+        android:background="@drawable/donate_btn_shape"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+
     <RelativeLayout
         android:layout_above="@+id/parentPay"
         android:layout_margin="@dimen/dp_10"
+        android:id="@+id/parentLottery"
         android:background="@color/white"
-        android:layout_below="@+id/parentDonate"
+        android:layout_below="@+id/donateButton"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -74,6 +81,7 @@
         <TextView
             android:text="Please select from available coupon codes"
             android:layout_marginRight="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_5"
             android:gravity="center"
             android:id="@+id/tvCoupon"
             android:layout_marginLeft="@dimen/dp_10"
@@ -83,7 +91,7 @@
             android:id="@+id/rvCouponList"
             android:layout_above="@+id/viewMore"
             android:layout_marginTop="@dimen/dp_5"
-            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_5"
             android:layout_width="match_parent"
             android:layout_below="@+id/tvCoupon"
             android:layout_height="match_parent"/>
@@ -115,7 +123,8 @@
         <TextView
             android:textSize="@dimen/dp_16"
             android:textColor="@color/black"
-            android:text="Total Pay: "
+            android:text="Total Pay: 0"
+            android:id="@+id/tvTotalPay"
             android:layout_marginLeft="@dimen/dp_20"
             android:layout_centerVertical="true"
             android:layout_width="wrap_content"
@@ -125,19 +134,27 @@
                 android:layout_marginRight="@dimen/dp_40"
                 android:layout_alignParentRight="true"
                 android:text="Pay"
-                android:id="@+id/payButton1"
+                android:id="@+id/payButton"
                 android:paddingLeft="@dimen/dp_25"
                 android:paddingRight="@dimen/dp_25"
                 android:paddingBottom="@dimen/dp_8"
                 android:paddingTop="@dimen/dp_8"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/green"
-                android:background="@drawable/search_shape"
+                android:background="@drawable/donate_btn_shape"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
 
     </RelativeLayout>
+
+    <TextView
+        android:layout_centerInParent="true"
+        android:id="@+id/no_tickets"
+        android:visibility="gone"
+        android:text="No Tickets Available"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 
 </RelativeLayout>

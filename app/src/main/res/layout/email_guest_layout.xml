@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:paddingBottom="@dimen/dp_10"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rvParent"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/green">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Guest User"
+            android:textColor="@color/white" />
+
+
+    </RelativeLayout>
+
+
+
+    <EditText
+        android:id="@+id/tvUserName"
+        android:maxLength="20"
+        android:elevation="3dp"
+
+        android:textSize="@dimen/dp_14"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/rvParent"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/round_corner"
+        android:hint="User Name"
+        android:digits="abcdefghijklmnopqrstuvwxyxABCDEFGHIJKLMNOPQRSTUVWXYZ "
+        android:padding="@dimen/dp_8"
+        android:singleLine="true" />
+
+    <EditText
+        android:id="@+id/tvPhone"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:elevation="3dp"
+        android:digits="0123456789"
+        android:textSize="@dimen/dp_14"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvUserName"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/round_corner"
+        android:hint="Contact Number"
+        android:padding="@dimen/dp_8"
+        android:singleLine="true" />
+
+    <EditText
+        android:id="@+id/tvEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvPhone"
+        android:elevation="3dp"
+        android:textSize="@dimen/dp_14"
+        android:layout_marginLeft="@dimen/dp_10"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginRight="@dimen/dp_10"
+        android:background="@drawable/round_corner"
+        android:hint="Email"
+
+        android:padding="@dimen/dp_8"
+        android:singleLine="true" />
+
+
+    <Button
+
+        android:id="@+id/btnOk"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_30"
+        android:layout_below="@+id/tvEmail"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_20"
+        android:background="@drawable/round_corner"
+        android:backgroundTint="@color/green"
+        android:text="@string/ok"
+        android:textColor="@color/white" />
+
+</RelativeLayout>

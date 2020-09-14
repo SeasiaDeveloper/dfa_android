@@ -17,6 +17,8 @@ object PreferenceHandler {
     const val CONTACT_NUMBER = "contact_number"
     const val USER_ID = "userId"
     const val AUTHORIZATION = "authorization"
+    const val USER_NAME = "user_name"
+    const val USER_EMAIL = "user_email"
     const val LATITUDE = "latitude"
     const val LONGITUDE = "longitude"
     const val APP_URL = "app_url"

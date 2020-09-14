@@ -13,6 +13,8 @@ interface HomePresenter : BasePresenter {
     fun saveAdhaarNo(token: String,adhaarNo:String)
     fun updateStatus(token: String, complaintId: String, statusId: String)
     fun statusUpdationSuccess(responseObject: UpdateStatusSuccess)
+    fun dueAmountSuccess(responseObject: DueTicketResponse)
+    fun dueAmountInput(responseObject: String)
     fun adhaarSavedSuccess(responseObject: SignupResponse)
     fun onLogoutSuccess(responseObject: CommonResponse)
     fun logout(token: String)

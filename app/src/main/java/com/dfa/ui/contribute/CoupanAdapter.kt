@@ -46,13 +46,42 @@ class CoupanAdapter(
         holder.ticket_3!!.setText(ticket3)
 
         holder.unChecked!!.setOnClickListener {
+            var cost=0
+            var ticketId=StringBuilder()
+
             holder.checked!!.visibility=View.VISIBLE
             holder.unChecked!!.visibility=View.GONE
+            coupanList.get(position).isSelected=true
+            for(i in 0..coupanList.size-1){
+                if(coupanList.get(i).isSelected!!){
+                    cost=cost+1000
+                    if (i > 0) {
+                        ticketId!!.append(',');
+                    }
+                    ticketId!!.append(coupanList.get(i).Ticket);
+                }
+            }
+            context.totalCost(cost,ticketId)
         }
 
         holder.checked!!.setOnClickListener {
+            var cost=0
+            var ticketId=StringBuilder()
             holder.checked!!.visibility=View.GONE
             holder.unChecked!!.visibility=View.VISIBLE
+            coupanList.get(position).isSelected=false
+            for(i in 0..coupanList.size-1){
+                if(coupanList.get(i).isSelected!!){
+                    cost=cost+1000
+                    if (i > 0) {
+                        ticketId!!.append(',');
+                    }
+                    ticketId!!.append(coupanList.get(i).Ticket);
+
+                }
+            }
+            context.totalCost(cost,ticketId)
+
         }
     }
 

@@ -3,6 +3,7 @@ package com.dfa.ui.generalpublic.view
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -14,6 +15,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -86,7 +88,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     private var complaintIdTobeLikedPosition = -1
 //    var newCompaintsButton: ExtendedFloatingActionButton? = null
 
-    var advertisAdapter: AdvertisementAdapter? = null
     var pages = 5
     var limit1 = 5
     var responseObjectList: ArrayList<AdvertisementResponse.Data>? = null
@@ -143,27 +144,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         presenter.advertisementInput(input)
     }
 
-    fun setAdvertisementAdapter() {
-        val layoutManager = LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        binding!!.rvAdvertisement.setLayoutManager(layoutManager)
-        advertisAdapter = AdvertisementAdapter(this@GeneralPublicHomeFragment, responseObjectList!!)
-        binding!!.rvAdvertisement.adapter = advertisAdapter
-
-
-//        if (endlessScrollListener == null)
-//            endlessScrollListener =
-//                EndlessRecyclerViewScrollListenerImplementation(
-//                    layoutManager,
-//                    this
-//                )
-//        else
-//            endlessScrollListener?.setmLayoutManager(layoutManager)
-//        binding!!.rvPhotos.addOnScrollListener(endlessScrollListener!!)
-//        endlessScrollListener?.resetState()
-
-    }
-
-
     //call fir image api
     fun callFirImageApi(complaintId: String, position: Int) {
         Utilities.showProgress(mContext)
@@ -184,7 +164,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         responseObjectList = responseObject.data
 
         if (responseObjectList!!.size > 0) {
-          //  binding.rvAdvertisement.visibility = View.VISIBLE
             binding.addPager.visibility=View.VISIBLE
 
             if(activity!=null){
@@ -197,13 +176,17 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                 }
             }
 
+
         } else {
-            binding.rvAdvertisement.visibility = View.GONE
             binding.addPager.visibility=View.GONE
             binding.indicator.visibility=View.GONE
         }
-      //  advertisAdapter!!.setData(responseObjectList!!)
+        if(responseObject.due.equals("0 INR")){
+         //   dueIncomePopup()
+        }
     }
+
+
 
     override fun showDescError() {
         Utilities.dismissProgress()
@@ -686,16 +669,16 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                         item1 = GetStatusDataBean("9", "Assign (to my suborodinate officer)", false)
                     }
                     list.add(item1)
-                    if (currentStatus.equals("Transfer (to other jurisdicational police station)")) {
+                    if (currentStatus.equals("Transfer (to other Jurisdictional police station)")) {
                         item1 = GetStatusDataBean(
                             "10",
-                            "Transfer (to other jurisdicational police station)",
+                            "Transfer (to other Jurisdictional police station)",
                             true
                         )
                     } else {
                         item1 = GetStatusDataBean(
                             "10",
-                            "Transfer (to other jurisdicational police station)",
+                            "Transfer (to other Jurisdictional police station)",
                             false
                         )
                     }

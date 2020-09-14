@@ -174,4 +174,37 @@ class HomeModel(private var homePresenter: HomePresenter) {
                 }
             })
     }
+
+
+    fun getDueAmount(token: String) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+
+        retrofitApi.getDueAmount(token)
+            .enqueue(object : Callback<DueTicketResponse> {
+
+                override fun onResponse(
+                    call: Call<DueTicketResponse>,
+                    response: Response<DueTicketResponse>
+                ) {
+                    if(response.code()==200){
+                        val responseObject = response.body()
+                        if (responseObject != null) {
+                                homePresenter.dueAmountSuccess(responseObject)
+
+                        } else {
+                            homePresenter.showError(Constants.SERVER_ERROR)
+                        }
+                    }
+
+                }
+
+                override fun onFailure(call: Call<DueTicketResponse>, t: Throwable) {
+                    homePresenter.showError(t.message + "")
+                }
+            })
+    }
+
+
+
+
 }

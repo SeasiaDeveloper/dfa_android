@@ -8,6 +8,9 @@ class AdvertisementResponse {
     var total_rows: String? = null
 
     var total_page: String? = null
+    var due: String? = null
+    var ticket_cost: String? = null
+
 
     var current_page: String? = null
 

@@ -35,7 +35,9 @@
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ui.contribute.ContributeActivity"></activity>
+        <activity android:name=".ui.contribute.DonateActivity"></activity>
+        <activity android:name=".ui.contribute.payment.PaymentActivity" />
+        <activity android:name=".ui.contribute.ContributeActivity" />
         <activity
             android:name=".ui.home.fragments.marketplace.AddBusinessActivity"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
@@ -230,6 +232,14 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
+        <meta-data
+            android:name="com.razorpay.ApiKey"
+            android:value="rzp_test_5Ieebq7DuWkhQZ" />
+
+
+<!--        rzp_test_5Ieebq7DuWkhQZ-->
+
     </application>
 
 </manifest>

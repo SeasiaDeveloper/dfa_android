@@ -1,6 +1,7 @@
 package com.dfa.ui.home.fragments.home.view
 
 import android.annotation.SuppressLint
+import android.app.Dialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -30,7 +31,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.dfa.R
-import com.dfa.adapters.HomeTabLayoutAdapter
 import com.dfa.adapters.TabLayoutAdapter
 import com.dfa.application.GetVersionCode
 import com.dfa.base.BaseActivity
@@ -40,18 +40,15 @@ import com.dfa.maps.FusedLocationClass
 import com.dfa.pojo.response.*
 import com.dfa.ui.contactus.ContactUsActivity
 import com.dfa.ui.contribute.ContributeActivity
+import com.dfa.ui.contribute.TicketResponse
 import com.dfa.ui.earnings.view.MyEarningsActivity
 import com.dfa.ui.emergency.view.EmergencyFragment
 import com.dfa.ui.generalpublic.GeneralPublicActivity
 import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
-import com.dfa.ui.home.fragments.AdvertiseMentFragment
-import com.dfa.ui.home.fragments.HomeFragment
 import com.dfa.ui.home.fragments.cases.view.LocationListenerCallback
 import com.dfa.ui.home.fragments.home.presenter.HomePresenter
 import com.dfa.ui.home.fragments.home.presenter.HomePresenterImpl
 import com.dfa.ui.home.fragments.marketplace.MarketPlaceFragment
-import com.dfa.ui.home.fragments.photos.view.PhotosFragment
-import com.dfa.ui.home.fragments.videos.view.VideosFragment
 import com.dfa.ui.login.view.LoginActivity
 import com.dfa.ui.mycases.MyCasesActivity
 import com.dfa.ui.mycases.NodelMyCaseActivity
@@ -64,7 +61,6 @@ import com.dfa.ui.updatepassword.view.UpdatePasswordActivity
 import com.dfa.utils.*
 import com.dfa.utils.alert.AlertDialog
 import com.google.android.material.navigation.NavigationView
-import com.google.android.material.tabs.TabLayout
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.home_activity.*
 import kotlinx.android.synthetic.main.nav_action.*
@@ -82,7 +78,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private lateinit var locationCallBack: LocationListenerCallback
     private var isPermissionDialogRequired = true
     var genPubHomeFrag = GeneralPublicHomeFragment()
-//    var genPubHomeFrag = HomeFragment()
+
+    //    var genPubHomeFrag = HomeFragment()
     private var isGPS: Boolean = false
     var isFirstTimeEntry = true
     private var provider: String = ""
@@ -194,7 +191,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     private val refreshReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (PreferenceHandler.readString(this@HomeActivity, PreferenceHandler.USER_ROLE, "0").equals("2") || PreferenceHandler.readString(this@HomeActivity, PreferenceHandler.USER_ROLE, "0").equals("3")
+            if (PreferenceHandler.readString(this@HomeActivity, PreferenceHandler.USER_ROLE, "0")
+                    .equals("2") || PreferenceHandler.readString(
+                    this@HomeActivity,
+                    PreferenceHandler.USER_ROLE,
+                    "0"
+                ).equals("3")
             ) {
                 val notificationResponse =
                     intent.getSerializableExtra("notificationResponse") as NotificationResponse
@@ -221,7 +223,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         binding.txtComplaintTime.text =
 
-            Utilities.changeDateFormat(notificationResponse.report_data!!) + " " + Utilities.changeTimeFormat(notificationResponse.report_time!!)
+            Utilities.changeDateFormat(notificationResponse.report_data!!) + " " + Utilities.changeTimeFormat(
+                notificationResponse.report_time!!
+            )
         binding.txtCrimeType.text =
             notificationResponse.crime_type
 
@@ -324,7 +328,13 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         getStartingLocation()
 
         //dialog
-        if (getIntent() != null && getIntent().getExtras() != null && (getIntent().getExtras()?.getString("complaint_id") != null) && getIntent().getExtras()?.getString("report_time") != "" && (PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "") == "2" || PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "") == "3")
+        if (getIntent() != null && getIntent().getExtras() != null && (getIntent().getExtras()
+                ?.getString("complaint_id") != null) && getIntent().getExtras()
+                ?.getString("report_time") != "" && (PreferenceHandler.readString(
+                this,
+                PreferenceHandler.USER_ROLE,
+                ""
+            ) == "2" || PreferenceHandler.readString(this, PreferenceHandler.USER_ROLE, "") == "3")
         ) {
             val notificationResponse = NotificationResponse()
             notificationResponse.username = getIntent().getExtras()?.getString("username")
@@ -360,6 +370,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 //            override fun onTabReselected(tab: TabLayout.Tab?) {}
 //        })
 
+
     }
 
     @SuppressLint("SetTextI18n")
@@ -388,14 +399,18 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             menu.findItem(R.id.nav_password).setVisible(false)
             menu.findItem(R.id.nav_logout).setVisible(false)
             menu.findItem(R.id.nav_cases).setVisible(false)
+            menu.findItem(R.id.nav_contribute_guest).setVisible(true)
+            menu.findItem(R.id.nav_contribute).setVisible(false)
             //userType.setText(getString(R.string.guest_user))
         } else {
             menu.findItem(R.id.nav_edit_profile).setVisible(true)
             menu.findItem(R.id.nav_password).setVisible(true)
             menu.findItem(R.id.nav_logout).setVisible(true)
             menu.findItem(R.id.nav_cases).setVisible(true)
+            menu.findItem(R.id.nav_contribute_guest).setVisible(false)
+            menu.findItem(R.id.nav_contribute).setVisible(true)
         }
-
+        homePresenter.dueAmountInput(authorizationToken!!)
         val navigationView = findViewById<View>(R.id.nav_view) as NavigationView
         val headerview = navigationView.getHeaderView(0)
         val profilename =
@@ -619,6 +634,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             }
 
             R.id.nav_contribute -> {
+                startActivity(Intent(this@HomeActivity, ContributeActivity::class.java))
+            }
+            R.id.nav_contribute_guest -> {
                 startActivity(Intent(this@HomeActivity, ContributeActivity::class.java))
             }
 
@@ -869,6 +887,45 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     }
 
+    override fun dueAmountSuccess(responseObject: DueTicketResponse) {
+
+        var dueTicket=ArrayList<DueTicketResponse.Due_tickets>()
+        dueTicket=responseObject.due_tickets!!
+        if(dueTicket.size>0){
+            dueIncomePopup(dueTicket)
+        }
+
+        //    Toast.makeText(this,"hit api",Toast.LENGTH_LONG).show()
+    }
+
+    fun dueIncomePopup(dueTicket: ArrayList<DueTicketResponse.Due_tickets>) {
+        var dialog = Dialog(this!!) // Context, this, etc.
+        dialog!!.setContentView(R.layout.due_amount_dialog)
+
+       var  coupanList=ArrayList<TicketResponse.Data>()
+        var inputModel=TicketResponse.Data()
+
+        for (i in 0..dueTicket.size-1){
+            inputModel.BucketId=dueTicket.get(i).BucketId
+            inputModel.Ticket=dueTicket.get(i).Ticket
+            coupanList!!.add(inputModel)
+        }
+
+
+        var btnOk = dialog.findViewById<Button>(R.id.btnOk)
+        btnOk.setOnClickListener {
+            dialog!!.dismiss()
+//
+            var intent=Intent(this,ContributeActivity::class.java)
+            intent.putExtra("dueAmount","dueAmount")
+            intent.putExtra("dueTicketList",coupanList)
+            startActivity(intent)
+        }
+
+
+        dialog!!.show()
+    }
+
     fun isOnline(context: Context): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -887,7 +944,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             return netInfo != null && netInfo.isConnectedOrConnecting
         }
     }
-
 
 
 }

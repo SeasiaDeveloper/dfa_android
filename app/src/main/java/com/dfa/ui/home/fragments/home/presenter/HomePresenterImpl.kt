@@ -53,6 +53,14 @@ class HomePresenterImpl(private var homeView: HomeView) :
         homeView.statusUpdationSuccess(responseObject)
     }
 
+    override fun dueAmountSuccess(responseObject: DueTicketResponse) {
+        homeView.dueAmountSuccess(responseObject)
+    }
+
+    override fun dueAmountInput(responseObject: String) {
+        homeModel.getDueAmount(responseObject)
+    }
+
     override fun adhaarSavedSuccess(responseObject: SignupResponse) {
         homeView.adhaarSavedSuccess(responseObject)
     }

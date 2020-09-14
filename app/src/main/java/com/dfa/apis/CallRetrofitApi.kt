@@ -75,6 +75,8 @@ interface CallRetrofitApi {
     @GET("wp/v2/districts")
     fun getDist(): Call<DistResponse>
 
+
+  //  ads_list_due
     @POST("jwt-auth/v1/ads_list")
     fun getDistAdvertisement(@Header("Authorization") authorization: String?, @Body input: AdvertisementInput): Call<AdvertisementResponse>
 //    fun getDistAdvertisement(@Body input: AdvertisementInput): Call<AdvertisementResponse>
@@ -85,6 +87,10 @@ interface CallRetrofitApi {
 
     @POST("jwt-auth/v1/get_tickets")
     fun getTicketList( @Body input: TickerInput): Call<TicketResponse>
+
+
+    @POST("jwt-auth/v1/update_ticket_status")
+    fun paymentStatus( @Body input: PaymentInput): Call<PaymentResponse>
 
 
 
@@ -212,6 +218,10 @@ interface CallRetrofitApi {
 
     @GET("jwt-auth/v1/status_list")
     fun getStatus(@Header("Authorization") authorization: String?, @Query("type") id: Int): Call<GetStatusResponse>
+    @GET("jwt-auth/v1/get_due_tickets")
+    fun getDueAmount(@Header("Authorization") authorization: String?): Call<DueTicketResponse>
+
+
 
     @Multipart
     @POST("jwt-auth/v1/status_update")
