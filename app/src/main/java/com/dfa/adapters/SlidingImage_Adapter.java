@@ -23,6 +23,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.dfa.R;
 import com.dfa.pojo.response.AdvertisementResponse;
+import com.dfa.ui.contribute.DonateActivity;
 
 import java.util.ArrayList;
 
@@ -60,27 +61,53 @@ public class SlidingImage_Adapter extends PagerAdapter {
         final TextView mCount = imageLayout.findViewById(R.id.count);
         if(IMAGES.get(position).getPath()!=null) {
 
+            if(!IMAGES.get(position).getExternal_link().equals("1")){
+                Glide.with(context)
+                        .load(IMAGES.get(position).getPath())
+                        .placeholder(R.drawable.img_placeholder)
+                        .error(R.drawable.img_placeholder)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                return false;
+                            }
 
-            Glide.with(context)
-                    .load(IMAGES.get(position).getPath())
-                    .placeholder(R.drawable.img_placeholder)
-                    .error(R.drawable.img_placeholder)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .listener(new RequestListener<Drawable>() {
-                        @Override
-                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                            return false;
-                        }
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                return false;
+                            }
+                        }).into(imageView);
 
-                        @Override
-                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                            return false;
-                        }
-                    }).into(imageView);
+                Glide.with(context).load(IMAGES.get(position).getPath())
+                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(7, 5)))
+                        .into(ivAddsBackground);
+            } else {
+                Glide.with(context)
+                        .load(R.drawable.btn_donation1)
+                        .placeholder(R.drawable.img_placeholder)
+                        .error(R.drawable.img_placeholder)
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .listener(new RequestListener<Drawable>() {
+                            @Override
+                            public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                                return false;
+                            }
 
-            Glide.with(context).load(IMAGES.get(position).getPath())
-                    .apply(RequestOptions.bitmapTransform(new BlurTransformation(7, 5)))
-                    .into(ivAddsBackground);
+                            @Override
+                            public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                                return false;
+                            }
+                        }).into(imageView);
+
+                Glide.with(context).load(R.drawable.btn_donation1)
+                        .apply(RequestOptions.bitmapTransform(new BlurTransformation(7, 5)))
+                        .into(ivAddsBackground);
+
+            }
+
+
+
 
             view.addView(imageLayout, 0);
         }
@@ -90,14 +117,15 @@ public class SlidingImage_Adapter extends PagerAdapter {
             @Override
             public void onClick(View view) {
 
-                Intent browserIntent =
-                        new Intent(Intent.ACTION_VIEW, Uri.parse(IMAGES.get(position).getExternal_link()));
-                context.startActivity(browserIntent);
 
-//                Intent intent = new Intent(context, ViewImageActivity.class);
-//                intent.putStringArrayListExtra("ImageList", IMAGES);
-//                intent.putExtra("position", "" + position);
-//                context.startActivity(intent);
+                if(!IMAGES.get(position).getExternal_link().equals("1")){
+                    Intent browserIntent =
+                            new Intent(Intent.ACTION_VIEW, Uri.parse(IMAGES.get(position).getExternal_link()));
+                    context.startActivity(browserIntent);
+                } else {
+                    Intent intent=new Intent(context, DonateActivity.class);
+                    context.startActivity(intent);
+                }
             }
         });
 

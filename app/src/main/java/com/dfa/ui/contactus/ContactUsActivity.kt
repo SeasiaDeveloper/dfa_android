@@ -26,13 +26,13 @@ class ContactUsActivity : BaseActivity(){
             onBackPressed()
         }
 
-        etMobile1.setText("Mob: "+PreferenceHandler.readString(this, PreferenceHandler.NGO_CONTACT_NO, "6009121346"))
+        etMobile1.setText("Mob: "+PreferenceHandler.readString(this, PreferenceHandler.NGO_CONTACT_NO, "+91 8258030711"))
         etName.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_NAME, "Drug Free Arunachal"))
         etAddressLine1.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_ADDRESS, "Yupia Market, Yupia"))
         etDist.setText(PreferenceHandler.readString(this, PreferenceHandler.NGO_DIST, "Papum Pare")+",")
         etState.setText( PreferenceHandler.readString(this, PreferenceHandler.NGO_STATE, "Arunachal Pradesh"+","))
         etPinCode.setText("Pin-"+PreferenceHandler.readString(this, PreferenceHandler.NGO_PIN, "791112"))
-        etEmail.setText("Email: "+PreferenceHandler.readString(this, PreferenceHandler.NGO_EMAIL, "dfa.contact@gmail.com"))
+        etEmail.setText("Email: "+PreferenceHandler.readString(this, PreferenceHandler.NGO_EMAIL, "connect2dfa@gmail.com"))
 
         val lat =(PreferenceHandler.readString(this, PreferenceHandler.NGO_LATITUDE, "27.144675"))!!.toDouble()
         val lng = PreferenceHandler.readString(this, PreferenceHandler.NGO_LONGITUDE, "93.727255")!!.toDouble()

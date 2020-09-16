@@ -90,6 +90,16 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
             return
         }
 
+        else if (request.email.trim().isEmpty()) {
+            signupPresenterImplClass.emailValidationFailure()
+            return
+        }
+
+      else  if (!(Utilities.isValidMail(request.email))) {
+            signupPresenterImplClass.emailValidationFailure()
+            return
+        }
+
         else {
 
             if ((request.mobile).isNotEmpty()) {

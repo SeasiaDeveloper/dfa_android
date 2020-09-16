@@ -3,7 +3,6 @@ package com.dfa.ui.generalpublic.view
 import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
-import android.app.Dialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -15,7 +14,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import android.widget.Button
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -23,12 +21,15 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import androidx.viewpager.widget.ViewPager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout.OnRefreshListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.dfa.R
-import com.dfa.adapters.*
+import com.dfa.adapters.CasesAdapter
+import com.dfa.adapters.SlidingImage_Adapter
+import com.dfa.adapters.StatusAdapter
+import com.dfa.adapters.ZoomOutPageTransformer
 import com.dfa.databinding.FragmentPublicHomeBinding
 import com.dfa.listeners.AdharNoListener
 import com.dfa.listeners.AlertDialogListener
@@ -132,6 +133,26 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         callPresenter("1000")
         pageCount=1
         setupUI()
+
+            binding.itemsswipetorefresh.setOnRefreshListener(OnRefreshListener { // Your code to refresh the list here.
+                if (Utilities.isInternetAvailableDialog(mContext)) {
+                    hitType = "foreground"
+                    val casesRequest =
+                        CasesRequest(
+                            "1",
+                            "",
+                            "-1",
+                            "1",
+                            limit
+                            , ""
+                        )  //type = -1 for fetching both cases and posts
+                    presenter.getComplaints(casesRequest, token, type)
+                }
+        })
+
+
+
+
         return binding.root
     }
 
@@ -532,6 +553,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
         Utilities.dismissProgress()
+        binding.itemsswipetorefresh.isRefreshing=false
 
         try {
 
@@ -852,6 +874,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun showServerError(error: String) {
         Utilities.dismissProgress()
+        binding.itemsswipetorefresh.isRefreshing=false
         statusId = "-1"
         if (error.equals(Constants.TOKEN_ERROR)) {
             //logout user

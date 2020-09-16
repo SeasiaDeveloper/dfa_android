@@ -34,7 +34,8 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@drawable/app_icon"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:targetApi="q">
         <activity android:name=".ui.contribute.DonateActivity"></activity>
         <activity android:name=".ui.contribute.payment.PaymentActivity" />
         <activity android:name=".ui.contribute.ContributeActivity" />

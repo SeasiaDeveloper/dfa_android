@@ -23,7 +23,5 @@ class AdvertisementResponse {
         var id: String? = null
 
         var external_link: String? = null
-
-
     }
 }

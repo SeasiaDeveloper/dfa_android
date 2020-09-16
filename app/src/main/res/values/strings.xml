@@ -9,6 +9,7 @@
     <string name="types_of_crime">Select types of crime</string>
     <string name="user_name">User Name</string>
     <string name="email">Email</string>
+    <string name="email_req">Email<font fgcolor="#006600">*</font></string>
     <string name="contact_no">Contact No</string>
     <string name="level">Urgency Level</string>
     <string name="description">Description: </string>

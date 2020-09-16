@@ -7,7 +7,6 @@
         android:layout_width="match_parent"
         android:background="@color/white"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_10sdp"
         android:orientation="vertical">
 
         <include
@@ -241,6 +240,29 @@
                             android:text="@string/locate_us"
                             android:textColor="@color/white"
                             android:textSize="@dimen/_12ssp" />
+
+                        <LinearLayout
+                            android:padding="1dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/border_layout"
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp">
+
+                            <ImageView
+                                android:layout_margin="1dp"
+                                android:background="@drawable/ccna_banner"
+                                android:layout_width="65dp"
+                                android:layout_height="match_parent"/>
+
+                            <TextView
+                                android:layout_marginLeft="@dimen/_20sdp"
+                                android:gravity="center"
+                                android:text="Media Partner"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"/>
+
+                        </LinearLayout>
 
                     </LinearLayout>
                 </LinearLayout>

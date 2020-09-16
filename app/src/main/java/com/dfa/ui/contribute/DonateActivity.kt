@@ -71,6 +71,7 @@ class DonateActivity : AppCompatActivity() {
                 url: String?
             ) {
                 super.onLoadResource(view, url)
+
             }
 
             override   fun shouldOverrideUrlLoading(

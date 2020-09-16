@@ -34,7 +34,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.kaopiz.kprogresshud.KProgressHUD
 import com.dfa.R
 import com.dfa.adapters.StatusAdapter
 import com.dfa.application.MyApplication
@@ -44,6 +43,7 @@ import com.dfa.listeners.OnCaseItemClickListener
 import com.dfa.listeners.StatusListener
 import com.dfa.pojo.response.GetStatusResponse
 import com.dfa.utils.algo.VerhoeffAlgo
+import com.kaopiz.kprogresshud.KProgressHUD
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.IOException
@@ -418,7 +418,6 @@ object Utilities {
         if (!(latitude1.equals("")) && !(longitude1.equals(""))) {
             locationA.latitude = latitude1!!.toDouble()
             locationA.longitude = longitude1!!.toDouble()
-
             val locationB = Location("point B")
             locationB.latitude = latitude!!.toDouble()
             locationB.longitude = longitude!!.toDouble()
@@ -426,7 +425,13 @@ object Utilities {
         } else {
             return 0
         }
+
     }
+
+
+
+
+
 
     fun String.intOrString(latitude: String?): Any {
         val v = toIntOrNull()

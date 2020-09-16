@@ -2,16 +2,15 @@ package com.dfa.ui.home.fragments.home.view
 
 import android.annotation.SuppressLint
 import android.app.Dialog
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
+import android.content.*
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Location
 import android.location.LocationManager
+import android.media.MediaPlayer
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.util.Log
@@ -33,6 +32,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.dfa.R
 import com.dfa.adapters.TabLayoutAdapter
 import com.dfa.application.GetVersionCode
+import com.dfa.application.MyApplication
 import com.dfa.base.BaseActivity
 import com.dfa.databinding.LayoutAcceptRejectAlertBinding
 import com.dfa.listeners.AdharNoListener
@@ -48,7 +48,8 @@ import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.dfa.ui.home.fragments.cases.view.LocationListenerCallback
 import com.dfa.ui.home.fragments.home.presenter.HomePresenter
 import com.dfa.ui.home.fragments.home.presenter.HomePresenterImpl
-import com.dfa.ui.home.fragments.marketplace.MarketPlaceFragment
+import com.dfa.ui.home.fragments.photos.view.PhotosFragment
+import com.dfa.ui.home.fragments.videos.view.VideosFragment
 import com.dfa.ui.login.view.LoginActivity
 import com.dfa.ui.mycases.MyCasesActivity
 import com.dfa.ui.mycases.NodelMyCaseActivity
@@ -82,6 +83,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     //    var genPubHomeFrag = HomeFragment()
     private var isGPS: Boolean = false
     var isFirstTimeEntry = true
+    val player: MediaPlayer?=null
     private var provider: String = ""
     var role = ""
     private lateinit var locationManager: LocationManager
@@ -186,6 +188,17 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun onPause() {
         super.onPause()
+
+        try {
+            if(player!=null){
+                if(player.isPlaying){
+                    player.stop()
+                }
+            }
+        }catch (e:Exception){
+
+        }
+
         unregisterReceiver(refreshReceiver) //unregistering the broadcast receiver
     }
 
@@ -207,6 +220,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     fun displayAcceptRejDialog(notificationResponse: NotificationResponse) {
         lateinit var dialog: android.app.AlertDialog
+
+
+
 
         val builder = android.app.AlertDialog.Builder(this@HomeActivity)
         val binding =
@@ -246,6 +262,13 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 )
         }
 
+        val soundUri  = Uri.parse("android.resource://"
+                + MyApplication.instance.getPackageName() + "/" + R.raw.siren);
+
+        val player: MediaPlayer = MediaPlayer.create(this, soundUri)
+        player.isLooping = true
+        player.start()
+
 
         val acceptButton = binding.btnAccept
         val rejectButton = binding.btnReject
@@ -253,6 +276,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         acceptButton.setOnClickListener {
             //accept = 4
+            if(player.isPlaying){
+                player.stop()
+            }
             Utilities.showProgress(this)
             //hit status update api for accept status
             homePresenter.updateStatus(
@@ -271,6 +297,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         rejectButton.setOnClickListener {
             //reject = 6
+            player.stop()
             Utilities.showProgress(this)
             //hit status update api for reject status
             homePresenter.updateStatus(
@@ -282,19 +309,36 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
 
         openButton.setOnClickListener {
+            if(player.isPlaying){
+                player.stop()
+            }
             val intent = Intent(this, PoliceIncidentDetailScreen::class.java)
             intent.putExtra(
                 Constants.PUBLIC_COMPLAINT_DATA,
                 notificationResponse.complaint_id.toString()
             )
+
             intent.putExtra(Constants.POST_OR_COMPLAINT, "0") // 0 is for complaint type
             startActivity(intent)
             dialog.dismiss()
         }
 
+
+
+
         builder.setView(binding.root)
         dialog = builder.create()
         dialog.show()
+
+        dialog.setOnCancelListener(object : DialogInterface.OnCancelListener {
+            override fun onCancel(dialog: DialogInterface?) {
+
+                if(player.isPlaying){
+                    player.stop()
+                }
+            }
+        })
+
 
 
     }
@@ -383,9 +427,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
         //adapter.addFragment(genPubHomeFrag, "Home")
         adapter.addFragment(EmergencyFragment(), "Emergency")
-//        adapter.addFragment(PhotosFragment(), "Photos")
-//        adapter.addFragment(VideosFragment(), "Videos")
-        adapter.addFragment(MarketPlaceFragment(), "Market Place")
+        adapter.addFragment(PhotosFragment(), "Photos")
+        adapter.addFragment(VideosFragment(), "Videos")
+//        adapter.addFragment(MarketPlaceFragment(), "Market Place")
         viewPager?.adapter = adapter
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)
@@ -645,13 +689,18 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                     PreferenceHandler.writeString(
                         this,
                         PreferenceHandler.APP_URL,
-                        "https://play.google.com/store/apps/details?id=com.moonwalk.app&hl=en"
+                        "https://play.google.com/store/apps/details?id=com.dfango.android&hl=en"
                     )
+//                    PreferenceHandler.writeString(
+//                        this,\
+//                        PreferenceHandler.APP_URL,
+//                        "https://play.google.com/store/apps/details?id=com.moonwalk.app&hl=en"
+//                    )
                 }
                 val appUrl = PreferenceHandler.readString(this, PreferenceHandler.APP_URL, "")
                 val shareIntent = Intent()
                 shareIntent.action = Intent.ACTION_SEND
-                shareIntent.putExtra(Intent.EXTRA_TEXT, appUrl)
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.dfango.android&hl=en")
                 shareIntent.type = "text/plain"
                 startActivity(Intent.createChooser(shareIntent, "send to"))
 
@@ -903,9 +952,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         dialog!!.setContentView(R.layout.due_amount_dialog)
 
        var  coupanList=ArrayList<TicketResponse.Data>()
-        var inputModel=TicketResponse.Data()
 
         for (i in 0..dueTicket.size-1){
+            var inputModel=TicketResponse.Data()
             inputModel.BucketId=dueTicket.get(i).BucketId
             inputModel.Ticket=dueTicket.get(i).Ticket
             coupanList!!.add(inputModel)

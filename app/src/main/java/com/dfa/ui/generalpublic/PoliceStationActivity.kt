@@ -1,5 +1,6 @@
 package com.dfa.ui.generalpublic
 
+import android.content.Intent
 import android.graphics.Color
 import android.view.View
 import android.widget.Toast
@@ -90,8 +91,15 @@ class PoliceStationActivity : BaseActivity(), PoliceStationCallback,View.OnClick
         dismissProgress()
         if(body!=null){
             Toast.makeText(this,""+body.message,Toast.LENGTH_LONG).show()
-            finish()
+            val data =  Intent();
+            data.putExtra("data","15")
+            setResult(RESULT_OK, data);
+            onBackPressed()
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
     }
 
 

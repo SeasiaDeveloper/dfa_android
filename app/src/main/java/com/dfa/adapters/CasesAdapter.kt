@@ -425,7 +425,6 @@ class CasesAdapter(
                             .error(R.drawable.camera_placeholder)
                             .into(itemView.videoThumbNial);
 
-
                         itemView.videoThumbNialParent.setOnClickListener {
                             val mediaUrl = item!!.media_list?.get(0)
                             var intent = Intent(context, VideoPlayerActivity::class.java)
@@ -945,9 +944,45 @@ class CasesAdapter(
 //                } else{
 //                    itemView.action_complaint.visibility = View.GONE
 //                }
-                itemView.layoutCrimeType.visibility = View.GONE
-                itemView.layoutPoliceStation.visibility = View.GONE
-                itemView.layoutStatus.visibility = View.GONE
+
+
+
+                if(!token!!.isEmpty()){
+
+                    if(item.stationName==null || item.stationName!!.isEmpty()){
+                        itemView.txtPoliceStation.text = "NA"
+                    } else{
+                        itemView.txtPoliceStation.text = item.stationName
+                    }
+
+                    var itemName = item.status
+                    if (itemName?.toLowerCase() == "accept" || itemName?.toLowerCase() == "accepted")
+                        itemName = "Accepted"
+                    if (itemName?.toLowerCase() == "reject" || itemName?.toLowerCase() == "rejected")
+                        itemName = "Rejected"
+                    itemView.txtStatus.text = itemName
+//                    if(itemName.equals("Unassigned")){
+//                        itemView.txtStatus.text = "NA"
+//                    }
+
+                    if (activity is HomeActivity) setColor(
+                        itemView.txtStatus,
+                        item.status.toString().toLowerCase()
+                    )
+
+                    itemView.layoutCrimeType.visibility = View.VISIBLE
+                    itemView.layoutPoliceStation.visibility = View.VISIBLE
+                    itemView.layoutStatus.visibility = View.VISIBLE
+
+                } else{
+                    itemView.layoutCrimeType.visibility = View.GONE
+                    itemView.layoutPoliceStation.visibility = View.GONE
+                    itemView.layoutStatus.visibility = View.GONE
+                }
+
+
+
+
                 itemView.txtUrgencyTitle.text = context.getString(R.string.urgency_level)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     itemView.txtUrgencyTitle.setTextColor(

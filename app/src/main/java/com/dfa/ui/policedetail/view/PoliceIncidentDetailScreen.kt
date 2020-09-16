@@ -213,14 +213,14 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
                 var intent = Intent(this, PoliceOfficerActivity::class.java)
                 intent.putExtra("token", token)
                 intent.putExtra("complaintId", complaintId)
-                startActivity(intent)
+                startActivityForResult(intent,15)
                 dialog.dismiss()
 
             } else if (statusId.equals("10")) {
                 var intent = Intent(this, PoliceStationActivity::class.java)
                 intent.putExtra("token", token)
                 intent.putExtra("complaintId", complaintId)
-                startActivity(intent)
+                startActivityForResult(intent,15)
                 dialog.dismiss()
 
             } else {
@@ -418,5 +418,20 @@ class PoliceIncidentDetailScreen : BaseActivity(), PoliceDetailView, StatusListe
     override fun showServerError(error: String) {
         Utilities.dismissProgress()
         Utilities.showMessage(this, error)
+    }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 15) {
+            if (data != null) {
+                if (data.getStringExtra("data")!!.equals("15")) {
+                 finish()
+                }
+            }
+
+        }
+
     }
 }

@@ -11,6 +11,7 @@ import com.dfa.ui.forgotpassword.view.ForgotPasswordActivity
 import com.dfa.ui.home.fragments.home.view.HomeActivity
 import com.dfa.ui.login.presenter.LoginActivityPresenterImpl
 import com.dfa.ui.login.presenter.LoginPresenter
+import com.dfa.ui.signup.SignupActivity
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
 import com.google.android.gms.tasks.OnSuccessListener
@@ -74,6 +75,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener, LoginView {
                 val intent = Intent(this, ForgotPasswordActivity::class.java)
                 intent.putExtra("clicked_from", "forgotPassword")
                 startActivity(intent)
+
+
+
             }
         }
     }

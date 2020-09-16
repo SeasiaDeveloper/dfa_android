@@ -7,8 +7,6 @@
         android:layout_height="match_parent">
 
 
-
-
         <LinearLayout
             android:id="@+id/dashboardParentLayout"
             android:layout_width="match_parent"
@@ -18,309 +16,297 @@
             android:orientation="vertical">
 
 
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-
-
-            <include
-                android:id="@+id/toolbarLayout"
-                layout="@layout/toolbar_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <LinearLayout
-                    android:id="@+id/layoutAddPost"
+
+                <include
+                    android:id="@+id/toolbarLayout"
+                    layout="@layout/toolbar_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <androidx.cardview.widget.CardView
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:id="@+id/layoutAddPost"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:cardElevation="@dimen/_2sdp">
+                        android:gravity="center"
+                        android:orientation="vertical">
 
-                        <LinearLayout
+                        <androidx.cardview.widget.CardView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:orientation="horizontal">
-
-                            <de.hdodenhof.circleimageview.CircleImageView
-                                android:id="@+id/imgProfile"
-                                android:layout_width="0dp"
-                                android:layout_height="80dp"
-                                android:layout_marginStart="@dimen/_8sdp"
-                                android:layout_marginTop="@dimen/_4sdp"
-                                android:layout_weight="0.15"
-                                android:padding="@dimen/_2sdp"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/user"
-                                app:civ_border_color="@color/black" />
+                            app:cardElevation="@dimen/_2sdp">
 
                             <LinearLayout
-                                android:id="@+id/txtAddPost"
-                                android:layout_width="0dp"
-                                android:layout_height="match_parent"
-                                android:layout_weight="0.80"
-                                android:gravity="center_vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <de.hdodenhof.circleimageview.CircleImageView
+                                    android:id="@+id/imgProfile"
+                                    android:layout_width="0dp"
+                                    android:layout_height="80dp"
+                                    android:layout_marginStart="@dimen/_8sdp"
+                                    android:layout_marginTop="@dimen/_4sdp"
+                                    android:layout_weight="0.15"
+                                    android:padding="@dimen/_2sdp"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/user"
+                                    app:civ_border_color="@color/black" />
+
+                                <LinearLayout
+                                    android:id="@+id/txtAddPost"
+                                    android:layout_width="0dp"
+                                    android:layout_height="match_parent"
+                                    android:layout_weight="0.80"
+                                    android:gravity="center_vertical"
+                                    android:orientation="vertical">
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/_8sdp"
+                                        android:layout_marginTop="@dimen/_8sdp"
+                                        android:layout_marginEnd="@dimen/_8sdp"
+                                        android:focusable="false"
+                                        android:gravity="start"
+                                        android:text="@string/write_something_here"
+                                        android:textColor="@color/black"
+                                        android:textSize="@dimen/_16sdp" />
+
+                                    <androidx.appcompat.widget.AppCompatTextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginStart="@dimen/_8sdp"
+                                        android:layout_marginEnd="@dimen/_8sdp"
+                                        android:layout_marginBottom="@dimen/_4sdp"
+                                        android:focusable="false"
+                                        android:gravity="start"
+                                        android:text="@string/add_your_post_here"
+                                        android:textColor="@color/light_grey_text"
+                                        android:textSize="@dimen/_11sdp" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.34dp"
+                            android:layout_marginBottom="@dimen/_2sdp"
+                            android:background="@color/silver" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layoutPost"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/_8sdp"
+                        android:layout_marginTop="@dimen/_8sdp"
+                        android:layout_marginEnd="@dimen/_8sdp"
+                        android:layout_marginBottom="@dimen/_4sdp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cardView2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_2sdp"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:layout_marginEnd="@dimen/_2sdp"
+                            android:layout_marginBottom="@dimen/_4sdp"
+                            app:cardCornerRadius="@dimen/_4sdp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
                                 android:orientation="vertical">
 
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:layout_width="wrap_content"
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/edtPostInfo"
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="@dimen/_8sdp"
                                     android:layout_marginTop="@dimen/_8sdp"
                                     android:layout_marginEnd="@dimen/_8sdp"
-                                    android:focusable="false"
-                                    android:gravity="start"
-                                    android:text="@string/write_something_here"
+                                    android:hint="@string/enter_the_headline"
+                                    android:maxHeight="100dp"
                                     android:textColor="@color/black"
-                                    android:textSize="@dimen/_16sdp" />
-
-                                <androidx.appcompat.widget.AppCompatTextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginStart="@dimen/_8sdp"
-                                    android:layout_marginEnd="@dimen/_8sdp"
-                                    android:layout_marginBottom="@dimen/_4sdp"
-                                    android:focusable="false"
-                                    android:gravity="start"
-                                    android:text="@string/add_your_post_here"
-                                    android:textColor="@color/light_grey_text"
-                                    android:textSize="@dimen/_11sdp" />
-                            </LinearLayout>
-
-                        </LinearLayout>
-                    </androidx.cardview.widget.CardView>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.34dp"
-                        android:layout_marginBottom="@dimen/_2sdp"
-                        android:background="@color/silver" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/layoutPost"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_8sdp"
-                    android:layout_marginTop="@dimen/_8sdp"
-                    android:layout_marginEnd="@dimen/_8sdp"
-                    android:layout_marginBottom="@dimen/_4sdp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/cardView2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/_2sdp"
-                        android:layout_marginTop="@dimen/_6sdp"
-                        android:layout_marginEnd="@dimen/_2sdp"
-                        android:layout_marginBottom="@dimen/_4sdp"
-                        app:cardCornerRadius="@dimen/_4sdp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical">
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/edtPostInfo"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/_8sdp"
-                                android:layout_marginTop="@dimen/_8sdp"
-                                android:layout_marginEnd="@dimen/_8sdp"
-                                android:hint="@string/enter_the_headline"
-                                android:maxHeight="100dp"
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/_12sdp"
-                                app:font="@{`bold`}" />
-
-                            <ImageView
-                                android:id="@+id/imgPost"
-                                android:layout_width="match_parent"
-                                android:layout_height="156dp"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_marginStart="@dimen/_8sdp"
-                                android:layout_marginTop="@dimen/_4sdp"
-                                android:layout_marginEnd="@dimen/_8sdp"
-                                android:background="@drawable/squarebg_non_curve"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/camera_placeholder"
-                                android:visibility="gone" />
-
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="end">
+                                    android:textSize="@dimen/_12sdp"
+                                    app:font="@{`bold`}" />
 
                                 <ImageView
-                                    android:id="@+id/img_attach"
-                                    android:layout_width="26dp"
-                                    android:layout_height="26dp"
-                                    android:layout_gravity="center"
-                                    android:src="@drawable/attach" />
-
-                                <androidx.appcompat.widget.AppCompatButton
-                                    android:id="@+id/btnPost"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="35dp"
-                                    android:layout_marginStart="@dimen/_12sdp"
-                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:id="@+id/imgPost"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="156dp"
+                                    android:layout_gravity="center_horizontal"
+                                    android:layout_marginStart="@dimen/_8sdp"
+                                    android:layout_marginTop="@dimen/_4sdp"
                                     android:layout_marginEnd="@dimen/_8sdp"
-                                    android:layout_marginBottom="@dimen/_10sdp"
-                                    android:background="@drawable/button_green_bg"
-                                    android:text="@string/post"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/_14ssp" />
-
-                                <androidx.appcompat.widget.AppCompatButton
-                                    android:id="@+id/btnCancel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="35dp"
-                                    android:layout_marginTop="@dimen/_10sdp"
-                                    android:layout_marginEnd="@dimen/_12sdp"
-                                    android:layout_marginBottom="@dimen/_10sdp"
-                                    android:background="@drawable/button_red_bg"
-                                    android:text="Cancel"
-                                    android:textAllCaps="false"
-                                    android:textColor="@color/white"
-                                    android:textSize="@dimen/_14ssp"
+                                    android:background="@drawable/squarebg_non_curve"
+                                    android:scaleType="centerCrop"
+                                    android:src="@drawable/camera_placeholder"
                                     android:visibility="gone" />
+
+                                <LinearLayout
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="end">
+
+                                    <ImageView
+                                        android:id="@+id/img_attach"
+                                        android:layout_width="26dp"
+                                        android:layout_height="26dp"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/attach" />
+
+                                    <androidx.appcompat.widget.AppCompatButton
+                                        android:id="@+id/btnPost"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="35dp"
+                                        android:layout_marginStart="@dimen/_12sdp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:layout_marginEnd="@dimen/_8sdp"
+                                        android:layout_marginBottom="@dimen/_10sdp"
+                                        android:background="@drawable/button_green_bg"
+                                        android:text="@string/post"
+                                        android:textAllCaps="false"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/_14ssp" />
+
+                                    <androidx.appcompat.widget.AppCompatButton
+                                        android:id="@+id/btnCancel"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="35dp"
+                                        android:layout_marginTop="@dimen/_10sdp"
+                                        android:layout_marginEnd="@dimen/_12sdp"
+                                        android:layout_marginBottom="@dimen/_10sdp"
+                                        android:background="@drawable/button_red_bg"
+                                        android:text="Cancel"
+                                        android:textAllCaps="false"
+                                        android:textColor="@color/white"
+                                        android:textSize="@dimen/_14ssp"
+                                        android:visibility="gone" />
+
+                                </LinearLayout>
 
                             </LinearLayout>
 
-                        </LinearLayout>
+                        </androidx.cardview.widget.CardView>
+                    </LinearLayout>
 
-                    </androidx.cardview.widget.CardView>
                 </LinearLayout>
 
-            </LinearLayout>
+                <!--     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                         android:id="@+id/swipeRefresh"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content">-->
 
-            <!--     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                     android:id="@+id/swipeRefresh"
-                     android:layout_width="match_parent"
-                     android:layout_height="wrap_content">-->
-
-            <com.dfa.customviews.CustomTextViewheading
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/incident_heading"
-                android:textStyle="bold"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                android:gravity="center"
-                android:textSize="@dimen/_14sdp"
-                android:textColor="@color/grey_text"
-                />
-
-<androidx.core.widget.NestedScrollView
-    android:id="@+id/mScroll"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvAdvertisement"
+                <com.dfa.customviews.CustomTextViewheading
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
-                    android:visibility="gone"
-                    android:paddingBottom="@dimen/_5sdp" />
-
-
-                <androidx.viewpager.widget.ViewPager
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/addPager"
-                    android:visibility="gone"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/_120sdp" />
-                <me.relex.circleindicator.CircleIndicator
-                    android:id="@+id/indicator"
-                    android:layout_alignBottom="@+id/addPager"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="3dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"/>
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:text="@string/incident_heading"
+                    android:textColor="@color/grey_text"
+                    android:textSize="@dimen/_14sdp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
 
                 <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                     android:id="@+id/itemsswipetorefresh"
-                    android:layout_below="@+id/addPager"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/addPager">
 
-                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvPublic"
-                    android:layout_below="@+id/addPager"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingBottom="@dimen/_5sdp" />
-
-
-
-
-
-
-
-                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                    android:id="@+id/norecordrefresh"
-                    android:layout_width="wrap_content"
-                    android:visibility="gone"
-                    android:layout_height="match_parent">
-                    <com.dfa.customviews.CustomtextView
-                        android:id="@+id/tvRecord"
+                    <androidx.core.widget.NestedScrollView
+                        android:id="@+id/mScroll"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:text="@string/no_record_found" />
+                        android:layout_height="match_parent">
 
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+                            <!--                <androidx.recyclerview.widget.RecyclerView-->
+                            <!--                    android:id="@+id/rvAdvertisement"-->
+                            <!--                    android:layout_width="match_parent"-->
+                            <!--                    android:layout_height="120dp"-->
+                            <!--                    android:visibility="gone"-->
+                            <!--                    android:paddingBottom="@dimen/_5sdp" />-->
+
+
+                            <androidx.viewpager.widget.ViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:id="@+id/addPager"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/_90sdp"
+                                android:visibility="gone" />
+
+                            <me.relex.circleindicator.CircleIndicator
+                                android:id="@+id/indicator"
+                                android:layout_width="match_parent"
+                                android:layout_height="48dp"
+                                android:layout_alignBottom="@+id/addPager"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginBottom="3dp" />
+
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rvPublic"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/addPager"
+                                android:paddingBottom="@dimen/_5sdp" />
+
+                            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                                android:id="@+id/norecordrefresh"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:visibility="gone">
+
+                                <com.dfa.customviews.CustomtextView
+                                    android:id="@+id/tvRecord"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:text="@string/no_record_found" />
+
+                            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+                            <ProgressBar
+                                android:id="@+id/progressBar"
+                                style="?android:attr/progressBarStyle"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_gravity="center"
+                                android:background="@android:color/transparent"
+                                android:visibility="invisible"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                        </RelativeLayout>
+                    </androidx.core.widget.NestedScrollView>
                 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-                <ProgressBar
-                    android:id="@+id/progressBar"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_gravity="center"
-                    android:background="@android:color/transparent"
-                    android:visibility="invisible"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-            </RelativeLayout>
-</androidx.core.widget.NestedScrollView>
 
             </LinearLayout>
 
@@ -330,28 +316,27 @@
             android:id="@+id/imgAdd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="@color/green"
-            android:padding="@dimen/_10sdp"
             android:layout_gravity="bottom|center"
             android:layout_margin="@dimen/_30sdp"
-            android:text="@string/report_a_new_case"
-            android:textSize="@dimen/_13ssp"
-            android:textColor="@color/white"
-            android:textAllCaps="false"
-            app:font="@{`semibold`}"
-            android:theme="@style/MaterialTheme"
-            android:drawableTint="@color/white"
+            android:backgroundTint="@color/green"
             android:drawableLeft="@drawable/ic_baseline_add_24"
-           />
+            android:drawableTint="@color/white"
+            android:padding="@dimen/_10sdp"
+            android:text="@string/report_a_new_case"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_13ssp"
+            android:theme="@style/MaterialTheme"
+            app:font="@{`semibold`}" />
 
 
-<!--      <androidx.appcompat.widget.AppCompatImageView-->
-<!--            android:id="@+id/imgAdd"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="bottom|right"-->
-<!--            android:layout_margin="@dimen/_30sdp"-->
-<!--            android:src="@drawable/add_icon" />-->
+        <!--      <androidx.appcompat.widget.AppCompatImageView-->
+        <!--            android:id="@+id/imgAdd"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="bottom|right"-->
+        <!--            android:layout_margin="@dimen/_30sdp"-->
+        <!--            android:src="@drawable/add_icon" />-->
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

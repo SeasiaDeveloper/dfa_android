@@ -5,7 +5,6 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.util.Log
@@ -17,6 +16,7 @@ import com.dfa.ui.home.fragments.home.view.HomeActivity
 import com.dfa.utils.PreferenceHandler
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import java.lang.Exception
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
     val TAG = "FirebaseMessagingService"
@@ -61,7 +61,6 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val soundUri  = Uri.parse("android.resource://"
                 + MyApplication.instance.getPackageName() + "/" + R.raw.siren);
       //  val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-
 
 
         val notificationBuilder = NotificationCompat.Builder(this, CHANNEL_ID)

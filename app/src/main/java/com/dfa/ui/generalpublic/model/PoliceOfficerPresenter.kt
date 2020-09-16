@@ -15,7 +15,7 @@ import java.net.SocketTimeoutException
 
 class PoliceOfficerPresenter(private var context: PoliceOfficerActivity) {
 
-    fun getTermsConditions(token: String?) {
+    fun getPoliceOfficers(token: String?) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         retrofitApi.getPoliceOfficer(token).enqueue(object :
             Callback<PoliceOfficerResponse> {

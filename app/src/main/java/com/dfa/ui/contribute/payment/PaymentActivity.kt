@@ -63,6 +63,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener,PaymentCallba
         contactNumber = intent.getStringExtra("contactNumber")!!
         name = intent.getStringExtra("name")!!
         email = intent.getStringExtra("userEmail")!!
+        tickets = intent.getStringExtra("ticketsId")!!
         tvPayment.setText("INR " + payment)
         payment = payment * 100
 

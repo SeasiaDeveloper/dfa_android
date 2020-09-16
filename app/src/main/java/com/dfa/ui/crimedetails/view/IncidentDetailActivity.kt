@@ -201,7 +201,12 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
             contact_layout.visibility = View.GONE
         }
         spTypesOfCrime.text = getCrimeDetailsResponse.data.get(0).crime_type
-        spStatusOfCrime.text = getCrimeDetailsResponse.data.get(0).status
+
+        if(getCrimeDetailsResponse.data.get(0).status.equals("Accept")){
+            spStatusOfCrime.text="Accepted"
+        } else{
+            spStatusOfCrime.text = getCrimeDetailsResponse.data.get(0).status
+        }
         setColor(spStatusOfCrime, getCrimeDetailsResponse.data.get(0).status!!.toLowerCase())
 
         if (!getCrimeDetailsResponse.data.get(0).urgency.isNullOrEmpty()) {
@@ -355,7 +360,7 @@ class IncidentDetailActivity : BaseActivity(), NGOFormView, CrimeDetailsView, As
         }
 
         //in case of police or General Public
-        if (type.equals("0") || type.equals("2")) {
+        if (type.equals("0") || type.equals("2") || type.equals("3") || type.equals("4")) {
             etUserName.setText(resources.getString(R.string.drug_free_arunachal))
             contact_layout.visibility = View.GONE
         }
