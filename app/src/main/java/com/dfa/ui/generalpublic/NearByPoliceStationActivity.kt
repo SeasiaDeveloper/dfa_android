@@ -219,12 +219,9 @@ class NearByPoliceStationActivity : BaseActivity(), View.OnClickListener, Public
             lattitude = "0"
             longitude = "0"
             com.dfa.utils.alert.AlertDialog.reportCrimeAlertDialog(this, this)
-
         } else {
 
             if (lattitude.equals("") || longitude.equals("")) {
-
-
                 if (ActivityCompat.checkSelfPermission(
                         this,
                         Manifest.permission.ACCESS_FINE_LOCATION

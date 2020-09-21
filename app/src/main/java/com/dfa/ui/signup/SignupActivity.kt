@@ -109,7 +109,7 @@ class SignupActivity : BaseActivity(), SignupView {
         btnSubmit.setOnClickListener {
             val signupReq = SignupRequest(
                 etMobile1.text.toString(),
-                etEmail.text.toString(),
+                etEmail.text.toString().trim(),
                 etPassword.text.toString(),
                 etFirstName.text.toString(),
                 etLastName.text.toString(),

@@ -11,6 +11,7 @@ import com.dfa.ui.crimedetails.view.IncidentDetailActivity
 import com.dfa.ui.home.fragments.home.view.HomeActivity
 import com.dfa.utils.Constants
 import com.dfa.utils.PreferenceHandler
+import com.findthat_android.util.other.CheckPlayStoreVersion
 import kotlinx.android.synthetic.main.activity_splash.*
 
 

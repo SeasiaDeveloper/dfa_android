@@ -85,6 +85,11 @@
 
     <string name="open">Open</string>
     <string name="close">Close</string>
+    <string name="youAreNotUpdatedMessage">A new version of this app is available. Please update to version&#160;</string>
+
+    <string name="youAreNotUpdatedTitle">Update Available</string>
+
+    <string name="now_popup">&#160;now.</string>
 
 
     <string name="cancel">CANCEL</string>

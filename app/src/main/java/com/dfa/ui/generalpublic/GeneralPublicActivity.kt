@@ -9,6 +9,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -1090,8 +1091,14 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     ): Uri? {
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 80, bytes)
-        val path: String =
-            MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+
+        var path: String? =null
+        try {
+             path= MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
+        }catch (e:Exception){
+
+        }
+
         return Uri.parse(path)
     }
 
@@ -1211,10 +1218,11 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     val options = RequestOptions()
                         /* .centerCrop()*/
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    Glide.with(this).asBitmap().load(bitmapToByte(bitmap)).into(imgView)
+                   // Glide.with(this).asBitmap().load(bitmapToByte(bitmap)).into(imgView)
+                    Glide.with(this).asBitmap().load(tempUri).into(imgView)
 
-                    var newPathString = getImageUri(this, bitmap)
-                    path = FileUtils.getPath(this, newPathString)
+                  //   var newPathString = getImageUri(this, bitmap)
+                    path = FileUtils.getPath(this, tempUri)
                     pathOfImages = ArrayList<String>()
                     pathOfImages.add(path)
 
@@ -1254,6 +1262,8 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         retriever.release()
 
                         if (timeInMillisec >= 5000) {
+
+
 
                             val intent = Intent(this, TrimmerActivity::class.java)
                             intent.putExtra("path", FileUtils.getPath(this, imagePath))
@@ -1312,6 +1322,20 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             showVideo(path)
         }
     }
+
+
+    fun getPath(uri: Uri?): String? {
+        val projection =
+            arrayOf(MediaStore.Images.Media.DATA)
+        val cursor: Cursor? = managedQuery(uri, projection, null, null, null)
+        return if (cursor != null) {
+            val column_index: Int =
+                cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor.moveToFirst()
+            cursor.getString(column_index)
+        } else null
+    }
+
 
     private fun bitmapToByte(bitmap: Bitmap): ByteArray? {
         val stream = ByteArrayOutputStream()

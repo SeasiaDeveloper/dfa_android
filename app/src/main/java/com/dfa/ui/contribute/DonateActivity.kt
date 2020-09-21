@@ -55,7 +55,7 @@ class DonateActivity : AppCompatActivity() {
                 Log.d("WebView", "your current url when webpage loading.. finish$url")
                 super.onPageFinished(view, url)
 
-                if(url.contains("https://razorpay.com/payment-button/pl_FbgQS0OKuv0Ing/view?")){
+                if(url.contains("https://razorpay.com/payment-button/pl_FbhZPEo6l6J6w7/view?")){
                     if(isfirst.equals("1")){
                         var intent= Intent(this@DonateActivity, HomeActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)

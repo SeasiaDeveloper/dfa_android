@@ -68,7 +68,7 @@ var context=context1
             false
         ) as DialogUpdateVersionBinding
 
-        binding.newVersion.text=context.getString(R.string.new_version)+" "+newVersion +" available"
+        binding.newVersion.text=context.getString(R.string.new_version)+" available"
         // Create the AlertDialog object and return it
         binding.btnDone.setOnClickListener {
             // mInterface.photoFromCamera(mKey)

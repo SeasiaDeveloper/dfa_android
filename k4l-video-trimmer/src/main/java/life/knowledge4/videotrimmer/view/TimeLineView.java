@@ -82,35 +82,37 @@ public class TimeLineView extends View {
                                        @Override
                                        public void execute() {
                                            try {
-                                               LongSparseArray<Bitmap> thumbnailList = new LongSparseArray<>();
 
-                                               MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-                                               mediaMetadataRetriever.setDataSource(getContext(), mVideoUri);
+                                                   LongSparseArray<Bitmap> thumbnailList = new LongSparseArray<>();
 
-                                               // Retrieve media data
-                                               long videoLengthInMs = Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) * 1000;
+                                                   MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+                                                   mediaMetadataRetriever.setDataSource(getContext(), mVideoUri);
 
-                                               // Set thumbnail properties (Thumbs are squares)
-                                               final int thumbWidth = mHeightView;
-                                               final int thumbHeight = mHeightView;
+                                                   // Retrieve media data
+                                                   long videoLengthInMs = Integer.parseInt(mediaMetadataRetriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION)) * 1000;
 
-                                               int numThumbs = (int) Math.ceil(((float) viewWidth) / thumbWidth);
+                                                   // Set thumbnail properties (Thumbs are squares)
+                                                   final int thumbWidth = mHeightView;
+                                                   final int thumbHeight = mHeightView;
 
-                                               final long interval = videoLengthInMs / numThumbs;
+                                                   int numThumbs = (int) Math.ceil(((float) viewWidth) / thumbWidth);
 
-                                               for (int i = 0; i < numThumbs; ++i) {
-                                                   Bitmap bitmap = mediaMetadataRetriever.getFrameAtTime(i * interval, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
-                                                   // TODO: bitmap might be null here, hence throwing NullPointerException. You were right
-                                                   try {
-                                                       bitmap = Bitmap.createScaledBitmap(bitmap, thumbWidth, thumbHeight, false);
-                                                   } catch (Exception e) {
-                                                       e.printStackTrace();
+                                                   final long interval = videoLengthInMs / numThumbs;
+
+                                                   for (int i = 0; i < numThumbs; ++i) {
+                                                       Bitmap bitmap = mediaMetadataRetriever.getFrameAtTime(i * interval, MediaMetadataRetriever.OPTION_CLOSEST_SYNC);
+                                                       // TODO: bitmap might be null here, hence throwing NullPointerException. You were right
+                                                       try {
+                                                           bitmap = Bitmap.createScaledBitmap(bitmap, thumbWidth, thumbHeight, false);
+                                                       } catch (Exception e) {
+                                                           e.printStackTrace();
+                                                       }
+                                                       thumbnailList.put(i, bitmap);
                                                    }
-                                                   thumbnailList.put(i, bitmap);
-                                               }
 
-                                               mediaMetadataRetriever.release();
-                                               returnBitmaps(thumbnailList);
+                                                   mediaMetadataRetriever.release();
+                                                   returnBitmaps(thumbnailList);
+
                                            } catch (final Throwable e) {
                                                Thread.getDefaultUncaughtExceptionHandler().uncaughtException(Thread.currentThread(), e);
                                            }

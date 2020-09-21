@@ -605,7 +605,6 @@ public class K4LVideoTrimmer extends FrameLayout {
 
         mVideoView.setVideoURI(mSrc);
         mVideoView.requestFocus();
-
         mTimeLineView.setVideo(mSrc);
     }
 

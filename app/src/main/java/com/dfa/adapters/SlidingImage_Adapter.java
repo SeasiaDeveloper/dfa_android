@@ -23,6 +23,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.dfa.R;
 import com.dfa.pojo.response.AdvertisementResponse;
+import com.dfa.ui.contribute.ContributeActivity;
 import com.dfa.ui.contribute.DonateActivity;
 
 import java.util.ArrayList;
@@ -123,7 +124,7 @@ public class SlidingImage_Adapter extends PagerAdapter {
                             new Intent(Intent.ACTION_VIEW, Uri.parse(IMAGES.get(position).getExternal_link()));
                     context.startActivity(browserIntent);
                 } else {
-                    Intent intent=new Intent(context, DonateActivity.class);
+                    Intent intent=new Intent(context, ContributeActivity.class);
                     context.startActivity(intent);
                 }
             }

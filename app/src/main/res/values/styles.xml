@@ -19,6 +19,8 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+
+
     <style name="AppTabLayout" parent="Widget.Design.TabLayout">
         <item name="android:maxHeight">50dp</item>
         <item name="tabIndicatorColor">@color/white</item>

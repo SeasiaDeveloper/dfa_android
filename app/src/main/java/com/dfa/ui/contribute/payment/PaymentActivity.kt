@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
-import android.view.WindowManager
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -168,6 +167,7 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener,PaymentCallba
 
         var checkImage = dialog.findViewById<CheckView>(R.id.check1)
         var tvPayment = dialog.findViewById<TextView>(R.id.tvPayment)
+        var searchTicket = dialog.findViewById<TextView>(R.id.searchTicket)
         var btnDone = dialog.findViewById<Button>(R.id.btnDone)
 
         tvPayment.setText("₹ "+paymentInRupiese)
@@ -179,6 +179,14 @@ class PaymentActivity : AppCompatActivity(), PaymentResultListener,PaymentCallba
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
             finish()
+        }
+
+        searchTicket.setOnClickListener {
+            val browserIntent = Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse("https://drugfreearunachal.org/ticket/")
+            )
+            startActivity(browserIntent)
         }
 
         object : CountDownTimer(800, 800) {

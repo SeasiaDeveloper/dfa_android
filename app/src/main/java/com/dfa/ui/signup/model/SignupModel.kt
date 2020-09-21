@@ -95,7 +95,7 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
             return
         }
 
-      else  if (!(Utilities.isValidMail(request.email))) {
+      else  if (!(Utilities.isValidMail(request.email.trim()))) {
             signupPresenterImplClass.emailValidationFailure()
             return
         }
@@ -110,14 +110,14 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
             }
 
             if ((request.adhar_number.trim()).isNotEmpty()) {
-                if (!(Utilities.validateAadharNumber(request.adhar_number))) {
+                if (!(Utilities.validateAadharNumber(request.adhar_number.trim()))) {
                     signupPresenterImplClass.adhaarNoValidationFailure()
                     return
                 }
             }
 
-            if ((request.email).isNotEmpty()) {
-                if (!(Utilities.isValidMail(request.email))) {
+            if ((request.email.trim()).isNotEmpty()) {
+                if (!(Utilities.isValidMail(request.email.trim()))) {
                     signupPresenterImplClass.emailValidationFailure()
                     return
                 }

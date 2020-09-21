@@ -21,7 +21,7 @@
         android:textColor="@color/black"
         android:textSize="@dimen/dp_20"
         android:textStyle="bold"
-        android:layout_marginTop="@dimen/dp_25"
+        android:layout_marginTop="@dimen/dp_20"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/check1"
         android:layout_width="wrap_content"
@@ -35,6 +35,16 @@
         android:layout_below="@+id/tvPayment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+    <com.dfa.customviews.CustomtextView
+        android:id="@+id/searchTicket"
+        android:text="Search Tickets"
+        android:textColor="@color/blue"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
 
     <Button
 
