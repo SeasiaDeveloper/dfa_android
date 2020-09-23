@@ -40,6 +40,16 @@ class CommentsAdapter(
         return mList.size
     }
 
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var index: Int? = null
 
@@ -60,6 +70,8 @@ class CommentsAdapter(
                   try{  Glide.with(context).load(item.profile_pic).into(itemView.imgProfile)}catch (e:Exception){
                       e.printStackTrace()
                   }
+                } else{
+                    Glide.with(context).load(R.drawable.user).into(itemView.imgProfile)
                 }
 
                 itemView.imgExpandable.setOnClickListener {

@@ -281,7 +281,12 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                                 )
                           //  Utilities.showProgress(activity!!)
                             presenter.getComplaints(casesRequest, token, type)
-                            progressBar.visibility = View.VISIBLE
+
+                            if(progressBar!=null){
+                                progressBar.visibility = View.VISIBLE
+
+                            }
+
 
                         }
                     } catch (e: java.lang.Exception) {
@@ -562,7 +567,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         if (hitType == "foreground") {
             // newCompaintsButton!!.visibility = View.GONE
 
-               progressBar.visibility = View.GONE
+            if(progressBar!=null){
+                progressBar.visibility = View.GONE
+
+            }
+
 
 
             if (response.data!!.isNotEmpty()) {
@@ -599,7 +608,11 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 ////                    }
 //                }
                 }
-                progressBar.visibility = View.GONE
+
+                if(progressBar!=null){
+                    progressBar.visibility = View.GONE
+
+                }
             }
 
             setProfilePic()

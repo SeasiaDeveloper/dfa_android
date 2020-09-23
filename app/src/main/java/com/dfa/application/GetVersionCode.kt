@@ -59,6 +59,9 @@ var context=context1
 
 
      private fun showVersionUpdateDialog(newVersion:String) {
+         try {
+
+
         lateinit var dialog: android.app.AlertDialog
         val builder = android.app.AlertDialog.Builder(context)
         val binding = DataBindingUtil.inflate(
@@ -97,7 +100,12 @@ var context=context1
         dialog = builder.create()
         dialog.setCancelable(false)
         dialog.show()
-    }
+         }catch (e:java.lang.Exception){
+
+         }
+
+     }
+
 
 }
 

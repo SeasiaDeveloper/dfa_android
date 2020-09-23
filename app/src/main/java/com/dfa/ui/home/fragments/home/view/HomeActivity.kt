@@ -13,6 +13,7 @@ import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
+import android.telephony.ServiceState
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -350,6 +351,8 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         mToggle = ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close)
         mDrawerLayout!!.addDrawerListener(mToggle!!)
         mToggle!!.syncState()
+
+
 
         getSupportActionBar()?.setHomeButtonEnabled(true)
         getSupportActionBar()?.setDisplayHomeAsUpEnabled(true)

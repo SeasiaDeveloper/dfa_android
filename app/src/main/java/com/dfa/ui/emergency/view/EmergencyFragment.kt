@@ -51,10 +51,10 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
     override fun onResume() {
         super.onResume()
 
-        if(staticDistValueList?.data?.size==0)
+        if (staticDistValueList?.data?.size == 0)
             presenter.hitDistricApi()
 
-        if(emergencyDetailList.size==0)
+        if (emergencyDetailList.size == 0)
             callApi()
 
         if (isFirst) {
@@ -70,7 +70,7 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
         } else {
 
 
-            if (staticDistValueList?.data!=null && (staticDistValueList?.data!!.size> 0) && noChnage==false) {
+            if (staticDistValueList?.data != null && (staticDistValueList?.data!!.size > 0) && noChnage == false) {
                 getDistrictDropDown(staticDistValueList!!)
                 // emergencyDetailsAdapter.changeList(emergencyDetailList)
 
@@ -130,8 +130,7 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
 
     }
 
-    fun callApi()
-    {
+    fun callApi() {
 
 
         var internetUtils = InternetUtils()
@@ -143,11 +142,13 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
                     PreferenceHandler.AUTHORIZATION,
                     ""
                 )
-            val latitude = PreferenceHandler.readString(mContext, PreferenceHandler.LATITUDE, "").toString()
-            val longitude = PreferenceHandler.readString(mContext, PreferenceHandler.LONGITUDE, "").toString()
-            var request = EmergencyDataRequest("",latitude,longitude)
+            val latitude =
+                PreferenceHandler.readString(mContext, PreferenceHandler.LATITUDE, "").toString()
+            val longitude =
+                PreferenceHandler.readString(mContext, PreferenceHandler.LONGITUDE, "").toString()
+            var request = EmergencyDataRequest("", latitude, longitude)
 
-            if(latitude!="" && latitude!="null")
+            if (latitude != "" && latitude != "null")
                 presenter.hitEmergencyApi(request, authorizationToken)
         } else {
             Utilities.showMessage(
@@ -156,71 +157,97 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
             )
         }
     }
+
     fun getDistrictDropDown(response: DistResponse) {
-        staticDistValueList = response
-        val distValueList = ArrayList<String>()
-        distValueList.add("Please select district")
-        for (i in 0..response.data.size - 1) {
-            distValueList.add(response.data.get(i).name)
-        }
-
-        // var list_of_items = arrayOf(distValueList)
-        // val distArray = distValueList.toArray(arrayOfNulls<String>(distValueList.size))
-        val adapter = ArrayAdapter(
-            mContext,
-            R.layout.view_spinner_item, distValueList
-        )
-
-        adapter.setDropDownViewResource(R.layout.view_spinner_item)
-        spDistrict.setAdapter(adapter)
 
         try {
 
-
-            spDistrict.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View?,
-                    position: Int,
-                    id: Long
-                ) {
-                    // Display the selected item text on text view
-                    "Spinner selected : ${parent.getItemAtPosition(position)}"
-                    if (position != 0) {
-                        var internetUtils = InternetUtils()
-                        if (internetUtils.isOnline(activity!!)) {
-                            showProgress(mContext)
-                            var authorizationToken =
-                                PreferenceHandler.readString(
-                                    mContext,
-                                    PreferenceHandler.AUTHORIZATION,
-                                    ""
-                                )
-                            val latitude = PreferenceHandler.readString(mContext, PreferenceHandler.LATITUDE, "").toString()
-                            val longitude = PreferenceHandler.readString(mContext, PreferenceHandler.LONGITUDE, "").toString()
-
-                            var request = EmergencyDataRequest(response.data.get(position - 1).id,latitude,longitude)
-                            presenter.hitEmergencyApi(request, authorizationToken)
-                        } else {
-                            Utilities.showMessage(
-                                mContext,
-                                getString(R.string.no_internet_connection)
-                            )
-                        }
+            if (response.data != null) {
+                if (response.data.size > 0) {
+                    staticDistValueList = response
+                    val distValueList = ArrayList<String>()
+                    distValueList.add("Please select district")
+                    for (i in 0..response.data.size - 1) {
+                        distValueList.add(response.data.get(i).name)
                     }
+
+                    // var list_of_items = arrayOf(distValueList)
+                    // val distArray = distValueList.toArray(arrayOfNulls<String>(distValueList.size))
+                    val adapter = ArrayAdapter(
+                        mContext,
+                        R.layout.view_spinner_item, distValueList
+                    )
+
+                    adapter.setDropDownViewResource(R.layout.view_spinner_item)
+                    spDistrict.setAdapter(adapter)
+
+                    try {
+
+
+                        spDistrict.onItemSelectedListener =
+                            object : AdapterView.OnItemSelectedListener {
+                                override fun onItemSelected(
+                                    parent: AdapterView<*>,
+                                    view: View?,
+                                    position: Int,
+                                    id: Long
+                                ) {
+                                    // Display the selected item text on text view
+                                    "Spinner selected : ${parent.getItemAtPosition(position)}"
+                                    if (position != 0) {
+                                        var internetUtils = InternetUtils()
+                                        if (internetUtils.isOnline(activity!!)) {
+                                            showProgress(mContext)
+                                            var authorizationToken =
+                                                PreferenceHandler.readString(
+                                                    mContext,
+                                                    PreferenceHandler.AUTHORIZATION,
+                                                    ""
+                                                )
+                                            val latitude = PreferenceHandler.readString(
+                                                mContext,
+                                                PreferenceHandler.LATITUDE,
+                                                ""
+                                            ).toString()
+                                            val longitude = PreferenceHandler.readString(
+                                                mContext,
+                                                PreferenceHandler.LONGITUDE,
+                                                ""
+                                            ).toString()
+
+                                            var request = EmergencyDataRequest(
+                                                response.data.get(position - 1).id,
+                                                latitude,
+                                                longitude
+                                            )
+                                            presenter.hitEmergencyApi(request, authorizationToken)
+                                        } else {
+                                            Utilities.showMessage(
+                                                mContext,
+                                                getString(R.string.no_internet_connection)
+                                            )
+                                        }
+                                    }
 //                    else {
 ////                        var mList: ArrayList<EmergencyDataResponse.Data> = ArrayList()
 ////                        emergencyDetailsAdapter.changeList(mList)
 ////                    }
-                }
+                                }
 
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    // Another interface callback
+                                override fun onNothingSelected(parent: AdapterView<*>) {
+                                    // Another interface callback
+                                }
+                            }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 }
             }
-        } catch (e: Exception) {
-            e.printStackTrace()
+
+        } catch (e: java.lang.Exception) {
+
         }
+
     }
 
     override fun onAttach(context: Context) {
@@ -285,14 +312,17 @@ class EmergencyFragment : Fragment(), EmergencyFragmentView {
 
     override fun getEmergencyDataSuccess(myEarningsResponse: EmergencyDataResponse) {
         dismissProgress()
-        if (myEarningsResponse.data!!.size > 0 ) {
+        if (myEarningsResponse.data!!.size > 0) {
 
 
-            if(isFirst) emergencyDetailList=myEarningsResponse.data
+            if (isFirst) emergencyDetailList = myEarningsResponse.data
             emergencyDetailsAdapter.changeList(myEarningsResponse.data!!)
         } else {
             emergencyDetailsAdapter.changeList(myEarningsResponse.data!!)
-            if(isFirst==false) Utilities.showMessage(mContext, "No data found corresponding to the selected District.")
+            if (isFirst == false) Utilities.showMessage(
+                mContext,
+                "No data found corresponding to the selected District."
+            )
         }
 
     }
