@@ -34,7 +34,7 @@ class NgoModel(private var presenter: NgoPresenter){
                 if(t is SocketTimeoutException){
                     presenter.showError("Socket Time error")
                 }else{
-                    presenter.showError(t.message + "")
+                    presenter.showError("Somthing went wrong, please try again latter")
                 }
             }
         })

@@ -1,6 +1,7 @@
 package com.dfa.ui.generalpublic
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Activity
 import android.app.AlertDialog
@@ -13,24 +14,25 @@ import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.location.Location
-import android.location.LocationManager
+import android.graphics.drawable.Drawable
+import android.location.*
 import android.media.MediaMetadataRetriever
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.*
 import android.provider.DocumentsContract
 import android.provider.MediaStore
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewTreeObserver
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.MediaController
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -58,7 +60,14 @@ import com.dfa.utils.FileUtils
 import com.dfa.utils.RealPathUtil.getCapturedImage
 import com.dfa.utils.Utilities.PERMISSION_ID
 import com.dfa.utils.Utilities.PERMISSION_ID_CAMERA
-import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.maps.*
+import com.google.android.gms.maps.GoogleMap.OnCameraChangeListener
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
 import com.vincent.videocompressor.VideoCompress
@@ -70,7 +79,10 @@ import kotlin.collections.ArrayList
 
 @Suppress("INACCESSIBLE_TYPE")
 class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChangedListener,
-    PublicComplaintView, GetReportCrimeAlertDialog {
+    LocationListener,GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener,
+    OnMapReadyCallback,
+PublicComplaintView, GetReportCrimeAlertDialog {
     private lateinit var file: File
     private var longitude: String = ""
     private var lattitude: String = ""
@@ -85,6 +97,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private var authorizationToken: String? = ""
     private var complaintsPresenter: PublicComplaintPresenter = PublicComplaintPresenterImpl(this)
     private var range = 1
+    private var isChecked="0"
     private var mediaType: String? = null
     private var SELECT_VIDEOS: Int = 2
     private var SELECT_VIDEOS_KITKAT: Int = 2
@@ -118,14 +131,17 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
     private var mFusedLocationClass: FusedLocationClass? = null
     private var mLocation: Location? = null
     private var mHandler: Handler? = null
+    var finaLatitude=""
+    var finaLongitude=""
+
 
     private val mRunnable: Runnable = object : Runnable {
         override fun run() {
             if (mFusedLocationClass != null) {
+
                 mLocation = mFusedLocationClass?.getLastLocation(this@GeneralPublicActivity)
                 if (mLocation != null) {
                     val mAddress: String = Utilities.getAddressFromLatLong(
-
                         mLocation!!.getLatitude(),
                         mLocation!!.getLongitude(),
                         this@GeneralPublicActivity
@@ -142,6 +158,20 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     lattitude = mLocation!!.getLatitude().toString() + ""
                     longitude = mLocation!!.getLongitude().toString() + ""
                     mHandler!!.removeCallbacks(this)
+                     finaLatitude=lattitude
+                     finaLongitude=longitude
+
+                    if(!lattitude.isEmpty()){
+                        mMap!!.animateCamera(
+                            CameraUpdateFactory.newLatLngZoom(
+                                LatLng(
+                                    lattitude.toDouble(),
+                                    longitude.toDouble()
+                                ), 19.0f
+                            )
+                        )
+                    }
+
                 } else mHandler!!.postDelayed(this, 500)
             } else mHandler!!.postDelayed(this, 500)
         }
@@ -167,8 +197,12 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         (toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
+        getMap()
         setListeners()
         locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+
+
+
         if (!Utilities.checkPermissions(this)) {
             Utilities.requestPermissions(this)
         } else {
@@ -181,6 +215,30 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         mFusedLocationClass = FusedLocationClass(this)
         mHandler = Handler()
         mHandler!!.postDelayed(mRunnable, 500)
+
+
+
+        tvMobleNumber.addTextChangedListener(object : TextWatcher {
+           override fun afterTextChanged(view: Editable?) {
+           }
+            override fun beforeTextChanged(
+                s: CharSequence?, start: Int,
+                count: Int, after: Int
+            ) {
+            }
+
+            override fun onTextChanged(
+                charSequence: CharSequence, start: Int,
+                before: Int, count: Int
+            ) {
+//                if ((charSequence.length + 1) % 11 == 0) {
+//
+//                    tvMobleNumber.setText(charSequence.toString() + ",");
+//                    tvMobleNumber.setSelection(charSequence.length+1);
+//                }
+            }
+        })
+
 
 
         /* scroll_view.setOnTouchListener(object : View.OnTouchListener {
@@ -204,13 +262,41 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                  return true;
              }
          })*/
+
+
+
+        try {
+            tvDescription.setOnTouchListener(object : View.OnTouchListener {
+                override fun onTouch(v: View, event: MotionEvent): Boolean {
+                    if (v.id === R.id.tvDescription) {
+                        v.parent.requestDisallowInterceptTouchEvent(true)
+                        when (event.action and MotionEvent.ACTION_MASK) {
+                            MotionEvent.ACTION_UP -> v.parent
+                                .requestDisallowInterceptTouchEvent(false)
+                        }
+                    }
+                    return false
+                }
+            })
+        } catch (e: Exception) {
+        }
+
+
+
     }
+
 
     //
     private fun setListeners() {
         // tvSelectPhoto.setOnClickListener(this)
         tvTakePhoto.setOnClickListener(this)
+        captureImage.setOnClickListener(this)
+        descriptionTitle.setOnClickListener(this)
+        mobileTitle.setOnClickListener(this)
+        allowFollowyou.setOnClickListener(this)
+        placeTitle.setOnClickListener(this)
         img_delete.setOnClickListener(this)
+        btnCheck.setOnClickListener(this)
 
         // tvRecordVideo.setOnClickListener(this)
         tvTakeVideo.setOnClickListener(this)
@@ -246,28 +332,303 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         return publicParentLayout
     }
 
+
+    fun chengeIcon() {
+        captureImageChild.visibility = View.GONE
+        descriptionChild.visibility = View.GONE
+        mobileParent.visibility = View.GONE
+        placeParent.visibility = View.GONE
+        allowFollowyouParent.visibility = View.GONE
+        val img: Drawable =
+            this@GeneralPublicActivity.getResources().getDrawable(R.drawable.ic_baseline_add_24)
+        captureImage.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+        descriptionTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+        mobileTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+        allowFollowyou.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+        placeTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+    }
+
+    var mMap: GoogleMap? = null
+
+    @SuppressLint("ClickableViewAccessibility")
+    fun getMap(){
+        val mapFragment: SupportMapFragment? = supportFragmentManager
+            .findFragmentById(R.id.mapView) as SupportMapFragment?
+        mapFragment!!.getMapAsync(this)
+
+
+        var transparentImageView = findViewById<ImageView>(R.id.transparent_image);
+
+        transparentImageView.setOnTouchListener(object : View.OnTouchListener {
+
+            override fun onTouch(v: View?, event: MotionEvent?): Boolean {
+                var action = event!!.getAction();
+                when (action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        scroll_view.requestDisallowInterceptTouchEvent(true);
+                        // Disable touch on transparent view
+                        return false
+                    }
+
+                    MotionEvent.ACTION_UP -> {
+                        scroll_view.requestDisallowInterceptTouchEvent(false);
+                        return true
+                    }
+
+                    MotionEvent.ACTION_MOVE -> {
+                        scroll_view.requestDisallowInterceptTouchEvent(true);
+                        return false
+                    }
+                }
+                return true
+            }
+
+        });
+
+    }
+    var currentLoc=true
+    var currentLocFirstTime=true
+    var currentLatitude:Double?=null
+    var currentLongitude:Double?=null
+
+    override fun onMapReady(googleMap: GoogleMap?) {
+        mMap = googleMap;
+
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+
+            return
+        }
+        googleMap!!.setMyLocationEnabled(true);
+        googleMap!!.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+
+//
+//                mMap!!.setOnMyLocationChangeListener { location ->
+//
+//                    currentLatitude=location.latitude
+//                    currentLongitude=location.longitude
+//        }
+
+        var cameraPosition:CameraPosition?=null
+
+        googleMap.setOnCameraChangeListener(OnCameraChangeListener { cameraPosition1 ->
+            currentLoc=true
+            cameraPosition=cameraPosition1
+        })
+
+
+        googleMap.setOnCameraIdleListener {
+            if (cameraPosition != null) {
+                if (cameraPosition!!.target.latitude != 0.0) {
+
+                    if(currentLocFirstTime){
+                        currentLatitude=cameraPosition!!.target.latitude
+                        currentLongitude=cameraPosition!!.target.longitude
+                        currentLocFirstTime=false
+                    }
+
+
+                  if(currentLoc){
+                      if(calculateDistance(cameraPosition!!,currentLatitude,currentLongitude)<=100){
+                          getAddress(cameraPosition!!)
+                      } else{
+                          tvAdress.setText("Come within 100 mtrs of the place of incident")
+                          tvAdress.setTextColor(resources.getColor(R.color.red))
+                          finaLatitude=""
+                          finaLongitude=""
+                      }
+                        currentLoc=false
+                    }
+
+               //     Toast.makeText(this,""+calculateDistance(cameraPosition!!,currentLatitude,currentLongitude),Toast.LENGTH_LONG).show()
+
+                }
+            }
+        }
+
+    }
+
+
+
+    fun getAddress(cameraPosition: CameraPosition) {
+
+        try{
+
+            finaLatitude=cameraPosition.target.latitude.toString()
+            finaLongitude=cameraPosition.target.longitude.toString()
+        val geocoder: Geocoder
+        val addresses: List<Address>
+        geocoder = Geocoder(this, Locale.getDefault())
+        addresses = geocoder.getFromLocation(cameraPosition.target.latitude, cameraPosition.target.longitude, 1)
+        val address: String = addresses[0].getAddressLine(0)
+        tvAdress.setText(address)
+        tvAdress.setTextColor(resources.getColor(R.color.colorPolice))
+        mMap!!.animateCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                LatLng(
+                    cameraPosition.target.latitude,
+                    cameraPosition.target.longitude
+                ), 19.0f
+            )
+        )
+
+        }catch (e:Exception){
+
+        }
+
+    }
+
+    fun calculateDistance(
+        cameraPosition: CameraPosition,
+        currentLatitude: Double?,
+        currentLongitude: Double?
+    ): Int {
+        val locationA = Location("point A")
+        if (!(currentLatitude!!.equals("")) && !(currentLatitude!!.equals(""))) {
+            locationA.latitude = currentLatitude!!.toDouble()
+            locationA.longitude = currentLongitude!!.toDouble()
+            val locationB = Location("point B")
+            locationB.latitude = cameraPosition.target.latitude!!.toDouble()
+            locationB.longitude = cameraPosition.target.longitude!!.toDouble()
+            return (locationA.distanceTo(locationB)).toInt()
+        } else {
+            return 0
+        }
+
+    }
+
+
+    var mLastLocation: Location? = null
+    var mCurrLocationMarker: Marker? = null
+    var mGoogleApiClient: GoogleApiClient? = null
+    var mLocationRequest: LocationRequest? = null
+
+    override fun onConnected(p0: Bundle?) {
+
+    }
+    override fun onConnectionFailed(p0: ConnectionResult) {
+    }
+    override fun onConnectionSuspended(p0: Int) {
+    }
+
+    override fun onLocationChanged(location: Location?) {
+//        val latLng = LatLng(location!!.latitude, location.longitude)
+//        val cameraUpdate: CameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 18f)
+//        mMap!!.animateCamera(cameraUpdate)
+    }
+
+    override fun onStatusChanged(p0: String?, p1: Int, p2: Bundle?) {
+    }
+
+    override fun onProviderEnabled(p0: String?) {
+    }
+
+    override fun onProviderDisabled(p0: String?) {
+    }
+
+
     override fun onClick(p0: View?) {
         when (p0?.id) {
-//            R.id.tvSelectPhoto -> {
-//                path = ""
-//                getGalleryPermission()
-//                if (resultGallery)
-//                    galleryIntent()
-//            }
-            R.id.tvTakePhoto -> {
-//                path = ""
-//                getCameraPermission()
-//                if (isOpenCamera) {
-//                    cameraIntent()
-//                }
+            R.id.captureImage -> {
 
+                if (captureImageChild!!.isVisible) {
+                    chengeIcon()
+                    captureImageChild.visibility = View.GONE
+                    val img: Drawable = this@GeneralPublicActivity.getResources()
+                        .getDrawable(R.drawable.ic_baseline_add_24)
+                    captureImage.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+                } else {
+                    chengeIcon()
+                    captureImageChild.visibility = View.VISIBLE
+                    val img: Drawable =
+                        this@GeneralPublicActivity.getResources().getDrawable(R.drawable.ic_minous)
+                    captureImage.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+                }
+            }
+            R.id.descriptionTitle -> {
+
+                if (descriptionChild!!.isVisible) {
+                    chengeIcon()
+                    descriptionChild.visibility = View.GONE
+                    val img: Drawable = this@GeneralPublicActivity.getResources()
+                        .getDrawable(R.drawable.ic_baseline_add_24)
+                    descriptionTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+                } else {
+                    chengeIcon()
+                    descriptionChild.visibility = View.VISIBLE
+                    val img: Drawable =
+                        this@GeneralPublicActivity.getResources().getDrawable(R.drawable.ic_minous)
+                    descriptionTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+                }
+            }
+
+            R.id.mobileTitle -> {
+
+                if (mobileParent!!.isVisible) {
+                    chengeIcon()
+                    mobileParent.visibility = View.GONE
+                    val img: Drawable = this@GeneralPublicActivity.getResources()
+                        .getDrawable(R.drawable.ic_baseline_add_24)
+                    mobileTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+                } else {
+                    chengeIcon()
+                    mobileParent.visibility = View.VISIBLE
+                    val img: Drawable =
+                        this@GeneralPublicActivity.getResources().getDrawable(R.drawable.ic_minous)
+                    mobileTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+                }
+            }
+            R.id.allowFollowyou -> {
+
+                if (allowFollowyouParent!!.isVisible) {
+                    chengeIcon()
+                    allowFollowyouParent.visibility = View.GONE
+                    val img: Drawable = this@GeneralPublicActivity.getResources()
+                        .getDrawable(R.drawable.ic_baseline_add_24)
+                    allowFollowyou.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+                } else {
+                    chengeIcon()
+                    allowFollowyouParent.visibility = View.VISIBLE
+                    val img: Drawable =
+                        this@GeneralPublicActivity.getResources().getDrawable(R.drawable.ic_minous)
+                    allowFollowyou.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+                }
+            }
+
+
+            R.id.placeTitle -> {
+
+                if (placeParent!!.isVisible) {
+                    chengeIcon()
+                    placeParent.visibility = View.GONE
+                    val img: Drawable = this@GeneralPublicActivity.getResources()
+                        .getDrawable(R.drawable.ic_baseline_add_24)
+                    placeTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+                } else {
+                    chengeIcon()
+                    placeParent.visibility = View.VISIBLE
+                    val img: Drawable =
+                        this@GeneralPublicActivity.getResources().getDrawable(R.drawable.ic_minous)
+                    placeTitle.setCompoundDrawablesWithIntrinsicBounds(null, null, img, null)
+                }
+            }
+
+
+            R.id.tvTakePhoto -> {
                 showChoiceDialog("photo")
 
 
             }
 
             R.id.img_delete -> {
-                mediaType=null
+                mediaType = null
                 path = ""
                 pathOfImages = ArrayList()
                 mediaControls.visibility = View.GONE
@@ -279,40 +640,76 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     videoView.stopPlayback()
                 }
             }
-//            R.id.tvRecordVideo -> {
-//               // Utilities.showMessage(this, getString(R.string.coming_soon))
-//               path = ""
-//                if (CheckRuntimePermissions.checkMashMallowPermissions(
-//                        this,
-//                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS_GALLERY_VIDEO
-//                    )
-//                ) {
-//                    videoFromGalleryIntent()
-//                }
-//            }
+
 
             R.id.tvTakeVideo -> {
-//                //Utilities.showMessage(this, getString(R.string.coming_soon))
-//                path = ""
-//                if (CheckRuntimePermissions.checkMashMallowPermissions(
-//                        this,
-//                        PERMISSION_READ_STORAGE, REQUEST_PERMISSIONS
-//                    )
-//                ) {
-//                    recordVideo()
-//                }
 
                 showChoiceDialog("video")
 
+            }
+
+            R.id.btnCheck -> {
+                val checked = btnCheck.isChecked
+
+                if(checked!!){
+                    isChecked="1"
+                } else{
+                    isChecked="0"
+                }
             }
             R.id.btnSubmit -> {
                 id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
                 police_id = ""
                 spDistrict.visibility = View.GONE
                 spPolice.visibility = View.GONE
-                if (etDescription.text.toString().trim() == "") {
-                    Utilities.showMessage(this, "Please enter description")
+                var numberLength=0
+                if(!tvMobleNumber.text.isEmpty()) {
+                    val elements = tvMobleNumber.text!!.split(",")
+                    var numberList = ArrayList<String>()
 
+                    for (i in 0..elements.size - 1) {
+                        if (!elements.get(i).isEmpty()) {
+                            numberList.add(elements.get(i))
+                        }
+                    }
+
+
+
+                    for (i in 0..numberList.size - 1) {
+
+                        if (numberList.get(i).length != 10) {
+                            numberLength = 1
+                        }
+                    }
+                }
+
+                if (getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.name.equals(
+                        "Drug Sales & Supply"
+                    )
+                ) {
+                    Toast.makeText(this, "Please select crime type", Toast.LENGTH_LONG).show()
+                }
+
+
+                else if(finaLatitude.isEmpty()){
+                }
+                else if(!tvMobleNumber.text.isEmpty() && tvMobleNumber.length()<10){
+                    Toast.makeText(this," Phone number length should be 10 digits",Toast.LENGTH_LONG).show()
+                }
+                else if(numberLength.equals(1)){
+                    Toast.makeText(this," Phone number length is not valid",Toast.LENGTH_LONG).show()
+                }
+//                else if(!tvSuspectMobileNumber.text.toString().trim().isEmpty() && tvSuspectMobileNumber.length()<10){
+//                    tvSuspectMobileNumber.error="Phone number length should be 10 digits"
+//                    tvSuspectMobileNumber.requestFocus()
+//                }
+//                else if(!isPhoneNumberValid(tvSuspectMobileNumber.text.toString().trim())){
+//                    tvSuspectMobileNumber.error="Enter valid number"
+//                    tvSuspectMobileNumber.requestFocus()
+//                }
+
+                else if (etDescription.text.toString().trim() == "") {
+                    Utilities.showMessage(this, "Please enter description")
                 } else {
                     if (mediaType.equals("videos")) {
                         if (pathOfImages.size > 0) {
@@ -324,28 +721,41 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                                 } else {
 
 //                                    complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
-                                    id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
-                                    var intent = Intent(this, NearByPoliceStationActivity::class.java)
+                                    id =
+                                        getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
+                                    var intent =
+                                        Intent(this, NearByPoliceStationActivity::class.java)
                                     intent.putStringArrayListExtra("pathOfImages", pathOfImages)
                                     intent.putExtra("mediaType", mediaType)
                                     intent.putExtra("range", "" + range)
                                     intent.putExtra("id", id)
-                                    intent.putExtra("changeMedia", ""+changeMedia)
+                                    intent.putExtra("changeMedia", "" + changeMedia)
                                     intent.putExtra("etDescription", etDescription.text.toString())
+                                    intent.putExtra("etPhoneNumber", tvMobleNumber.text.toString())
+                                    intent.putExtra("isChecked", isChecked)
+                                    intent.putExtra("finaLatitude", finaLatitude)
+                                    intent.putExtra("finaLongitude", finaLongitude)
+                                    intent.putExtra("locationAddress",  tvAdress.text.toString().trim())
                                     startActivity(intent)
-
                                 }
                             }
                         } else {
-                           // complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
-                            id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
+                            // complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                            id =
+                                getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
                             var intent = Intent(this, NearByPoliceStationActivity::class.java)
                             intent.putStringArrayListExtra("pathOfImages", pathOfImages)
                             intent.putExtra("mediaType", mediaType)
                             intent.putExtra("range", "" + range)
                             intent.putExtra("id", id)
-                            intent.putExtra("changeMedia", ""+changeMedia)
+                            intent.putExtra("changeMedia", "" + changeMedia)
                             intent.putExtra("etDescription", etDescription.text.toString())
+                            intent.putExtra("etPhoneNumber", tvMobleNumber.text.toString())
+                            intent.putExtra("isChecked", isChecked)
+                            intent.putExtra("finaLatitude", finaLatitude)
+                            intent.putExtra("finaLongitude", finaLongitude)
+                            intent.putExtra("locationAddress",  tvAdress.text.toString().trim())
+
                             startActivity(intent)
 
                         }
@@ -353,17 +763,22 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         Toast.makeText(this, "Please select crime type", Toast.LENGTH_LONG).show()
                     } else if (mediaType == null) {
                         Toast.makeText(this, "Please select media", Toast.LENGTH_LONG).show()
-                    }
-
-                    else {
-                        id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
+                    } else {
+                        id =
+                            getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
                         var intent = Intent(this, NearByPoliceStationActivity::class.java)
                         intent.putStringArrayListExtra("pathOfImages", pathOfImages)
                         intent.putExtra("mediaType", mediaType)
                         intent.putExtra("range", "" + range)
                         intent.putExtra("id", id)
-                        intent.putExtra("changeMedia", ""+changeMedia)
+                        intent.putExtra("changeMedia", "" + changeMedia)
                         intent.putExtra("etDescription", etDescription.text.toString())
+                        intent.putExtra("etPhoneNumber", tvMobleNumber.text.toString())
+                        intent.putExtra("isChecked", isChecked)
+                        intent.putExtra("finaLatitude", finaLatitude)
+                        intent.putExtra("finaLongitude", finaLongitude)
+                        intent.putExtra("locationAddress",  tvAdress.text.toString().trim())
+
                         startActivity(intent)
                         //   complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
                     }
@@ -421,7 +836,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
             //}
 
             R.id.clear_image -> {
-                mediaType=null
+                mediaType = null
                 pathOfImages = ArrayList()
                 imageview_layout.visibility = View.GONE
                 val options = RequestOptions()
@@ -552,15 +967,20 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                 if (lengthBeforeCom > 100000 && lengthBeforeCom <= 5000000) {
                     pathOfImages = ArrayList()
                     pathOfImages.add(video.get(0))
-                   // complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                    // complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
                     id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
                     var intent = Intent(this, NearByPoliceStationActivity::class.java)
                     intent.putStringArrayListExtra("pathOfImages", pathOfImages)
                     intent.putExtra("mediaType", mediaType)
                     intent.putExtra("range", "" + range)
                     intent.putExtra("id", id)
-                    intent.putExtra("changeMedia", ""+changeMedia)
+                    intent.putExtra("changeMedia", "" + changeMedia)
                     intent.putExtra("etDescription", etDescription.text.toString())
+                    intent.putExtra("etPhoneNumber", tvMobleNumber.text.toString())
+                    intent.putExtra("isChecked", isChecked)
+                    intent.putExtra("finaLatitude", finaLatitude)
+                    intent.putExtra("finaLongitude", finaLongitude)
+                    intent.putExtra("locationAddress",  tvAdress.text.toString().trim())
                     startActivity(intent)
 
 
@@ -570,15 +990,21 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         changeMedia = 0
                         pathOfImages = ArrayList()
                         pathOfImages.add(outPath)
-                    //    complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
-                        id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
+                        //    complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                        id =
+                            getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
                         var intent = Intent(this, NearByPoliceStationActivity::class.java)
                         intent.putStringArrayListExtra("pathOfImages", pathOfImages)
                         intent.putExtra("mediaType", mediaType)
                         intent.putExtra("range", "" + range)
                         intent.putExtra("id", id)
-                        intent.putExtra("changeMedia", ""+changeMedia)
+                        intent.putExtra("changeMedia", "" + changeMedia)
                         intent.putExtra("etDescription", etDescription.text.toString())
+                        intent.putExtra("etPhoneNumber", tvMobleNumber.text.toString())
+                        intent.putExtra("isChecked", isChecked)
+                        intent.putExtra("finaLatitude", finaLatitude)
+                        intent.putExtra("finaLongitude", finaLongitude)
+                        intent.putExtra("locationAddress",  tvAdress.text.toString().trim())
                         startActivity(intent)
 
                     } else {
@@ -605,15 +1031,24 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
 //                        if (File(outPath).length() <= 50000000) {
                                 pathOfImages = ArrayList()
                                 pathOfImages.add(outPath)
-                              //  complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
-                                id = getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
-                                var intent = Intent(this@GeneralPublicActivity, NearByPoliceStationActivity::class.java)
+                                //  complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                                id =
+                                    getCrimeTypesResponse!!.data?.get(spTypesOfCrime.selectedItemPosition)?.id
+                                var intent = Intent(
+                                    this@GeneralPublicActivity,
+                                    NearByPoliceStationActivity::class.java
+                                )
                                 intent.putStringArrayListExtra("pathOfImages", pathOfImages)
                                 intent.putExtra("mediaType", mediaType)
                                 intent.putExtra("range", "" + range)
                                 intent.putExtra("id", id)
-                                intent.putExtra("changeMedia", ""+changeMedia)
+                                intent.putExtra("changeMedia", "" + changeMedia)
                                 intent.putExtra("etDescription", etDescription.text.toString())
+                                intent.putExtra("etPhoneNumber", tvMobleNumber.text.toString())
+                                intent.putExtra("isChecked", isChecked)
+                                intent.putExtra("finaLatitude", finaLatitude)
+                                intent.putExtra("finaLongitude", finaLongitude)
+                                intent.putExtra("locationAddress",  tvAdress.text.toString().trim())
                                 startActivity(intent)
 
 //                        } else {
@@ -1092,10 +1527,15 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         val bytes = ByteArrayOutputStream()
         inImage.compress(Bitmap.CompressFormat.JPEG, 80, bytes)
 
-        var path: String? =null
+        var path: String? = null
         try {
-             path= MediaStore.Images.Media.insertImage(inContext.contentResolver, inImage, "Title", null)
-        }catch (e:Exception){
+            path = MediaStore.Images.Media.insertImage(
+                inContext.contentResolver,
+                inImage,
+                "Title",
+                null
+            )
+        } catch (e: Exception) {
 
         }
 
@@ -1218,10 +1658,10 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     val options = RequestOptions()
                         /* .centerCrop()*/
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
-                   // Glide.with(this).asBitmap().load(bitmapToByte(bitmap)).into(imgView)
+                    // Glide.with(this).asBitmap().load(bitmapToByte(bitmap)).into(imgView)
                     Glide.with(this).asBitmap().load(tempUri).into(imgView)
 
-                  //   var newPathString = getImageUri(this, bitmap)
+                    //   var newPathString = getImageUri(this, bitmap)
                     path = FileUtils.getPath(this, tempUri)
                     pathOfImages = ArrayList<String>()
                     pathOfImages.add(path)
@@ -1262,7 +1702,6 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                         retriever.release()
 
                         if (timeInMillisec >= 5000) {
-
 
 
                             val intent = Intent(this, TrimmerActivity::class.java)
@@ -1551,7 +1990,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                     longitude,
                     mediaType!!,
                     address,
-                    police_id
+                    police_id,"","",""
                 )
                 complaintsPresenter.saveDetailsRequest(
                     authorizationToken,
@@ -1578,6 +2017,7 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
         dismissProgress()
         this.getCrimeTypesResponse = getCrimeTypesResponse
         val distValueList = ArrayList<String>()
+        distValueList.add("Select types of crime")
         for (dist in getCrimeTypesResponse.data!!) {
             distValueList.add(dist.name!!)
         }
@@ -1730,30 +2170,52 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                                             videoCompressorCustom(pathOfImages)
                                         } else {
 
-                                          //  complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                                            //  complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
 
 
-                                            var intent = Intent(this@GeneralPublicActivity, NearByPoliceStationActivity::class.java)
-                                            intent.putStringArrayListExtra("pathOfImages", pathOfImages)
+                                            var intent = Intent(
+                                                this@GeneralPublicActivity,
+                                                NearByPoliceStationActivity::class.java
+                                            )
+                                            intent.putStringArrayListExtra(
+                                                "pathOfImages",
+                                                pathOfImages
+                                            )
                                             intent.putExtra("mediaType", mediaType)
                                             intent.putExtra("range", "" + range)
                                             intent.putExtra("id", id)
-                                            intent.putExtra("changeMedia", ""+changeMedia)
-                                            intent.putExtra("etDescription", etDescription.text.toString())
+                                            intent.putExtra("changeMedia", "" + changeMedia)
+                                            intent.putExtra(
+                                                "etDescription",
+                                                etDescription.text.toString()
+                                            )
+                                            intent.putExtra("etPhoneNumber", tvMobleNumber.text.toString())
+                                            intent.putExtra("isChecked", isChecked)
+                                            intent.putExtra("finaLatitude", finaLatitude)
+                                            intent.putExtra("finaLongitude", finaLongitude)
+                                            intent.putExtra("locationAddress",  tvAdress.text.toString().trim())
                                             startActivity(intent)
 
                                         }
                                     }
                                 } else {
-                               //     complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
+                                    //     complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
 
-                                    var intent = Intent(this@GeneralPublicActivity, NearByPoliceStationActivity::class.java)
+                                    var intent = Intent(
+                                        this@GeneralPublicActivity,
+                                        NearByPoliceStationActivity::class.java
+                                    )
                                     intent.putStringArrayListExtra("pathOfImages", pathOfImages)
                                     intent.putExtra("mediaType", mediaType)
-                                    intent.putExtra("changeMedia", ""+changeMedia)
+                                    intent.putExtra("changeMedia", "" + changeMedia)
                                     intent.putExtra("range", "" + range)
                                     intent.putExtra("id", id)
                                     intent.putExtra("etDescription", etDescription.text.toString())
+                                    intent.putExtra("etPhoneNumber", tvMobleNumber.text.toString())
+                                    intent.putExtra("isChecked", isChecked)
+                                    intent.putExtra("finaLatitude", finaLatitude)
+                                    intent.putExtra("finaLongitude", finaLongitude)
+                                    intent.putExtra("locationAddress",  tvAdress.text.toString().trim())
                                     startActivity(intent)
 
 
@@ -1761,13 +2223,21 @@ class GeneralPublicActivity : BaseActivity(), View.OnClickListener, OnRangeChang
                             } else {
 //                                complaintsPresenter.checkValidations(1, pathOfImages, etDescription.text.toString())
 
-                                var intent = Intent(this@GeneralPublicActivity, NearByPoliceStationActivity::class.java)
+                                var intent = Intent(
+                                    this@GeneralPublicActivity,
+                                    NearByPoliceStationActivity::class.java
+                                )
                                 intent.putStringArrayListExtra("pathOfImages", pathOfImages)
                                 intent.putExtra("mediaType", mediaType)
                                 intent.putExtra("range", "" + range)
                                 intent.putExtra("id", id)
-                                intent.putExtra("changeMedia", ""+changeMedia)
+                                intent.putExtra("changeMedia", "" + changeMedia)
                                 intent.putExtra("etDescription", etDescription.text.toString())
+                                intent.putExtra("etPhoneNumber", tvMobleNumber.text.toString())
+                                intent.putExtra("isChecked", isChecked)
+                                intent.putExtra("finaLatitude", finaLatitude)
+                                intent.putExtra("finaLongitude", finaLongitude)
+                                intent.putExtra("locationAddress",  tvAdress.text.toString().trim())
                                 startActivity(intent)
 
                             }

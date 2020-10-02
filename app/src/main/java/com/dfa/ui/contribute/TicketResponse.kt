@@ -6,8 +6,13 @@ class TicketResponse:Serializable {
     var next_page: String? = null
 
     var code: String? = null
+    var lottery_date: String? = null
+    var lottery_place: String? = null
 
     var data: ArrayList<Data>?=null
+    var lottery_price: ArrayList<String>?=null
+
+
 
     var total_rows: String? = null
 

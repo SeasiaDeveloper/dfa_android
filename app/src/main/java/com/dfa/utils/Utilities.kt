@@ -8,6 +8,7 @@ import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.Matrix
 import android.location.Address
 import android.location.Geocoder
@@ -16,6 +17,7 @@ import android.net.ConnectivityManager
 import android.net.NetworkInfo
 import android.net.ParseException
 import android.net.Uri
+import android.os.AsyncTask
 import android.os.Build
 import android.provider.MediaStore
 import android.provider.Settings
@@ -43,14 +45,21 @@ import com.dfa.listeners.OnCaseItemClickListener
 import com.dfa.listeners.StatusListener
 import com.dfa.pojo.response.GetStatusResponse
 import com.dfa.utils.algo.VerhoeffAlgo
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.PolylineOptions
 import com.kaopiz.kprogresshud.KProgressHUD
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import java.io.BufferedReader
 import java.io.IOException
+import java.io.InputStream
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.MalformedURLException
 import java.net.URL
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -58,6 +67,7 @@ import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
+import kotlin.coroutines.coroutineContext
 
 
 object Utilities {
@@ -429,6 +439,33 @@ object Utilities {
     }
 
 
+    fun CalculationByDistance(StartP: LatLng, EndP: LatLng): Double {
+        val Radius = 6371 // radius of earth in Km
+        val lat1: Double = StartP.latitude
+        val lat2: Double = EndP.latitude
+        val lon1: Double = StartP.longitude
+        val lon2: Double = EndP.longitude
+        val dLat = Math.toRadians(lat2 - lat1)
+        val dLon = Math.toRadians(lon2 - lon1)
+        val a = (Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + (Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2)))
+        val c = 2 * Math.asin(Math.sqrt(a))
+        val valueResult = Radius * c
+        val km = valueResult / 1
+        val newFormat = DecimalFormat("####")
+        val kmInDec: Int = Integer.valueOf(newFormat.format(km))
+        val meter = valueResult % 1000
+        val meterInDec: Int = Integer.valueOf(newFormat.format(meter))
+        Log.i(
+            "Radius Value", "" + valueResult + "   KM  " + kmInDec
+                    + " Meter   " + meterInDec
+        )
+        return Radius * c
+    }
+
+
 
 
 
@@ -662,5 +699,9 @@ object Utilities {
         }
         return address
     }
+
+
+
+
 
 }

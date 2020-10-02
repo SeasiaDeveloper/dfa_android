@@ -47,6 +47,7 @@ import kotlinx.android.synthetic.main.activity_my_cases.toolbarLayout
 import kotlinx.android.synthetic.main.activity_my_cases.tvRecord
 import kotlinx.android.synthetic.main.activity_nodel_my_case.*
 
+
 class NodelMyCaseActivity : BaseActivity(), CasesView, OnCaseItemClickListener, AlertDialogListener,
     EndlessRecyclerViewScrollListenerImplementation.OnScrollPageChangeListener {
     //pagination
@@ -735,6 +736,11 @@ class NodelMyCaseActivity : BaseActivity(), CasesView, OnCaseItemClickListener, 
     }
 
     override fun advertisementSuccess(responseObject: AdvertisementResponse) {
+    }
+
+    override fun publicVIsibilitySuccess(responseObject: PublicVisibilityResponse) {
+        Toast.makeText(this, responseObject.message.toString(), Toast.LENGTH_SHORT).show()
+
     }
 
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {

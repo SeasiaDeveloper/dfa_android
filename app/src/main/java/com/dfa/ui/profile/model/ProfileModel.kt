@@ -33,7 +33,7 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
                 if(t is SocketTimeoutException){
                     profilePresenterImplClass.showError("Socket Time error")
                 }else{
-                    profilePresenterImplClass.showError(t.message + "")
+                    profilePresenterImplClass.showError("Somthing went wrong, please try again latter")
                 }
             }
 
@@ -183,7 +183,7 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
                         if(t is SocketTimeoutException){
                             profilePresenterImplClass.showError("Socket Time error")
                         }else{
-                            profilePresenterImplClass.showError(t.message + "")
+                            profilePresenterImplClass.showError("Somthing went wrong, please try again latter")
                         }
                     }
 
@@ -213,7 +213,7 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
                         if(t is SocketTimeoutException){
                             profilePresenterImplClass.showError("Socket Time error")
                         }else{
-                            profilePresenterImplClass.showError(t.message + "")
+                            profilePresenterImplClass.showError("Somthing went wrong, please try again latter")
                         }
                     }
 
@@ -248,7 +248,7 @@ class ProfileModel(private var profilePresenterImplClass: ProfilePresenterImplCl
                 if(t is SocketTimeoutException){
                     profilePresenterImplClass.showError("Socket Time error")
                 }else{
-                    profilePresenterImplClass.showError(t.message + "")
+                    profilePresenterImplClass.showError("Somthing went wrong, please try again latter")
                 }
             }
 

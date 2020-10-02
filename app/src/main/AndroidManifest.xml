@@ -11,10 +11,13 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission. ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
+
+
     <uses-permission
         android:name="android.permission.READ_LOGS"
         tools:ignore="ProtectedPermissions" />
@@ -50,6 +53,10 @@
         <activity android:name=".ui.commentlikelist.CommentLikeUsersList" />
 
         <service android:name=".utils.ForegroundService" />
+
+        <uses-library
+            android:name="org.apache.http.legacy"
+            android:required="false" />
 
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
@@ -234,11 +241,14 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/map_key"/>
+
         <meta-data
             android:name="com.razorpay.ApiKey"
-            android:value="rzp_test_5Ieebq7DuWkhQZ" />
-
-
+            android:value="rzp_live_i3NfvHYmXrzwUs"/>
 
         <!--rzp_live_i3NfvHYmXrzwUs    live key-->
 

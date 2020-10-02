@@ -3,21 +3,22 @@ package com.dfa.ui.home.fragments.cases.presenter
 import com.dfa.pojo.request.CasesRequest
 import com.dfa.pojo.request.CreatePostRequest
 import com.dfa.pojo.request.CrimeDetailsRequest
+import com.dfa.pojo.request.PublicVisibilityRequest
 import com.dfa.pojo.response.*
 import com.dfa.ui.home.fragments.cases.model.CasesModel
 import com.dfa.ui.home.fragments.cases.view.CasesView
 
-class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
+class CasesPresenterImplClass(private var view: CasesView) : CasesPresenter {
 
     var model = CasesModel(this)
 
-    override fun createPost(request: CreatePostRequest,token: String?) {
+    override fun createPost(request: CreatePostRequest, token: String?) {
         //hit post api
-        model.createPost(request,token)
+        model.createPost(request, token)
     }
 
-    override fun getComplaints(casesRequest: CasesRequest,token: String, userRole: String) {
-        model.fetchComplaints(casesRequest,token,userRole)
+    override fun getComplaints(casesRequest: CasesRequest, token: String, userRole: String) {
+        model.fetchComplaints(casesRequest, token, userRole)
     }
 
     override fun showError(error: String) {
@@ -36,11 +37,12 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
         view.onPostAdded(responseObject)
     }
 
-    override fun deleteComplaint(token: String , id: String) {
-      model.deleteComplaint(token , id)
+    override fun deleteComplaint(token: String, id: String) {
+        model.deleteComplaint(token, id)
     }
-  override fun hideComplaint(token: String , id: String) {
-      model.hideComplaint(token , id)
+
+    override fun hideComplaint(token: String, id: String) {
+        model.hideComplaint(token, id)
     }
 
     override fun onComplaintDeleted(responseObject: DeleteComplaintResponse) {
@@ -48,7 +50,7 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
     }
 
     override fun changeLikeStatus(token: String, id: String) {
-       model.changeLikeStatus(token , id)
+        model.changeLikeStatus(token, id)
     }
 
     override fun onLikeStatusChanged(responseObject: DeleteComplaintResponse) {
@@ -56,7 +58,7 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
     }
 
     override fun saveAdhaarNo(token: String, adhaarNo: String) {
-        model.saveAdhaarNo(token,adhaarNo)
+        model.saveAdhaarNo(token, adhaarNo)
     }
 
     override fun adhaarSavedSuccess(responseObject: SignupResponse) {
@@ -65,16 +67,21 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
 
     //fetch the list of status i.e assigned etc based on role
     override fun fetchStatusList(token: String, userRole: String) {
-       model.fetchStatusList(token,userRole)
+        model.fetchStatusList(token, userRole)
     }
 
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {
-       view.onListFetchedSuccess(responseObject)
+        view.onListFetchedSuccess(responseObject)
     }
 
     //update the status of the complaint
-    override fun updateStatus(token: String, complaintId: String, statusId: String, comment:String) {
-        model.updateStatus(token,complaintId,statusId, comment)
+    override fun updateStatus(
+        token: String,
+        complaintId: String,
+        statusId: String,
+        comment: String
+    ) {
+        model.updateStatus(token, complaintId, statusId, comment)
     }
 
     override fun statusUpdationSuccess(responseObject: UpdateStatusSuccess) {
@@ -82,10 +89,10 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
     }
 
     override fun callFirIamageApi(token: String, complaintId: CrimeDetailsRequest) {
-        model.callFirImageApi(token,complaintId)
+        model.callFirImageApi(token, complaintId)
     }
 
-    override fun getfirImageResponse(response:FirImageResponse) {
+    override fun getfirImageResponse(response: FirImageResponse) {
         view.getFirImageData(response)
     }
 
@@ -94,6 +101,17 @@ class CasesPresenterImplClass(private var view:CasesView) : CasesPresenter {
     }
 
     override fun advertisementInput(responseObject: AdvertisementInput) {
-       model.getAdvertisement(responseObject)
+        model.getAdvertisement(responseObject)
+    }
+
+    override fun publicVisibilityInput(
+        token: String?,
+        input: PublicVisibilityRequest
+    ) {
+        model.publicVisibility(token!!, input)
+    }
+
+    override fun publicVisibilityResponse(responseObject: PublicVisibilityResponse) {
+        view.publicVIsibilitySuccess(responseObject)
     }
 }

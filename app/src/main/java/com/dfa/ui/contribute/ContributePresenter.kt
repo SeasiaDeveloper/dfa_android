@@ -43,7 +43,7 @@ class ContributePresenter(
                 if (t is SocketTimeoutException) {
                     context.onFailed("Socket Time error")
                 } else {
-                    context.onFailed(t.message + "")
+                    context.onFailed("Somthing went wrong, please try again latter")
                 }
             }
         })

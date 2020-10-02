@@ -179,7 +179,7 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
                         if(t is SocketTimeoutException){
                             signupPresenterImplClass.showError("Socket Time error")
                         }else{
-                            signupPresenterImplClass.showError(t.message + "")
+                            signupPresenterImplClass.showError("Somthing went wrong, please try again latter")
                         }
                     }
 
@@ -209,7 +209,7 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
                         if(t is SocketTimeoutException){
                             signupPresenterImplClass.showError("Socket Time error")
                         }else{
-                            signupPresenterImplClass.showError(t.message + "")
+                            signupPresenterImplClass.showError("Somthing went wrong, please try again latter")
                         }
                     }
 
@@ -242,7 +242,7 @@ class SignupModel(var signupPresenterImplClass: SignupPresenterImplClass) {
                 if(t is SocketTimeoutException){
                     signupPresenterImplClass.showError("Socket Time error")
                 }else{
-                    signupPresenterImplClass.showError(t.message + "")
+                    signupPresenterImplClass.showError("Somthing went wrong, please try again latter")
                 }
             }
 

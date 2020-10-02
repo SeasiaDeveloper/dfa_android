@@ -2,7 +2,7 @@ package com.dfa.ui.contribute
 
 import android.app.Dialog
 import android.content.Intent
-import android.graphics.Color
+import android.text.format.DateFormat
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.dfa.R
 import com.dfa.application.MyApplication
 import com.dfa.base.BaseActivity
-import com.dfa.customviews.CenteredToolbar
 import com.dfa.databinding.ActivityContributeBinding
 import com.dfa.ui.contribute.payment.PaymentActivity
 import com.dfa.ui.generalpublic.pagination.EndlessRecyclerViewScrollListenerImplementation
@@ -22,6 +21,8 @@ import com.google.i18n.phonenumbers.NumberParseException
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.google.i18n.phonenumbers.Phonenumber
 import kotlinx.android.synthetic.main.activity_contribute.*
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -30,8 +31,10 @@ class ContributeActivity : BaseActivity(),EndlessRecyclerViewScrollListenerImple
  var binding:ActivityContributeBinding?=null
     var endlessScrollListener: EndlessRecyclerViewScrollListenerImplementation? = null
     var adapter:CoupanAdapter?=null
+    var priceAdapter:PriceAdapter?=null
     var presenter:ContributePresenter?=null
     var coupanList:ArrayList<TicketResponse.Data>?=null
+    var priceLise:ArrayList<String>?=null
     var page=1
     var contactNumber=""
     var userEmail=""
@@ -43,16 +46,21 @@ class ContributeActivity : BaseActivity(),EndlessRecyclerViewScrollListenerImple
     }
     override fun setupUI() {
         binding=viewDataBinding as ActivityContributeBinding
-        (binding!!.toolbarLayout as CenteredToolbar).title = getString(R.string.contibure_title)
-        (binding!!.toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
-        (binding!!.toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_button)
-        (binding!!.toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
+//        (binding!!.toolbarLayout as CenteredToolbar).title = getString(R.string.contibure_title)
+//        (binding!!.toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
+//        (binding!!.toolbarLayout as CenteredToolbar).setNavigationIcon(R.drawable.back_button)
+//        biic_back.setNavigationOnClickListener {
+//            onBackPressed()
+//        }
+//
+        binding!!.icBack.setOnClickListener {
             onBackPressed()
         }
         binding!!.viewMore.setOnClickListener(this)
         binding!!.donateButton.setOnClickListener(this)
         binding!!.payButton.setOnClickListener(this)
         coupanList= ArrayList()
+        priceLise= ArrayList()
         if(intent.getStringExtra("dueAmount")!=null){
             coupanList=intent.getSerializableExtra("dueTicketList") as ArrayList<TicketResponse.Data>
             viewMore.visibility=View.GONE
@@ -62,6 +70,7 @@ class ContributeActivity : BaseActivity(),EndlessRecyclerViewScrollListenerImple
             viewMore.visibility=View.VISIBLE
         }
         setAdapter()
+        setPriceAdapter()
         contactNumber=PreferenceHandler.readString(MyApplication.instance, PreferenceHandler.CONTACT_NUMBER, "")!!
         userEmail=PreferenceHandler.readString(MyApplication.instance, PreferenceHandler.USER_EMAIL, "")!!
         name=PreferenceHandler.readString(MyApplication.instance, PreferenceHandler.USER_FULLNAME, "")!!
@@ -197,6 +206,12 @@ class ContributeActivity : BaseActivity(),EndlessRecyclerViewScrollListenerImple
         adapter = CoupanAdapter(this@ContributeActivity, coupanList!!)
         binding!!.rvCouponList.adapter = adapter
     }
+    fun setPriceAdapter() {
+        val layoutManager = LinearLayoutManager(this)
+        binding!!.priceRecyclerView.setLayoutManager(layoutManager)
+        priceAdapter = PriceAdapter(this@ContributeActivity, priceLise!!)
+        binding!!.priceRecyclerView.adapter = priceAdapter
+    }
 
     override fun handleKeyboard(): View {
       return parentLayout
@@ -216,15 +231,106 @@ class ContributeActivity : BaseActivity(),EndlessRecyclerViewScrollListenerImple
             binding!!.parentPay.visibility=View.GONE
             binding!!.parentLottery.visibility=View.GONE
             binding!!.noTickets.visibility=View.VISIBLE
+
+//////////////////// neeed to hide just show for testing purpose
+//            binding!!.parentPay.visibility=View.VISIBLE
+//            binding!!.parentLottery.visibility=View.VISIBLE
+//            binding!!.noTickets.visibility=View.GONE
         }
         if(responseObject.data!!.size>0){
             coupanList!!.addAll(responseObject.data!!)
             adapter!!.setData(coupanList!!)
             binding!!.viewMore.visibility=View.VISIBLE
+
+            priceLise=responseObject.lottery_price
+            priceAdapter!!.setData(priceLise!!)
+            binding!!.tvDate.setText(parseDateToddMMyyyy(responseObject.lottery_date))
+            binding!!.tvTime.setText("Time:"+ parseTime(responseObject.lottery_date))
+            binding!!.venew.setText("Venue:"+responseObject.lottery_place)
+
+            val d = Date()
+            val startDate: CharSequence = DateFormat.format("yyyy-MM-dd HH:mm:ss", d.time)
+
+
+            val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+            try {
+                val date1 = format.parse(startDate.toString())
+                val date2 = format.parse(responseObject.lottery_date)
+                printDifference(date1,date2)
+            } catch (e: ParseException) {
+                e.printStackTrace()
+            }
+
+
+
+
+
         } else{
             Toast.makeText(this,"No more coupon",Toast.LENGTH_LONG).show()
             binding!!.viewMore.visibility=View.GONE
         }
+    }
+
+    fun printDifference(startDate: Date, endDate: Date) {
+        //milliseconds
+        var different = endDate.time - startDate.time
+        println("startDate : $startDate")
+        println("endDate : $endDate")
+        println("different : $different")
+        val secondsInMilli: Long = 1000
+        val minutesInMilli = secondsInMilli * 60
+        val hoursInMilli = minutesInMilli * 60
+        val daysInMilli = hoursInMilli * 24
+        val elapsedDays = different / daysInMilli
+        different = different % daysInMilli
+        val elapsedHours = different / hoursInMilli
+        different = different % hoursInMilli
+        val elapsedMinutes = different / minutesInMilli
+        different = different % minutesInMilli
+        val elapsedSeconds = different / secondsInMilli
+        System.out.printf(
+            "%d days, %d hours, %d minutes, %d seconds%n",
+            elapsedDays, elapsedHours, elapsedMinutes, elapsedSeconds
+        )
+
+//        Toast.makeText(this,""+elapsedDays+" "+elapsedHours,Toast.LENGTH_LONG).show()
+
+        binding!!.days.setText(""+elapsedDays+" Days "+elapsedHours+" hrs left\n HURRY! HURRY!")
+    }
+
+
+
+
+    fun parseDateToddMMyyyy(time: String?): String? {
+        val inputPattern = "yyyy-MM-dd HH:mm:ss"
+        val outputPattern = "EEE, d MMM yyyy"
+        val inputFormat = SimpleDateFormat(inputPattern)
+        val outputFormat = SimpleDateFormat(outputPattern)
+        var date: Date? = null
+        var str: String? = null
+        try {
+            date = inputFormat.parse(time)
+            str = outputFormat.format(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return str
+    }
+
+    fun parseTime(time: String?): String? {
+        val inputPattern = "yyyy-MM-dd HH:mm:ss"
+        val outputPattern = "h:mm a"
+        val inputFormat = SimpleDateFormat(inputPattern)
+        val outputFormat = SimpleDateFormat(outputPattern)
+        var date: Date? = null
+        var str: String? = null
+        try {
+            date = inputFormat.parse(time)
+            str = outputFormat.format(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        return str
     }
 
     override fun onFailed(s: String) {

@@ -38,6 +38,10 @@ class GetCasesResponse : Serializable {
         var comment_count: String? = null
         var is_liked: Int? = null
         val userDetail: UserDetail? = null
+        val culprit_number: String? = null
+        val follow_me: String? = null
+        val suspect_number: String? = null
+        val public_visibility: String? = null
 
         inner class UserDetail : Serializable {
             val last_name: String? = null

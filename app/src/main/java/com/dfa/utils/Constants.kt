@@ -9,9 +9,10 @@ object Constants {
     //const val BASE_URL_FOR_PRIVACY_POLICY ="http://13.127.23.249/drugfree/app-privacy-policy/"
     /*production url*/
 
-   // const val BASE_URL = "http://13.127.23.249/drugfree/wp-json/"
+//    const val BASE_URL = "http://13.127.23.249/drugfree/wp-json/"
 
-    const val BASE_URL = "https://drugfreearunachal.org/wp-json/"
+    const val BASE_URL = "https://drugfreearunachal.org/wp-json/"           //lve URL
+//    const val BASE_URL = "http://13.234.90.108/wp-json/"
     const val BASE_URL_FOR_TERMS_AND_CONDITIONS = "https://drugfreearunachal.org/terms-conditions"
     const val BASE_URL_FOR_PRIVACY_POLICY ="https://drugfreearunachal.org/app-privacy-policy/"
     const val SERVER_ERROR = "Something went wrong.Please try again"

@@ -6,6 +6,7 @@ import com.dfa.application.MyApplication
 import com.dfa.pojo.request.CasesRequest
 import com.dfa.pojo.request.CreatePostRequest
 import com.dfa.pojo.request.CrimeDetailsRequest
+import com.dfa.pojo.request.PublicVisibilityRequest
 import com.dfa.pojo.response.*
 import com.dfa.ui.home.fragments.cases.presenter.CasesPresenterImplClass
 import com.dfa.utils.Constants
@@ -70,7 +71,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                             if (t is SocketTimeoutException) {
                                 presenter.showError("Socket Time error")
                             } else {
-                                presenter.showError(t.message + "")
+                                presenter.showError("Somthing went wrong, please try again latter")
                             }
                         }
                     })
@@ -107,7 +108,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                             if (t is SocketTimeoutException) {
                                 presenter.showError("Socket Time error")
                             } else {
-                                presenter.showError(t.message + "")
+                                presenter.showError("Somthing went wrong, please try again latter")
                             }
                         }
                     })
@@ -141,7 +142,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                         if (t is SocketTimeoutException) {
                             presenter.showError("Socket Time error")
                         } else {
-                            presenter.showError(t.message + "")
+                            presenter.showError("Somthing went wrong, please try again latter")
                         }
                     }
                 })
@@ -182,7 +183,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                     if (t is SocketTimeoutException) {
                         presenter.showError("Socket Time error")
                     } else {
-                        presenter.showError(t.message + "")
+                        presenter.showError("Somthing went wrong, please try again latter")
                     }
                 }
             })
@@ -227,7 +228,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                     if (t is SocketTimeoutException) {
                         presenter.showError("Socket Time error")
                     } else {
-                        presenter.showError(t.message + "")
+                        presenter.showError("Somthing went wrong, please try again latter")
                     }
                 }
 
@@ -256,7 +257,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                         if (t is SocketTimeoutException) {
                             presenter.showError("Socket Time error")
                         } else {
-                            presenter.showError(t.message + "")
+                            presenter.showError("Somthing went wrong, please try again latter")
                         }
                     }
 
@@ -291,7 +292,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                     if (t is SocketTimeoutException) {
                         presenter.showError("Socket Time error")
                     } else {
-                        presenter.showError(t.message + "")
+                        presenter.showError("Somthing went wrong, please try again latter")
                     }
                 }
 
@@ -315,6 +316,10 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
             })
     }
 
+
+
+
+
     fun hideComplaint(token: String, id: String) {
         val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
         val map = HashMap<String, RequestBody>()
@@ -325,7 +330,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                     if (t is SocketTimeoutException) {
                         presenter.showError("Socket Time error")
                     } else {
-                        presenter.showError(t.message + "")
+                        presenter.showError("Somthing went wrong, please try again latter")
                     }
                 }
 
@@ -359,7 +364,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                     if (t is SocketTimeoutException) {
                         presenter.showError("Socket Time error")
                     } else {
-                        presenter.showError(t.message + "")
+                        presenter.showError("Somthing went wrong, please try again latter")
                     }
                 }
 
@@ -394,7 +399,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                     if (t is SocketTimeoutException) {
                         presenter.showError("Socket Time error")
                     } else {
-                        presenter.showError(t.message + "")
+                        presenter.showError("Somthing went wrong, please try again latter")
                     }
                 }
 
@@ -427,7 +432,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                     if (t is SocketTimeoutException) {
                         presenter.showError("Socket Time error")
                     } else {
-                        presenter.showError(t.message + "")
+                        presenter.showError("Somthing went wrong, please try again latter")
                     }
                 }
 
@@ -463,7 +468,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                     if (t is SocketTimeoutException) {
                         presenter.showError("Socket Time error")
                     } else {
-                        presenter.showError(t.message + "")
+                        presenter.showError("Somthing went wrong, please try again latter")
                     }
                 }
 
@@ -498,7 +503,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                     if (t is SocketTimeoutException) {
                         presenter.showError("Socket Time error")
                     } else {
-                        presenter.showError(t.message + "")
+                        presenter.showError("Somthing went wrong, please try again latter")
                     }
                 }
 
@@ -510,6 +515,42 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                     if (responseObject != null) {
                         if (responseObject.code == 200) {
                             presenter.getfirImageResponse(responseObject)
+                        } else {
+                            presenter.showError(
+                                response.body()?.message ?: Constants.SERVER_ERROR
+                            )
+                        }
+                    } else {
+                        presenter.showError(Constants.SERVER_ERROR)
+                    }
+                }
+            })
+    }
+
+
+
+    fun publicVisibility(token: String, request: PublicVisibilityRequest) {
+        val retrofitApi = ApiClient.getClient().create(CallRetrofitApi::class.java)
+        val map = HashMap<String, RequestBody>()
+        //map["complaint_id"] = toRequestBody(request.complaintId)
+        retrofitApi.publicVisibility(token, request)
+            .enqueue(object : Callback<PublicVisibilityResponse> {
+                override fun onFailure(call: Call<PublicVisibilityResponse>, t: Throwable) {
+                    if (t is SocketTimeoutException) {
+                        presenter.showError("Socket Time error")
+                    } else {
+                        presenter.showError("Somthing went wrong, please try again latter")
+                    }
+                }
+
+                override fun onResponse(
+                    call: Call<PublicVisibilityResponse>,
+                    response: Response<PublicVisibilityResponse>
+                ) {
+                    val responseObject = response.body()
+                    if (responseObject != null) {
+                        if (responseObject.code == 200) {
+                            presenter.publicVisibilityResponse(responseObject)
                         } else {
                             presenter.showError(
                                 response.body()?.message ?: Constants.SERVER_ERROR
@@ -545,7 +586,7 @@ class CasesModel(private var presenter: CasesPresenterImplClass) {
                 if(t is SocketTimeoutException){
                     presenter.showError("Socket Time error")
                 }else{
-                    presenter.showError(t.message + "")
+                    presenter.showError("Somthing went wrong, please try again latter")
                 }
             }
         })

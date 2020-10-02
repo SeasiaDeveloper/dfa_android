@@ -31,7 +31,7 @@ class CrimeDetailsModel(private var crimeDetailsPresenter: CrimeDetailsPresenter
                 if(t is SocketTimeoutException){
                     crimeDetailsPresenter.showError("Socket Time error")
                 }else{
-                    crimeDetailsPresenter.showError(t.message + "")
+                    crimeDetailsPresenter.showError("Somthing went wrong, please try again latter")
                 }
             }
 
@@ -64,7 +64,7 @@ class CrimeDetailsModel(private var crimeDetailsPresenter: CrimeDetailsPresenter
                     if(t is SocketTimeoutException){
                         crimeDetailsPresenter.showError("Socket Time error")
                     }else{
-                        crimeDetailsPresenter.showError(t.message + "")
+                        crimeDetailsPresenter.showError("Somthing went wrong, please try again latter")
                     }
                 }
 
@@ -100,7 +100,7 @@ class CrimeDetailsModel(private var crimeDetailsPresenter: CrimeDetailsPresenter
                     if(t is SocketTimeoutException){
                         crimeDetailsPresenter.showError("Socket Time error")
                     }else{
-                        crimeDetailsPresenter.showError(t.message + "")
+                        crimeDetailsPresenter.showError("Somthing went wrong, please try again latter")
                     }
                 }
 

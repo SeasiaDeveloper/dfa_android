@@ -46,7 +46,7 @@ class PaymentPresenter(var paymentActivity: PaymentActivity) {
                 if (t is SocketTimeoutException) {
                     paymentActivity.failer("Socket Time error")
                 } else {
-                    paymentActivity.failer(t.message + "")
+                    paymentActivity.failer("Somthing went wrong, please try again latter")
                 }
             }
         })

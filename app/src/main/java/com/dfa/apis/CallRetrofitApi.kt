@@ -230,6 +230,10 @@ interface CallRetrofitApi {
     @POST("jwt-auth/v1/fir_imageapi")
     fun getFirImage(@Header("Authorization") authorization: String?, @Query("complaint_id") id: Int): Call<FirImageResponse>
 
+    @POST("jwt-auth/v1/update_report_visibility")
+    fun publicVisibility(@Header("Authorization") authorization: String?, @Body input:PublicVisibilityRequest): Call<PublicVisibilityResponse>
+
+
     @Multipart
     @POST("jwt-auth/v1/emergency_contact")
     fun getEmergencyData(@Header("Authorization") authorization: String?,

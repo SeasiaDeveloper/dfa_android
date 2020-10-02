@@ -73,7 +73,7 @@ class AddBusinessPresenter(var addBusinessActivity: AddBusinessActivity) {
                 if (t is SocketTimeoutException) {
                     addBusinessActivity.onError("Socket Time error")
                 } else {
-                    addBusinessActivity.onError(t.message + "")
+                    addBusinessActivity.onError("Somthing went wrong, please try again latter")
                 }
             }
 
@@ -113,7 +113,7 @@ class AddBusinessPresenter(var addBusinessActivity: AddBusinessActivity) {
                 if (t is SocketTimeoutException) {
                     addBusinessActivity.onError("Socket Time error")
                 } else {
-                    addBusinessActivity.onError(t.message + "")
+                    addBusinessActivity.onError("Somthing went wrong, please try again latter")
                 }
             }
         })

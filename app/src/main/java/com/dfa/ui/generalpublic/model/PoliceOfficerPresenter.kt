@@ -36,7 +36,7 @@ class PoliceOfficerPresenter(private var context: PoliceOfficerActivity) {
                 if(t is SocketTimeoutException){
                     context.error("Socket Time error")
                 }else{
-                    context.error(t.message + "")
+                    context.error("Somthing went wrong, please try again latter")
                 }
             }
         })
@@ -66,7 +66,7 @@ class PoliceOfficerPresenter(private var context: PoliceOfficerActivity) {
                 if(t is SocketTimeoutException){
                     context.error("Socket Time error")
                 }else{
-                    context.error(t.message + "")
+                    context.error("Somthing went wrong, please try again latter")
                 }
             }
         })

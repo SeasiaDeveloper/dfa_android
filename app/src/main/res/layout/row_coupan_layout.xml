@@ -78,12 +78,10 @@
             android:id="@+id/un_check"
             android:src="@drawable/ic_uncheck"
             android:layout_width="30dp"
-            android:tint="#7ea77e"
             android:layout_height="30dp"/>
         <ImageView
             android:visibility="gone"
             android:id="@+id/check"
-            android:tint="#7ea77e"
             android:src="@drawable/ic_check"
             android:layout_width="30dp"
             android:layout_height="30dp"/>

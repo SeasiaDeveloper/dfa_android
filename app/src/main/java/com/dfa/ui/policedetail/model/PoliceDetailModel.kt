@@ -30,7 +30,7 @@ class PoliceDetailModel(private var policeDetailPresenter: PoliceDetailPresenter
                 if(t is SocketTimeoutException){
                     policeDetailPresenter.showError("Socket Time error")
                 }else{
-                    policeDetailPresenter.showError(t.message + "")
+                    policeDetailPresenter.showError("Somthing went wrong, please try again latter")
                 }
             }
 
@@ -63,7 +63,7 @@ class PoliceDetailModel(private var policeDetailPresenter: PoliceDetailPresenter
                     if(t is SocketTimeoutException){
                         policeDetailPresenter.showError("Socket Time error")
                     }else{
-                        policeDetailPresenter.showError(t.message + "")
+                        policeDetailPresenter.showError("Somthing went wrong, please try again latter")
                     }
                 }
 
@@ -99,7 +99,7 @@ class PoliceDetailModel(private var policeDetailPresenter: PoliceDetailPresenter
                     if(t is SocketTimeoutException){
                         policeDetailPresenter.showError("Socket Time error")
                     }else{
-                        policeDetailPresenter.showError(t.message + "")
+                        policeDetailPresenter.showError("Somthing went wrong, please try again latter")
                     }
                 }
 

@@ -279,7 +279,6 @@ class CasesAdapter(
                 ""
             )!!
             var userId = PreferenceHandler.readString(context, PreferenceHandler.USER_ID, "")!!
-
             val userDetail: GetCasesResponse.Data.UserDetail = item.userDetail!!
             val username =
                 PreferenceHandler.readString(context, PreferenceHandler.USER_FULLNAME, "")
@@ -364,7 +363,7 @@ class CasesAdapter(
             }
 
 
-                if (item.type == "1") {
+            if (item.type == "1") {
                 itemView.layout_post.visibility = View.VISIBLE
                 itemView.layoutListItem.visibility = View.GONE
 
@@ -686,8 +685,10 @@ class CasesAdapter(
                     sharingIntent.type = "text/plain"
 
                     sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Drug Free Arunachal")
-                 //   sharingIntent.putExtra(Intent.EXTRA_TEXT, "Hi, Your friend $username shared you FIR complaint from Drug Free Arunachal app. To see detail, open\n https://drugfreearunachal.org/home?id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
-                    sharingIntent.putExtra(Intent.EXTRA_TEXT, "https://drugfreearunachal.org/complaint-details?complaint_id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
+                    //   sharingIntent.putExtra(Intent.EXTRA_TEXT, "Hi, Your friend $username shared you FIR complaint from Drug Free Arunachal app. To see detail, open\n https://drugfreearunachal.org/home?id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
+                    sharingIntent.putExtra(
+                        Intent.EXTRA_TEXT,
+                        "https://drugfreearunachal.org/complaint-details?complaint_id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
                     )
                     context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
                 }
@@ -700,6 +701,58 @@ class CasesAdapter(
 
                 //if NGO show profile image
                 if (type == 1) {
+
+
+                    itemView.traceTitle.visibility = View.VISIBLE
+                    itemView.trace.visibility = View.VISIBLE
+                    itemView.publicVisibilityTitle.visibility = View.VISIBLE
+                    itemView.publicChecke.visibility = View.VISIBLE
+
+                    if(item.follow_me!=null){
+                        if (item.follow_me.equals("1")) {
+                            itemView.trace.setText("ON")
+                        } else {
+                            itemView.trace.setText("OFF")
+                        }
+                    }
+
+
+
+                    if(item.public_visibility!=null) {
+
+
+                        if (item.public_visibility.equals("1")) {
+                            itemView.publicChecke.isChecked = true
+                        } else {
+                            itemView.publicChecke.isChecked = false
+                        }
+
+
+                        itemView.publicChecke.setOnClickListener {
+                            var isChecked = "0"
+
+                            val checked = itemView.publicChecke.isChecked
+
+                            if (checked!!) {
+                                isChecked = "1"
+                            } else {
+                                isChecked = "0"
+                            }
+                            if (isGeneralPublicFragment) {
+                                val callMethod = fragment as GeneralPublicHomeFragment
+                                callMethod.publicVisibilityHitApi(item.id, isChecked)
+
+                                //callMethod.callFirImageApi(item.id!!, adapterPosition)
+                            } else {
+                                val myCasesActivity = activity as MyCasesActivity
+                                myCasesActivity.publicVisibilityHitApi(item.id, isChecked)
+                            }
+
+
+                        }
+                    }
+
+
 
                     itemView.ll_gp.visibility = View.VISIBLE
                     itemView.ll_ngo.visibility = View.GONE
@@ -734,6 +787,13 @@ class CasesAdapter(
                 }
                 //in case of General public or police
                 else {
+
+
+                    itemView.traceTitle.visibility = View.GONE
+                    itemView.trace.visibility = View.GONE
+                    itemView.publicVisibilityTitle.visibility = View.GONE
+                    itemView.publicChecke.visibility = View.GONE
+
                     itemView.ll_gp.visibility = View.GONE
                     itemView.ll_ngo.visibility = View.VISIBLE
 
@@ -755,23 +815,43 @@ class CasesAdapter(
             }
 
             //in case of NGO and police
-            if ((type == 1) || (type == 2) || (type == 3) ) {
-                if (type == 2|| type == 3 ) {
+            if ((type == 1) || (type == 2) || (type == 3)) {
+                if (type == 2 || type == 3) {
+
                     itemView.layoutContact.visibility = View.GONE
+
                 } else {
-                    itemView.layoutContact.visibility = View.VISIBLE
+
+                    if(type == 1){
+                        itemView.layoutContact.visibility = View.VISIBLE
+                    } else{
+                        itemView.layoutContact.visibility = View.GONE
+                    }
+
+
+
                 }
 
+                if(item.suspect_number!=null){
+                    if (!item.suspect_number!!.isEmpty()) {
+                        itemView.suspectContactTitle.visibility = View.VISIBLE
+                        itemView.suspectContact.setText(item.suspect_number)
+                    } else {
+                        itemView.suspectContactTitle.visibility = View.GONE
+                    }
+                } else{
+                    itemView.suspectContactTitle.visibility = View.GONE
+                }
 
 
 //                itemView.action_complaint.visibility = View.VISIBLE
 
-               // if(item!!.transfered_to!=null){
-                    if(policeRank!!.equals("1") || item.transfered_to.equals(userId) ){
-                        itemView.action_complaint.visibility = View.VISIBLE
-                    }else{
-                        itemView.action_complaint.visibility = View.GONE
-                    }
+                // if(item!!.transfered_to!=null){
+                if (policeRank!!.equals("1") || item.transfered_to.equals(userId)) {
+                    itemView.action_complaint.visibility = View.VISIBLE
+                } else {
+                    itemView.action_complaint.visibility = View.GONE
+                }
 //                } else{
 //                    itemView.action_complaint.visibility = View.GONE
 //                }
@@ -782,9 +862,9 @@ class CasesAdapter(
                 itemView.txtCrimeType.text = item.crime_type
 
 
-                if(item.stationName==null || item.stationName!!.isEmpty()){
+                if (item.stationName == null || item.stationName!!.isEmpty()) {
                     itemView.txtPoliceStation.text = "NA"
-                } else{
+                } else {
                     itemView.txtPoliceStation.text = item.stationName
                 }
 
@@ -835,18 +915,18 @@ class CasesAdapter(
                             ""
                         )!!
 
-                        if (item.police_station_id?.toString().equals(stationId) && !item.status!!.toLowerCase().equals("accept")){
+                        if (item.police_station_id?.toString()
+                                .equals(stationId) && !item.status!!.toLowerCase().equals("accept")
+                        ) {
                             itemView.action_complaint.visibility = View.VISIBLE
 
-                        }
-
-                        else{
-                           // if(item!!.transfered_to!=null){
-                                if(policeRank!!.equals("1") || item.transfered_to.equals(userId) ){
-                                    itemView.action_complaint.visibility = View.VISIBLE
-                                }else{
-                                    itemView.action_complaint.visibility = View.GONE
-                                }
+                        } else {
+                            // if(item!!.transfered_to!=null){
+                            if (policeRank!!.equals("1") || item.transfered_to.equals(userId)) {
+                                itemView.action_complaint.visibility = View.VISIBLE
+                            } else {
+                                itemView.action_complaint.visibility = View.GONE
+                            }
 //                            } else{
 //                                itemView.action_complaint.visibility = View.GONE
 //                            }
@@ -855,7 +935,6 @@ class CasesAdapter(
                         }
 
                     }
-                    itemView.layoutContact.visibility = View.GONE
                     //itemView.imgComplaintMedia.visibility = View.VISIBLE
 
                 } else {
@@ -868,12 +947,12 @@ class CasesAdapter(
                         itemView.action_complaint.visibility = View.VISIBLE
                     else {
 
-                       // if(item!!.transfered_to!=null){
-                            if(policeRank!!.equals("1") || item.transfered_to.equals(userId) ){
-                                itemView.action_complaint.visibility = View.VISIBLE
-                            }else{
-                                itemView.action_complaint.visibility = View.GONE
-                            }
+                        // if(item!!.transfered_to!=null){
+                        if (policeRank!!.equals("1") || item.transfered_to.equals(userId)) {
+                            itemView.action_complaint.visibility = View.VISIBLE
+                        } else {
+                            itemView.action_complaint.visibility = View.GONE
+                        }
 //                        } else{
 //                            itemView.action_complaint.visibility = View.GONE
 //                        }
@@ -903,6 +982,13 @@ class CasesAdapter(
                     var distance =
                         Utilities.calculateDistance(item.latitude, item.longitude, context)
                     itemView.location.setText("" + distance + "KM away").toString()
+
+//                    var endPos = LatLng(it00em.latitude!!.toDouble(), item.longitude!!.toDouble())
+//                    val latitude1 = PreferenceHandler.readString(context, PreferenceHandler.LATITUDE, "")
+//                    val longitude1 = PreferenceHandler.readString(context, PreferenceHandler.LONGITUDE, "")
+//                    var startPos = LatLng(latitude1!!.toDouble(), longitude1!!.toDouble())
+//                    var distance =  Utilities.CalculationByDistance(startPos,endPos)
+//                    itemView.location.setText("" + distance + "KM away").toString()
                 }
 
                 itemView.location.setOnClickListener {
@@ -913,15 +999,17 @@ class CasesAdapter(
                     context.startActivity(mapIntent)
                 }
 
-                itemView.gpu_case_layout.visibility = View.GONE
-                itemView.ngo_case_layout.visibility = View.VISIBLE
-                itemView.ngo_case_layout.visibility = View.VISIBLE
+//                itemView.gpu_case_layout.visibility = View.GONE
+//                itemView.ngo_case_layout.visibility = View.VISIBLE
+//                itemView.ngo_case_layout.visibility = View.VISIBLE
                 itemView.case_no_ngo.setText(item.id).toString()
+                itemView.case_no.setText(item.id).toString()
 
             } else {
+                itemView.suspectContactTitle.visibility = View.GONE
                 //in case of general public/general user
-                itemView.gpu_case_layout.visibility = View.VISIBLE
-                itemView.ngo_case_layout.visibility = View.GONE
+//                itemView.gpu_case_layout.visibility = View.VISIBLE
+//                itemView.ngo_case_layout.visibility = View.GONE
                 itemView.case_no.setText(item.id).toString()
 
 
@@ -933,25 +1021,23 @@ class CasesAdapter(
                     itemView.videoThumbNialParent.visibility = View.GONE
                 }
 
-                itemView.layoutContact.visibility = View.GONE
 
-               // if(item!!.transfered_to!=null){
-                    if(policeRank!!.equals("1") || item.transfered_to.equals(userId) ){
-                        itemView.action_complaint.visibility = View.VISIBLE
-                    }else{
-                        itemView.action_complaint.visibility = View.GONE
-                    }
+                // if(item!!.transfered_to!=null){
+                if (policeRank!!.equals("1") || item.transfered_to.equals(userId)) {
+                    itemView.action_complaint.visibility = View.VISIBLE
+                } else {
+                    itemView.action_complaint.visibility = View.GONE
+                }
 //                } else{
 //                    itemView.action_complaint.visibility = View.GONE
 //                }
 
 
+                if (!token!!.isEmpty()) {
 
-                if(!token!!.isEmpty()){
-
-                    if(item.stationName==null || item.stationName!!.isEmpty()){
+                    if (item.stationName == null || item.stationName!!.isEmpty()) {
                         itemView.txtPoliceStation.text = "NA"
-                    } else{
+                    } else {
                         itemView.txtPoliceStation.text = item.stationName
                     }
 
@@ -974,7 +1060,7 @@ class CasesAdapter(
                     itemView.layoutPoliceStation.visibility = View.VISIBLE
                     itemView.layoutStatus.visibility = View.VISIBLE
 
-                } else{
+                } else {
                     itemView.layoutCrimeType.visibility = View.GONE
                     itemView.layoutPoliceStation.visibility = View.GONE
                     itemView.layoutStatus.visibility = View.GONE
@@ -1042,6 +1128,15 @@ class CasesAdapter(
                 item.id
                 if (item.isApiHit) {
                     itemView.childExpandable.visibility = View.VISIBLE
+
+
+//                    if(type!=0){
+//                        itemView.layoutContact.visibility = View.VISIBLE
+//                    } else{
+//                        itemView.layoutContact.visibility = View.GONE
+//                    }
+
+
                     itemView.imgExpandable.setImageResource(R.drawable.ic_expand_less_black_24dp)
                     itemView.moreLess.setText(R.string.less)
                     if (item.media_type.equals("videos")) {
@@ -1053,6 +1148,7 @@ class CasesAdapter(
                     }
                 } else {
                     itemView.childExpandable.visibility = View.GONE
+                   // itemView.layoutContact.visibility = View.GONE
                     itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
                     itemView.moreLess.setText(R.string.more)
                 }
@@ -1069,12 +1165,29 @@ class CasesAdapter(
                             myCasesActivity.callFirImageApi(item.id!!, adapterPosition)
                         }
 
-                    } else {
+                    }
+                    else {
                         if (itemView.childExpandable.visibility == View.VISIBLE) {
                             itemView.childExpandable.visibility = View.GONE
+
+                          //  itemView.layoutContact.visibility = View.GONE
                             itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
                             item.isApiHit = false
                             itemView.moreLess.setText(R.string.more)
+                        } else{
+
+
+
+
+//                            if(type==1){
+//                                itemView.layoutContact.visibility = View.VISIBLE
+//                            }
+//                            else{
+//                                itemView.layoutContact.visibility = View.GONE
+//                            }
+
+
+                           // itemView.layoutContact.visibility = View.GONE
                         }
                     }
                 }
@@ -1106,10 +1219,13 @@ class CasesAdapter(
                 itemView.imgExpandable_linear_layout.setOnClickListener {
                     if (itemView.childExpandable.visibility == View.VISIBLE) {
                         itemView.childExpandable.visibility = View.GONE
+                       // itemView.layoutContact.visibility = View.GONE
                         itemView.imgExpandable.setImageResource(R.drawable.ic_expand_more_black_24dp)
                         itemView.moreLess.setText(R.string.more)
                     } else {
+
                         itemView.childExpandable.visibility = View.VISIBLE
+                      //  itemView.layoutContact.visibility = View.VISIBLE
                         if (item.media_type.equals("videos")) {
                             itemView.imgComplaintMedia.visibility = View.GONE
                             itemView.videoThumbNialParent.visibility = View.VISIBLE
@@ -1263,5 +1379,14 @@ class CasesAdapter(
                 .getIdentifier(imageName, "drawable", context.getPackageName())
             return drawableResourceId
         }
+    }
+
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 }

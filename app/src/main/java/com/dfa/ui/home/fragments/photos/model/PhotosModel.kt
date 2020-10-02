@@ -48,7 +48,7 @@ class PhotosModel(private var presenter: PhotosPresenter) {
             }
 
             override fun onFailure(call: Call<GetPhotosResponse>, t: Throwable) {
-                presenter.showError(t.message + "")
+                presenter.showError("Somthing went wrong, please try again latter")
             }
         })
     }
@@ -60,7 +60,7 @@ class PhotosModel(private var presenter: PhotosPresenter) {
         retrofitApi.getCrimeDetails(token, map).enqueue(object :
             Callback<GetCrimeDetailsResponse> {
             override fun onFailure(call: Call<GetCrimeDetailsResponse>, t: Throwable) {
-                presenter.showError(t.message + "")
+                presenter.showError("Somthing went wrong, please try again latter")
             }
 
             override fun onResponse(

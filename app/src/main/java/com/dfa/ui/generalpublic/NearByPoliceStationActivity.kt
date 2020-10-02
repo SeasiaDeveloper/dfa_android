@@ -78,6 +78,12 @@ class NearByPoliceStationActivity : BaseActivity(), View.OnClickListener, Public
     val REQUEST_PERMISSIONS = 1
     var range=1
     var mediaType=""
+    var isChecked=""
+    var etPhoneNumber=""
+    var locationAddress=""
+    var finaLatitude=""
+    var finaLongitude=""
+    var tvSuspectMobileNumber=""
     private val REQUEST_PERMISSIONS_GALLERY_VIDEO = 2
      var getCrimeTypesResponse: GetCrimeTypesResponse?=null
     private var districtList = ArrayList<DistResponse>()
@@ -121,13 +127,25 @@ class NearByPoliceStationActivity : BaseActivity(), View.OnClickListener, Public
         (binding!!.toolbarLayout as CenteredToolbar).setNavigationOnClickListener {
             onBackPressed()
         }
-
-
         etDescription=intent.getStringExtra("etDescription")
         id=intent.getStringExtra("id")
         range=intent.getStringExtra("range").toInt()
         changeMedia=intent.getStringExtra("changeMedia").toInt()
         mediaType=intent.getStringExtra("mediaType")
+
+        if(intent.getStringExtra("etPhoneNumber")!=null){
+            etPhoneNumber=intent.getStringExtra("etPhoneNumber")
+        }
+//        if(intent.getStringExtra("tvSuspectMobileNumber")!=null){
+//            tvSuspectMobileNumber=intent.getStringExtra("tvSuspectMobileNumber")
+//        }
+
+        isChecked=intent.getStringExtra("isChecked")
+        finaLatitude=intent.getStringExtra("finaLatitude")
+        finaLongitude=intent.getStringExtra("finaLongitude")
+        locationAddress=intent.getStringExtra("locationAddress")
+
+
         pathOfImages=intent.extras!!.getStringArrayList("pathOfImages") as ArrayList<String>
         authorizationToken = PreferenceHandler.readString(this, PreferenceHandler.AUTHORIZATION, "")
 
@@ -183,6 +201,7 @@ class NearByPoliceStationActivity : BaseActivity(), View.OnClickListener, Public
        // finish()
 
         var intent= Intent(this@NearByPoliceStationActivity , HomeActivity::class.java)
+        intent.putExtra("isChecked",isChecked)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent)
         finish()
@@ -218,6 +237,11 @@ class NearByPoliceStationActivity : BaseActivity(), View.OnClickListener, Public
         if (police_id != "") {
             lattitude = "0"
             longitude = "0"
+
+            finaLatitude = "0"
+            finaLongitude = "0"
+
+
             com.dfa.utils.alert.AlertDialog.reportCrimeAlertDialog(this, this)
         } else {
 
@@ -506,6 +530,8 @@ class NearByPoliceStationActivity : BaseActivity(), View.OnClickListener, Public
 
         } else {
 
+
+
             if (isInternetAvailable()) {
                 showProgress()
                 val request = ComplaintRequest(
@@ -513,11 +539,11 @@ class NearByPoliceStationActivity : BaseActivity(), View.OnClickListener, Public
                     range,
                     pathOfImages.toArray(array),
                     etDescription.toString().trim(),
-                    lattitude,
-                    longitude,
+                    finaLatitude,
+                    finaLongitude,
                     mediaType!!,
-                    address,
-                    police_id
+                    locationAddress,
+                    police_id,etPhoneNumber,isChecked,etPhoneNumber
                 )
                 complaintsPresenter.saveDetailsRequest(
                     authorizationToken,

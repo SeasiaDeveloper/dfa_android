@@ -1,6 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
     <string name="app_name">DFA</string>
     <string name="ngo_app">DFA</string>
+<!--
+    <string name="map_key">AIzaSyBC8rG3Pm4TYeTkAiqrqhAEB3X2jk3HvpA</string>
+-->
+
+    <string name="map_key">AIzaSyCzDgxZEHBcpyQq_194iXQvuQQsS5AULmw</string>
+
+
     <string name="no_internet_connection">No internet connection</string>
     <string name="general_public">General Public</string>
     <string name="drug_free_ngo" translatable="false">Drug Free NGO</string>
@@ -11,7 +18,7 @@
     <string name="email">Email</string>
     <string name="email_req">Email<font fgcolor="#006600">*</font></string>
     <string name="contact_no">Contact No</string>
-    <string name="level">Urgency Level</string>
+    <string name="level">Set urgency Level</string>
     <string name="description">Description: </string>
     <string name="select_photo">Select Photo</string>
     <string name="select_option">Select Option</string>
@@ -277,7 +284,6 @@
     <string name="permission_text">Location Permission Turned Off</string>
     <string name="warning_text">Please make sure that the drug incident you are reporting is genuine.For reporting false incident, you may be jailed / punished / fined for abuse / misuse / mislead / nuisance including other appropriate criminal case against you.</string>
     <string name="earnings_screen_text"><font fgcolor="#ff000a">* </font><font fgcolor="#006600">Report drug incident in your area and get Paid from Drug Free Arunachal</font></string>
-
     <string name="police_firstline">Superintendent of Police (Crime)</string>
     <string name="police_secondline">Police Head Quarter,Chimpu,</string>
     <string name="police_thirdline">Itanagar, Govt. of AP</string>
@@ -292,5 +298,7 @@
     <string name="please_select_station">Please select police station</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-
+    <string name="capture_live_video_photo">Capture Live video/photo<font size="18" fgcolor="#F51638">* </font></string>
+    <string name="add_more_description_of_incident">Add more description of incident<font  size="18" fgcolor="#F51638">* </font></string>
+    <string name="if_you_want_to_guide_poilce_ngo_to_catch_the_suspect_in_moving_tick_the_checkbox_notherwise_leave_it_unchecked_nnote_nobody_body_not_even_poilce_will_know_about_you_you_can_turn_it_off_under_my_cases_in_menu">If you want to guide Poilce/NGO to catch the suspect in moving, tick the checkbox. \nOtherwise, leave it unchecked. \nNote: Nobody body, not even Poilce will know about you. You can turn it off under \"My Case\" in menu.</string>
 </resources>

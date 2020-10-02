@@ -14,5 +14,6 @@ interface CasesView : BaseView {
     fun statusUpdationSuccess(responseObject: UpdateStatusSuccess)
     fun getFirImageData(response:FirImageResponse)
     fun advertisementSuccess(responseObject: AdvertisementResponse)
+    fun publicVIsibilitySuccess(responseObject: PublicVisibilityResponse)
 
 }

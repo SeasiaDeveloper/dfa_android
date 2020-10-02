@@ -30,7 +30,7 @@ class FragmentModel(private var statusPresenter:FragmentPresenter) {
             }
 
             override fun onFailure(call: Call<GetPoliceFormResponse>, t: Throwable) {
-                statusPresenter.showError(t.message+"")
+                statusPresenter.showError("Somthing went wrong, please try again latter")
             }
         })
     }

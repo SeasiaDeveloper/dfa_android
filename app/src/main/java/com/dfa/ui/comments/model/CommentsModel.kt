@@ -30,7 +30,7 @@ class CommentsModel(private var presenter: CommentsPresenterImplClass) {
                 if(t is SocketTimeoutException){
                     presenter.showError("Socket Time error")
                 }else{
-                    presenter.showError(t.message + "")
+                    presenter.showError("Somthing went wrong, please try again latter")
                 }
             }
 
@@ -82,7 +82,7 @@ class CommentsModel(private var presenter: CommentsPresenterImplClass) {
                 if(t is SocketTimeoutException){
                     presenter.showError("Socket Time error")
                 }else{
-                    presenter.showError(t.message + "")
+                    presenter.showError("Somthing went wrong, please try again latter")
                 }
             }
         })

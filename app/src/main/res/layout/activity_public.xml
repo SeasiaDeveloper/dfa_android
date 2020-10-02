@@ -35,7 +35,8 @@
                     android:layout_marginEnd="@dimen/_7sdp"
                     android:text="@string/types_of_crime"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    android:visibility="gone" />
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spTypesOfCrime"
@@ -85,199 +86,415 @@
                     app:rsb_tick_mark_text_array="@array/levelArray"
                     app:rsb_tick_mark_text_margin="10dp" />
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <!--                    <com.dfa.customviews.CustomtextView-->
-                    <!--                        android:id="@+id/tvSelectPhoto"-->
-                    <!--                        android:layout_width="0dp"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_gravity="center"-->
-                    <!--                        android:layout_marginStart="@dimen/_15sdp"-->
-                    <!--                        android:layout_marginTop="@dimen/_10sdp"-->
-                    <!--                        android:layout_marginEnd="@dimen/_7sdp"-->
-                    <!--                        android:layout_marginBottom="@dimen/_4sdp"-->
-                    <!--                        android:layout_weight="1"-->
-                    <!--                        android:background="@drawable/shape_round_corner_green"-->
-                    <!--                        android:gravity="center"-->
-                    <!--                        android:paddingLeft="@dimen/_5sdp"-->
-                    <!--                        android:paddingTop="@dimen/_5ssp"-->
-                    <!--                        android:paddingRight="@dimen/_5sdp"-->
-                    <!--                        android:paddingBottom="@dimen/_5ssp"-->
-                    <!--                        android:text="@string/select_photo"-->
-                    <!--                        android:textColor="@color/black"-->
-                    <!--                        android:textSize="@dimen/_12sdp" />-->
-
-                    <com.dfa.customviews.CustomtextView
-                        android:id="@+id/tvTakePhoto"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_12sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_15sdp"
-                        android:layout_marginBottom="@dimen/_4sdp"
-                        android:layout_weight="1.7"
-                        android:background="@drawable/shape_round_corner_green"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/_5sdp"
-                        android:paddingTop="@dimen/_8ssp"
-                        android:paddingRight="@dimen/_5sdp"
-                        android:paddingBottom="@dimen/_8ssp"
-                        android:text="@string/take_photo"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <!--                    <com.dfa.customviews.CustomtextView-->
-                    <!--                        android:id="@+id/tvRecordVideo"-->
-                    <!--                        android:layout_width="0dp"-->
-                    <!--                        android:layout_height="wrap_content"-->
-                    <!--                        android:layout_gravity="center"-->
-                    <!--                        android:layout_marginStart="@dimen/_15sdp"-->
-                    <!--                        android:layout_marginTop="@dimen/_10sdp"-->
-                    <!--                        android:layout_marginEnd="@dimen/_7sdp"-->
-                    <!--                        android:layout_marginBottom="@dimen/_4sdp"-->
-                    <!--                        android:layout_weight="1"-->
-                    <!--                        android:background="@drawable/shape_round_corner_green"-->
-                    <!--                        android:gravity="center"-->
-                    <!--                        android:paddingLeft="@dimen/_5sdp"-->
-                    <!--                        android:paddingTop="@dimen/_5ssp"-->
-                    <!--                        android:paddingRight="@dimen/_5sdp"-->
-                    <!--                        android:paddingBottom="@dimen/_5ssp"-->
-                    <!--                        android:text="Select Video"-->
-                    <!--                        android:textColor="@color/black"-->
-                    <!--                        android:textSize="@dimen/_12sdp" />-->
-
-                    <com.dfa.customviews.CustomtextView
-                        android:id="@+id/tvTakeVideo"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="@dimen/_12sdp"
-                        android:layout_marginTop="@dimen/_10sdp"
-                        android:layout_marginEnd="@dimen/_15sdp"
-                        android:layout_marginBottom="@dimen/_4sdp"
-                        android:layout_weight="1.7"
-                        android:background="@drawable/shape_round_corner_green"
-                        android:gravity="center"
-                        android:paddingLeft="@dimen/_5sdp"
-                        android:paddingTop="@dimen/_8ssp"
-                        android:paddingRight="@dimen/_5sdp"
-                        android:paddingBottom="@dimen/_8ssp"
-                        android:text="Capture Live Video"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/_12sdp"
-                        tools:ignore="HardcodedText" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/imageview_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:orientation="vertical"
-                    android:visibility="gone">
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/clear_image"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_gravity="end"
-                        android:layout_margin="5dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="@dimen/_10ssp"
-                        android:src="@drawable/ic_deleve"
-                        android:visibility="visible" />
-
-                    <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/imgView"
-                        android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        android:layout_gravity="top"
-                        android:layout_marginStart="@dimen/_10ssp"
-                        android:layout_marginTop="@dimen/_2sdp"
-                        android:layout_marginEnd="@dimen/_10ssp"
-                        android:src="@color/bottom_view_bg"
-                        android:visibility="gone" />
-
-                </LinearLayout>
-
                 <RelativeLayout
-                    android:id="@+id/video_parent"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_150sdp"
-                    android:layout_margin="@dimen/_20sdp"
-                    android:background="@color/black"
-                    android:visibility="gone">
-
-
-                    <!--                    <LinearLayout-->
-                    <!--                        android:layout_width="match_parent"-->
-                    <!--                        android:layout_height="match_parent"-->
-                    <!--                        android:gravity="center">-->
-
-                    <VideoView
-                        android:id="@+id/videoView"
+                    android:layout_height="wrap_content">
+                    <com.dfa.customviews.CustomtextView
+                        android:id="@+id/captureImage"
+                        android:gravity="center"
+                        android:drawableRight="@drawable/ic_baseline_add_24"
+                        android:background="@color/lite_gray"
+                        android:padding="@dimen/dp_10"
+                        android:textSize="@dimen/sp_14"
+                        android:drawableTint="@color/black"
+                        android:textColor="@color/black"
+                        android:text="@string/capture_live_video_photo"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerInParent="true" />
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:layout_below="@+id/captureImage"
+                        android:id="@+id/captureImageChild"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
 
 
-                    <ImageView
-                        android:id="@+id/img_delete"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:layout_alignParentRight="true"
-                        android:layout_margin="5dp"
-                        android:src="@drawable/ic_deleve"
-                        android:visibility="visible" />
-                    <!--                    </LinearLayout>-->
+
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <LinearLayout
+                                android:layout_weight="1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <com.dfa.customviews.CustomtextView
+                                    android:id="@+id/tvTakeVideo"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="@dimen/_12sdp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:layout_marginEnd="@dimen/_15sdp"
+                                    android:layout_marginBottom="@dimen/_4sdp"
+                                    android:layout_weight="1.7"
+                                    android:background="@drawable/shape_round_corner_green"
+                                    android:gravity="center"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingTop="@dimen/_8ssp"
+                                    android:paddingRight="@dimen/_5sdp"
+                                    android:paddingBottom="@dimen/_8ssp"
+                                    android:text="Video"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12sdp"
+                                    tools:ignore="HardcodedText" />
+                            </LinearLayout>
+
+
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_weight="1"
+                                >
+                                <com.dfa.customviews.CustomtextView
+                                    android:id="@+id/tvTakePhoto"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:layout_marginStart="@dimen/_12sdp"
+                                    android:layout_marginTop="@dimen/_10sdp"
+                                    android:layout_marginEnd="@dimen/_15sdp"
+                                    android:layout_marginBottom="@dimen/_4sdp"
+                                    android:layout_weight="1.7"
+                                    android:background="@drawable/shape_round_corner_green"
+                                    android:gravity="center"
+                                    android:paddingLeft="@dimen/_5sdp"
+                                    android:paddingTop="@dimen/_8ssp"
+                                    android:paddingRight="@dimen/_5sdp"
+                                    android:paddingBottom="@dimen/_8ssp"
+                                    android:text="Photo"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/_12sdp" />
+                            </LinearLayout>
+
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/imageview_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/clear_image"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_gravity="end"
+                                android:layout_margin="5dp"
+                                android:layout_marginTop="5dp"
+                                android:layout_marginEnd="@dimen/_10ssp"
+                                android:src="@drawable/ic_deleve"
+                                android:visibility="visible" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/imgView"
+                                android:layout_width="match_parent"
+                                android:layout_height="300dp"
+                                android:layout_gravity="top"
+                                android:layout_marginStart="@dimen/_10ssp"
+                                android:layout_marginTop="@dimen/_2sdp"
+                                android:layout_marginEnd="@dimen/_10ssp"
+                                android:src="@color/bottom_view_bg"
+                                android:visibility="gone" />
+
+                        </LinearLayout>
+
+
+
+                        <LinearLayout
+                            android:id="@+id/video_parent"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_150sdp"
+                            android:layout_margin="@dimen/_20sdp"
+                            android:orientation="vertical"
+                            android:visibility="gone">
+
+                            <ImageView
+                                android:id="@+id/img_delete"
+                                android:layout_width="30dp"
+                                android:layout_gravity="end"
+                                android:layout_height="30dp"
+                                android:layout_alignParentRight="true"
+                                android:layout_margin="5dp"
+                                android:src="@drawable/ic_deleve"
+                                android:visibility="visible" />
+
+                            <RelativeLayout
+                                android:background="@color/black"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <VideoView
+                                    android:id="@+id/videoView"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_centerInParent="true" />
+
+                            </RelativeLayout>
+
+
+
+
+                            <!--                    </LinearLayout>-->
+
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
 
                 </RelativeLayout>
 
-                <com.dfa.customviews.CustomtextView
-                    android:id="@+id/tvDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_12sdp"
-                    android:layout_marginEnd="@dimen/_7sdp"
-                    android:text="@string/description"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/_12ssp" />
+                <RelativeLayout
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etDescription"
+                    android:layout_marginTop="@dimen/dp_10"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_100sdp"
-                    android:layout_marginStart="@dimen/_12sdp"
-                    android:layout_marginTop="@dimen/_6sdp"
-                    android:layout_marginEnd="@dimen/_12sdp"
-                    android:background="@drawable/squarebg"
-                    android:ems="10"
-                    android:hint="Please add as much details as possible including name, place, supplying drug, consuming drug etc. "
-                    android:gravity="start"
-                    android:imeOptions="actionDone"
-                    android:inputType="textMultiLine"
-                    android:lines="8"
-                    android:maxLength="500"
-                    android:maxLines="10"
-                    android:minLines="6"
-                    android:textSize="@dimen/_12ssp"
-                    android:padding="@dimen/_7sdp" />
+                    android:layout_height="wrap_content">
+                    <com.dfa.customviews.CustomtextView
+                        android:id="@+id/placeTitle"
+                        android:background="@color/lite_gray"
+                        android:gravity="center"
+                        android:textSize="@dimen/sp_14"
+                        android:drawableRight="@drawable/ic_baseline_add_24"
+                        android:padding="@dimen/dp_10"
+                        android:drawableTint="@color/black"
+                        android:textColor="@color/black"
+                        android:text="Select place of occurrence"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <RelativeLayout
+                        android:visibility="gone"
+                        android:padding="@dimen/dp_5"
+                        android:elevation="@dimen/dp_3"
+                        android:background="@drawable/border_layout"
+                        android:id="@+id/placeParent"
+                        android:layout_margin="@dimen/dp_5"
+                        android:layout_below="@+id/placeTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <fragment
+                            tools:context=".ui.generalpublic.GeneralPublicActivity"
+                            android:id="@+id/mapView"
+                            android:name="com.google.android.gms.maps.SupportMapFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_400sdp"/>
+                        <ImageView
+                            android:id="@+id/transparent_image"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/_400sdp"
+                            android:src="@android:color/transparent" />
+
+                        <ImageView
+                            android:layout_centerInParent="true"
+                            android:src="@drawable/ic_map_pin"
+                            android:tint="@color/red"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"/>
+
+                        <com.dfa.customviews.CustomtextView
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:layout_below="@+id/mapView"
+                            android:id="@+id/tvAdress"
+                            android:textColor="@color/colorPolice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.dfa.customviews.CustomtextView
+                        android:id="@+id/mobileTitle"
+                        android:background="@color/lite_gray"
+                        android:gravity="center"
+                        android:textSize="@dimen/sp_14"
+                        android:drawableRight="@drawable/ic_baseline_add_24"
+                        android:padding="@dimen/dp_10"
+                        android:drawableTint="@color/black"
+                        android:textColor="@color/black"
+                        android:text="Add culprit's mobile/contact"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <RelativeLayout
+                        android:visibility="gone"
+                        android:padding="@dimen/dp_5"
+                        android:elevation="@dimen/dp_3"
+                        android:background="@drawable/border_layout"
+                        android:id="@+id/mobileParent"
+                        android:layout_margin="@dimen/dp_5"
+                        android:layout_below="@+id/mobileTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <com.dfa.customviews.CustomtextView
+                            android:layout_margin="@dimen/dp_5"
+                            android:id="@+id/tvHint"
+                            android:text="Provide Suspect/Culprit's mobile number if you know. Otherwise, leave it blank."
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <EditText
+                            android:inputType="number"
+                            android:id="@+id/tvMobleNumber"
+                            android:elevation="@dimen/dp_3"
+                            android:layout_margin="@dimen/dp_5"
+                            android:singleLine="true"
+                            android:padding="@dimen/dp_5"
+                            android:maxLength="21"
+                            android:digits="0123456789,"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:layout_below="@+id/tvHint"
+                            android:background="@drawable/squarebg"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.dfa.customviews.CustomtextView
+                        android:background="@color/lite_gray"
+                        android:id="@+id/descriptionTitle"
+                        android:gravity="center"
+                        android:textSize="@dimen/sp_14"
+                        android:drawableRight="@drawable/ic_baseline_add_24"
+                        android:padding="@dimen/dp_10"
+                        android:drawableTint="@color/black"
+                        android:textColor="@color/black"
+                        android:text="@string/add_more_description_of_incident"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
+                    <LinearLayout
+                        android:layout_below="@+id/descriptionTitle"
+                        android:visibility="gone"
+                        android:id="@+id/descriptionChild"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <com.dfa.customviews.CustomtextView
+                            android:id="@+id/tvDescription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_12sdp"
+                            android:layout_marginEnd="@dimen/_7sdp"
+                            android:text="@string/description"
+                            android:gravity="start"
+
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/_12ssp" />
+
+
+                        <RelativeLayout
+                            android:layout_marginStart="@dimen/_12sdp"
+                            android:layout_marginTop="@dimen/_6sdp"
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:layout_width="match_parent"
+                            android:background="@drawable/squarebg"
+                            android:layout_height="100dp">
+                            <EditText
+                                android:id="@+id/etDescription"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@android:color/transparent"
+                                android:scrollbars="vertical"
+                                android:gravity="start"
+                                android:hint="Please add as much details as possible including name, place, supplying drug, consuming drug etc. "
+                                android:imeOptions="actionDone"
+                                android:inputType="textMultiLine"
+                                android:lines="8"
+                                android:maxLength="500"
+                                android:maxLines="10"
+                                android:minLines="6"
+                                android:padding="@dimen/_7sdp"
+                                android:textSize="@dimen/_12ssp" />
+                        </RelativeLayout>
+
+
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+                <RelativeLayout
+
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.dfa.customviews.CustomtextView
+                        android:id="@+id/allowFollowyou"
+                        android:background="@color/lite_gray"
+                        android:gravity="center"
+                        android:padding="@dimen/dp_10"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/sp_14"
+                        android:drawableRight="@drawable/ic_baseline_add_24"
+                        android:textColor="@color/black"
+                        android:drawableTint="@color/black"
+                        android:text="Allow Police/NGO to follow you?"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <RelativeLayout
+                        android:visibility="gone"
+                        android:id="@+id/allowFollowyouParent"
+                        android:padding="@dimen/dp_5"
+                        android:elevation="@dimen/dp_3"
+                        android:layout_margin="@dimen/dp_8"
+                        android:background="@drawable/border_layout"
+                        android:layout_below="@+id/allowFollowyou"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                        <com.dfa.customviews.CustomtextView
+                            android:layout_margin="@dimen/dp_5"
+                            android:id="@+id/tvHintFolow"
+                            android:textColor="@color/colorPrimary"
+                            android:text="@string/if_you_want_to_guide_poilce_ngo_to_catch_the_suspect_in_moving_tick_the_checkbox_notherwise_leave_it_unchecked_nnote_nobody_body_not_even_poilce_will_know_about_you_you_can_turn_it_off_under_my_cases_in_menu"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <com.dfa.customviews.CustomTextViewheading
+                            android:layout_margin="@dimen/dp_5"
+                            android:id="@+id/guide"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:textColor="@color/colorPrimary"
+                            android:layout_below="@+id/tvHintFolow"
+                            android:text="Become a guide to this case now?"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                        <CheckBox
+                            android:id="@+id/btnCheck"
+                            android:layout_marginLeft="@dimen/dp_5"
+                            android:layout_below="@+id/tvHintFolow"
+                            android:layout_toRightOf="@+id/guide"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
 
 
                 <com.dfa.customviews.CustomtextView
@@ -301,16 +518,15 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/_5sdp"
                     android:text="OR"
-                    android:visibility="gone"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/_14ssp" />
+                    android:textSize="@dimen/_14ssp"
+                    android:visibility="gone" />
 
 
                 <com.dfa.customviews.CustomtextView
                     android:id="@+id/btnSubmitParticular"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_10sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
@@ -320,32 +536,32 @@
                     android:padding="@dimen/_10sdp"
                     android:text="@string/submit_particular_police"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/_12ssp" />
+                    android:textSize="@dimen/_12ssp"
+                    android:visibility="gone" />
 
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spDistrict"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
                     android:layout_marginBottom="@dimen/_5sdp"
-                    android:background="@drawable/bg_spinner" />
+                    android:background="@drawable/bg_spinner"
+                    android:visibility="gone" />
 
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spPolice"
-                    android:visibility="gone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/_12sdp"
                     android:layout_marginTop="@dimen/_6sdp"
-                    android:layout_marginBottom="@dimen/_15sdp"
                     android:layout_marginEnd="@dimen/_12sdp"
-                    android:background="@drawable/bg_spinner" />
-
+                    android:layout_marginBottom="@dimen/_15sdp"
+                    android:background="@drawable/bg_spinner"
+                    android:visibility="gone" />
 
 
             </LinearLayout>

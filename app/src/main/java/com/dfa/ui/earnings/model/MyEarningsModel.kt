@@ -25,7 +25,7 @@ class MyEarningsModel(private var myEarningsPresenter: MyEarningsPresenter) {
                 if(t is SocketTimeoutException){
                     myEarningsPresenter.showError("Socket Time error")
                 }else{
-                    myEarningsPresenter.showError(t.message + "")
+                    myEarningsPresenter.showError("Somthing went wrong, please try again latter")
                 }
             }
 

@@ -33,7 +33,7 @@ class LoginModel(private var loginPresenter: LoginPresenter) {
                 if(t is SocketTimeoutException){
                     loginPresenter.showError("Socket Time error")
                 }else{
-                    loginPresenter.showError(t.message + "")
+                    loginPresenter.showError("Somthing went wrong, please try again latter")
                 }
             }
 

@@ -4,6 +4,7 @@ import com.dfa.base.presenter.BasePresenter
 import com.dfa.pojo.request.CasesRequest
 import com.dfa.pojo.request.CreatePostRequest
 import com.dfa.pojo.request.CrimeDetailsRequest
+import com.dfa.pojo.request.PublicVisibilityRequest
 import com.dfa.pojo.response.*
 
 interface CasesPresenter:BasePresenter {
@@ -26,4 +27,9 @@ interface CasesPresenter:BasePresenter {
     fun getfirImageResponse(response:FirImageResponse)
     fun advertisementSuccess(responseObject: AdvertisementResponse)
     fun advertisementInput(responseObject: AdvertisementInput)
+    fun publicVisibilityInput(
+        responseObject: String?,
+        input: PublicVisibilityRequest
+    )
+    fun publicVisibilityResponse(responseObject: PublicVisibilityResponse)
 }

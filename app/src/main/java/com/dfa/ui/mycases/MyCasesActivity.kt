@@ -11,6 +11,7 @@ import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -25,6 +26,7 @@ import com.dfa.listeners.AlertDialogListener
 import com.dfa.listeners.OnCaseItemClickListener
 import com.dfa.pojo.request.CasesRequest
 import com.dfa.pojo.request.CrimeDetailsRequest
+import com.dfa.pojo.request.PublicVisibilityRequest
 import com.dfa.pojo.response.*
 import com.dfa.ui.comments.CommentsActivity
 import com.dfa.ui.generalpublic.PoliceOfficerActivity
@@ -79,6 +81,16 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
         //delete the item based on id
         deleteItemposition = position
         presenter.deleteComplaint(token, complaintsData.id!!)
+    }
+
+
+    fun publicVisibilityHitApi(coplaintId: String?, visibility: String) {
+        var input= PublicVisibilityRequest()
+        input.complaint_id=coplaintId!!.toInt()
+        input.public_visibility=visibility!!.toInt()
+        Utilities.showProgress(this)
+        presenter.publicVisibilityInput(token,input)
+
     }
 
     override fun onHide(item: Any, position: Int) {
@@ -646,6 +658,11 @@ class MyCasesActivity : BaseActivity(), CasesView, OnCaseItemClickListener, Aler
 
     override fun advertisementSuccess(responseObject: AdvertisementResponse) {
 
+    }
+
+    override fun publicVIsibilitySuccess(responseObject: PublicVisibilityResponse) {
+        Utilities.dismissProgress()
+        Toast.makeText(this, responseObject.message.toString(), Toast.LENGTH_SHORT).show()
     }
 
     override fun onListFetchedSuccess(responseObject: GetStatusResponse) {

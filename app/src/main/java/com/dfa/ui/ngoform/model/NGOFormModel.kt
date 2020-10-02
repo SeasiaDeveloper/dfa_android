@@ -46,7 +46,7 @@ class NGOFormModel(private var ngoPresenter: NGOFormPresenter) {
                 if(t is SocketTimeoutException){
                     ngoPresenter.showError("Socket Time error")
                 }else{
-                    ngoPresenter.showError(t.message + "")
+                    ngoPresenter.showError("Somthing went wrong, please try again latter")
                 }
             }
         })

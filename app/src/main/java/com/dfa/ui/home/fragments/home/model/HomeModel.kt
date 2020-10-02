@@ -24,7 +24,7 @@ class HomeModel(private var homePresenter: HomePresenter) {
         retrofitApi.getProfileData(token).enqueue(object :
             Callback<GetProfileResponse> {
             override fun onFailure(call: Call<GetProfileResponse>, t: Throwable) {
-                homePresenter.showError(t.message + "")
+                homePresenter.showError("Somthing went wrong, please try again latter")
             }
 
             override fun onResponse(
@@ -52,7 +52,7 @@ class HomeModel(private var homePresenter: HomePresenter) {
         retrofitApi.logout(token).enqueue(object :
             Callback<CommonResponse> {
             override fun onFailure(call: Call<CommonResponse>, t: Throwable) {
-                homePresenter.showError(t.message + "")
+                homePresenter.showError("Somthing went wrong, please try again latter")
             }
 
             override fun onResponse(
@@ -117,7 +117,7 @@ class HomeModel(private var homePresenter: HomePresenter) {
         retrofitApi.updateStatus(token, map)
             .enqueue(object : Callback<UpdateStatusSuccess> {
                 override fun onFailure(call: Call<UpdateStatusSuccess>, t: Throwable) {
-                    homePresenter.showError(t.message + "")
+                    homePresenter.showError("Somthing went wrong, please try again latter")
                 }
 
                 override fun onResponse(
@@ -151,7 +151,7 @@ class HomeModel(private var homePresenter: HomePresenter) {
                     if (t is SocketTimeoutException) {
                         homePresenter.showError("Socket Time error")
                     } else {
-                        homePresenter.showError(t.message + "")
+                        homePresenter.showError("Somthing went wrong, please try again latter")
                     }
                 }
 
@@ -199,7 +199,7 @@ class HomeModel(private var homePresenter: HomePresenter) {
                 }
 
                 override fun onFailure(call: Call<DueTicketResponse>, t: Throwable) {
-                    homePresenter.showError(t.message + "")
+                    homePresenter.showError("Somthing went wrong, please try again latter")
                 }
             })
     }

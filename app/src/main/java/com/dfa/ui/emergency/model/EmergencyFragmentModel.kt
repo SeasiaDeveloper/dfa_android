@@ -32,7 +32,7 @@ class EmergencyFragmentModel(private var emergencyFragmentPresenter: EmergencyFr
                 if (t is SocketTimeoutException) {
                     emergencyFragmentPresenter.showError("Socket Time error")
                 } else {
-                    emergencyFragmentPresenter.showError(t.message + "")
+                    emergencyFragmentPresenter.showError("Somthing went wrong, please try again latter")
                 }
             }
 
@@ -66,7 +66,7 @@ class EmergencyFragmentModel(private var emergencyFragmentPresenter: EmergencyFr
                 if(t is SocketTimeoutException){
                     emergencyFragmentPresenter.showError("Socket Time error")
                 }else{
-                    emergencyFragmentPresenter.showError(t.message + "")
+                    emergencyFragmentPresenter.showError("Somthing went wrong, please try again latter")
                 }
             }
 

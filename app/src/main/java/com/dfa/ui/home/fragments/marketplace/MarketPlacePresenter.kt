@@ -45,7 +45,7 @@ class MarketPlacePresenter(var marketPlaceFragment: MarketPlaceFragment) {
                 if (t is SocketTimeoutException) {
                     marketPlaceFragment.onFailer("Socket Time error")
                 } else {
-                    marketPlaceFragment.onFailer(t.message + "")
+                    marketPlaceFragment.onFailer("Somthing went wrong, please try again latter")
                 }
             }
         })
@@ -84,7 +84,7 @@ class MarketPlacePresenter(var marketPlaceFragment: MarketPlaceFragment) {
                 if (t is SocketTimeoutException) {
                     marketPlaceFragment.onFailer("Socket Time error")
                 } else {
-                    marketPlaceFragment.onFailer(t.message + "")
+                    marketPlaceFragment.onFailer("Somthing went wrong, please try again latter")
                 }
             }
         })

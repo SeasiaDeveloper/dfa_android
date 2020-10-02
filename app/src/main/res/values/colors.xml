@@ -9,6 +9,7 @@
     <color name="black">#000000</color>
     <color name="grey">#8E8E93</color>
     <color name="silver">#C0C0C0</color>
+    <color name="lite_gray">#E4DFDF</color>
     <color name="toolbar_bg_color">#00bde3</color>
     <color name="blue">#00bde3</color>
     <color name="bottom_view_bg">#313131</color>

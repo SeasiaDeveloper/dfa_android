@@ -13,7 +13,6 @@ import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Handler
-import android.telephony.ServiceState
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -49,6 +48,7 @@ import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.dfa.ui.home.fragments.cases.view.LocationListenerCallback
 import com.dfa.ui.home.fragments.home.presenter.HomePresenter
 import com.dfa.ui.home.fragments.home.presenter.HomePresenterImpl
+import com.dfa.ui.home.fragments.marketplace.MarketPlaceFragment
 import com.dfa.ui.home.fragments.photos.view.PhotosFragment
 import com.dfa.ui.home.fragments.videos.view.VideosFragment
 import com.dfa.ui.login.view.LoginActivity
@@ -84,7 +84,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     //    var genPubHomeFrag = HomeFragment()
     private var isGPS: Boolean = false
     var isFirstTimeEntry = true
-    val player: MediaPlayer?=null
+    val player: MediaPlayer? = null
     private var provider: String = ""
     var role = ""
     private lateinit var locationManager: LocationManager
@@ -95,6 +95,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     private var mFusedLocationClass: FusedLocationClass? = null
     private var mLocation: Location? = null
     private var mHandler: Handler? = null
+    private var testHandler: Handler? = null
 
     private val mRunnable: Runnable = object : Runnable {
         override fun run() {
@@ -125,9 +126,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 //                        lattitude + "---" + longitude,
 //                        Toast.LENGTH_LONG
 //                    ).show()
-                    mHandler!!.removeCallbacks(this)
-                } else mHandler!!.postDelayed(this, 500)
-            } else mHandler!!.postDelayed(this, 500)
+                    testHandler!!.removeCallbacks(this)
+                } else testHandler!!.postDelayed(this, 500)
+            } else testHandler!!.postDelayed(this, 500)
         }
     }
 
@@ -154,6 +155,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
     @SuppressLint("SetTextI18n")
     override fun onResume() {
         super.onResume()
+
         if (menuItem != null && menuItem!!.isChecked) menuItem!!.isChecked = false
 
         if (!isGPS && !isPermissionDialogRequired) {
@@ -185,18 +187,24 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 startActivity(intent)
             }
         }
+
+        if (intent.getStringExtra("isChecked") != null) {
+            if (intent.getStringExtra("isChecked").equals("1")) {
+                followMeActive()
+            }
+        }
     }
 
     override fun onPause() {
         super.onPause()
 
         try {
-            if(player!=null){
-                if(player.isPlaying){
+            if (player != null) {
+                if (player.isPlaying) {
                     player.stop()
                 }
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
 
         }
 
@@ -221,8 +229,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     fun displayAcceptRejDialog(notificationResponse: NotificationResponse) {
         lateinit var dialog: android.app.AlertDialog
-
-
 
 
         val builder = android.app.AlertDialog.Builder(this@HomeActivity)
@@ -263,8 +269,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 )
         }
 
-        val soundUri  = Uri.parse("android.resource://"
-                + MyApplication.instance.getPackageName() + "/" + R.raw.siren);
+        val soundUri = Uri.parse(
+            "android.resource://"
+                    + MyApplication.instance.getPackageName() + "/" + R.raw.siren
+        );
 
         val player: MediaPlayer = MediaPlayer.create(this, soundUri)
         player.isLooping = true
@@ -277,7 +285,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
         acceptButton.setOnClickListener {
             //accept = 4
-            if(player.isPlaying){
+            if (player.isPlaying) {
                 player.stop()
             }
             Utilities.showProgress(this)
@@ -310,7 +318,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
 
         openButton.setOnClickListener {
-            if(player.isPlaying){
+            if (player.isPlaying) {
                 player.stop()
             }
             val intent = Intent(this, PoliceIncidentDetailScreen::class.java)
@@ -334,12 +342,11 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         dialog.setOnCancelListener(object : DialogInterface.OnCancelListener {
             override fun onCancel(dialog: DialogInterface?) {
 
-                if(player.isPlaying){
+                if (player.isPlaying) {
                     player.stop()
                 }
             }
         })
-
 
 
     }
@@ -372,7 +379,6 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             toolbar_title.text = getString(R.string.police_dashboard)
         (nav_action as Toolbar).setTitleTextColor(Color.BLACK)
 
-        getStartingLocation()
 
         //dialog
         if (getIntent() != null && getIntent().getExtras() != null && (getIntent().getExtras()
@@ -396,13 +402,18 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
             notificationResponse.crime_type = getIntent().getExtras()?.getString("crime_type")
 
             displayAcceptRejDialog(notificationResponse)
+
+
         }
 
         setTabAdapter()
         mFusedLocationClass = FusedLocationClass(this)
         mHandler = Handler()
+        testHandler = Handler()
         mHandler!!.postDelayed(mRunnable, 500)
+
         GetVersionCode(this).execute()
+
 
 //        tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
 //           override fun onTabSelected(tab: TabLayout.Tab?) {
@@ -417,7 +428,7 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 //            override fun onTabReselected(tab: TabLayout.Tab?) {}
 //        })
 
-
+        getStartingLocation()
     }
 
     @SuppressLint("SetTextI18n")
@@ -430,9 +441,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         }
         //adapter.addFragment(genPubHomeFrag, "Home")
         adapter.addFragment(EmergencyFragment(), "Emergency")
-        adapter.addFragment(PhotosFragment(), "Photos")
-        adapter.addFragment(VideosFragment(), "Videos")
-//        adapter.addFragment(MarketPlaceFragment(), "Market Place")
+//        adapter.addFragment(PhotosFragment(), "Photos")
+//        adapter.addFragment(VideosFragment(), "Videos")
+        adapter.addFragment(MarketPlaceFragment(), "Market Place")
         viewPager?.adapter = adapter
         tabs.setupWithViewPager(viewPager)
         nav_view?.setNavigationItemSelectedListener(this)
@@ -703,7 +714,10 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 val appUrl = PreferenceHandler.readString(this, PreferenceHandler.APP_URL, "")
                 val shareIntent = Intent()
                 shareIntent.action = Intent.ACTION_SEND
-                shareIntent.putExtra(Intent.EXTRA_TEXT, "https://play.google.com/store/apps/details?id=com.dfango.android&hl=en")
+                shareIntent.putExtra(
+                    Intent.EXTRA_TEXT,
+                    "https://play.google.com/store/apps/details?id=com.dfango.android&hl=en"
+                )
                 shareIntent.type = "text/plain"
                 startActivity(Intent.createChooser(shareIntent, "send to"))
 
@@ -941,9 +955,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
 
     override fun dueAmountSuccess(responseObject: DueTicketResponse) {
 
-        var dueTicket=ArrayList<DueTicketResponse.Due_tickets>()
-        dueTicket=responseObject.due_tickets!!
-        if(dueTicket.size>0){
+        var dueTicket = ArrayList<DueTicketResponse.Due_tickets>()
+        dueTicket = responseObject.due_tickets!!
+        if (dueTicket.size > 0) {
             dueIncomePopup(dueTicket)
         }
 
@@ -954,12 +968,12 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         var dialog = Dialog(this!!) // Context, this, etc.
         dialog!!.setContentView(R.layout.due_amount_dialog)
 
-       var  coupanList=ArrayList<TicketResponse.Data>()
+        var coupanList = ArrayList<TicketResponse.Data>()
 
-        for (i in 0..dueTicket.size-1){
-            var inputModel=TicketResponse.Data()
-            inputModel.BucketId=dueTicket.get(i).BucketId
-            inputModel.Ticket=dueTicket.get(i).Ticket
+        for (i in 0..dueTicket.size - 1) {
+            var inputModel = TicketResponse.Data()
+            inputModel.BucketId = dueTicket.get(i).BucketId
+            inputModel.Ticket = dueTicket.get(i).Ticket
             coupanList!!.add(inputModel)
         }
 
@@ -968,9 +982,9 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         btnOk.setOnClickListener {
             dialog!!.dismiss()
 //
-            var intent=Intent(this,ContributeActivity::class.java)
-            intent.putExtra("dueAmount","dueAmount")
-            intent.putExtra("dueTicketList",coupanList)
+            var intent = Intent(this, ContributeActivity::class.java)
+            intent.putExtra("dueAmount", "dueAmount")
+            intent.putExtra("dueTicketList", coupanList)
             startActivity(intent)
         }
 
@@ -994,6 +1008,56 @@ class HomeActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         } else {
             val netInfo = cm.activeNetworkInfo
             return netInfo != null && netInfo.isConnectedOrConnecting
+        }
+    }
+
+
+    fun followMeActive() {
+
+        try {
+
+
+            val mRunnable1: Runnable = object : Runnable {
+                override fun run() {
+
+                    try {
+
+
+                        if (mFusedLocationClass != null) {
+                            mLocation = mFusedLocationClass?.getLastLocation(this@HomeActivity)
+                            if (mLocation != null) {
+
+                                var lattitude = mLocation!!.getLatitude().toString() + ""
+                                var longitude = mLocation!!.getLongitude().toString() + ""
+                                val TAG = "HomeActivity"
+
+                                homePresenter.hitLocationApi(
+                                    authorizationToken,
+                                    lattitude,
+                                    longitude
+                                )
+
+
+//                    Toast.makeText(
+//                        this@HomeActivity,
+//                        lattitude + "---" + longitude,
+//                        Toast.LENGTH_LONG
+//                    ).show()
+                                mHandler!!.removeCallbacks(this)
+                            } else mHandler!!.postDelayed(this, 500)
+                        } else mHandler!!.postDelayed(this, 500)
+                    }
+                    catch (e:java.lang.Exception)
+                    {
+
+                    }
+
+                }
+
+            }
+            testHandler!!.postDelayed(mRunnable1, 500)
+        } catch (e: Exception) {
+
         }
     }
 

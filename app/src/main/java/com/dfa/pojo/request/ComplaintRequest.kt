@@ -13,6 +13,9 @@ data class ComplaintRequest(
     var lng: String,
     val mediaType: String,
     val address:String,
-    var police_id: String
+    var police_id: String,
+    var culprit_number: String,
+    var follow_me: String,
+    var suspect_number: String
 
 )

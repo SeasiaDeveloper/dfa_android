@@ -1,161 +1,322 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/parentLayout"
-    tools:context="com.dfa.ui.contribute.ContributeActivity">
-    <include
-        android:id="@+id/toolbarLayout"
-        layout="@layout/toolbar_layout"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/parentLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        tools:context="com.dfa.ui.contribute.ContributeActivity">
 
-
-    <RelativeLayout
-        android:id="@+id/parentDonate"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_below="@+id/toolbarLayout"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10"
-        android:visibility="gone"
-        android:layout_width="match_parent"
-        android:background="@drawable/search_shape"
-        android:layout_height="60dp">
-        <com.dfa.customviews.CustomEditText
-            android:id="@+id/etSearch"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="@dimen/_5ssp"
-            android:layout_marginBottom="@dimen/_3sdp"
-            android:hint="Enter amount to donate (INR)"
-            android:imeOptions="actionSearch"
-            android:maxLines="1"
+        <include
             android:visibility="gone"
-            android:layout_marginLeft="@dimen/_5sdp"
-            android:padding="@dimen/dp_8"
-            android:paddingBottom="15dp"
-            android:singleLine="true"
-            android:background="@android:color/transparent"
-            android:textColor="@color/black"
-            android:textColorHint="@android:color/darker_gray"
-            android:textSize="17dp" />
-
-    </RelativeLayout>
-    <TextView
-        android:layout_marginRight="@dimen/dp_40"
-        android:text="Donate"
-        android:layout_margin="@dimen/dp_10"
-        android:layout_below="@+id/toolbarLayout"
-
-        android:id="@+id/donateButton"
-        android:paddingLeft="@dimen/dp_25"
-        android:drawableTint="@color/white"
-        android:paddingRight="@dimen/dp_25"
-        android:paddingBottom="@dimen/dp_10"
-        android:paddingTop="@dimen/dp_10"
-        android:gravity="center"
-        android:textSize="@dimen/dp_16"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/green"
-        android:background="@drawable/donate_btn_shape"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-
-    <RelativeLayout
-        android:layout_above="@+id/parentPay"
-        android:layout_margin="@dimen/dp_10"
-        android:id="@+id/parentLottery"
-        android:background="@color/white"
-        android:layout_below="@+id/donateButton"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:text="Please select from available coupon codes"
-            android:layout_marginRight="@dimen/dp_10"
-            android:paddingBottom="@dimen/dp_5"
-            android:gravity="center"
-            android:id="@+id/tvCoupon"
-            android:layout_marginLeft="@dimen/dp_10"
+            android:id="@+id/toolbarLayout"
+            layout="@layout/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvCouponList"
-            android:layout_above="@+id/viewMore"
-            android:layout_marginTop="@dimen/dp_5"
-            android:layout_marginBottom="@dimen/dp_5"
-            android:layout_width="match_parent"
-            android:layout_below="@+id/tvCoupon"
-            android:layout_height="match_parent"/>
+            android:layout_height="wrap_content" />
 
-        <TextView
-            android:textColor="@color/green"
-            android:text="More"
-            android:id="@+id/viewMore"
-            android:drawableLeft="@drawable/ic_down_arrow"
-            android:layout_margin="@dimen/dp_5"
+
+        <ScrollView
+            android:layout_width="match_parent"
+
+            android:layout_height="match_parent"
+            android:layout_above="@+id/parentPay"
+            android:layout_below="@+id/toolbarLayout">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/parentDonate"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@drawable/search_shape"
+                    android:visibility="gone">
+
+                    <com.dfa.customviews.CustomEditText
+                        android:id="@+id/etSearch"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_marginTop="@dimen/_5ssp"
+                        android:layout_marginBottom="@dimen/_3sdp"
+                        android:background="@android:color/transparent"
+                        android:hint="Enter amount to donate (INR)"
+                        android:imeOptions="actionSearch"
+                        android:maxLines="1"
+                        android:padding="@dimen/dp_8"
+                        android:paddingBottom="15dp"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textColorHint="@android:color/darker_gray"
+                        android:textSize="17dp"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
+
+
+
+
+                <RelativeLayout
+                    android:id="@+id/donateLayout"
+                    android:paddingBottom="@dimen/dp_10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/green">
+
+                    <ImageView
+                        android:tint="@color/white"
+                        android:id="@+id/ic_back"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:layout_marginRight="@dimen/dp_8"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/ic_cross_icon"
+                        android:layout_width="@dimen/dp_30"
+                        android:layout_height="@dimen/dp_30"/>
+
+                    <TextView
+                        android:id="@+id/drugTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:gravity="center"
+                        android:text="Contribute to Drag\n Free Arunachal"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/dp_25" />
+
+                    <TextView
+                        android:id="@+id/donateButton"
+
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/drugTitle"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:background="@drawable/donate_btn_shape"
+                        android:elevation="3dp"
+                        android:paddingLeft="@dimen/dp_18"
+                        android:paddingTop="@dimen/dp_8"
+                        android:paddingRight="@dimen/dp_18"
+                        android:paddingBottom="@dimen/dp_8"
+                        android:text="Donate Now"
+                        android:textColor="@color/green"
+                        android:textSize="@dimen/dp_16" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:visibility="gone"
+                    android:id="@+id/parentLottery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/donateLayout"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/tvCoupon"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dp_10"
+                        android:layout_marginRight="@dimen/dp_10"
+                        android:gravity="center"
+                        android:paddingBottom="@dimen/dp_5"
+                        android:text="Please select from available coupon codes"
+                        android:textSize="@dimen/dp_20" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvCouponList"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/tvCoupon"
+                        android:layout_marginLeft="@dimen/dp_8"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:layout_marginRight="@dimen/dp_8"
+                        android:layout_marginBottom="@dimen/dp_5"
+                        android:nestedScrollingEnabled="false" />
+
+                    <TextView
+                        android:id="@+id/viewMore"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rvCouponList"
+                        android:layout_margin="@dimen/dp_5"
+                        android:paddingLeft="@dimen/dp_14"
+                        android:paddingTop="@dimen/dp_8"
+                        android:paddingBottom="@dimen/dp_8"
+                        android:paddingRight="@dimen/dp_10"
+                        android:background="@drawable/search_shape"
+                        android:drawableRight="@drawable/ic_down_arrow"
+                        android:text="More Coupon"
+                        android:textColor="@color/green" />
+
+
+                    <RelativeLayout
+                        android:id="@+id/rlDrawLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/viewMore"
+                        android:layout_marginTop="@dimen/dp_8"
+                        android:background="@color/green"
+                        android:padding="@dimen/dp_5">
+
+                        <TextView
+                            android:id="@+id/luckeyDrawDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/dp_16"
+                            android:text="Lucky Draw Date"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_20" />
+
+                        <TextView
+                            android:id="@+id/tvDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/luckeyDrawDate"
+                            android:layout_marginLeft="@dimen/dp_16"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:text="15th Nov 2020"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_16" />
+
+                        <TextView
+                            android:id="@+id/tvTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tvDate"
+                            android:layout_marginLeft="@dimen/dp_16"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:text="2PM"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_16" />
+
+                        <TextView
+                            android:id="@+id/venew"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tvTime"
+                            android:layout_marginLeft="@dimen/dp_16"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:text="BormGround"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/sp_16" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/priseParenLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/rlDrawLayout"
+                        android:background="@color/silver_background">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/priceRecyclerView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="@dimen/dp_10" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/priceRecyclerView"
+                            android:layout_margin="@dimen/dp_10"
+                            android:text="This is crowdfunding fundrasing in ads on ongoing constraction of hostel for unemployed ladious at Tigdo, Yupia"
+                            android:textSize="@dimen/sp_16" />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/days"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/priseParenLayout"
+                        android:layout_margin="@dimen/dp_8"
+                        android:gravity="center"
+                        android:text="12 days 20 hrs left\n HURRY! HURRY!"
+                        android:textColor="#e83403"
+                        android:textSize="@dimen/sp_30" />
+
+                    <TextView
+                        android:id="@+id/result"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/days"
+                        android:layout_marginLeft="@dimen/dp_16"
+                        android:layout_marginBottom="@dimen/dp_10"
+                        android:layout_marginTop="@dimen/dp_5"
+                        android:gravity="center"
+                        android:text="Draw result will be available on this page"
+                        android:textSize="@dimen/sp_16" />
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+        </ScrollView>
+
+        <RelativeLayout
+            android:id="@+id/parentPay"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+
             android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
 
+            android:background="#e83403">
 
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/parentPay"
-        android:layout_alignParentBottom="true"
-        android:layout_height="60dp"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/view"
-
-        android:layout_marginBottom="@dimen/dp_10"
-        android:background="@drawable/search_shape">
-        <TextView
-            android:textSize="@dimen/dp_16"
-            android:textColor="@color/black"
-            android:text="Total Pay: 0"
-            android:id="@+id/tvTotalPay"
-            android:layout_marginLeft="@dimen/dp_20"
-            android:layout_centerVertical="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
             <TextView
-                android:layout_centerVertical="true"
-                android:layout_marginRight="@dimen/dp_40"
-                android:layout_alignParentRight="true"
-                android:text="Pay"
-                android:id="@+id/payButton"
-                android:paddingLeft="@dimen/dp_25"
-                android:paddingRight="@dimen/dp_25"
-                android:paddingBottom="@dimen/dp_8"
-                android:paddingTop="@dimen/dp_8"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/green"
-                android:background="@drawable/donate_btn_shape"
+                android:id="@+id/tvTotalPay"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_20"
+                android:text="Total Pay: 0"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_20" />
+
+            <TextView
+                android:id="@+id/payButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+
+                android:gravity="center"
+                android:background="@color/green"
+                android:backgroundTint="@color/green"
+                android:paddingLeft="@dimen/dp_25"
+                android:paddingTop="@dimen/dp_8"
+                android:textSize="@dimen/sp_16"
+                android:paddingRight="@dimen/dp_50"
+                android:paddingBottom="@dimen/dp_8"
+                android:text="Pay"
+                android:textColor="@color/white" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/no_tickets"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="No Tickets Available"
+            android:visibility="gone" />
 
 
     </RelativeLayout>
-
-    <TextView
-        android:layout_centerInParent="true"
-        android:id="@+id/no_tickets"
-        android:visibility="gone"
-        android:text="No Tickets Available"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-
-</RelativeLayout>
 </layout>

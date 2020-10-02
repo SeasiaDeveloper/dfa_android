@@ -28,7 +28,7 @@ class ForgotPasswordModel(private var forgotPassworPresenter: ForgotPassworPrese
                 if(t is SocketTimeoutException){
                     forgotPassworPresenter.showError("Socket Time error")
                 }else{
-                    forgotPassworPresenter.showError(t.message + "")
+                    forgotPassworPresenter.showError("Somthing went wrong, please try again latter")
                 }
             }
 
@@ -62,7 +62,7 @@ class ForgotPasswordModel(private var forgotPassworPresenter: ForgotPassworPrese
                 if(t is SocketTimeoutException){
                     forgotPassworPresenter.showError("Socket Time error")
                 }else{
-                    forgotPassworPresenter.showError(t.message + "")
+                    forgotPassworPresenter.showError("Somthing went wrong, please try again latter")
                 }
             }
 

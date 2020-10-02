@@ -26,7 +26,7 @@ class UpdatePasswordModel(private var updatePasswordPresenter: UpdatePasswordPre
                 if(t is SocketTimeoutException){
                     updatePasswordPresenter.showError("Socket Time error")
                 }else{
-                    updatePasswordPresenter.showError(t.message + "")
+                    updatePasswordPresenter.showError("Somthing went wrong, please try again latter")
                 }
             }
 

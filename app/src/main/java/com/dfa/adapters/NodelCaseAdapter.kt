@@ -1,4 +1,5 @@
 package com.dfa.adapters
+
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
@@ -11,7 +12,6 @@ import android.widget.PopupMenu
 import androidx.core.view.MenuCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -28,15 +28,14 @@ import com.dfa.ui.commentlikelist.CommentLikeUsersList
 import com.dfa.ui.comments.CommentsActivity
 import com.dfa.ui.contactus.ContactUsActivity
 import com.dfa.ui.generalpublic.VideoPlayerActivity
-import com.dfa.ui.generalpublic.view.GeneralPublicHomeFragment
 import com.dfa.ui.home.fragments.home.view.HomeActivity
-import com.dfa.ui.mycases.MyCasesActivity
 import com.dfa.ui.mycases.NodelMyCaseActivity
 import com.dfa.ui.profile.ProfileActivity
 import com.dfa.utils.PreferenceHandler
 import com.dfa.utils.Utilities
 import kotlinx.android.synthetic.main.item_case.view.*
-class NodelCaseAdapter (
+
+class NodelCaseAdapter(
     var context: Context,
     var mList: ArrayList<GetCasesResponse.Data>,
     private var listener: OnCaseItemClickListener,
@@ -78,8 +77,6 @@ class NodelCaseAdapter (
     }
 
 
-
-
     fun notifyFirImageData(position: Int?, response: FirImageResponse, complaintId: String) {
         //GeneralPublicHomeFragment.isApiHit = true
         var requiredPosition: Int? = null
@@ -96,6 +93,7 @@ class NodelCaseAdapter (
         }
 
     }
+
     fun clear() {
         val size: Int = mList.size
         mList.clear()
@@ -149,7 +147,8 @@ class NodelCaseAdapter (
 
             var userId = PreferenceHandler.readString(context, PreferenceHandler.USER_ID, "")!!
             val userDetail: GetCasesResponse.Data.UserDetail = item.userDetail!!
-            val username = PreferenceHandler.readString(context, PreferenceHandler.USER_FULLNAME, "")
+            val username =
+                PreferenceHandler.readString(context, PreferenceHandler.USER_FULLNAME, "")
 //            val userId = PreferenceHandler.readString(context, PreferenceHandler.USER_ID, "")
             val token =
                 PreferenceHandler.readString(context, PreferenceHandler.AUTHORIZATION, "")
@@ -556,7 +555,9 @@ class NodelCaseAdapter (
 
                     sharingIntent.putExtra(Intent.EXTRA_SUBJECT, "Drug Free Arunachal")
                     //   sharingIntent.putExtra(Intent.EXTRA_TEXT, "Hi, Your friend $username shared you FIR complaint from Drug Free Arunachal app. To see detail, open\n https://drugfreearunachal.org/home?id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
-                    sharingIntent.putExtra(Intent.EXTRA_TEXT, "https://drugfreearunachal.org/complaint-details?complaint_id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
+                    sharingIntent.putExtra(
+                        Intent.EXTRA_TEXT,
+                        "https://drugfreearunachal.org/complaint-details?complaint_id=" + item.id + "" //"Hi, Your friend $username sent you a complaint. Click here app\n www.dfa.com/home?id=" + item.id + ""
                     )
                     context.startActivity(Intent.createChooser(sharingIntent, "Share via"))
                 }
@@ -569,6 +570,30 @@ class NodelCaseAdapter (
 
                 //if NGO show profile image
                 if (type == 1) {
+
+                    itemView.traceTitle.visibility = View.VISIBLE
+                    itemView.trace.visibility = View.VISIBLE
+                    itemView.publicVisibilityTitle.visibility = View.VISIBLE
+                    itemView.publicChecke.visibility = View.VISIBLE
+                    if (item.follow_me != null) {
+                        if (item.follow_me.equals("1")) {
+                            itemView.trace.setText("ON")
+                        } else {
+                            itemView.trace.setText("OFF")
+                        }
+
+                    }
+
+
+                    if (item.public_visibility.equals("1")) {
+                        if (item.public_visibility.equals("1")) {
+                            itemView.publicChecke.isChecked = true
+                        } else {
+                            itemView.publicChecke.isChecked = false
+                        }
+                    }
+
+
 
                     itemView.ll_gp.visibility = View.VISIBLE
                     itemView.ll_ngo.visibility = View.GONE
@@ -603,6 +628,14 @@ class NodelCaseAdapter (
                 }
                 //in case of General public or police
                 else {
+
+                    itemView.traceTitle.visibility = View.GONE
+                    itemView.trace.visibility = View.GONE
+                    itemView.publicVisibilityTitle.visibility = View.GONE
+                    itemView.publicChecke.visibility = View.GONE
+
+
+
                     itemView.ll_gp.visibility = View.GONE
                     itemView.ll_ngo.visibility = View.VISIBLE
 
@@ -624,21 +657,35 @@ class NodelCaseAdapter (
             }
 
             //in case of NGO and police
-            if ((type == 1) || (type == 2) || (type == 3) ) {
-                if (type == 2|| type == 3 ) {
+            if ((type == 1) || (type == 2) || (type == 3)) {
+                if (type == 2 || type == 3) {
                     itemView.layoutContact.visibility = View.GONE
                 } else {
-                    itemView.layoutContact.visibility = View.VISIBLE
+                    if(type == 1){
+                        itemView.layoutContact.visibility = View.VISIBLE
+                    } else{
+                        itemView.layoutContact.visibility = View.GONE
+                    }
+                }
+
+                if(item.suspect_number!=null) {
+
+
+                    if (!item.suspect_number!!.isEmpty()) {
+                        itemView.suspectContactTitle.visibility = View.VISIBLE
+                        itemView.suspectContact.setText(item.suspect_number)
+                    } else {
+                        itemView.suspectContactTitle.visibility = View.GONE
+                    }
                 }
 
 
-
-               // if(item!!.transfered_to!=null){
-                    if(policeRank!!.equals("1") || item.transfered_to.equals(userId) ){
-                        itemView.action_complaint.visibility = View.VISIBLE
-                    }else{
-                        itemView.action_complaint.visibility = View.GONE
-                    }
+                // if(item!!.transfered_to!=null){
+                if (policeRank!!.equals("1") || item.transfered_to.equals(userId)) {
+                    itemView.action_complaint.visibility = View.VISIBLE
+                } else {
+                    itemView.action_complaint.visibility = View.GONE
+                }
 //                } else{
 //                    itemView.action_complaint.visibility = View.GONE
 //                }
@@ -648,9 +695,9 @@ class NodelCaseAdapter (
                 itemView.txtCrimeType.text = item.crime_type
 
 
-                if(item.stationName==null || item.stationName!!.isEmpty()){
+                if (item.stationName == null || item.stationName!!.isEmpty()) {
                     itemView.txtPoliceStation.text = "NA"
-                } else{
+                } else {
                     itemView.txtPoliceStation.text = item.stationName
                 }
 
@@ -701,27 +748,27 @@ class NodelCaseAdapter (
                             ""
                         )!!
 
-                        if (item.police_station_id?.toString().equals(stationId) && !item.status!!.toLowerCase().equals("accept"))
+                        if (item.police_station_id?.toString()
+                                .equals(stationId) && !item.status!!.toLowerCase().equals("accept")
+                        )
                             itemView.action_complaint.visibility = View.VISIBLE
+                        else {
 
-                        else{
-
-                          //  if(item!!.transfered_to!=null){
-                                if(policeRank!!.equals("1") || item.transfered_to.equals(userId) ){
-                                    itemView.action_complaint.visibility = View.VISIBLE
-                                }else{
-                                    itemView.action_complaint.visibility = View.GONE
-                                }
+                            //  if(item!!.transfered_to!=null){
+                            if (policeRank!!.equals("1") || item.transfered_to.equals(userId)) {
+                                itemView.action_complaint.visibility = View.VISIBLE
+                            } else {
+                                itemView.action_complaint.visibility = View.GONE
+                            }
 //                            } else{
 //                                itemView.action_complaint.visibility = View.GONE
 //                            }
 
-                          //  itemView.action_complaint.visibility = View.GONE
+                            //  itemView.action_complaint.visibility = View.GONE
                         }
 
 
                     }
-                    itemView.layoutContact.visibility = View.GONE
                     //itemView.imgComplaintMedia.visibility = View.VISIBLE
 
                 } else {
@@ -733,12 +780,12 @@ class NodelCaseAdapter (
                     if (type == 1 && (item.status?.toLowerCase() == "unassigned"))
                         itemView.action_complaint.visibility = View.VISIBLE
                     else {
-                       // if(item!!.transfered_to!=null){
-                            if(policeRank!!.equals("1") || item.transfered_to.equals(userId) ){
-                                itemView.action_complaint.visibility = View.VISIBLE
-                            }else{
-                                itemView.action_complaint.visibility = View.GONE
-                            }
+                        // if(item!!.transfered_to!=null){
+                        if (policeRank!!.equals("1") || item.transfered_to.equals(userId)) {
+                            itemView.action_complaint.visibility = View.VISIBLE
+                        } else {
+                            itemView.action_complaint.visibility = View.GONE
+                        }
 //                        } else{
 //                            itemView.action_complaint.visibility = View.GONE
 //                        }
@@ -778,17 +825,18 @@ class NodelCaseAdapter (
                     context.startActivity(mapIntent)
                 }
 
-                itemView.gpu_case_layout.visibility = View.GONE
-                itemView.ngo_case_layout.visibility = View.VISIBLE
-                itemView.ngo_case_layout.visibility = View.VISIBLE
+//                itemView.gpu_case_layout.visibility = View.GONE
+//                itemView.ngo_case_layout.visibility = View.VISIBLE
+//                itemView.ngo_case_layout.visibility = View.VISIBLE
                 itemView.case_no_ngo.setText(item.id).toString()
+                itemView.case_no.setText(item.id).toString()
 
             } else {
                 //in case of general public/general user
-                itemView.gpu_case_layout.visibility = View.VISIBLE
-                itemView.ngo_case_layout.visibility = View.GONE
+//                itemView.gpu_case_layout.visibility = View.VISIBLE
+//                itemView.ngo_case_layout.visibility = View.GONE
                 itemView.case_no.setText(item.id).toString()
-
+                itemView.suspectContactTitle.visibility = View.GONE
 
                 if (item.media_type.equals("videos")) {
                     itemView.imgComplaintMedia.visibility = View.GONE
@@ -798,13 +846,12 @@ class NodelCaseAdapter (
                     itemView.videoThumbNialParent.visibility = View.GONE
                 }
 
-                itemView.layoutContact.visibility = View.GONE
-              //  if(item!!.transfered_to!=null){
-                    if(policeRank!!.equals("1") || item.transfered_to.equals(userId) ){
-                        itemView.action_complaint.visibility = View.VISIBLE
-                    }else{
-                        itemView.action_complaint.visibility = View.GONE
-                    }
+                //  if(item!!.transfered_to!=null){
+                if (policeRank!!.equals("1") || item.transfered_to.equals(userId)) {
+                    itemView.action_complaint.visibility = View.VISIBLE
+                } else {
+                    itemView.action_complaint.visibility = View.GONE
+                }
 //                } else{
 //                    itemView.action_complaint.visibility = View.GONE
 //                }
@@ -888,8 +935,8 @@ class NodelCaseAdapter (
                 itemView.imgExpandable_linear_layout.setOnClickListener {
                     //1st entry
                     if (!item.isApiHit) {
-                            val myCasesActivity = activity as NodelMyCaseActivity
-                            myCasesActivity.callFirImageApi(item.id!!, adapterPosition)
+                        val myCasesActivity = activity as NodelMyCaseActivity
+                        myCasesActivity.callFirImageApi(item.id!!, adapterPosition)
 
                     } else {
                         if (itemView.childExpandable.visibility == View.VISIBLE) {
@@ -1085,5 +1132,14 @@ class NodelCaseAdapter (
                 .getIdentifier(imageName, "drawable", context.getPackageName())
             return drawableResourceId
         }
+    }
+
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 }

@@ -53,7 +53,7 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
                 if(t is SocketTimeoutException){
                     complaintsPresenter.showError("Socket Time error")
                 }else{
-                    complaintsPresenter.showError(t.message + "")
+                    complaintsPresenter.showError("Somthing went wrong, please try again latter")
                 }
             }
 
@@ -87,7 +87,7 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
                 if(t is SocketTimeoutException){
                     complaintsPresenter.showError("Socket Time error")
                 }else{
-                    complaintsPresenter.showError(t.message + "")
+                    complaintsPresenter.showError("Somthing went wrong, please try again latter")
                 }
             }
 
@@ -130,7 +130,7 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
                 if (t is SocketTimeoutException) {
                     complaintsPresenter.showError("Socket Time error")
                 } else {
-                    complaintsPresenter.showError(t.message + "")
+                    complaintsPresenter.showError("Somthing went wrong, please try again latter")
                 }
             }
 
@@ -167,6 +167,10 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
         map["media_type"] = toRequestBody(complaintsRequest.mediaType.toString())
         map["address"] = toRequestBody(complaintsRequest.address.toString())
         map["police_id"] = toRequestBody(complaintsRequest.police_id.toString())
+
+        map["culprit_number"] = toRequestBody(complaintsRequest.culprit_number.toString())
+        map["follow_me"] = toRequestBody(complaintsRequest.follow_me.toString())
+        map["suspect_number"] = toRequestBody(complaintsRequest.suspect_number.toString())
 
         val parts = arrayOfNulls<MultipartBody.Part>(complaintsRequest.image.size)
         if (complaintsRequest.mediaType.equals("photos")) {
@@ -212,7 +216,7 @@ class PublicModel(private var complaintsPresenter: PublicComplaintPresenter) {
                 if (t is SocketTimeoutException) {
                     complaintsPresenter.showError("Socket Time error")
                 } else {
-                    complaintsPresenter.showError(t.message + "")
+                    complaintsPresenter.showError("Somthing went wrong, please try again latter")
                 }
             }
         })

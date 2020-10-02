@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +38,7 @@ import com.dfa.listeners.OnCaseItemClickListener
 import com.dfa.pojo.request.CasesRequest
 import com.dfa.pojo.request.CreatePostRequest
 import com.dfa.pojo.request.CrimeDetailsRequest
+import com.dfa.pojo.request.PublicVisibilityRequest
 import com.dfa.pojo.response.*
 import com.dfa.ui.comments.CommentsActivity
 import com.dfa.ui.generalpublic.GeneralPublicActivity
@@ -56,6 +58,8 @@ import com.dfa.utils.Utilities
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.fragment_public_home.*
 import java.lang.Integer.parseInt
+import java.util.*
+import kotlin.collections.ArrayList
 
 class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
     OnCaseItemClickListener, AlertDialogListener,
@@ -125,29 +129,29 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_public_home, container, false)
         responseObjectList = ArrayList()
 
-       // val mPager: ViewPager = findViewById(R.id.pager)
+        // val mPager: ViewPager = findViewById(R.id.pager)
         binding.addPager.setPageTransformer(true, ZoomOutPageTransformer())
 
 
-     //   setAdvertisementAdapter()
+        //   setAdvertisementAdapter()
         callPresenter("1000")
-        pageCount=1
+        pageCount = 1
         setupUI()
 
-            binding.itemsswipetorefresh.setOnRefreshListener(OnRefreshListener { // Your code to refresh the list here.
-                if (Utilities.isInternetAvailableDialog(mContext)) {
-                    hitType = "foreground"
-                    val casesRequest =
-                        CasesRequest(
-                            "1",
-                            "",
-                            "-1",
-                            "1",
-                            limit
-                            , ""
-                        )  //type = -1 for fetching both cases and posts
-                    presenter.getComplaints(casesRequest, token, type)
-                }
+        binding.itemsswipetorefresh.setOnRefreshListener(OnRefreshListener { // Your code to refresh the list here.
+            if (Utilities.isInternetAvailableDialog(mContext)) {
+                hitType = "foreground"
+                val casesRequest =
+                    CasesRequest(
+                        "1",
+                        "",
+                        "-1",
+                        "1",
+                        limit
+                        , ""
+                    )  //type = -1 for fetching both cases and posts
+                presenter.getComplaints(casesRequest, token, type)
+            }
         })
 
 
@@ -156,6 +160,16 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         return binding.root
     }
 
+
+    fun publicVisibilityHitApi(coplaintId: String?, visibility: String) {
+        token = PreferenceHandler.readString(mContext, PreferenceHandler.AUTHORIZATION, "")!!
+        var input = PublicVisibilityRequest()
+        input.complaint_id = coplaintId!!.toInt()
+        input.public_visibility = visibility.toInt()
+        Utilities.showProgress(mContext)
+        presenter.publicVisibilityInput(token, input)
+
+    }
 
     fun callPresenter(perPage: String) {
         var input = AdvertisementInput()
@@ -185,28 +199,73 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         responseObjectList = responseObject.data
 
         if (responseObjectList!!.size > 0) {
-            binding.addPager.visibility=View.VISIBLE
+            binding.addPager.visibility = View.VISIBLE
 
-            if(activity!=null){
-                binding.addPager!!.adapter =
+            if (activity != null) {
+                binding.addPager.adapter =
                     SlidingImage_Adapter(activity!!, responseObjectList)
-                binding.indicator.setViewPager( binding.addPager!!);
+                binding.indicator.setViewPager(binding.addPager);
+                changeTimer(responseObjectList!!.size)
 
-                if(responseObjectList!!.size!=1){
-                    binding.indicator.visibility=View.VISIBLE
+                if (responseObjectList!!.size != 1) {
+                    binding.indicator.visibility = View.VISIBLE
                 }
             }
 
 
         } else {
-            binding.addPager.visibility=View.GONE
-            binding.indicator.visibility=View.GONE
+            binding.addPager.visibility = View.GONE
+            binding.indicator.visibility = View.GONE
         }
-        if(responseObject.due.equals("0 INR")){
-         //   dueIncomePopup()
+        if (responseObject.due.equals("0 INR")) {
+            //   dueIncomePopup()
         }
     }
 
+    var timer: Timer? = null
+    var currentPage = 0
+    fun changeTimer(pageSize: Int) {
+
+        try {
+
+
+            val DELAY_MS: Long = 1000
+
+            val PERIOD_MS: Long = 5000
+            val handler = Handler()
+            val Update = Runnable {
+                if (currentPage === pageSize - 1) {
+                    currentPage = 0
+                }
+                binding.addPager.setCurrentItem(currentPage++, true)
+            }
+            timer = Timer()
+            timer!!.schedule(object : TimerTask() {
+                override fun run() {
+                    handler.post(Update)
+                }
+            }, DELAY_MS, PERIOD_MS)
+
+        } catch (e: Exception) {
+
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (timer != null) {
+            timer!!.cancel()
+        }
+    }
+
+
+    override fun publicVIsibilitySuccess(responseObject: PublicVisibilityResponse) {
+
+        Utilities.dismissProgress()
+        Toast.makeText(mContext, responseObject.message.toString(), Toast.LENGTH_SHORT).show()
+
+    }
 
 
     override fun showDescError() {
@@ -230,7 +289,6 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         Utilities.showProgress(mContext)
         presenter.getComplaints(casesRequest, token, type)
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -279,10 +337,10 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
                                     limit /*totalItemsCount.toString()*/,
                                     ""
                                 )
-                          //  Utilities.showProgress(activity!!)
+                            //  Utilities.showProgress(activity!!)
                             presenter.getComplaints(casesRequest, token, type)
 
-                            if(progressBar!=null){
+                            if (progressBar != null) {
                                 progressBar.visibility = View.VISIBLE
 
                             }
@@ -301,7 +359,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 //        (toolbarLayout as CenteredToolbar).title = getString(R.string.public_dashboard)
 //        (toolbarLayout as CenteredToolbar).setTitleTextColor(Color.WHITE)
         //itemsswipetorefresh.visibility = View.VISIBLE
-       // norecordrefresh.visibility = View.GONE
+        // norecordrefresh.visibility = View.GONE
 
         // newCompaintsButton = binding.extFab;
         //swipeRefresh.setOnRefreshListener(this)
@@ -413,10 +471,9 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
         try {
             pullToRefreshSettings(itemsswipetorefresh)
             pullToRefreshSettings(norecordrefresh)
-        }catch (e:Exception){
+        } catch (e: Exception) {
 
         }
-
 
 
         /*  */
@@ -558,82 +615,81 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun showGetComplaintsResponse(response: GetCasesResponse) {
         Utilities.dismissProgress()
-        binding.itemsswipetorefresh.isRefreshing=false
+        binding.itemsswipetorefresh.isRefreshing = false
 
         try {
 
 
+            if (hitType == "foreground") {
+                // newCompaintsButton!!.visibility = View.GONE
 
-        if (hitType == "foreground") {
-            // newCompaintsButton!!.visibility = View.GONE
+                if (progressBar != null) {
+                    progressBar.visibility = View.GONE
 
-            if(progressBar!=null){
-                progressBar.visibility = View.GONE
-
-            }
-
+                }
 
 
-            if (response.data!!.isNotEmpty()) {
-                if (pageCount == 1) {
-                    adapter?.clear()
-                    complaints = response.data
-                    adapter?.setList(complaints)
-                    adapter?.notifyDataSetChanged()//now
+
+                if (response.data!!.isNotEmpty()) {
+                    if (pageCount == 1) {
+                        adapter?.clear()
+                        complaints = response.data
+                        adapter?.setList(complaints)
+                        adapter?.notifyDataSetChanged()//now
+
+                    } else {
+                        complaints.addAll(response.data)
+                        adapter?.notifyDataSetChanged()
+
+                    }
+                    if (norecordrefresh != null) {
+                        norecordrefresh.visibility = View.GONE
+
+                    }
+                    if (itemsswipetorefresh != null) {
+                        itemsswipetorefresh.visibility = View.VISIBLE
+
+                    }
 
                 } else {
-                    complaints.addAll(response.data)
-                    adapter?.notifyDataSetChanged()
-
-                }
-                if (norecordrefresh != null) {
-                    norecordrefresh.visibility = View.GONE
-
-                }
-                if (itemsswipetorefresh != null) {
-                    itemsswipetorefresh.visibility = View.VISIBLE
-
-                }
-
-            } else {
-                if (pageCount == 1) {
-                    norecordrefresh.visibility = View.VISIBLE
-                    itemsswipetorefresh.visibility = View.GONE
-                    complaints = response.data
-                    // }
+                    if (pageCount == 1) {
+                        norecordrefresh.visibility = View.VISIBLE
+                        itemsswipetorefresh.visibility = View.GONE
+                        complaints = response.data
+                        // }
 //                } else {
 ////                    if (complaints.size == 0) {
 ////                        tvRecord.visibility = View.VISIBLE
 ////                        rvPublic.visibility = View.GONE
 ////                    }
 //                }
+                    }
+
+                    if (progressBar != null) {
+                        progressBar.visibility = View.GONE
+
+                    }
                 }
 
-                if(progressBar!=null){
-                    progressBar.visibility = View.GONE
+                setProfilePic()
+            } else {
+                var new = 0;
+                for (element in response.data!!) {
+
+                    val datat =
+                        complaints.filter { it.id.toString().contains(element.id.toString()) }
+                    if (datat.size == 0) new = 1
 
                 }
-            }
 
-            setProfilePic()
-        } else {
-            var new = 0;
-            for (element in response.data!!) {
 
-                val datat = complaints.filter { it.id.toString().contains(element.id.toString()) }
-                if (datat.size == 0) new = 1
+                if (new == 1) {
+                    //newCompaintsButton!!.visibility = View.VISIBLE
+
+                }
 
             }
-
-
-            if (new == 1) {
-                //newCompaintsButton!!.visibility = View.VISIBLE
-
-            }
-
-        }
-        }
-        catch (e:java.lang.Exception){
+        } catch (e: java.lang.Exception) {
 
         }
     }
@@ -887,7 +943,7 @@ class GeneralPublicHomeFragment : Fragment(), CasesView, View.OnClickListener,
 
     override fun showServerError(error: String) {
         Utilities.dismissProgress()
-        binding.itemsswipetorefresh.isRefreshing=false
+        binding.itemsswipetorefresh.isRefreshing = false
         statusId = "-1"
         if (error.equals(Constants.TOKEN_ERROR)) {
             //logout user

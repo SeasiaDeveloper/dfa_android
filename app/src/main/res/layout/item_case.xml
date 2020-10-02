@@ -226,11 +226,13 @@
                                 android:layout_height="wrap_content">
 
                                 <LinearLayout
+                                    android:visibility="gone"
                                     android:id="@+id/ngo_case_layout"
                                     android:layout_width="match_parent"
+                                    android:orientation="horizontal"
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="@dimen/_2sdp"
-                                    android:layout_weight="0.3">
+                                  >
 
                                     <com.dfa.customviews.CustomTextViewheading
                                         android:id="@+id/case_no_text_ngo"
@@ -277,8 +279,7 @@
                                     android:layout_marginEnd="@dimen/_2sdp"
                                     android:layout_weight="0.5"
                                     android:gravity="start"
-                                    android:orientation="horizontal"
-                                    android:visibility="gone">
+                                    android:orientation="horizontal">
 
                                     <com.dfa.customviews.CustomTextViewheading
                                         android:id="@+id/case_no_title"
@@ -299,6 +300,25 @@
                                         android:textColor="@color/grey_text"
                                         android:textSize="@dimen/_12ssp"
                                         tools:text="Level 3" />
+
+                                    <com.dfa.customviews.CustomTextViewheading
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:visibility="gone"
+                                        android:layout_marginLeft="@dimen/dp_10"
+                                        android:text=", Public Visibility?"
+                                        android:id="@+id/publicVisibilityTitle"
+                                        android:textColor="@color/grey_text"
+                                        android:textStyle="bold" />
+
+                                    <CheckBox
+                                        android:visibility="gone"
+                                        android:id="@+id/publicChecke"
+                                        android:layout_marginLeft="@dimen/dp_5"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"/>
+
+
                                 </LinearLayout>
                             </RelativeLayout>
 
@@ -339,6 +359,7 @@
                             </LinearLayout>
 
                             <LinearLayout
+                                android:orientation="horizontal"
                                 android:id="@+id/layoutStatus"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
@@ -361,6 +382,29 @@
                                     android:textColor="@color/grey_text"
                                     android:textSize="@dimen/_12ssp"
                                     tools:text="Reject" />
+
+                                <com.dfa.customviews.CustomTextViewheading
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="27dp"
+                                    android:layout_marginStart="@dimen/_6sdp"
+                                    android:text=", Trace:"
+                                    android:visibility="gone"
+                                    android:id="@+id/traceTitle"
+                                    android:layout_marginLeft="@dimen/dp_10"
+                                    android:textColor="@color/grey_text"
+                                    android:textStyle="bold" />
+
+                                <com.dfa.customviews.CustomTextViewheading
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="27dp"
+                                    android:layout_marginStart="@dimen/_4sdp"
+                                    android:text="OFF"
+                                    android:visibility="gone"
+                                    android:id="@+id/trace"
+                                    android:layout_marginLeft="@dimen/dp_5"
+                                    android:textColor="@color/green"
+                                    />
+
                             </LinearLayout>
 
 
@@ -460,22 +504,23 @@
 
                     </LinearLayout>
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="horizontal">
+                        >
 
                         <com.dfa.customviews.CustomTextViewheading
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_6sdp"
                             android:text="Reported:"
+                            android:id="@+id/reportedTitle"
                             android:textColor="@color/grey_text"
                             android:textStyle="bold" />
 
                         <com.dfa.customviews.CustomtextView
                             android:id="@+id/expandable_Date"
+                            android:layout_toRightOf="@+id/reportedTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/_4sdp"
@@ -486,37 +531,42 @@
                             tools:text="" />
 
                         <LinearLayout
-
-                            android:layout_width="match_parent"
+                            android:layout_below="@+id/suspectContactTitle"
+                            android:id="@+id/moreView"
+                            android:layout_marginLeft="@dimen/dp_5"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="end"
+                            android:layout_alignParentRight="true"
                             android:gravity="end">
-
                             <LinearLayout
                                 android:id="@+id/imgExpandable_linear_layout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="end"
                                 android:gravity="end"
+                                android:layout_gravity="bottom"
                                 android:orientation="horizontal">
+                                <TextView
+                                    android:text="  "
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"/>
 
                                 <ImageView
                                     android:id="@+id/imgExpandable"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:padding="@dimen/_3sdp"
+                                    android:layout_width="@dimen/dp_20"
+                                    android:layout_height="@dimen/dp_20"
+                                    android:layout_marginBottom="@dimen/dp_3"
                                     android:src="@drawable/ic_expand_more_black_24dp" />
 
                                 <com.dfa.customviews.CustomtextView
                                     android:id="@+id/moreLess"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
+                                    android:layout_height="match_parent"
                                     android:layout_gravity="center_vertical|end"
-                                    android:layout_marginStart="@dimen/_1sdp"
                                     android:layout_marginEnd="@dimen/_10sdp"
                                     android:fontFamily="@fonts/Montserrat-SemiBold_0.ttf"
                                     android:padding="@dimen/_2sdp"
                                     android:text="@string/more"
+                                    android:gravity="bottom"
                                     android:textColor="@color/green"
                                     android:textSize="@dimen/_12sdp"
                                     android:textStyle="bold" />
@@ -524,23 +574,43 @@
                             </LinearLayout>
 
                         </LinearLayout>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/childExpandable"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:animateLayoutChanges="true"
-                        android:orientation="vertical"
-                        android:visibility="gone">
 
                         <LinearLayout
+                            android:layout_below="@+id/reportedTitle"
+                            android:id="@+id/suspectContactTitle"
+                            android:layout_width="match_parent"
+                            android:layout_marginTop="@dimen/dp_5"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <com.dfa.customviews.CustomTextViewheading
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_6sdp"
+                                android:text="Suspect Contact:"
+
+                                android:textColor="@color/grey_text"
+                                android:textStyle="bold" />
+
+                            <com.dfa.customviews.CustomtextView
+                                android:layout_width="wrap_content"
+                                android:id="@+id/suspectContact"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_4sdp"
+                                android:text=""
+                                android:textSize="@dimen/_12sdp"
+                                android:textColor="@color/grey_text"
+                                />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_below="@id/suspectContactTitle"
                             android:id="@+id/layoutContact"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
+                            android:layout_marginTop="@dimen/dp_5"
                             android:orientation="horizontal"
-                            android:visibility="visible">
+                            android:visibility="gone">
 
                             <com.dfa.customviews.CustomTextViewheading
                                 android:layout_width="wrap_content"
@@ -561,6 +631,48 @@
                                 android:textSize="@dimen/_12ssp"
                                 tools:text="" />
                         </LinearLayout>
+
+
+                    </RelativeLayout>
+
+
+
+
+                    <LinearLayout
+                        android:id="@+id/childExpandable"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:animateLayoutChanges="true"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+
+<!--                        <LinearLayout-->
+<!--                            android:id="@+id/layoutContact"-->
+<!--                            android:layout_width="match_parent"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:layout_gravity="center"-->
+<!--                            android:orientation="horizontal"-->
+<!--                            android:visibility="visible">-->
+
+<!--                            <com.dfa.customviews.CustomTextViewheading-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginStart="@dimen/_6sdp"-->
+<!--                                android:text="Complainer Contact:"-->
+<!--                                android:textColor="@color/grey_text"-->
+<!--                                android:textStyle="bold" />-->
+
+<!--                            <com.dfa.customviews.CustomtextView-->
+<!--                                android:id="@+id/expandable_contactNo"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_marginStart="@dimen/_4sdp"-->
+<!--                                android:layout_marginEnd="@dimen/_4sdp"-->
+<!--                                android:layout_marginBottom="@dimen/_5sdp"-->
+<!--                                android:textColor="@color/grey_text"-->
+<!--                                android:textSize="@dimen/_12ssp"-->
+<!--                                tools:text="" />-->
+<!--                        </LinearLayout>-->
 
                         <androidx.appcompat.widget.AppCompatImageView
                             android:id="@+id/imgFirMedia"
